@@ -1,0 +1,15 @@
+# Information related to reporting security vulnerabilities of this site.
+
+# How to communicate about security issues.
+Contact: mailto:security_pdap@protonmail.com
+Contact: mailto:dongately_pdap@protonmail.com
+Contact: Joint DM in Slack- `@Alec` AND `@dongately`
+Contact: in Slack, `@channel #information-security_general` AND `@channel #management_general`
+
+# Preferred languages for communication.     
+Preferred-Languages: en
+
+# The most common URL for accessing this security.txt file.
+Canonical: https://policedap.org/.well-known/security.txt
+
+# Please see https://securitytxt.org/ for details of the specification of this file.

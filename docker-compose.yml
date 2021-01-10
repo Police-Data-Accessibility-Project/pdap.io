@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  website:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: build
+    ports:
+      - 8000:8000
+    command: ./node_modules/.bin/gatsby develop -H 0.0.0.0
+    volumes:
+      - /app/node_modules
+      - .:/app
+    environment:
+      - NODE_ENV=development
