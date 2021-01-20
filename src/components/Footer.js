@@ -19,7 +19,8 @@ export default function Footer() {
         <Logo className={footerStyles.footer__logo__image} title="Police Data Accessibility Project - Home" />
       </Link>
       <div className={footerStyles.footer__content}>
-        <SubscribeButton buttonText="Subscribe to our mailing list" />
+        {/* TODO toggling off subscribe until we figure out mailchimp */}
+        {/* <SubscribeButton buttonText="Subscribe to our mailing list" /> */}
         <div className={footerStyles.social__icons}>
           <a
             href="https://www.facebook.com/Police-Data-Accessibility-Project-PDAP-109798477433389/"

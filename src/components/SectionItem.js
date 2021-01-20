@@ -80,17 +80,17 @@ export default function SectionItem({ page, index, sectionItem }) {
               case "action":
                 switch (contentItem.action) {
                   case "SubscriptionButton":
-                    return (
-                      <SubscribeButton
-                        buttonText={contentItem.actionText}
-                        key={`${page} section ${index} action ${i}`}
-                      />
+                    return (null // TODO toggling off subscribe until we figure out mailchimp
+                      // <SubscribeButton
+                      //   buttonText={contentItem.actionText}
+                      //   key={`${page} section ${index} action ${i}`}
+                      // />
                     )
-                  
+
                   default:
                     return null
                 }
-                
+
               default:
                 return null
             }
@@ -100,7 +100,7 @@ export default function SectionItem({ page, index, sectionItem }) {
       {!collapsed && sectionItem.links && (
         <div className={sectionStyles.section__item__links}>
           {sectionItem.links.map(link => {
-                
+
             if (link.to.includes("https")) {
               return (
                 <a
@@ -119,8 +119,8 @@ export default function SectionItem({ page, index, sectionItem }) {
                   {link.link}
                 </Link>
               )
-            }              
-            
+            }
+
           })}
         </div>
       )}
