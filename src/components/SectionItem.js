@@ -80,11 +80,11 @@ export default function SectionItem({ page, index, sectionItem }) {
               case "action":
                 switch (contentItem.action) {
                   case "SubscriptionButton":
-                    return (null // TODO toggling off subscribe until we figure out mailchimp
-                      // <SubscribeButton
-                      //   buttonText={contentItem.actionText}
-                      //   key={`${page} section ${index} action ${i}`}
-                      // />
+                    return (
+                      <SubscribeButton
+                        buttonText={contentItem.actionText}
+                        key={`${page} section ${index} action ${i}`}
+                      />
                     )
 
                   default:
