@@ -1,21 +1,17 @@
-# PDAP Organization Website
+# PDAP.IO
 
-This repository houses all of the code and content for the Police Data Accessibility Project organization website. The site is powered by [Gatsby](https://www.gatsbyjs.org/) and content is written in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+Powered by [Gatsby](https://www.gatsbyjs.org/), written in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 
 1. [Project Overview](#project-overview)
 2. [Info for Developers](#info-for-developers)
-3. [Info for Content Managers](#info-for-content-managers)
 
 ## Project Overview
 
-At this early stage our goals for this project are as follows:
+### We're here to build a front-end foundation that can scale.
 
-- Establish an on-brand online presence quickly
-- Keep technical and monetary overhead low
-  - By keeping our solution confined to GitHub's set set of free tools we negate the need to maintain multiple tools and content sources, and keeps our options open.
-- Build a front-end foundation that can scale
-  - As our needs grow we can migrate from Markdown content to one of many headless CMS options without the need for a complete rewrite or shift to an entirely new tool set.
-  - The Gatsby framework offers a vast plugin ecosystem and can be easily configured to consume different types of content from a variety of sources. Additionally, React components written for this Gatsby site can later be used in potential future projects.
+We're currently in Markdown. Down the road, we may migrate to a headless CMS.
+
+Gatsby offers a vast plugin ecosystem and can consume content from many sources. PDAP is open source, so React components written for this Gatsby site can be used in future projects.
 
 ## Info for Developers
 
@@ -29,9 +25,15 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 - [Gatsby](https://www.gatsbyjs.org/docs/)
 - [GraphQL](https://graphql.org/code/#javascript)
 
-### Config
+### Etiquette
 
-This project builds static pages dynamically via the [Gatsby Node API](https://www.gatsbyjs.org/docs/node-apis/).
+Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
+
+Test your changes **locally first**, if possible. Include **screenshots with your PR** if you're changing something visual.
+
+### Background
+
+We build static pages via the [Gatsby Node API](https://www.gatsbyjs.org/docs/node-apis/).
 
 Markdown files in the top level `content` directory are sourced via the [gatsby-source-filesystem](https://www.gatsbyjs.org/packages/gatsby-source-filesystem/?=file) plugin and parsed via the [gatsby-transformer-remark](https://www.gatsbyjs.org/packages/gatsby-transformer-remark/?=markd) plugin. The content is fed as props to the React templates via [GraphQL page queries](https://www.gatsbyjs.org/docs/page-query/).
 
@@ -55,8 +57,4 @@ The GraphQL playground can be accessed at [localhost:8000/\_\_\_playground](http
 
 Testing is configured according to Gatsby's [Unit Testing](https://www.gatsbyjs.org/docs/unit-testing/) docs.
 
-You can run tests via the `npm test` command.
-
-## Info for Content Managers
-
-Coming soon
+You can run tests via the `npm test` command
