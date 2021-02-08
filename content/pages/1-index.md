@@ -5,8 +5,8 @@ order: 10
 type: "page"
 template: "page"
 hero:
-  title: The importance of being informed
-  message: The Police Data Accessibility Project aggregates and consolidates open source law enforcement activity data to provide the public and policymakers with digestible records.
+  title: A source of truth for police data
+  message: There are about 18,000 police organizations, and each has a unique way to data public. This means that, effectively, the data is not public. We can make it public by consolidating it.
   background: ../assets/img/heroback.png
   image: ../assets/img/pdap_logo_final.svg
   links:
@@ -21,14 +21,14 @@ sections:
     items:
       - content:
           - type: paragraph
-            text: Law enforcement data, especially at the local level, is hidden in the corners of the internet, obfuscated by bureaucracy, and served up via low quality user experiences. All this makes it difficult for citizens to access, consolidate, and make use of the data for accurate and factual inferences. Our approach empowers volunteer hunter-gatherers to contribute to a platform empowering the citizenry with oversight capability.
+            text: Local law enforcement data is hidden in the corners of the internet, obfuscated by bureaucracy, and only accessible via low quality user experiences. It's difficult for data scientists, journalists, and ordinary citizens to access, consolidate, and use the data. The simple act of collecting the data in one place creates an **unprecedented starting point for full-scale analysis** of our criminal justice system.
           - type: paragraph
-            text: Our platform is a consolidated, publicly available library of law enforcement related records. Our goal is to ease data consumption, facilitate open source software analytics, and provide an interface for reporting and analysis of law enforcement activity. Our platform will be made publicly available, free of charge.
+            text: Our goals are to ease data collection, standardize formats from disparate sources, store the data to archival standards, and facilitate open source software analytics. Our data is publicly available, free of charge.
           - type: paragraph
-            text: Our target user demographic is the data analytics and justice sector so they may examine law enforcement trends. The platform will also benefit broader swathes of the population, such as academics studies, press coverage, government oversight, elected officials, and the law enforcement agencies themselves.
+            text: We speculate that the **key audience is data scientists and journalists**. They do the analysis, and are the critical channel for information to flow from police organizations to policymakers and the general public. The platform will also benefit broader swathes of the population, such as academics, government oversight bodies, elected officials, and the law enforcement agencies themselves.
           - type: action
             action: SubscriptionButton
-            actionText: Subscribe to our newsletter for updates on our progress
+            actionText: Subscribe to our newsletter
   - title: Project goals
     layout: section__row
     columns: 2
@@ -37,16 +37,13 @@ sections:
           - type: list
             listType: number
             items:
-              - text: Become THE source for police data — be the most complete source of law enforcement data
+              - text: Be a trusted, complete source for easily-downloadable police data
+              - text: Create processes for routinely gathering data
                 listType: alpha
                 items:
-                  - text: More than 15% of 17,985 U.S. police agencies represented in the data (focused on population centers)
-                  - text: Expand distribution methods in response to community feedback
-              - text: Routinize scraping and FOIA activities — know what and when data is made available
-                listType: alpha
-                items:
-                  - text: Publish automated pipeline data (i.e. scrapes) within hours
-                  - text: Publish manual pipeline data (i.e. FOIA and docs) in days
-              - text: Drive the public availability of new police data — data is being created where it wasn’t before because of the holes we identify
-              - text: Support the regular publication of data trends — our data is widely cited in publications
+                - text: Automatically gather, validate, and publish data from some sources
+                - text: Manually collect some data via FOIA request for human-powered validation and publishing
+              - text: Manually collect some data via FOIA request for human-powered validation and publishing
+              - text: Drive the public availability of new police data by identifying gaps in the data landscape
+              - text: Support the analysis and publication of police data by journalists, citizens, and law enforcement agencies
 ---
