@@ -24,6 +24,7 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 - [React](https://reactjs.org/docs/getting-started.html)
 - [Gatsby](https://www.gatsbyjs.org/docs/)
 - [GraphQL](https://graphql.org/code/#javascript)
+- [Remark](https://remark.js.org/) is used to parse files from Markdown to HTML.
 
 ### Etiquette 
 
