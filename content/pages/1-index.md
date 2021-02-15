@@ -37,13 +37,12 @@ sections:
           - type: list
             listType: number
             items:
-              - text: Be a trusted, complete source for easily-downloadable police data
+              - text: Be a trusted, complete source for easily-downloadable police data.
               - text: Create processes for routinely gathering data
                 listType: alpha
                 items:
                 - text: Automatically gather, validate, and publish data from some sources
                 - text: Manually collect some data via FOIA request for human-powered validation and publishing
-              - text: Manually collect some data via FOIA request for human-powered validation and publishing
-              - text: Drive the public availability of new police data by identifying gaps in the data landscape
-              - text: Support the analysis and publication of police data by journalists, citizens, and law enforcement agencies
+              - text: Identify gaps in the police data landscape.
+              - text: Support the analysis and publication of police data.
 ---
