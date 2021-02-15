@@ -6,7 +6,7 @@ type: "page"
 template: "page"
 hero:
   title: A source of truth for police data
-  message: There are about 18,000 police organizations, and each has a unique way to data public. This means that, effectively, the data is not public. We can make it public by consolidating it.
+  message: There are about 18,000 police organizations, and each has a unique way to make data public. This means that, effectively, the data is not public. We can make it public by consolidating it.
   background: ../assets/img/heroback.png
   image: ../assets/img/pdap_logo_final.svg
   links:
