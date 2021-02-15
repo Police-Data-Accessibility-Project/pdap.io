@@ -30,6 +30,10 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 
 Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
 
+### Etiquette
+
+Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
+
 Test your changes **locally first**, if possible. Include **screenshots with your PR** if you're changing something visual.
 
 ### Background
@@ -59,4 +63,3 @@ The GraphQL playground can be accessed at [localhost:8000/\_\_\_playground](http
 Testing is configured according to Gatsby's [Unit Testing](https://www.gatsbyjs.org/docs/unit-testing/) docs.
 
 You can run tests via the `npm test` command
-
