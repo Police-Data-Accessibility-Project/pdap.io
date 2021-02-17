@@ -26,10 +26,6 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 - [GraphQL](https://graphql.org/code/#javascript)
 - [Remark](https://remark.js.org/) is used to parse files from Markdown to HTML.
 
-### Etiquette 
-
-Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
-
 ### Etiquette
 
 Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
