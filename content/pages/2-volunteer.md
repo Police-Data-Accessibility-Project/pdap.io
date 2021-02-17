@@ -65,7 +65,4 @@ sections:
         content:
           - type: paragraph
             text: Legal guidance, outside perspectives, and information security. If you can help us operate an ethical nonprofit, we would love to hear from you.
-        links:
-          - link: a
-            to: "a"
 ---

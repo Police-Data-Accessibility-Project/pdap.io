@@ -57,10 +57,6 @@ export const pageQuery = graphql`
             title
             titleColor
             collapsible
-            links {
-              to
-              link
-            }
             content {
               type
               text
