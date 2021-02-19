@@ -11,6 +11,7 @@ import {
   faLinkedin,
   faFacebook
 } from "@fortawesome/free-brands-svg-icons"
+import PaypalDonate from "./PaypalDonate"
 
 export default function Footer() {
   return (
@@ -20,6 +21,7 @@ export default function Footer() {
       </Link>
       <div className={footerStyles.footer__content}>
         <SubscribeButton buttonText="Subscribe to our mailing list" />
+        <PaypalDonate />
         <div className={footerStyles.social__icons}>
           <a
             href="https://www.facebook.com/Police-Data-Accessibility-Project-PDAP-109798477433389/"
