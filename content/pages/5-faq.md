@@ -9,6 +9,10 @@ sections:
     columns: 2
     layout: section__row
     items:
+      - title: Where can I learn more about your process and trajectory?
+        content:
+          - type: paragraph
+            text: Check out our pitch deck <a href="https://docs.google.com/presentation/d/1chFR2AZPf8T3-jxl_w00oaYNZJF0yFD8ibDhh28NQJo/preview">here</a>.
       - title: What is the purpose of the Police Data Accessibility Project a.k.a. PDAP?
         content:
           - type: paragraph

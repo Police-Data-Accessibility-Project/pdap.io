@@ -5,11 +5,8 @@ import Link from "../components/Link"
 import SubscribeButton from "./SubscribeButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faReddit,
-  faInstagram,
-  faTwitter,
   faLinkedin,
-  faFacebook
+  faSlack
 } from "@fortawesome/free-brands-svg-icons"
 import PaypalDonate from "./PaypalDonate"
 
@@ -20,57 +17,30 @@ export default function Footer() {
         <Logo className={footerStyles.footer__logo__image} title="Police Data Accessibility Project - Home" />
       </Link>
       <div className={footerStyles.footer__content}>
-        <SubscribeButton buttonText="Subscribe to our mailing list" />
+        <SubscribeButton buttonText="Subscribe to our newsletter" />
         <PaypalDonate />
         <div className={footerStyles.social__icons}>
-          <a
-            href="https://www.facebook.com/Police-Data-Accessibility-Project-PDAP-109798477433389/"
-            target="_blank"
-            rel="noreferrer"
-            alt="Police Data Accessibility Project - Facebook Page"
-            className={footerStyles.social__icon}
-          >
-            <FontAwesomeIcon icon={faFacebook} title="Police Data Accessibility Project - Facebook Page" />
-          </a>
-          <a
-            href="https://twitter.com/DataPdap"
-            target="_blank"
-            rel="noreferrer"
-            alt="Police Data Accessibility Project - Twitter Page"
-            className={footerStyles.social__icon}
-          >
-            <FontAwesomeIcon icon={faTwitter} title="Police Data Accessibility Project - Twitter Page" />
-          </a>
           <a
             href="https://www.linkedin.com/company/police-data-accessibility-project/"
             target="_blank"
             rel="noreferrer"
-            alt="Police Data Accessibility Project - Page"
+            alt="Police Data Accessibility Project - LinkedIn"
             className={footerStyles.social__icon}
           >
             <FontAwesomeIcon icon={faLinkedin} title="Police Data Accessibility Project - LinkedIn Page" />
           </a>
           <a
-            href="https://www.instagram.com/pdapdataaccessibility/"
+            href="policeaccessibility.slack.com"
             target="_blank"
             rel="noreferrer"
-            alt="Police Data Accessibility Project - Instagram Page"
+            alt="Police Data Accessibility Project - Slack"
             className={footerStyles.social__icon}
           >
-            <FontAwesomeIcon icon={faInstagram} title="Police Data Accessibility Project - Instagram Page" />
-          </a>
-          <a
-            href="https://www.reddit.com/r/DataPolice/"
-            target="_blank"
-            rel="noreferrer"
-            alt="Police Data Accessibility Project - Reddit Page"
-            className={footerStyles.social__icon}
-          >
-            <FontAwesomeIcon icon={faReddit} title="Police Data Accessibility Project - Reddit Page" />
+            <FontAwesomeIcon icon={faSlack} title="Police Data Accessibility Project Slack" />
           </a>
         </div>
         <span className={footerStyles.copyright}>
-          © 2020 Police Data Accessibility Project
+          © 2021 Police Data Accessibility Project
         </span>
       </div>
     </footer>
