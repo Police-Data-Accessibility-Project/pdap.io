@@ -30,7 +30,7 @@ export default function Footer() {
             <FontAwesomeIcon icon={faLinkedin} title="Police Data Accessibility Project - LinkedIn Page" />
           </a>
           <a
-            href="policeaccessibility.slack.com"
+            href="https://policeaccessibility.slack.com/"
             target="_blank"
             rel="noreferrer"
             alt="Police Data Accessibility Project - Slack"
