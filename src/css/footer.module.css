@@ -26,12 +26,13 @@
 
 .social__icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .social__icon {
   color: var(--white);
   font-size: 2.5rem;
+  padding: 0 2rem;
 }
 .footer__logo {
   position: absolute;

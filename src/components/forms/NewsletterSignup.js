@@ -40,10 +40,10 @@ export default class NewsletterSignup extends React.Component {
                             <button className={styles.close} onClick={handleClose}>x</button>
                             <div className={styles.form__grid}>
                                 <div className={styles.form__header}>
-                                    <h2 className={styles.form__header__text}>Subscribe to our mailing list</h2>
+                                    <h2 className={styles.form__header__text}>Subscribe to our newsletter</h2>
                                 </div>
                                 <div className={styles.form__message}>
-                                    <p>Want to keep up with our progress? Add your email to our list to receive new information and updates on our mission and activities.</p>
+                                    <p>Yes, we have a newsletter! Thank you for asking. Add your email to our list to receive new information and updates on our mission and activities.</p>
                                 </div>
                                 <div className={styles.form__content}>
                                     <div className={styles.form__content__wrapper}>
