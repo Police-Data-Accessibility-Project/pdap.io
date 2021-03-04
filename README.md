@@ -28,7 +28,7 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 
 ### Etiquette
 
-Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to #copywriting in Slack** if you'd like to collect feedback from the wider group.
+Make a Pull Request and request approval from Josh Lintag, or Josh Chamberlain. **Head to [#copywriting](https://policeaccessibility.slack.com/archives/C01KW4N1V4Z) in Slack** if you'd like to collect feedback from the wider group.
 
 Test your changes **locally first**, if possible. Include **screenshots with your PR** if you're changing something visual.
 
@@ -40,12 +40,12 @@ Markdown files in the top level `content` directory are sourced via the [gatsby-
 
 The static site content is hosted on [Github Pages](https://pages.github.com/) from the gh-pages branch. The static files are built and deployed to this branch automatically via [GitHub Actions](https://github.com/features/actions) whenever changes are merged to the master branch.
 
-You can see a demo static site [here](https://milespratt.github.io/Police-Data-Accessibility-Project.github.io).
+You can see the live site [here](https://pdap.io/).
 
 ### Setup
 
 1. Clone the repository
-   `git clone https://github.com/milespratt/Police-Data-Accessibility-Project.github.io.git`
+   `git clone https://github.com/Police-Data-Accessibility-Project/gatsby-pdap-frontpage.git`
 2. Install dependencies
    `npm install`
 3. Start the development server
