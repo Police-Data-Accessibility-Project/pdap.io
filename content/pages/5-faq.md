@@ -40,5 +40,5 @@ sections:
       - title: Where do you get your funding?
         content:
           - type: paragraph
-            text: We've applied for 501c3 non-profit status, and can accept <a href="https://www.paypal.com/donate?token=wX_aaLT5UTXJaBk_GFa9iLl17YsouwmxyXBl-menaJnA7aUuTjD6bJpW3M5QVjqLRFyrGUDIXuj_k3z1">donations via PayPal</a>.
+            text: We've applied for 501c3 non-profit status, and can accept donations via PayPal below.
 ---
