@@ -59,3 +59,7 @@ The GraphQL playground can be accessed at [localhost:8000/\_\_\_playground](http
 Testing is configured according to Gatsby's [Unit Testing](https://www.gatsbyjs.org/docs/unit-testing/) docs.
 
 You can run tests via the `npm test` command
+
+## Staging
+
+Merge into the `dev` branch and visit pdap.dev.
