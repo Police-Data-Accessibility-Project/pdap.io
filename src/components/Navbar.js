@@ -4,7 +4,8 @@ import Link from "./Link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
 
-import navStyles from "../css/nav.module.css"
+import * as navStyles from "../css/nav.module.css"
+import PaypalDonate from "./PaypalDonate"
 import NewsletterSignup from "./forms/NewsletterSignup"
 import SubscribeButton from "./SubscribeButton"
 
@@ -64,6 +65,7 @@ export default class Navbar extends React.Component {
               </Link>
             )
           })}
+          <PaypalDonate />
         </div>
 
       </nav>
