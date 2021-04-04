@@ -16,7 +16,7 @@ sections:
             text: We're building a public library of law enforcement related records. We're from different backgrounds, and each of us has different motivations, but united toward that goal.
     links:
       - link: To contribute, start here.
-        to: "https://docs.google.com/document/d/1Wjvv0NT3eECATJ4r8GQwEgS-sPqYFW8IGC8jvn3Bu5o/edit?usp=sharing"
+        to: "https://pdap-docs.readthedocs.io/"
   - title: Areas of contribution
     titleColor: false
     layout: section__row
