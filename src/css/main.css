@@ -112,6 +112,7 @@ button.btnSecondary {
 
 .button--borderless {
   border: none !important;
+  background: none !important;
 }
 
 .button__icon {

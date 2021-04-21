@@ -102,7 +102,10 @@ export default class NewsletterSignup extends React.Component {
                       />
                     </div>
                     <button className={"button btnPrimary"}>Subscribe</button>
-                    <button onClick={handleClose}>
+                    <button
+                      className="button button--borderless button--small"
+                      onClick={handleClose}
+                    >
                       <span className={styles.closeText}>
                         No thanks, I want to continue reading
                       </span>
