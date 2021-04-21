@@ -4,11 +4,9 @@ import { StaticQuery, graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 
 // COMPONENTS
-import Header from "../components/Header"
-import Footer from "../components/Footer"
-
+import { Header, Footer } from "../components"
 // CSS
-import "../css/main.css"
+// import "../css/main.css"
 
 export default function Layout(props) {
   return (
@@ -18,6 +16,10 @@ export default function Layout(props) {
           site {
             siteMetadata {
               title
+              pages {
+                title
+                path
+              }
             }
           }
         }
@@ -32,8 +34,11 @@ export default function Layout(props) {
             ></meta>
             <title>{data.site.siteMetadata.title}</title>
             {/* Global site tag (gtag.js) - Google Analytics */}
-              <script async src="https://www.googletagmanager.com/gtag/js?id=G-REKS6B95BL"></script>
-              <script>
+            <script
+              async
+              src="https://www.googletagmanager.com/gtag/js?id=G-REKS6B95BL"
+            ></script>
+            <script>
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -41,9 +46,9 @@ export default function Layout(props) {
 
                 gtag('config', 'G-REKS6B95BL');
               `}
-              </script>
+            </script>
           </Helmet>
-          <Header pages={props.pages} />
+          <Header pages={data.site.siteMetadata.pages} />
           <main className="container">{props.children}</main>
           <Footer />
         </div>

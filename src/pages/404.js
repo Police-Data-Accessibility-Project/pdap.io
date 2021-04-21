@@ -1,8 +1,7 @@
 import React from "react"
-import Link from "../components/Link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight, faMapSigns } from "@fortawesome/free-solid-svg-icons"
-import Layout from "../components/Layout"
+import {Layout, Link} from "../components"
 
 export default function fourOhFour() {
   return (

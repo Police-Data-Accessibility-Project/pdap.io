@@ -1,16 +1,23 @@
 import React from "react"
-import footerStyles from "../css/footer.module.css"
 import Logo from "../assets/pdap_acronym_final.svg"
 import Link from "../components/Link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGithub, faLinkedin, faSlack } from "@fortawesome/free-brands-svg-icons"
+import {
+  faGithub,
+  faLinkedin,
+  faSlack,
+} from "@fortawesome/free-brands-svg-icons"
 import PaypalDonate from "./PaypalDonate"
+import * as footerStyles from "../css/footer.module.css"
 
 export default function Footer() {
   return (
     <footer className={footerStyles.footer}>
       <Link to="/" className={footerStyles.footer__logo}>
-        <Logo className={footerStyles.footer__logo__image} title="Police Data Accessibility Project - Home" />
+        <Logo
+          className={footerStyles.footer__logo__image}
+          title="Police Data Accessibility Project - Home"
+        />
       </Link>
       <div className={footerStyles.footer__content}>
         <PaypalDonate />
@@ -34,7 +41,10 @@ export default function Footer() {
             alt="Police Data Accessibility Project - LinkedIn"
             className={footerStyles.social__icon}
           >
-            <FontAwesomeIcon icon={faLinkedin} title="Police Data Accessibility Project - LinkedIn Page" />
+            <FontAwesomeIcon
+              icon={faLinkedin}
+              title="Police Data Accessibility Project - LinkedIn Page"
+            />
           </a>
           <a
             href="https://policeaccessibility.slack.com/"

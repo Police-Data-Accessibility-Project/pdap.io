@@ -1,10 +1,14 @@
 import React from "react"
-import homeStyles from "../css/home.module.css"
-import HeroImage from "../assets/pdap_logo_final.svg"
-import NewsletterSignup from "./forms/NewsletterSignup"
-
-import Link from "../components/Link"
 import scrollTo from "gatsby-plugin-smoothscroll"
+
+// styles
+import * as homeStyles from "../css/home.module.css"
+
+// assets
+import HeroImage from "../assets/pdap_logo_final.svg"
+
+// components
+import { Link } from "../components"
 
 export default function Hero({ hero }) {
   return (

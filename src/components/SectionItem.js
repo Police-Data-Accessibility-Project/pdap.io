@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import sectionStyles from "../css/pageSection.module.css"
+import * as sectionStyles from "../css/pageSection.module.css"
 import Link from "./Link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
@@ -49,64 +49,67 @@ export default function SectionItem({ page, index, sectionItem }) {
       )}
       {!collapsed && (
         <div className={sectionStyles.section__item__content}>
-          {sectionItem.content && sectionItem.content.map((contentItem, i) => {
-            switch (contentItem.type) {
-              case "subtitle":
-                return (
-                  <span
-                    key={`${page} section ${index} subtitle ${i}`}
-                    className={sectionStyles.section__item__subtitle}
-                  >
-                    {contentItem.text}
-                  </span>
-                )
-              case "list":
-                return (
-                  <SectionList
-                    key={`${page} section ${index} list ${i}`}
-                    items={contentItem.items}
-                    listType={contentItem.listType}
-                  />
-                )
+          {sectionItem.content &&
+            sectionItem.content.map((contentItem, i) => {
+              switch (contentItem.type) {
+                case "subtitle":
+                  return (
+                    <span
+                      key={`${page} section ${index} subtitle ${i}`}
+                      className={sectionStyles.section__item__subtitle}
+                    >
+                      {contentItem.text}
+                    </span>
+                  )
+                case "list":
+                  return (
+                    <SectionList
+                      key={`${page} section ${index} list ${i}`}
+                      items={contentItem.items}
+                      listType={contentItem.listType}
+                    />
+                  )
 
-              case "paragraph":
-                return (
-                  <SectionParagraph
-                    paragraph={contentItem}
-                    key={`${page} section ${index} paragraph ${i}`}
-                  />
-                )
+                case "paragraph":
+                  return (
+                    <SectionParagraph
+                      paragraph={contentItem}
+                      key={`${page} section ${index} paragraph ${i}`}
+                    />
+                  )
 
-              case "action":
-                switch (contentItem.action) {
-                  case "SubscriptionButton":
-                    return (
-                      <SubscribeButton
-                        buttonText={contentItem.actionText}
-                        key={`${page} section ${index} action ${i}`}
-                      />
-                    )
+                case "action":
+                  switch (contentItem.action) {
+                    case "SubscriptionButton":
+                      return (
+                        <SubscribeButton
+                          buttonText={contentItem.actionText}
+                          key={`${page} section ${index} action ${i}`}
+                        />
+                      )
 
-                  default:
-                    return null
-                }
+                    default:
+                      return null
+                  }
 
-              default:
-                return null
-            }
-          })}
+                default:
+                  return null
+              }
+            })}
         </div>
       )}
       {!collapsed && sectionItem.links && (
         <div className={sectionStyles.section__item__links}>
           {sectionItem.links.map(link => {
-
             if (link.to.includes("https")) {
               return (
                 <a
-                  key={link.to}>
+                  key={link.to}
                   href={link.to}
-                  className={"button " + link.type === "cta" ? "btnPrimary" : "y"}
+                  className={
+                    "button " + link.type === "cta" ? "btnPrimary" : "y"
+                  }
+                >
                   {link.link}
                 </a>
               )
@@ -115,12 +118,14 @@ export default function SectionItem({ page, index, sectionItem }) {
                 <Link
                   key={link.link}
                   to={link.to}
-                  className={"button " + link.type === "cta" ? "btnPrimary" : "y"}>
+                  className={
+                    "button " + link.type === "cta" ? "btnPrimary" : "y"
+                  }
+                >
                   {link.link}
                 </Link>
               )
             }
-
           })}
         </div>
       )}

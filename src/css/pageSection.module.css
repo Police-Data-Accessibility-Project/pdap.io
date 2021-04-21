@@ -42,7 +42,9 @@
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
 }
-
+.section__item {
+  display: block;
+}
 
 .section__item__detailed {
   display: grid;
