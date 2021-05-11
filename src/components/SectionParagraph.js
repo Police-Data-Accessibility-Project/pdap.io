@@ -1,5 +1,5 @@
 import React from "react"
-import sectionStyles from "../css/pageSection.module.css"
+import * as sectionStyles from "../css/pageSection.module.css"
 
 export default function SectionParagraph({ paragraph }) {
   return (

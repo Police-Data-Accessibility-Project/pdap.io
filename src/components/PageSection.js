@@ -1,6 +1,6 @@
 import React from "react"
+import * as sectionStyles from "../css/pageSection.module.css"
 import Link from "./Link"
-import sectionStyles from "../css/pageSection.module.css"
 import SectionItem from "./SectionItem"
 
 export default function PageSection({ section, page, index }) {
@@ -11,7 +11,6 @@ export default function PageSection({ section, page, index }) {
         sectionStyles[`section__${section.columns}`]
       }`}
     >
-
       {section.anchor && (
         <span
           className={sectionStyles.section__anchor}

@@ -30,6 +30,10 @@ main {
   background-color: var(--white);
 }
 
+a {
+  color: var(--gold);
+}
+
 /* 404 */
 .four__oh__four {
   height: 100vh;
@@ -78,6 +82,13 @@ main {
   white-space: normal;
 }
 
+.button--small {
+  padding: 0 0.5rem;
+  height: 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
 button.btnPrimary {
   background-color: var(--gold);
   border: 2px solid var(--gold);
@@ -101,6 +112,7 @@ button.btnSecondary {
 
 .button--borderless {
   border: none !important;
+  background: none !important;
 }
 
 .button__icon {
@@ -112,7 +124,8 @@ button.btnSecondary {
   color: var(--white);
 }
 
-.button--alt:hover {
+.button--alt:hover,
+.btnPrimary:hover {
   background-color: var(--gold);
   color: var(--black);
 }

@@ -122,10 +122,15 @@
 }
 
 .closeText {
-  color: var(--purple);
-  width: auto;
+  color: var(--purple) !important;
+  width: 100%;
   padding: 0.75rem;
-  margin: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+/* button, */
+.button--small {
+  padding: 0 !important;
 }
 
 .closeText:hover,
@@ -180,16 +185,18 @@
   padding: 3rem 6rem 3rem 6rem;
 }
 
-
 @media only screen and (max-width: 768px) {
   .form__content__wrapper {
   }
-  .form__message {}
+  .form__message {
+  }
 
-  .form__content {}
-  
-  .form__header {}
-  
+  .form__content {
+  }
+
+  .form__header {
+  }
+
   .form__grid {
     grid-template-columns: 1fr;
     padding: 1.5rem 3rem 1.5rem 3rem;
@@ -202,7 +209,7 @@
     padding: 0rem;
     font-size: 2rem;
   }
-.modal__content {
-  width: 90%;
-}
+  .modal__content {
+    width: 90%;
+  }
 }
