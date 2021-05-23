@@ -47,7 +47,7 @@ export default function Footer() {
             />
           </a>
           <a
-            href="https://policeaccessibility.slack.com/"
+            href="https://join.slack.com/t/policeaccessibility/shared_invite/zt-ial0bvnm-D_T7R6za4aKh1f9jGUM0pg"
             target="_blank"
             rel="noreferrer"
             alt="Police Data Accessibility Project - Slack"
