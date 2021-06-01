@@ -30,7 +30,7 @@ export default function Layout(props) {
             <meta charSet="utf-8" />
             <meta
               name="description"
-              content="We gather data, then educate citizens and empower the public. PDAP aggregates and consolidates open-source, law-enforcement activity data into digestible records."
+              content="A source of truth for police data."
             ></meta>
             <title>{data.site.siteMetadata.title}</title>
             {/* Global site tag (gtag.js) - Google Analytics */}

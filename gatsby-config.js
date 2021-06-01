@@ -7,20 +7,24 @@
 module.exports = {
   siteMetadata: {
     title: `Police Data Accessibility Project`,
-    siteUrl: `https://www.policedap.org/`,
-    description: `We gather data, then educate citizens and empower the public. PDAP aggregates and consolidates open-source, law-enforcement activity data into digestible records.`,
+    siteUrl: `https://pdap.io`,
+    description: `We're building a source of truth for police data.`,
     pages: [
       {
-        title: "Learn",
+        title: "Home",
         path: "/",
-      },
-      {
-        title: "Volunteer",
-        path: "/volunteer",
       },
       {
         title: "FAQ",
         path: "/faq",
+      },
+      {
+        title: "Docs",
+        path: "https://docs.pdap.io"
+      },
+      {
+        title: "Blog",
+        path: "https://docs.pdap.io/updates/blog"
       },
     ],
   },
