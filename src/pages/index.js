@@ -5,87 +5,19 @@ import { Layout, Hero, PageSection } from "../components"
 import "../css/main.css"
 import * as homeStyles from "../css/home.module.css"
 
-const sections = [
-  {
-    title: " The problem",
-    layout: "section__column",
-    anchor: "learn",
-    columns: 2,
-    items: [
-      {
-        content: [
-          {
-            type: "paragraph",
-            text: `Local law enforcement data is hidden in the corners of the internet, obfuscated by bureaucracy, and only accessible via low quality user experiences. It's difficult for data scientists, journalists, and ordinary citizens to access, consolidate, and use the data. The simple act of collecting the data in one place creates an <b>unprecedented starting point for full-scale analysis</b> of our criminal justice system.`,
-          },
-          {
-            type: "paragraph",
-            text: `Our goals are to ease data collection, standardize formats from disparate sources, store the data to archival standards, and facilitate open source software analytics. Our data is publicly available, free of charge.`,
-          },
-          {
-            type: "paragraph",
-            text: `We speculate that the <b>key audience is data scientists and journalists</b>. They do the analysis, and are the critical channel for information to flow from police organizations to policymakers and the general public. The platform will also benefit broader swathes of the population, such as academics, government oversight bodies, elected officials, and the law enforcement agencies themselves.`,
-          },
-          {
-            type: "action",
-            action: "SubscriptionButton",
-            actionText: `Subscribe to our newsletter`,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Project goals",
-    layout: "section__row",
-    columns: 2,
-    items: [
-      {
-        content: [
-          {
-            type: "list",
-            listType: "number",
-            items: [
-              {
-                text: `Be a trusted, complete source for easily-downloadable police data.`,
-              },
-              {
-                text: `Create processes for routinely gathering data`,
-                listType: "alpha",
-                items: [
-                  {
-                    text:
-                      "Automatically gather, validate, and publish data from some sources",
-                  },
-                  {
-                    text:
-                      "Manually collect some data via FOIA request for human-powered validation and publishing",
-                  },
-                ],
-              },
-              { text: "Identify gaps in the police data landscape." },
-              { text: "Support the analysis and publication of police data." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-]
-
 export default function index() {
   return (
     <Layout>
       <Hero
         hero={{
-          title: "A source of truth for police data",
+          title: "A source of truth for police data.",
           message:
-            "There are about 18,000 police organizations, and each has a unique way to make data public. This means that, effectively, the data is not public. We can make it public by consolidating it.",
+            "Each of us has a different vision for the future of law enforcement, but the first step is always the same: understanding the current state of policing.",
           links: [
             {
               link: "Help us achieve our mission",
               isAnchor: true,
-              to: "#learn",
+              to: "#contribute",
             },
           ],
         }}
@@ -106,3 +38,93 @@ export default function index() {
     </Layout>
   )
 }
+
+const sections = [
+  {
+    title: "What we're working on",
+    titleColor: false,
+    layout: "section__row",
+    columns: 2,
+    items: [
+      {
+        title: "We can't fix what we can't measure.",
+        collapsible: false,
+        content: [
+          {
+            type: "paragraph",
+            text: `The simple act of collecting the data in one place creates an opportunity to <b>make a positive impact on our criminal justice system.</b>`,
+          },
+          {
+            type: "paragraph",
+            text: `Our goals are to ease data collection, standardize formats from disparate sources, store the data to archival standards, and facilitate open source software analytics. Our data is publicly available, free of charge.`,
+          },
+        ],
+      },
+      {
+        title: "The challenge",
+        collapsible: false,
+        content: [
+          {
+            type: "paragraph",
+            text: `Local law enforcement data is hidden in slow corners of the internet, obfuscated by bureaucracy. There are about 18,000 police organizations, and each has a unique way to make data public. This means that, effectively, <b>the data is not public</b>.`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "How to help",
+    titleColor: false,
+    layout: "section__row",
+    columns: 2,
+    anchor: "contribute",
+    items: [
+      {
+        collapsible: false,
+        content: [
+          {
+            type: "paragraph",
+            text: `<b>Contribute time.</b> <a href="https://docs.pdap.io">Volunteering starts with our docs.</a>` ,
+          },
+          {
+            type: "paragraph",
+            text: `<b>Contribute money.</b> Donate, and we'll spend it on <a href="https://docs.pdap.io/updates/blog/may-2021-dolt-bounty">Data Bounties</a> and infrastructure improvements. Small recurring donations are most helpful. Stability helps us chart a path.`,
+          },
+          {
+            type: "paragraph",
+            text: `<b>Share our work.</b> Send it to people who are experts in data.`,
+          },
+          {
+            type: "paragraph",
+            text: `<b>Use our data.</b> <a href="https://docs.pdap.io/components/data-access">Head here</a> to use the data.`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "How we use resources",
+    titleColor: false,
+    layout: "section__row",
+    columns: 2,
+    items: [
+      {
+        collapsible: false,
+        content: [
+          {
+            type: "paragraph",
+            text: `Our time, money, and energy goes into <a href="https://docs.pdap.io/components/data-access">centralizing public police data</a>.`,
+          },
+          {
+            type: "paragraph",
+            text: `As an open source organization, we need a bare minimum of services to allow our core volunteer group to keep the lights on.`,
+          },
+          {
+            type: "paragraph",
+            text: `We can spend money on Data Bounties by financially rewarding contributors. Since we're paying for specific data, we can make larger and more focused improvements.`
+          },
+        ],
+      },
+    ],
+  },
+]
