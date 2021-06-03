@@ -4,8 +4,6 @@
 
 #### We're here to build a front-end foundation that can scale.
 
-[Here's the GitHub repo](https://github.com/Police-Data-Accessibility-Project/gatsby-pdap-frontpage) for the front end.
-
 We're currently using Gatsby, and pages are written in MDAST Syntax Tree format. Down the road, we may migrate to a headless CMS like Strapi—we're also interested in more accessible languages like JSX.
 
 Gatsby offers a vast plugin ecosystem and can consume content from many sources. PDAP is open source, so React components written for this Gatsby site can be used in future projects.
