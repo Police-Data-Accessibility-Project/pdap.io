@@ -24,7 +24,7 @@ module.exports = {
       },
       {
         title: "Blog",
-        path: "https://docs.pdap.io/updates/blog"
+        path: "http://blog.pdap.io/"
       },
     ],
   },
