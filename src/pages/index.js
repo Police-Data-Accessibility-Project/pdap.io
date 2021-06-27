@@ -41,14 +41,12 @@ export default function index() {
 
 const sections = [
   {
-    title: "What we're working on",
+    title: "We can't fix what we can't measure.",
     titleColor: false,
     layout: "section__row",
     columns: 2,
     items: [
       {
-        title: "We can't fix what we can't measure.",
-        collapsible: false,
         content: [
           {
             type: "paragraph",
@@ -66,7 +64,7 @@ const sections = [
         content: [
           {
             type: "paragraph",
-            text: `Local law enforcement data is hidden in slow corners of the internet, obfuscated by bureaucracy. There are about 18,000 police organizations, and each has a unique way to make data public. This means that, effectively, <b>the data is not public</b>.`,
+            text: `Local law enforcement data is hidden in slow corners of the internet, obfuscated by bureaucracy. There are about 18,000 police organizations, and each has a unique way to make data public. The data is public but <b>not usable, measurable, or actionable.</b> Consolidation is access.`,
           },
         ],
       },
