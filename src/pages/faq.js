@@ -51,7 +51,7 @@ const sections = [
         content: [
           {
             type: "paragraph",
-            text: `Yes. We're consolidating public information, in accordance with <a href="https://docs.google.com/document/d/1gjnH0S18iBI20K1pfs4M3wuMqcLE_ZSgt71ITUY2Fbk/edit">established legal precedents</a>.`,
+            text: `Yes. We're consolidating public information, in accordance with <a href="https://docs.pdap.io/meta/legal">established legal precedents</a>.`,
           },
         ],
       },
@@ -69,7 +69,7 @@ const sections = [
         content: [
           {
             type: "paragraph",
-            text: `Every step step in our process is <a href="https://github.com/Police-Data-Accessibility-Project">accessible and transparent</a> for anyone curious in our procedure for procuring data.`,
+            text: `Every step in our process is <a href="https://github.com/Police-Data-Accessibility-Project">accessible and transparent</a> for anyone curious in our procedure for procuring data.`,
           },
         ],
       },

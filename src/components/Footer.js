@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faGithub,
   faLinkedin,
-  faSlack,
+  faDiscord,
 } from "@fortawesome/free-brands-svg-icons"
 import PaypalDonate from "./PaypalDonate"
+// import PatreonDonate from "./PatreonDonate"
 import * as footerStyles from "../css/footer.module.css"
 
 export default function Footer() {
@@ -21,6 +22,7 @@ export default function Footer() {
       </Link>
       <div className={footerStyles.footer__content}>
         <PaypalDonate />
+        {/* <PatreonDonate /> */}
         <div className={footerStyles.social__icons}>
           <a
             href="https://github.com/Police-Data-Accessibility-Project/Police-Data-Accessibility-Project/"
@@ -47,15 +49,15 @@ export default function Footer() {
             />
           </a>
           <a
-            href="https://join.slack.com/t/policeaccessibility/shared_invite/zt-ial0bvnm-D_T7R6za4aKh1f9jGUM0pg"
+            href="https://discord.gg/wMqex8nKZJ"
             target="_blank"
             rel="noreferrer"
-            alt="Police Data Accessibility Project - Slack"
+            alt="Police Data Accessibility Project - Discord"
             className={footerStyles.social__icon}
           >
             <FontAwesomeIcon
-              icon={faSlack}
-              title="Police Data Accessibility Project - Slack"
+              icon={faDiscord}
+              title="Police Data Accessibility Project - Discord"
             />
           </a>
         </div>
