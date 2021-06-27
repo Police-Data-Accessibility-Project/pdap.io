@@ -15,6 +15,7 @@ const PaypalDonate = () => {
         className="button button--small btnPrimary"
       >
         Donate
+        {/* Donate on PayPal --- breaks out of button width */}
       </button>
       {/* <img
         alt=""
