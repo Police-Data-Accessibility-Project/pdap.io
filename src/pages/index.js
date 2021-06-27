@@ -86,7 +86,7 @@ const sections = [
           },
           {
             type: "paragraph",
-            text: `<b>Contribute money.</b> Donate, and we'll spend it on <a href="https://docs.pdap.io/updates/blog/may-2021-dolt-bounty">Data Bounties</a> and infrastructure improvements. Small recurring donations are most helpful. Stability helps us chart a path.`,
+            text: `<b>Contribute money.</b> Donate, and we'll spend it on <a href="https://docs.pdap.io/components/data-collection/data-bounties">Data Bounties</a> and infrastructure improvements. Small recurring donations are most helpful. Stability helps us chart a path.`,
           },
           {
             type: "paragraph",
