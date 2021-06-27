@@ -41,14 +41,12 @@ export default function index() {
 
 const sections = [
   {
-    title: "What we're working on",
+    title: "We can't fix what we can't measure.",
     titleColor: false,
     layout: "section__row",
     columns: 2,
     items: [
       {
-        title: "We can't fix what we can't measure.",
-        collapsible: false,
         content: [
           {
             type: "paragraph",
