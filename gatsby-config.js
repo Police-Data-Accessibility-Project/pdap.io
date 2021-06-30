@@ -13,10 +13,12 @@ module.exports = {
       {
         title: "Home",
         path: "/",
+        internal: true
       },
       {
         title: "FAQ",
         path: "/faq",
+        internal: true
       },
       {
         title: "Docs",

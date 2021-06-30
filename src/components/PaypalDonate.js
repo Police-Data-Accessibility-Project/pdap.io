@@ -12,10 +12,10 @@ const PaypalDonate = () => {
         value="Donate"
         title="PayPal - The safer, easier way to pay online!"
         alt="Donate with PayPal button"
-        className="button button--small btnPrimary"
+        className="button button--small btnPrimary donation__button"
       >
-        Donate
-        {/* Donate on PayPal --- breaks out of button width */}
+        {/* Donate */}
+        Donate on PayPal
       </button>
       {/* <img
         alt=""

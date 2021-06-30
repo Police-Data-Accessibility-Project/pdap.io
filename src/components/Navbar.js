@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
 
 import * as navStyles from "../css/nav.module.css"
-import PaypalDonate from "./PaypalDonate"
+import DonationButtons from "./DonationButtons"
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ export default class Navbar extends React.Component {
           }
         >
           {this.props.pages.map(page => {
-            return (
+            return page.internal ? (
               <Link
                 activeClassName={navStyles.nav__link__active}
                 partiallyActive={page.path !== "/" ? true : false}
@@ -59,9 +59,9 @@ export default class Navbar extends React.Component {
               >
                 {page.title}
               </Link>
-            )
+            ) : (<a href={page.path} key={page.path} className={navStyles.nav__link}>{page.title}</a>)
           })}
-          <PaypalDonate />
+          <DonationButtons showPatreon={false} showPaypal={true} />
         </div>
       </nav>
     )

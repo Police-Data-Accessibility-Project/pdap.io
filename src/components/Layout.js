@@ -19,6 +19,7 @@ export default function Layout(props) {
               pages {
                 title
                 path
+                internal
               }
             }
           }

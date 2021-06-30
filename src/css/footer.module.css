@@ -20,8 +20,12 @@
   text-align: center;
 }
 
+
+
 .copyright {
   color: var(--white);
+  display: flex;
+  flex-direction: column;
 }
 
 .social__icons {
