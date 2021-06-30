@@ -79,7 +79,7 @@ a {
   font-size: 1.5rem;
   font-weight: 700;
   text-decoration: none;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .button--small {
@@ -89,7 +89,7 @@ a {
   font-weight: 500;
 }
 
-button.btnPrimary {
+.btnPrimary {
   background-color: var(--gold);
   border: 2px solid var(--gold);
   color: var(--white);
@@ -130,9 +130,36 @@ button.btnSecondary {
   color: var(--black);
 }
 
+
+.donation__buttons {
+  grid-auto-columns: min-content;
+  grid-gap:2rem;
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.donation__button {
+  margin: 0 auto;
+}
+
+nav .donation__buttons {
+  grid-auto-flow: row;
+  grid-auto-rows: min-content;
+  grid-gap: .8rem;
+}
+
+nav .donation__button {
+  font-size: 1.2rem !important;
+  padding: .5rem;
+}
+
 @media only screen and (max-width: 768px) {
   html {
     font-size: 9px;
+  }
+  nav .donation__button {
+    font-size: 2rem !important;
+    padding: 2rem;
   }
 }
 

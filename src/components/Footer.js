@@ -7,8 +7,7 @@ import {
   faLinkedin,
   faDiscord,
 } from "@fortawesome/free-brands-svg-icons"
-import PaypalDonate from "./PaypalDonate"
-// import PatreonDonate from "./PatreonDonate"
+import DonationButtons from "./DonationButtons"
 import * as footerStyles from "../css/footer.module.css"
 
 export default function Footer() {
@@ -21,8 +20,7 @@ export default function Footer() {
         />
       </Link>
       <div className={footerStyles.footer__content}>
-        <PaypalDonate />
-        {/* <PatreonDonate /> */}
+        <DonationButtons showPatreon={true} showPaypal={true} />
         <div className={footerStyles.social__icons}>
           <a
             href="https://github.com/Police-Data-Accessibility-Project/Police-Data-Accessibility-Project/"
@@ -62,7 +60,8 @@ export default function Footer() {
           </a>
         </div>
         <span className={footerStyles.copyright}>
-          © 2021 Police Data Accessibility Project
+          <span>© 2021 Police Data Accessibility Project</span>
+          <a href="https://docs.pdap.io/meta/policy/pdap-privacy-policy" alt="Privacy Policy">Privacy Policy</a>
         </span>
       </div>
     </footer>
