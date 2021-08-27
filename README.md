@@ -25,7 +25,7 @@ If you are new to these frameworks you can familiarize yourself via their docs:
 
 ### Etiquette
 
-Head to [\#copywriting](https://policeaccessibility.slack.com/archives/C01KW4N1V4Z) in Slack if you'd like to collect feedback from the wider group.
+Head to [\#documentation](https://discord.com/channels/828274060034965575/849817200160145418/) in our [Discord](https://discord.gg/vKhDv7nC8B) if you'd like to collect feedback from the wider group.
 
 Test your changes **locally first**, if possible. Include **screenshots with your PR** if you're changing something visual.
 
