@@ -418,3 +418,26 @@ strong {
   }
 }
 
+
+@media (prefers-color-scheme: dark) {
+body {
+background-color: #000;
+color: #fffbfa;
+}
+h3 {
+color:#bfc0c0;
+  }
+.footer, .navbar {
+background-color: #333;
+  color: #fffbfa;
+  }
+  .huge-logo, .logo {
+filter: invert(1);
+  }
+  .nav-link{
+color:#fffbfa;
+  }
+  .nav-link.w--current {
+color: #bfc0c0;
+    border-color:#bfc0c0;
+  }
