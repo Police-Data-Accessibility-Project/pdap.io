@@ -1,3 +1,5 @@
+/* In general don't touch this file. */
+
 body {
   background-color: #fffbfa;
   font-family: 'Libre Franklin', sans-serif;
@@ -40,7 +42,12 @@ h4 {
   margin-bottom: 10px;
   font-size: 18px;
   line-height: 1.2;
-  font-weight: 700;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #d5a23c;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
 }
 
 h5 {
@@ -58,10 +65,14 @@ h6 {
   margin-bottom: 10px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 18px;
-  line-height: 18px;
+  line-height: 1.2;
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
+}
+
+h6 a, h5 a, h4 a, h3 a, h2 a, h1 a {
+  text-decoration:none;
 }
 
 p {
@@ -71,6 +82,10 @@ p {
 
 a {
   color: #d5a23c;
+}
+
+a:hover {
+  filter: brightness(.85);
 }
 
 strong {
@@ -179,6 +194,10 @@ strong {
   text-align: center;
 }
 
+.button:hover {
+  filter:brightness(.95);
+}
+
 .button.full-wd {
   width: 100%;
   font-size: 22px;
@@ -279,18 +298,6 @@ strong {
 
 .heading {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-}
-
-.heading-2 {
-  line-height: 1.2;
-}
-
-.heading-3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  color: #d5a23c;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 .discord-embed {
@@ -418,6 +425,8 @@ strong {
   }
 }
 
+
+/* Dark mode */
 
 @media (prefers-color-scheme: dark) {
 body {
