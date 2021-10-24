@@ -264,9 +264,10 @@ strong {
 }
 
 .footer-logo {
-  width: 100px;
+  width: 150px;
   -webkit-filter: invert(100%);
   filter: invert(100%);
+  padding:0 0 0 30px;
 }
 
 .div-block {
