@@ -14,15 +14,13 @@ Test your changes **locally first**, if possible. Include **screenshots with you
 
 ### Setup
 
-1. Clone the repository
-
-   `git clone https://github.com/Police-Data-Accessibility-Project/PDAP.io.git`
+1. [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
 2. Open the index.html file in your browser.
 
 3. Open the codebase in your text editor of choice.
 
-4. Make changes to the code, safe, and refresh your browser.
+4. Make changes to the code, save, and refresh your browser.
 
 
 ### Staging
