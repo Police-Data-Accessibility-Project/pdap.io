@@ -460,7 +460,18 @@ strong {
   .grid {
     grid-column-gap: 15px;
     grid-row-gap: 15px;
+    grid-auto-columns: 1fr;
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
   }
+
+  .grid-label {
+    -ms-grid-column: span 1;
+    grid-column-start: span 1;
+    -ms-grid-column-span: 1;
+    grid-column-end: span 1;
+  }
+  
 }
 
 
