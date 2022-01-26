@@ -337,6 +337,23 @@ strong {
   grid-row-gap: 30px;
 }
 
+.text-field {
+  height: 48px;
+  font-size: 18px;
+}
+
+.form-field-label {
+  color: #515052;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#email-form {
+  max-width: 43ch;
+}
+
 @media screen and (max-width: 991px) {
   body {
     padding-right: 10px;
@@ -471,7 +488,7 @@ strong {
     -ms-grid-column-span: 1;
     grid-column-end: span 1;
   }
-  
+
 }
 
 
