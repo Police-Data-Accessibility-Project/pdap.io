@@ -74,8 +74,11 @@ h6 a, h5 a, h4 a, h3 a, h2 a, h1 a {
 }
 
 p {
-  max-width: 43ch;
   margin-bottom: 15px;
+}
+
+ul, p {
+  max-width: 43ch;
 }
 
 a {
