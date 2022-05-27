@@ -1,9 +1,11 @@
-<!DOCTYPE html><!--  This site was created in Webflow but is now maintained with GitHub. http://www.webflow.com  -->
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
 <!--  Last Published: Sat Aug 28 2021 22:20:30 GMT+0000 (Coordinated Universal Time)  -->
 <html>
 <head>
   <meta charset="utf-8">
-  <title>PDAP</title>
+  <title>Jobs | PDAP</title>
+  <meta content="About" property="og:title">
+  <meta content="About" property="twitter:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
   <meta name="description" content="Information hub for the Police Data Accessibility Project">
@@ -29,7 +31,7 @@
 </head>
 <body>
   <div data-collapse="medium" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
-    <a href="index.html" aria-current="page" class="brand w-nav-brand w--current"><img src="images/lockup.svg" loading="lazy" width="250" alt="Police Data Accessibility Project Logo" class="logo"></a>
+    <a href="index.html" class="brand w-nav-brand"><img src="images/lockup.svg" loading="lazy" width="250" alt="Police Data Accessibility Project Logo" class="logo"></a>
     <div class="nav-container-last">
       <div class="nav-container w-container">
         <div class="menu-button w-nav-button">
@@ -38,8 +40,8 @@
       </div>
     </div>
     <nav role="navigation" class="nav-menu w-nav-menu">
-      <a href="index.html" aria-current="page" class="nav-link w-nav-link w--current">Home</a>
-      <a href="about.html" class="nav-link w-nav-link">About</a>
+      <a href="index.html" class="nav-link w-nav-link">Home</a>
+      <a href="about.html" aria-current="page" class="nav-link w-nav-link w--current">About</a>
       <a href="https://docs.pdap.io/" class="nav-link w-nav-link">Docs</a>
       <a href="https://docs.pdap.io/updates/blog" class="nav-link w-nav-link">Blog</a>
       <a href="contribute.html" class="nav-link w-nav-link">Contribute</a>
@@ -47,38 +49,31 @@
     </nav>
   </div>
   <div class="wf-section">
-    <div class="shout-box w-clearfix">
-      <div class="div-block"><img src="images/logo.svg" loading="lazy" width="400" alt="" class="huge-logo"></div>
-      <div>
-        <h1 class="shout">We need a unified source of police data.<br></h1>
-        <p>Our mission is to consolidate data from every U.S. police agency into a <strong>single public resource.</strong></p>
-        <p>There is no <strong>complete source of truth</strong> for data documenting the police. Everyone wants better systems&mdash;documenting the current one is our first step.</p>
-        <p>To build a single source, we're using <a href="https://github.com/Police-Data-Accessibility-Project/PDAP-Scrapers">Python extractors</a> written by activists to scrape public data from police websites. This is a massive project and we're just getting started&mdash;if you're reading this, there's still work to do.</p>
-        <div class="w-form">
-          <form id="email-form" name="email-form" data-name="Email Form"   action="https://formspree.io/f/xgedogpy" method="POST"><input type="email" class="text-field w-input" maxlength="256" name="email" data-name="Email" placeholder="Your email..." id="email" required=""><input type="submit" value="Get updates" data-wait="Please wait..." class="button w-button"></form>
-          <div class="w-form-done">
-            <div>Thanks! We'll reach out when there's news to share.</div>
-          </div>
-          <div class="w-form-fail">
-            <div>Oops! Something went wrong while submitting the form.</div>
-          </div>
-        </div>
-        <h3>↓ <a href="#readmore">Read more</a></h3>
-      </div>
-    </div>
-  </div>
-  <div class="wf-section">
     <div class="w-container">
-      <h1>We can't fix what we can't measure.<a name="readmore"></a></h1>
-      <p>Every vision for the future of justice policy starts with the same first step: <strong>understanding the current system.</strong><br></p>
-      <p>We can <strong>use already public data</strong> to understand the police systems around us.<br></p>
-      <h3>Data Collection</h3>
-      <p>There are over 18,000 police organizations, each with a unique way to publish information. There is no single source to access this public data. We can make it <strong>usable, measurable, and actionable</strong> by putting it in one place.<br></p>
-      <a href="https://docs.pdap.io" class="button w-button">Contribute code</a>
-      <h3>Data Storage</h3>
-      <p>We archive raw data extractions from police websites. Our data and source scrapers are publicly available, free of charge.<br></p>
-      <h3>Community</h3>
-      <p>We're an open-source learning organization. Talk to us on <a href="https://discord.gg/wMqex8nKZJ">Discord</a>!<br></p>
+      <h1>Jobs</h1>
+      <p>Our project has been in motion since 2020, putting down roots in Pittsburgh as a non-profit and developing our strategy. We <a href="https://docs.pdap.io/updates/blog/5-17-22-first-grant-awarded">recently received grant funding</a>, so we can start to pay full-time staff for the first time!
+      <p>We are an <strong>equal opportunity employer</strong>, and make hiring decisions based on merit. We believe that valuing diversity and inclusiveness of as many traits as possible will help us build the strongest possible community and products.
+      <h2>Open Position: Lead Python Developer</h2>
+      <p>Work with the founding team of a new non-profit to build open-source software. You will help turn our informal, volunteer-developed proofs of concept into a unified app. This role will shape the future of our product and community.
+      <p>Apply for this job <a href="https://www.linkedin.com/hiring/jobs/3072166865/detail/">on LinkedIn</a> or by emailing your resume to <a href="mailto:operations@pdap.io">operations@pdap.io</a>.
+      <h3>Your Role</h3>
+        <ul>
+          <li>Be the lead software developer on a small non-profit team, as one of two paid staff.</li>
+          <li>Work with the Program Director to refine user stories for already-scoped projects.</li>
+          <li>Write open-source Python code to support a variety of apps and services.</li>
+          <li>Deploy apps for use by the volunteer scraper and data consumption communities.</li>
+          <li>Collaboratively develop strategies for scalable, volunteer-friendly scraper architecture.</li>
+          <li>Use a front-end framework like Django or Flask to create a front-end UI designed in collaboration with the Program Director.</li>
+        </ul>
+      <h3>Your Characteristics</h3>
+        <ul>
+          <li>Excited about our mission of creating a centralized directory of police data.</li>
+          <li>Aligned with the collaborative ethos of open-source software development.</li>
+          <li>Proven ability to take a software project from concept to deployment.</li>
+          <li>Willingness to experiment and make mistakes in service of creating the best results.</li>
+        </ul>
+      <h3>Compensation</h3>
+        <p>$100,000–135,000 with medical insurance.
     </div>
   </div>
   <div class="footer wf-section">
