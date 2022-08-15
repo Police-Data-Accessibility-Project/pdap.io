@@ -40,7 +40,12 @@ h4 {
   margin-bottom: 10px;
   font-size: 18px;
   line-height: 1.2;
-  font-weight: 700;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #d5a23c;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
 }
 
 h5 {
@@ -58,29 +63,44 @@ h6 {
   margin-bottom: 10px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 18px;
-  line-height: 18px;
+  line-height: 1.2;
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
 }
 
+h6 a, h5 a, h4 a, h3 a, h2 a, h1 a {
+  text-decoration:none;
+}
+
 p {
-  max-width: 43ch;
   margin-bottom: 15px;
+}
+
+ul, p {
+  max-width: 43ch;
 }
 
 a {
   color: #d5a23c;
 }
 
+a:hover {
+  filter: brightness(.85);
+}
+
 strong {
   font-weight: 600;
 }
 
-.body {
-  background-color: #fffbfa;
-  color: #000;
-  font-size: 18px;
+.w-layout-grid {
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  -ms-grid-rows: auto auto;
+  grid-template-rows: auto auto;
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
 }
 
 .image {
@@ -179,6 +199,10 @@ strong {
   text-align: center;
 }
 
+.button:hover {
+  filter:brightness(.95);
+}
+
 .button.full-wd {
   width: 100%;
   font-size: 22px;
@@ -245,9 +269,10 @@ strong {
 }
 
 .footer-logo {
-  width: 100px;
+  width: 150px;
   -webkit-filter: invert(100%);
   filter: invert(100%);
+  padding:0 0 0 30px;
 }
 
 .div-block {
@@ -281,20 +306,89 @@ strong {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
-.heading-2 {
-  line-height: 1.2;
+.discord-embed {
+  margin-top: 50px;
 }
 
-.heading-3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  color: #d5a23c;
+.grid {
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+}
+
+.grid-2 {
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+  -ms-grid-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-label {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  border-top: 1px solid #bfc0c0;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  border-top: 1px solid #bfc0c0;
+  -ms-grid-row: span 1;
+  grid-row-start: span 1;
+  -ms-grid-row-span: 1;
+  grid-row-end: span 1;
+}
+
+.grid-span-2 {
+  -ms-grid-column: span 2;
+  grid-column-start: span 2;
+  -ms-grid-column-span: 2;
+  grid-column-end: span 2;
+}
+
+.grid-span-3 {
+  -ms-grid-column: span 3;
+  grid-column-start: span 3;
+  -ms-grid-column-span: 3;
+  grid-column-end: span 3;
+}
+
+.tile {
+  font-size:20px;
+}
+
+.tile-icon {
+  max-width:120px;
+}
+
+.top-45 {
+  margin-top: 45px;
+}
+
+.top-0 {
+  margin-top: 0;
+}
+
+.bottom-0 {
+  margin-bottom: 0;
+}
+
+.text-field {
+  height: 48px;
+  font-size: 18px;
+}
+
+.form-field-label {
+  color: #515052;
+  font-size: 14px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-.discord-embed {
-  margin-top: 50px;
+#email-form {
+  max-width: 30ch;
 }
 
 @media screen and (max-width: 991px) {
@@ -392,7 +486,23 @@ strong {
     width: 100%;
     font-size: 18px;
   }
+
+  .grid-3 {
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+    grid-auto-columns: 1fr;
+    -ms-grid-columns: 1fr;
+  }
+
+  .grid-span-3 {
+    -ms-grid-column: span 1;
+    grid-column-start: span 1;
+    -ms-grid-column-span: 1;
+    grid-column-end: span 1;
+  }
+
 }
+
 
 @media screen and (max-width: 479px) {
   .shout {
@@ -416,8 +526,26 @@ strong {
   .logo {
     max-width: 80%;
   }
+
+  .grid, .grid-2 {
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+    grid-auto-columns: 1fr;
+    grid-template-columns: 1fr;
+    -ms-grid-columns: 1fr;
+  }
+
+  .grid-span-2 {
+    -ms-grid-column: span 1;
+    grid-column-start: span 1;
+    -ms-grid-column-span: 1;
+    grid-column-end: span 1;
+  }
+
 }
 
+
+/* Dark mode */
 
 @media (prefers-color-scheme: dark) {
 body {
