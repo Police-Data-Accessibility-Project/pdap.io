@@ -354,7 +354,7 @@ strong {
   grid-column-end: span 3;
 }
 
-.tile {
+.tile p {
   font-size:20px;
 }
 
