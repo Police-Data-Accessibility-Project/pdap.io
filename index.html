@@ -32,6 +32,28 @@
 
     gtag('config', 'AW-11016541790');
   </script>
+  <!-- Event snippet for newsletter signup conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
+        'event_callback': callback
+    });
+    return false;
+  }
+  </script>
+
+  <!-- Event snippet for page view conversion page -->
+  <script>
+    gtag('event', 'conversion', {'send_to': 'AW-11016541790/EpMdCLPx-4AYEN6sjIUp'});
+  </script>
+
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.gif" rel="apple-touch-icon">
 </head>
@@ -66,7 +88,7 @@
           <h3>Get the newsletter:</h3>
           <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')">
             <input type="email" class="text-field w-input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
-            <input type="submit" class="button w-button" value="Get Updates" />
+            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion(url)"/>
           </form>
         </div>
       </div>
