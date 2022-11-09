@@ -34,6 +34,27 @@
 
     gtag('config', 'AW-11016541790');
   </script>
+  <!-- Event snippet for newsletter signup conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
+        'event_callback': callback
+    });
+    return false;
+  }
+  </script>
+  <!-- Event snippet for page view conversion page -->
+  <script>
+    gtag('event', 'conversion', {'send_to': 'AW-11016541790/EpMdCLPx-4AYEN6sjIUp'});
+  </script>
+
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.gif" rel="apple-touch-icon">
 </head>
@@ -86,15 +107,10 @@
         <p><strong>Share our work.</strong> Send a link to experts you know.</p>
         <p><strong>Use our data.</strong> <a href="https://docs.pdap.io/activities/data-sources/explore-data-sources">Head here</a> to see our progress.</p>
         <p><strong>Stay in the loop.</strong> Subscribe to our infrequent email newsletter and we'll reach out when we have something interesting to say.
-          <div class="w-form">
-            <form id="email-form" name="email-form" data-name="Email Form"   action="https://formspree.io/f/xgedogpy" method="POST"><input type="email" class="text-field w-input" maxlength="256" name="email" data-name="Email" placeholder="Your email..." id="email" required=""><input type="submit" value="Get updates" data-wait="Please wait..." class="button w-button"></form>
-            <div class="w-form-done">
-              <div>Thanks! We'll reach out when there's news to share.</div>
-            </div>
-            <div class="w-form-fail">
-              <div>Oops! Something went wrong while submitting the form.</div>
-            </div>
-          </div>
+          <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')">
+            <input type="email" class="text-field w-input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
+            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion(url)"/>
+          </form>
         <p>If you would like to contribute in another way, reach out to <a href="mailto:operations@pdap.io">operations@pdap.io</a>.</p>
       <div class="discord-embed w-embed w-iframe"><iframe src="https://discord.com/widget?id=828274060034965575&theme=dark" min-width="200px" max-width="100%" height="400px" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe></div>
     </div>
