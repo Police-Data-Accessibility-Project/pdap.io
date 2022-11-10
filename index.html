@@ -38,7 +38,7 @@
   function gtag_report_conversion(url) {
     var callback = function () {
       if (typeof(url) != 'undefined') {
-        window.location = url;
+        // window.location = url;
       }
     };
     gtag('event', 'conversion', {
@@ -88,7 +88,7 @@
           <h3>Get the newsletter:</h3>
           <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')">
             <input type="email" class="text-field w-input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
-            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion(url)"/>
+            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion('https://pdap.io/index.html')"/>
           </form>
         </div>
       </div>
