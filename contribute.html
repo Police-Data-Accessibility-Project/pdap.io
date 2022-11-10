@@ -40,7 +40,7 @@
   function gtag_report_conversion(url) {
     var callback = function () {
       if (typeof(url) != 'undefined') {
-        window.location = url;
+        // window.location = url;
       }
     };
     gtag('event', 'conversion', {
@@ -109,7 +109,7 @@
         <p><strong>Stay in the loop.</strong> Subscribe to our infrequent email newsletter and we'll reach out when we have something interesting to say.
           <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')">
             <input type="email" class="text-field w-input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
-            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion(url)"/>
+            <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion('https://pdap.io/contribute.html')"/>
           </form>
         <p>If you would like to contribute in another way, reach out to <a href="mailto:operations@pdap.io">operations@pdap.io</a>.</p>
       <div class="discord-embed w-embed w-iframe"><iframe src="https://discord.com/widget?id=828274060034965575&theme=dark" min-width="200px" max-width="100%" height="400px" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe></div>
