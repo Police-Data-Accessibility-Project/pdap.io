@@ -83,6 +83,8 @@ ul, p {
 
 a {
   color: #d5a23c;
+  text-decoration-thickness:6% ;
+  text-underline-offset: 5%;
 }
 
 a:hover {
@@ -177,13 +179,6 @@ strong {
   border-width: 2px;
   border-color: rgba(81, 42, 79, 0.1);
   color: #512a4f;
-}
-
-.shout {
-  max-width: 20ch;
-  font-size: 60px;
-  line-height: 1.2;
-  font-weight: 500;
 }
 
 .button {
@@ -289,12 +284,21 @@ strong {
   opacity: 0.1;
 }
 
+.shout {
+  max-width: 30ch;
+  font-size: 50px;
+  line-height: 1.2;
+  font-weight: 500;
+  margin-top:0;
+  text-align:center;
+}
+
 .shout-box {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 0 5vw 10vh 5vw;
+  padding: 0 5vw 5vh 5vw;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -317,6 +321,7 @@ strong {
 .grid-2 {
   -ms-grid-columns: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
+  align-items:start;
 }
 
 .grid-3 {
