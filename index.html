@@ -21,8 +21,31 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-REKS6B95BL');
+  </script>
+  <!-- Google ads tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11016541790"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-11016541790');
+  </script>
+  <!-- Event snippet for newsletter signup conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
+        'event_callback': callback
+    });
+    return false;
+  }
   </script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.gif" rel="apple-touch-icon">
@@ -42,72 +65,92 @@
       <a href="about.html" class="nav-link w-nav-link">About</a>
       <a href="contribute.html" class="nav-link w-nav-link">Contribute</a>
       <a href="https://docs.pdap.io/" class="nav-link w-nav-link">Docs</a>
-      <a href="https://docs.pdap.io/updates/blog" class="nav-link w-nav-link">Blog</a>
+      <a href="https://newsletter.pdap.io" class="nav-link w-nav-link">Newsletter</a>
       <a href="jobs.html" class="nav-link w-nav-link">Jobs</a>
     </nav>
   </div>
   <div class="wf-section">
-    <div class="shout-box w-clearfix">
-      <div class="div-block"><img src="images/logo.svg" loading="lazy" width="400" alt="" class="huge-logo"></div>
-      <div>
-        <h1 class="shout">We need a unified source of police data.<br></h1>
-        <p>Our mission is to make data from every U.S. police agency accessible via a <strong>single public resource.</strong></p>
-        <p>To do it, we're using open-source code written by transparency activists to collect public data from police websites. This is a massive project, and we're just getting started.</p>
-        <div class="w-form">
-          <form id="email-form" name="email-form" data-name="Email Form"   action="https://formspree.io/f/xgedogpy" method="POST"><input type="email" class="text-field w-input" maxlength="256" name="email" data-name="Email" placeholder="Your email..." id="email" required=""><input type="submit" value="Get updates" data-wait="Please wait..." class="button w-button"></form>
-          <div class="w-form-done">
-            <div>Thanks! We'll reach out when there's news to share.</div>
-          </div>
-          <div class="w-form-fail">
-            <div>Oops! Something went wrong while submitting the form.</div>
-          </div>
+    <div class="w-container">
+      <div class="shout-box top-45">
+      
+      </div>
+      <div class="w-layout-grid grid grid-2">
+        <div class="grid-span-2">
+          <h1 class="shout">We help people find public records about police systems.<br></h1>
+          <p>We're activists, researchers, journalists, municipal workers, and other people interested in transparent government.</p>
         </div>
-        <h3>↓ <a href="#readmore">Read more</a></h3>
+        <div>
+          <h3>Request data</h3>
+          <p>If you're looking for data, we can help! Our community has assembled 
+            to help each other share public records.</p>
+          <a href="https://airtable.com/shrksR6rfMcdvakhp"><div class="button w-button">Request data</div></a>
+        </div>
+        <div>
+          <h3>Volunteer</h3>
+          <p>If you want to help make public records about the police easily accessible, you can find a place to contribute with <b>any experience level!</b></p>
+          <a href="https://docs.pdap.io/"><div class="button w-button">Volunteer</div></a>
+        </div>
+        </div>
+        <div class="w-layout-grid grid grid-3">
+          <h2 class="grid-span-3 bottom-0">What we've done so far</h2>
+          <div class="tile">
+            <p>We've made progress on the most important part of our toolkit: a <a href="https://docs.pdap.io/activities/data-sources">national directory of public records</a> about every U.S. police agency. People use it to find and share Data Sources.</p>
+          </div>
+          <div class="tile">
+            <p>We've started making case studies <a href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo">like this Calls for Service web scraper</a> by working with data users to understand their needs.</p>
+          </div>
+          <div class="tile">
+            <p>We made a <a href="https://airtable.com/shr43ihbyM8DDkKx4">living database of agencies</a> in the criminal legal system. We're not aware of a more complete one.</p>
+          </div>
+          <div class="w-form grid-span-3">
+            <h3 class="top-0">Get the newsletter</h3>
+            <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')" style="max-width:500px;">
+              <input type="email" class="text-field w-input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
+              <input type="submit" class="button w-button" value="Get Updates" onclick="gtag_report_conversion('https://pdap.io/index.html')"/>
+              </form>
+            </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
   <div class="wf-section">
     <div class="w-container">
-      <h1>We can't fix what we can't measure.<a name="readmore"></a></h1>
-      <p>We can make better use of <strong>public data</strong> to understand the police systems around us.</p>
-      <p>There are over 18,000 police organizations, and each has a unique way to publish information. To cope with this complexity, we're embracing grassroots principles and creating a model which centers the needs of local communities.</p>
+      <h2>We can't fix what we can't measure.</h2>
+      <p>There are <a href="https://airtable.com/shr43ihbyM8DDkKx4" target="_blank">tens of thousands</a> of police agencies, and each has a unique way to publish information.</p>
+      <p>We're a small non-profit with ambitious goals and a tiny budget. Every bit helps.</p>
+      <a href="contribute.html"><div class="button w-button">Make a donation</div></a>
+    </div>
+  </div>
+  <div class="wf-section">
+    <div class="w-container">
       <div class="w-layout-grid grid grid-2 top-45">
-        <h2 class="grid-span-2">What does better data accessibility look like?</h2>
+        <h2 class="grid-span-2">What does better data accessibility mean?</h2>
         <div class="tile">
           <img class="tile-icon" src="images/icons/sources.svg">
-          <h3>Locate data sources</h3>
-          <p>We're building a searchable database of police data sources in the United States.</p>
-          <p>A data source could include information about police activity, or structural characteristics of each department. Contributors of any skill level can find and submit data sources to the database. As our database approaches coverage of all police agencies, people <strong>spend less time finding data and more time using it.</strong></p>
+          <h3>Directory of data sources</h3>
+          <p>We're indexing police <a href="https://docs.pdap.io/activities/data-sources/what-is-a-data-source">Data Sources</a> for every agency in the U.S. criminal legal system.</p>
+          <p>Currently, local groups use data independently. At best, we trade information via email and spreadsheet.</p>
+          <p>We're making tools to help people organize and <a href="https://airtable.com/shrUAtA8qYasEaepI">share their Data Sources</a> so they can <strong>spend less time finding data and more time using it.</strong></p>
         </div>
         <div class="tile">
           <img class="tile-icon" src="images/icons/scrapers.svg">
-          <h3>Scrape useful information</h3>
-          <p>The community maintains an open-source code repository to extract useful information from any data source.</p>
-          <p>Data scientists of any experience level can learn skills as they contribute code under the mentorship of other community members. <strong>Scraped data is even more useful,</strong> for everything from internal government reporting to criminal justice reform efforts.</p>
+          <h3>Scrape records for data</h3>
+          <p><a href="https://www.google.com/search?q=web+scraping">Web scraping</a> is a common technique for answering deeper questions about the police.
+          <p>The community maintains an open-source code repository with shared resources for extracting useful information from records found at any Data Source.</p>
+          <p>Data users of any experience level can <strong>develop skills as they collaborate</strong> with other community members.</p>
         </div>
         <div class="tile">
           <img class="tile-icon" src="images/icons/automation.svg">
           <h3>Automation</h3>
-          <p>Our infrastructure will automatically archive and scrape each data source.</p>
+          <p>Some sources of data are vulnerable, or regularly removed.</p>
           <p>As we create backup copies of publicly available data, the quality and availability of our archive becomes better over time. <strong>Valuable data is kept secure</strong> from loss due to risks like mismanagement, technical failure, and policy changes.</p>
         </div>
         <div class="tile">
           <img class="tile-icon" src="images/icons/standard.svg">
           <h3>Benchmarks</h3>
           <p>We're developing a gold standard for police transparency and data accessibility.</p>
-          <p>Citizens and governments can evaluate local departments against this standard, transparency advocates can help <strong>improve the systems in use,</strong> and an open-source model is established for transparency with other types of municipal data.</p>
-        </div>
-        <div class="tile">
-          <img class="tile-icon" src="images/icons/community.svg">
-          <h3>Vibrant Community</h3>
-          <p>We welcome criminal justice experts, journalists, researchers, activists, government workers, and anyone else working on the common goal of transparency.</p>
-          <p>Our software will help different segments of the community work together, and <strong>incentivize police administrators to provide data</strong> in a format which is easily consumed by local government&mdash;and the rest of us.</p>
-        </div>
-        <div class="grid-span-2">
-          <p>To unite these core functions, we're building web tools to give everyone access to our archives and Scrapers. If you're reading this, there's still work to do.</p>
-          <a href="https://docs.pdap.io" class="button w-button">Contribute code</a>
-          <a href="https://discord.gg/wMqex8nKZJ" class="button w-button">Meet us on Discord</a>
-          <p><br>If you have used police data for any kind of project, we'd like to hear from you. Tell us about your work <a href="https://discord.gg/wMqex8nKZJ">in Discord</a> or by emailing <a href="mailto:contact@pdap.io">contact@pdap.io</a>.</p>
+          <p>Citizens and governments can evaluate local departments against this standard, and transparency advocates can help <strong>incentivize police administrators to provide data</strong> in more accessible formats.
         </div>
       </div>
     </div>
@@ -115,13 +158,11 @@
   <div class="footer wf-section">
     <div class="container w-container">
       <div class="footer-actions">
-        <a href="#" class="button button-footer w-button">PayPal</a>
-        <a href="https://www.patreon.com/pdap" class="button button-footer w-button">Patreon</a>
         <a href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/17" class="button button-footer w-button">GitHub</a>
         <a href="https://discord.gg/wMqex8nKZJ" class="button button-footer w-button">Discord</a>
         <a href="https://www.linkedin.com/company/pdap" class="button button-footer w-button">LinkedIn</a>
       </div>
-      <p class="footer-p">© 2022 Police Data Accessibility Project<br></p>
+      <p class="footer-p">© 2023 Police Data Accessibility Project<br></p>
       <p class="footer-p">PDAP is a non-profit. EIN: 85-4207132. <a href="https://docs.pdap.io/meta/policy/pdap-privacy-policy" alt="Privacy Policy">Privacy Policy</a>. <a href="mailto:contact@pdap.io">contact@pdap.io</a><br><br></p>
       <p class="footer-p"><a href="https://www.guidestar.org/profile/85-4207132" target="_blank"><img src="https://widgets.guidestar.org/gximage2?o=9973356&l=v4" /></a><img src="images/acronym.svg" loading="lazy" width="150" alt="" class="footer-logo"></p>
     </div>
