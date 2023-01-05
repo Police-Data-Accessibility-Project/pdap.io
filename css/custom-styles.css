@@ -290,7 +290,6 @@ strong {
   line-height: 1.2;
   font-weight: 500;
   margin-top:0;
-  text-align:center;
 }
 
 .shout-box {
@@ -303,6 +302,11 @@ strong {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.p-box {
+  padding:15px;
+  border:3px solid rgba(81, 42, 79, 0.1);
 }
 
 .heading {
