@@ -358,7 +358,7 @@ strong {
   grid-column-end: span 3;
 }
 
-.faq p, .faq li, .tile p, .principles p, .principles li {
+.faq p, .faq li, .tile p, .principles p, .principles li, .pitch p, .pitch li {
   font-size:20px;
 }
 
@@ -376,6 +376,10 @@ strong {
 
 .bottom-0 {
   margin-bottom: 0;
+}
+
+.bottom-20 {
+  margin-bottom: 20px;
 }
 
 .text-field {
