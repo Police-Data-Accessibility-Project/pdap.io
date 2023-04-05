@@ -33,6 +33,7 @@ h3 {
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  max-width:43ch;
 }
 
 h4 {
@@ -45,7 +46,6 @@ h4 {
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-
 }
 
 h5 {
@@ -77,7 +77,7 @@ p {
   margin-bottom: 15px;
 }
 
-ul, p {
+ul, p, li {
   max-width: 43ch;
 }
 
@@ -358,7 +358,7 @@ strong {
   grid-column-end: span 3;
 }
 
-.tile p {
+.faq p, .faq li, .tile p, .principles p, .principles li {
   font-size:20px;
 }
 
