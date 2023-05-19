@@ -211,13 +211,8 @@ strong {
   font-size: 18px;
 }
 
-.space {
+.job {
   padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-.space.p-width {
-  max-width: 45ch;
 }
 
 .scroll {
