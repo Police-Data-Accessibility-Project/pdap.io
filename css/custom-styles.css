@@ -42,9 +42,9 @@ h4 {
   font-size: 18px;
   line-height: 1.2;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  color: #d5a23c;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  color: #512a4f;
+  font-weight: 600;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -211,13 +211,8 @@ strong {
   font-size: 18px;
 }
 
-.space {
+.space-above {
   padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-.space.p-width {
-  max-width: 45ch;
 }
 
 .scroll {
@@ -358,7 +353,8 @@ strong {
   grid-column-end: span 3;
 }
 
-.faq p, .faq li, .tile p, .principles p, .principles li, .pitch p, .pitch li {
+
+.small p, .small li, p.small {
   font-size:20px;
 }
 
@@ -572,9 +568,10 @@ body {
 background-color: #000;
 color: #fffbfa;
 }
-h3 {
+h3, h4 {
 color:#bfc0c0;
   }
+
 .footer, .navbar {
 background-color: #333;
   color: #fffbfa;
