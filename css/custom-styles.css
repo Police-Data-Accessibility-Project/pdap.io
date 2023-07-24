@@ -81,6 +81,10 @@ ul, p, li {
   max-width: 43ch;
 }
 
+ul {
+  padding-inline-start:0.75em;
+}
+
 a {
   color: #d5a23c;
   text-decoration-thickness:6% ;
@@ -402,6 +406,7 @@ strong {
 
 .citation {
   font-style: italic;
+  margin-bottom:0;
 }
 
 @media screen and (max-width: 991px) {
