@@ -81,6 +81,10 @@ ul, p, li {
   max-width: 43ch;
 }
 
+ul {
+  padding-inline-start:0.75em;
+}
+
 a {
   color: #d5a23c;
   text-decoration-thickness:6% ;
@@ -177,7 +181,7 @@ strong {
 .nav-link.w--current {
   border-style: solid;
   border-width: 2px;
-  border-color: rgba(81, 42, 79, 0.1);
+  border-color: rgba(81, 42, 79, 0.15);
   color: #512a4f;
 }
 
@@ -291,15 +295,6 @@ strong {
   align-items: center;
 }
 
-.p-box {
-  padding:15px;
-  border:3px solid rgba(81, 42, 79, 0.1);
-}
-
-.heading {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-}
-
 .discord-embed {
   margin-top: 50px;
 }
@@ -397,6 +392,21 @@ strong {
 
 .airtable-box {
   margin: 40px;
+}
+
+.boxed {
+  padding:15px;
+  margin: 15px 0;
+  border: 2px solid rgba(81, 42, 79, 0.15);
+}
+
+.quote {
+  font-weight: 500;
+}
+
+.citation {
+  font-style: italic;
+  margin-bottom:0;
 }
 
 @media screen and (max-width: 991px) {
