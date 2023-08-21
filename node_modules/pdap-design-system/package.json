@@ -1,0 +1,22 @@
+{
+  "name": "pdap-design-system",
+  "version": "1.0.0",
+  "description": "Global styles for PDAP apps",
+  "main": "system/css/global-styles.css",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \\\"No tests for CSS-only package.\\\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Police-Data-Accessibility-Project/design-system.git"
+  },
+  "author": "Police Data Accessibility Project, Inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Police-Data-Accessibility-Project/design-system/issues"
+  },
+  "homepage": "https://github.com/Police-Data-Accessibility-Project/design-system#readme"
+}
