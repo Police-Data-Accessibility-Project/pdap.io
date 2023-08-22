@@ -546,7 +546,7 @@ strong {
     top: 100%;
     left: 0;
     width: 100%; /* Full width */
-    height: calc(100% - 76px);
+    height: calc(100% - 112px);
     z-index: 999;
     flex-direction: column; 
     align-items: center;

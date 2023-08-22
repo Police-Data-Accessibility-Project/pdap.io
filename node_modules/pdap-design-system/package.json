@@ -1,6 +1,6 @@
 {
   "name": "pdap-design-system",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Global styles for PDAP apps",
   "main": "system/css/global-styles.css",
   "directories": {
