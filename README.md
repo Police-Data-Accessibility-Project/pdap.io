@@ -22,6 +22,10 @@ Test your changes **locally first**, if possible. Include **screenshots with you
 
 4. Make changes to the code, save, and refresh your browser.
 
+### Design System
+
+This static site uses the npm package `pdap-design-system`, but because it's hosted as a static site, we add `package.json` and `package-lock.json` files to `.gitignore` so that DigitalOcean doesn't get confused.
+
 
 ### Staging
 

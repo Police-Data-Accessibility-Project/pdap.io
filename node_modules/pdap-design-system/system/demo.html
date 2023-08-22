@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PDAP design system</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="description" content="Design system for the Police Data Accessibility Project and its services.">
+  <meta name="keywords" content="design, system, design system">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/global-styles.css" rel="stylesheet" type="text/css">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Libre Franklin:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"]  }});</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&display=swap" rel="stylesheet">
+  <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-REKS6B95BL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-REKS6B95BL');
+  </script>
+  <!-- Google ads tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11016541790"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-11016541790');
+  </script>
+  <!-- Event snippet for newsletter signup conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
+        'event_callback': callback
+    });
+    return false;
+  }
+  </script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.gif" rel="apple-touch-icon">
+</head>
+<body>
+  <div data-collapse="medium" data-animation="default" data-duration="400" role="banner" class="navbar nav">
+    <a href="index.html" aria-current="page" class="brand nav-brand current"><img src="images/lockup.svg" loading="lazy" width="250" alt="Police Data Accessibility Project Logo" class="logo"></a>
+    <div class="nav-container-last">
+      <div class="nav-container container">
+        <div class="menu-button nav-button">
+          <div class="nav-menu-icon"></div>
+        </div>
+      </div>
+    </div>
+    <nav role="navigation" class="nav-menu nav-menu">
+      <a href="index.html" aria-current="page" class="nav-link nav-link">Home</a>
+      <a href="data-sources.html" aria-current="page" class="nav-link nav-link current">Current page</a>
+      <a href="donate.html" class="nav-link nav-link">Page</a>
+    </nav>
+  </div>
+  <div class="section">
+    <div class="container">
+      <h1 class="shout">Shout</h1>
+      <p>For big messages, saying big things.</p>
+      <h1>Heading 1</h1>
+      <p>This is a paragraph. There's a max line length, so that things stay readable at unexpected screen and font sizes. The text is large to encourage brevity and readability.</p>
+      <h2>Heading 2</h2>
+      <p>Another paragraph.</p>
+      <h3>Heading 3</h3>
+      <p>This paragraph has <code>&lt;code&gt;</code> in it.</p>
+      <h4>Heading 4</h4>
+      <div>
+        <pre><code>This is a whole code block!
+It has many lines.</code></pre>
+      </div>
+      <h5>Heading <code>code</code> 5</h5>
+      <p>Another paragraph.</p>
+      <h6>Heading 6</h6>
+      <div class="small">
+        <p>Another paragraph, inside a div with class "small".</p>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container small">
+      <h3>Testimonials</h3>
+      <div class="boxed">
+        <p class="quote">“PDAP's work was invaluable in helping us find and access data we otherwise wouldn't have been able to.”</p> 
+        <p class="citation">&mdash;Dr. Jesse Wozniak, Director of Law & Public Policy at the <a href="https://apa-pgh.org/">Alliance for Police Accountability</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="layout-grid grid-2">
+        <div class="shout-box grid-span-2">
+          <h1 class="shout">This is a grid layout.<br></h1>
+          <p class="bottom-0">The grid is our main tool for layout. The div containing this paragraph and the header above it spans multiple grid columns.</p>
+        </div>
+        <div>
+          <h3>This doesn't span columns.</h3>
+          <p>Here's a button though!</p>
+          <a href="https://airtable.com/shrbFfWk6fjzGnNsk"><div class="button">Normal button.</div></a>
+        </div>
+        <div>
+          <h3>Neither does this.</h3>
+          <p>This is a deprioritized button.</p>
+          <a href="https://airtable.com/shrS4PAZTYVT1zSq8"><div class="button button-outline">Outline button.</div></a>
+        </div>
+      </div>
+      <div class="layout-grid grid-3">
+        <h2 class="grid-span-3 top-45 bottom-0">More grids</h2>
+        <div>
+          <p>For some applications, we will need custom grids.</p>
+        </div>
+        <div>
+          <p>Instead of <code>grid-3</code>, make a new custom grid class with the right column widths.</p>
+        </div>
+        <div>
+          <p>You may want to override the spacing, too!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="form">
+        <h3>Here's a little form.</h3>
+        <p class="small">We could use more styles for these.</p>
+        <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')" style="max-width:500px;">
+          <input type="email" class="input input-text" maxlength="256" name="email" id="bd-email" placeholder="Placeholder..."/>
+          <input type="submit" class="button" value="Get Updates"/>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="layout-grid grid-2 top-45">
+        <h2 class="grid-span-2">How do you make nice tiles with icons?</h2>
+        <div>
+          <img class="tile-icon" src="images/icons/automation.svg">
+          <h3>Good question.</h3>
+          <p>Here's how you do it! These are custom SVG icons.</p>
+        </div>
+        <div>
+          <img class="tile-icon" src="images/icons/standard.svg">
+          <h3>This is another tile.</h3>
+          <p><i class="fa fa-info-circle"></i> Here's how to do a <a href="https://fontawesome.com/">fontawesome</a> icon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="airtable-box">
+      <div class="container">
+        <p><a href="https://airtable.com/shrUAtA8qYasEaepI">Always link to the source</a> of an embed.</p>
+      </div>
+        <iframe class="airtable-embed" src="https://airtable.com/embed/shrUAtA8qYasEaepI?backgroundColor=gray&viewControls=on" frameborder="0" onmousewheel="scroll" width="100%" height="750" style="background: transparent; border: 1px solid #512a4f;"></iframe>
+    </div>
+</div>
+  <div class="footer section">
+    <div class="container">
+      <div class="footer-actions">
+        <a href="https://github.com/orgs/Police-Data-Accessibility-Project" class="button button-footer">GitHub</a>
+        <a href="https://discord.gg/wMqex8nKZJ" class="button button-footer">Discord</a>
+        <a href="https://www.linkedin.com/company/pdap" class="button button-footer">LinkedIn</a>
+      </div>
+      <p class="footer-p">© 2023 Police Data Accessibility Project<br></p>
+      <p class="footer-p">PDAP is a non-profit. EIN: 85-4207132. <a href="https://docs.pdap.io/meta/policy/pdap-privacy-policy" alt="Privacy Policy">Privacy Policy</a>. <a href="mailto:contact@pdap.io">contact@pdap.io</a><br><br></p>
+      <p class="footer-p"><a href="https://www.guidestar.org/profile/85-4207132" target="_blank"><img src="https://widgets.guidestar.org/gximage2?o=9973356&l=v4" /></a><img src="images/acronym.svg" loading="lazy" width="150" alt="" class="footer-logo"></p>
+    </div>
+  </div>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
+</html>
