@@ -296,7 +296,7 @@ p {
   margin-bottom: 15px;
 }
 
-p {
+p, li {
   max-width: 43ch;
 }
 
@@ -479,7 +479,7 @@ strong {
   align-items: center;
 }
 
-.small p, p.small {
+.small p, p.small, .small li {
   font-size:20px;
 }
 
