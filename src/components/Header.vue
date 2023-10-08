@@ -5,7 +5,7 @@ import lockupSvg from "pdap-design-system/system/images/lockup.svg"
 
 <template>
     <header>
-        <div class="navbar nav">
+        <div class="navbar nav" data-collapse="medium" data-animation="default" data-duration="400" role="banner">
             <RouterLink class="brand nav-brand" to="/">
                 <img v-bind:src="lockupSvg" class="logo" alt="Police Data Accessibility Project Logo" loading="lazy"
                     width="250" />
