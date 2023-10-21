@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { RouterLink } from "vue-router";
 import lockupSvg from "pdap-design-system/system/images/lockup.svg"
 </script>
