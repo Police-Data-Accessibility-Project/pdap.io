@@ -16,8 +16,7 @@ Test your changes **locally first**, if possible. Include **screenshots with you
 
 ### Prerequisites
 
-1. Install Node.js - [https://nodejs.org/en](https://nodejs.org/en)
-2. Install pnpm: `npm install -g pnpm`
+1. Install Node.js and npm - [https://nodejs.org/en](https://nodejs.org/en)
 3. (Optional) Install and use VS Code. This repo is configured with recommended extensions to aid in development, so using VS Code will provide the best experience.
 
 ### Setup
