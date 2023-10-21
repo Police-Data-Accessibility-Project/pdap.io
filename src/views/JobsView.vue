@@ -74,8 +74,8 @@
               months depending on the project and your availability.</p>
             <p>We are looking for skilled applicants of any experience level to work on our software projects. During an
               initial interview, we will discuss which issues on <a
-                href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/20">the roadmap</a> seem like a
-              good fit for your skills.</p>
+                href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/21/views/2">the roadmap</a>
+              seem like a good fit for your skills.</p>
             <p>When you apply, please let us know if you're interested in a particular project.</p>
             <h3>Responsibilities</h3>
             <div class="small">

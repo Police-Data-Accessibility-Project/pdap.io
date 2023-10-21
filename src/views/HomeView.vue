@@ -15,12 +15,8 @@ import standardSvg from "pdap-design-system/system/images/icons/standard.svg";
               We make public records about police systems more accessible to
               everyone.<br />
             </h1>
-            <p class="bottom-0">
-              We envision a world where accessible data helps us create more
-              just government systems. To achieve this, we're building a space
-              for people to access data, share best practices, and collaborate
-              with others.
-            </p>
+            <p class="bottom-0">Accessible public data is the foundation of fair government systems. To achieve this,
+              we're building a space for people to access data, share best practices, and collaborate with others.</p>
           </div>
           <div>
             <h3>Get help finding data</h3>
