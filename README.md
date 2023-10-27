@@ -30,7 +30,7 @@ Test your changes **locally first**, if possible. Include **screenshots with you
 
 ### Staging
 
-Merge into the `dev` branch and visit pdap.dev.
+Merge into the `dev` branch, allow 5–30 minutes for the auto-deploy, and visit pdap.dev.
 
 ### Helpful links
 
