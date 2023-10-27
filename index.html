@@ -1,193 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>PDAP</title>
-  <meta name="description" content="The Police Data Accessibility Project: helping people find and use public data about the legal system.">
+  <meta charset="UTF-8">
+  <link href="node_modules/pdap-design-system/system/images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="node_modules/pdap-design-system/system/images/webclip.gif" rel="apple-touch-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="The Police Data Accessibility Project: helping people find and use public data about the legal system.">
   <meta name="keywords" content="public records, transparency, police, court, jail, legal, scraping, foia">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>PDAP</title>
+
   <!-- schema.org -->
   <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "NGO",
-      "name": "Police Data Accessibility Project",
-      "alternateName": "PDAP",
-      "description": "A non-profit organization helping people find and use public data about the legal system.",
-      "url": "https://pdap.io",
-      "logo": "https://pdap.io/node_modules/pdap-design-system/system/images/lockup.svg",
-      "sameAs": ["https://www.guidestar.org/profile/85-4207132", "https://www.linkedin.com/company/pdap/", "https://github.com/Police-Data-Accessibility-Project"],
-      "foundingDate": "2021",
-      "areaServed": "United States",
-      "purpose": "Access to public records and promoting transparency in policing.",
-      "contactPoint": [{
-          "@type": "ContactPoint",
-          "email": "contact@pdap.io",
-          "contactType": "General Contact"
-      }],
-      "knowsAbout": ["public records", "transparency", "police", "court", "jail", "legal system", "scraping", "FOIA"]
-      }
-  </script>
-  <link href="node_modules/pdap-design-system/system/css/normalize.css" rel="stylesheet" type="text/css">
-  <link href="node_modules/pdap-design-system/system/css/global-styles.css" rel="stylesheet" type="text/css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      {
+        "@context": "http://schema.org",
+        "@type": "NGO",
+        "name": "Police Data Accessibility Project",
+        "alternateName": "PDAP",
+        "description": "A non-profit organization helping people find and use public data about the legal system.",
+        "url": "https://pdap.io",
+        "logo": "https://pdap.io/node_modules/pdap-design-system/system/images/lockup.svg",
+        "sameAs": ["https://www.guidestar.org/profile/85-4207132", "https://www.linkedin.com/company/pdap/", "https://github.com/Police-Data-Accessibility-Project"],
+        "foundingDate": "2021",
+        "areaServed": "United States",
+        "purpose": "Access to public records and promoting transparency in policing.",
+        "contactPoint": [{
+            "@type": "ContactPoint",
+            "email": "contact@pdap.io",
+            "contactType": "General Contact"
+        }],
+        "knowsAbout": ["public records", "transparency", "police", "court", "jail", "legal system", "scraping", "FOIA"]
+        }
+    </script>
+  <!-- end schema.org -->
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+    type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
-  <script type="text/javascript">WebFont.load({  google: {    families: ["Libre Franklin:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"]  }});</script>
+  <script
+    type="text/javascript">WebFont.load({ google: { families: ["Libre Franklin:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"] } });</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&display=swap"
+    rel="stylesheet">
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-REKS6B95BL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-REKS6B95BL');
   </script>
+  <!-- End Google Analytics -->
+
   <!-- Google ads tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11016541790"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'AW-11016541790');
   </script>
-  <!-- Event snippet for newsletter signup conversion page
-  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <!-- End Google ads tag -->
+
   <script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof (url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
         'send_to': 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
         'event_callback': callback
-    });
-    return false;
-  }
+      });
+      return false;
+    }
   </script>
-  <link href="node_modules/pdap-design-system/system/images/favicon.png" rel="shortcut icon" type="image/x-icon">
-  <link href="node_modules/pdap-design-system/system/images/webclip.gif" rel="apple-touch-icon">
 </head>
+
 <body>
-  <div data-collapse="medium" data-animation="default" data-duration="400" role="banner" class="navbar nav">
-    <a href="index.html" aria-current="page" class="brand nav-brand current"><img src="node_modules/pdap-design-system/system/images/lockup.svg" loading="lazy" width="250" alt="Police Data Accessibility Project Logo" class="logo"></a>
-    <div class="nav-container-last">
-      <div class="nav-container container">
-        <div class="menu-button nav-button">
-          <div class="nav-menu-icon"><i class="fa fa-bars"></i></div>
-        </div>
-      </div>
-    </div>
-    <nav role="navigation" class="nav-menu nav-menu">
-      <a href="index.html" aria-current="page" class="nav-link current">Home</a>
-      <a href="data-sources.html" class="nav-link">Data Sources</a>
-      <a href="donate.html" class="nav-link">Donate</a>
-      <a href="about.html" class="nav-link">About</a>
-      <a href="jobs.html" class="nav-link">Jobs</a>
-      <a href="https://docs.pdap.io/" class="nav-link">Docs & Resources</a>
-    </nav>
-  </div>
-  <div class="section">
-    <div class="container">
-      <div class="layout-grid grid-2">
-        <div class="shout-box grid-span-2">
-          <h1 class="shout">We make public records about police systems more accessible to everyone.<br></h1>
-          <p class="bottom-0">Accessible public data is the foundation of fair government systems. To achieve this, we're building a space for people to access data, share best practices, and collaborate with others.</p>
-        </div>
-        <div>
-          <h3>Get help finding data</h3>
-          <p>If you're looking for data, we can help! Our community has assembled 
-            to help each other find public records.</p>
-          <a href="https://airtable.com/shrbFfWk6fjzGnNsk"><div class="button">Request data</div></a>
-        </div>
-        <div>
-          <h3>Volunteer</h3>
-          <p>If you want to help make police records easily accessible, you can contribute with any experience level!</p>
-          <a href="https://airtable.com/shrS4PAZTYVT1zSq8"><div class="button">Volunteer</div></a>
-        </div>
-      </div>
-      <div class="layout-grid grid-3">
-        <h2 class="grid-span-3 top-45 bottom-0">What we've done so far</h2>
-        <div>
-          <p>We've made progress on the most important part of our toolkit: a <a href="https://docs.pdap.io/activities/data-sources">national directory of public records</a> about every U.S. police agency. People use it to find and share Data Sources.</p>
-        </div>
-        <div>
-          <p>We've started making case studies <a href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo">like this Calls for Service web scraper</a> by working with data users to understand their needs.</p>
-        </div>
-        <div>
-          <p>We made a <a href="https://airtable.com/shr43ihbyM8DDkKx4">living database of agencies</a> in the criminal legal system. We're not aware of a more complete one.</p>
-        </div>
-      </div>
-      <div class="section">
-        <div>
-          <div class="form">
-            <h3>Get the newsletter</h3>
-            <p class="small">We only write when there's news. <a href="https://newsletter.pdap.io/">View the archives here</a>.</p>
-            <form action="https://buttondown.email/api/emails/embed-subscribe/pdap" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/pdap', 'popupwindow')" style="max-width:500px;">
-              <input type="email" class="input-text input" maxlength="256" name="email" id="bd-email" placeholder="Your email..."/>
-              <input type="submit" class="button" value="Get Updates" onclick="gtag_report_conversion('https://pdap.io/index.html')"/>
-            </form>
-          </div>
-          <div>
-            <h3>Donate</h3>
-            <p class="small">We're a small non-profit with ambitious goals. Every bit helps!</p>
-            <a href="donate.html"><div class="button">Make a donation</div></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="section">
-    <div class="container">
-      <div class="layout-grid grid-2 top-45">
-        <h2 class="grid-span-2">What does better data accessibility mean?</h2>
-        <div>
-          <img class="tile-icon" src="node_modules/pdap-design-system/system/images/icons/sources.svg">
-          <h3>Directory of data sources</h3>
-          <p>We're indexing police <a href="data-sources.html">Data Sources</a> for every agency in the U.S. criminal legal system.</p>
-          <p>Currently, local groups use data independently. At best, we trade information via email and spreadsheet.</p>
-          <p>We're making tools to help people organize and <a href="https://airtable.com/shrUAtA8qYasEaepI">share their Data Sources</a> so they can <strong>spend less time finding data and more time using it.</strong></p>
-        </div>
-        <div>
-          <img class="tile-icon" src="node_modules/pdap-design-system/system/images/icons/scrapers.svg">
-          <h3>Scrape records for data</h3>
-          <p><a href="https://www.google.com/search?q=web+scraping">Web scraping</a> is a common technique for answering deeper questions about the police.
-          <p>The community maintains an open-source code repository with shared resources for extracting useful information from records found at any Data Source.</p>
-          <p>Data users of any experience level can <strong>develop skills as they collaborate</strong> with other community members.</p>
-        </div>
-        <div>
-          <img class="tile-icon" src="node_modules/pdap-design-system/system/images/icons/automation.svg">
-          <h3>Automation</h3>
-          <p>Some sources of data are vulnerable, or regularly removed. PDAP publishes models and resources for low-cost archiving of critical data.</p>
-          <p>The community of people already using police data decide which records should be preserved. As we add community archives to our Data Sources database, <strong>valuable data is kept secure</strong> from loss due to risks like mismanagement, technical failure, and policy changes.</p>
-        </div>
-        <div>
-          <img class="tile-icon" src="node_modules/pdap-design-system/system/images/icons/standard.svg">
-          <h3>Benchmarks</h3>
-          <p>By documenting the data available in every local criminal legal system, we're developing a gold standard for police transparency and data accessibility.</p>
-          <p>Citizens and governments can evaluate local departments against this standard, and transparency advocates can help <strong>incentivize police administrators to provide data</strong> in more accessible formats.
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer section">
-    <div class="container container">
-      <div class="footer-actions">
-        <a href="https://github.com/orgs/Police-Data-Accessibility-Project" class="button button-footer">GitHub</a>
-        <a href="https://discord.gg/wMqex8nKZJ" class="button button-footer">Discord</a>
-        <a href="https://www.linkedin.com/company/pdap" class="button button-footer">LinkedIn</a>
-      </div>
-      <p class="footer-p">© 2023 Police Data Accessibility Project<br></p>
-      <p class="footer-p">PDAP is a non-profit. EIN: 85-4207132. <a href="https://docs.pdap.io/meta/policy/pdap-privacy-policy" alt="Privacy Policy">Privacy Policy</a>. <a href="mailto:contact@pdap.io">contact@pdap.io</a><br><br></p>
-      <p class="footer-p"><a href="https://www.guidestar.org/profile/85-4207132" target="_blank"><img src="https://widgets.guidestar.org/gximage2?o=9973356&l=v4" /></a><img src="node_modules/pdap-design-system/system/images/acronym.svg" loading="lazy" width="150" alt="" class="footer-logo"></p>
-    </div>
-  </div>
-  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=610f1f053577555f7f4ceff0" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="js/nav.js" type="text/javascript"></script>
-  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=610f1f053577555f7f4ceff0"
+    type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"></script>
+  <script src="node_modules/pdap-design-system/system/js/nav.js" type="module"></script>
+  <script src="https://donorbox.org/widget.js" paypalExpress="false"></script>
 </body>
+
 </html>
