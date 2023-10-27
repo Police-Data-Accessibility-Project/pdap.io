@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+    <!-- Homepage -->
+    <url>
+        <loc>https://pdap.io/</loc>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- About Page -->
+    <url>
+        <loc>https://pdap.io/about.html</loc>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Jobs Page -->
+    <url>
+        <loc>https://pdap.io/jobs.html</loc>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Donate Page -->
+    <url>
+        <loc>https://pdap.io/donate.html</loc>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Data Sources Page -->
+    <url>
+        <loc>https://pdap.io/data-sources.html</loc>
+        <priority>0.9</priority>
+    </url>
+    
+</urlset>
