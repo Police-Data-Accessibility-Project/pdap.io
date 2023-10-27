@@ -22,6 +22,9 @@ Test your changes **locally first**, if possible. Include **screenshots with you
 ### Setup
 
 1. [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+
+In your terminal:
+
 2. `cd pdap.io`
 3. `npm install` to install dependencies
 4. `npm run dev` to start the site in development mode. Editing most files will trigger an automatic refresh of the page thanks to Vite's excellent dev server.
