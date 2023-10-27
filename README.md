@@ -1,39 +1,32 @@
 # Static site
-
 This is the official voice of PDAP.
 
 ## Info for Developers
 
 ### Tech
-
-The current iteration of this site is built with Vue.js. It was originally designed in Webflow and exported.
+This site is built with HTML. It was designed in Webflow and exported.
 
 ### Etiquette
-
 Head to [\#outreach](https://discord.com/channels/828274060034965575/853442226034442260/) in our [Discord](https://discord.gg/vKhDv7nC8B) if you'd like to collect feedback from the wider group.
 
 Test your changes **locally first**, if possible. Include **screenshots with your PR** if you're changing something visual.
 
-### Prerequisites
-
-1. Install Node.js - [https://nodejs.org/en](https://nodejs.org/en)
-2. Install pnpm: `npm install -g pnpm`
-3. (Optional) Install and use VS Code. This repo is configured with recommended extensions to aid in development, so using VS Code will provide the best experience.
 
 ### Setup
 
 1. [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
-2. `cd pdap.io`
-3. `pnpm install` to install dependencies
-4. `pnpm dev` to start the site in development mode. Editing most files will trigger an automatic refresh of the page thanks to Vite's excellent dev server.
-5. `pnpm build` to build the site for production.
-6. `pnpm preview` will boot up a local static web server that serves the files from dist at `http://localhost:4173`. It's an easy way to check if the production build looks OK in your local environment.
+
+2. Open the index.html file in your browser.
+
+3. Open the codebase in your text editor of choice.
+
+4. Make changes to the code, save, and refresh your browser.
+
+### Design System
+
+This static site uses the npm package `pdap-design-system`, but because it's hosted as a static site, we add `package.json` and `package-lock.json` files to `.gitignore` so that DigitalOcean doesn't get confused.
+
 
 ### Staging
 
 Merge into the `dev` branch and visit pdap.dev.
-
-### Helpful links
-
-- [Vue.js home](https://vuejs.org/)
-- [Vite Configuration Reference](https://vitejs.dev/config)
