@@ -118,7 +118,7 @@
       <p>Every step in our process is <a href="https://github.com/Police-Data-Accessibility-Project">accessible and
           transparent</a>.<br></p>
       <h3>Where do you get your funding?</h3>
-      <p>We're a 501c3 non-profit. We are <a href="donate.html">accepting donations</a>. The bulk of our funding comes
+      <p>We're a 501c3 non-profit. We are <a href="donate">accepting donations</a>. The bulk of our funding comes
         from <a href="https://www.heinz.org/">The Heinz Endowments.</a></p>
     </div>
   </div>
