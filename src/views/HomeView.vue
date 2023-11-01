@@ -105,7 +105,7 @@ import standardSvg from "pdap-design-system/system/images/icons/standard.svg";
             <h3>Directory of data sources</h3>
             <p>
               We're indexing police
-              <a href="data-sources.html">Data Sources</a> for every agency in
+              <a href="data-sources">Data Sources</a> for every agency in
               the U.S. criminal legal system.
             </p>
             <p>
