@@ -11,6 +11,7 @@ import acronymSvg from "pdap-design-system/system/images/acronym.svg"
                     target="_blank">GitHub</a>
                 <a href="https://discord.gg/wMqex8nKZJ" class="button button-footer" target="_blank">Discord</a>
                 <a href="https://www.linkedin.com/company/pdap" class="button button-footer" target="_blank">LinkedIn</a>
+                <router-link to="/jobs" class="button button-footer">Jobs</router-link>
             </div>
             <p class="footer-p">© {{ copyrightYear }} Police Data Accessibility Project<br></p>
             <p class="footer-p">PDAP is a non-profit. EIN: 85-4207132. <a
