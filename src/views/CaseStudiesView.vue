@@ -1,8 +1,8 @@
 <template>
   <div class="section">
     <div class="container">
-      <h1>Strategy</h1>
-      <p>This is our strategy.</p>
+      <h1>Case Studies</h1>
+      <p>Here are our case studies. <i class="fa fa-question-circle"></i></p>
     </div>
   </div>
 </template>
