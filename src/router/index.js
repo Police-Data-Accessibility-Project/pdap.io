@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AboutView from "@/views/AboutView.vue";
-import DataSourcesView from "@/views/DataSourcesView.vue";
+import DataView from "@/views/DataView.vue";
 import DonateView from "@/views/DonateView.vue";
 import HomeView from "@/views/HomeView.vue";
 import JobsView from "@/views/JobsView.vue";
@@ -24,9 +24,9 @@ const router = createRouter({
       component: DonateView,
     },
     {
-      path: "/data-sources",
-      name: "data-sources",
-      component: DataSourcesView,
+      path: "/data",
+      name: "data",
+      component: DataView,
     },
     {
       path: "/jobs",

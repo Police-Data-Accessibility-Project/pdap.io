@@ -1,7 +1,7 @@
 <template>
     <div class="section">
         <div class="container">
-            <h1>Data Sources</h1>
+            <h1>Data</h1>
             <p>The start of any research or investigation is a source of data. Each row represents a source of public
                 records about an agency in the criminal legal system. This database is always growing, thanks to community
                 contributions.</p>
