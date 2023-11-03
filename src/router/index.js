@@ -33,12 +33,6 @@ const router = createRouter({
       name: "jobs",
       component: JobsView,
     },
-
-    {
-      path: "/docs-and-resources",
-      name: "docsAndResources",
-      component: HomeView,
-    },
   ],
   linkActiveClass: "current"
 });

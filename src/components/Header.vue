@@ -54,7 +54,7 @@ function handleMenuExpansion() {
 				<RouterLink class="nav-link" to="/donate">Donate</RouterLink>
 				<RouterLink class="nav-link" to="/about">About</RouterLink>
 				<RouterLink class="nav-link" to="/jobs">Jobs</RouterLink>
-				<a class="nav-link" href="https://docs.pdap.io/" target="_blank">Docs and Resources</a>
+				<a class="nav-link" href="https://docs.pdap.io/" target="_blank">Docs</a>
 			</nav>
 		</div>
 	</header>
