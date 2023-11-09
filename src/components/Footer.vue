@@ -1,6 +1,6 @@
 <script setup>
 const copyrightYear = new Date().getFullYear();
-import acronymSvg from "pdap-design-system/system/images/acronym.svg"
+import acronymSvg from "../../node_modules/pdap-design-system/dist/images/acronym.svg"
 </script>
 
 <template>

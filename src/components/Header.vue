@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import lockupSvg from 'pdap-design-system/system/images/lockup.svg';
+import lockupSvg from '../../node_modules/pdap-design-system/dist/images/lockup.svg';
 
 function handleMenuExpansion() {
 	var body = document.querySelector('body');

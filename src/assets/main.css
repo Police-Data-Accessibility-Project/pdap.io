@@ -1,2 +1,1 @@
-@import "pdap-design-system/system/css/normalize";
-@import "pdap-design-system/system/css/global-styles";
+@import "node_modules/pdap-design-system/dist/css/global-styles.css";

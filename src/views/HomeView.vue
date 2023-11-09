@@ -1,10 +1,3 @@
-<script setup>
-import sourcesSvg from "pdap-design-system/system/images/icons/sources.svg";
-import scrapersSvg from "pdap-design-system/system/images/icons/scrapers.svg";
-import automationSvg from "pdap-design-system/system/images/icons/automation.svg";
-import standardSvg from "pdap-design-system/system/images/icons/standard.svg";
-</script>
-
 <template>
   <main>
     <div class="section">
