@@ -1,4 +1,4 @@
-import './assets/main.css'
+import 'pdap-design-system'
 
 import { createApp } from 'vue'
 import App from './App.vue'
