@@ -1,5 +1,5 @@
 <script setup>
-import HelpTextIcon from '@/components/HelpTextIcon.vue';
+  import HelpTextIcon from '@/components/HelpTextIcon.vue';
 </script>
 
 <template>
