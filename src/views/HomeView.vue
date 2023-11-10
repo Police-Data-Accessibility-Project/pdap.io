@@ -2,8 +2,8 @@
   <main>
     <div class="section">
       <div class="container">
-        <div class="layout-grid grid-2">
-          <div class="shout-box grid-span-2">
+        <div class="layout-grid-2">
+          <div class="shout-box grid-item-span-2">
             <h1 class="shout">
               We help people use data to answer questions about police systems.<br />
             </h1>
@@ -11,7 +11,7 @@
             We focus on the criminal legal system because its 
             <strong>power to impact people</strong> demands a <strong>higher degree of oversight.</strong></p>
           </div>
-          <div class="grid-span-2">
+          <div class="grid-item-span-2">
             <h3>What we do</h3>
           </div>
           <div>
@@ -38,7 +38,7 @@
               *information about government activity is <a href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States">usually public in the United States</a>.
             </p>
           </div>
-          <div class="grid-span-2">
+          <div class="grid-item-span-2">
             <h3>How it leads to better systems</h3>
           </div>
           <div>

@@ -4,7 +4,7 @@
             <h1>How to contribute</h1>
             <p>Thank you for your interest in helping our mission!</p>
             <div class="layout-grid">
-                <div class="grid-span-2">
+                <div class="grid-item-span-2">
                     <h2>Donate</h2>
                 </div>
                 <div class="bottom-20 small">

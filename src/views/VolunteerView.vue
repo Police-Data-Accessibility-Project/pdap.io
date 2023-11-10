@@ -14,7 +14,7 @@
       <p>You can learn even more about our founding case study, process, and goals in <a
           href="https://docs.google.com/presentation/d/12sKz4gQbf-9XbiB73HD_gI--Su_pSgfJd40Hdi-o1qw/edit?usp=sharing">slideshow
           format here</a>.</p>
-      <div class="layout-grid grid-3 top-45 small">
+      <div class="layout-grid layout-grid-3 top-45 small">
         <div>
           <h3>Current focus</h3>
           <p>We're <a href="https://docs.pdap.io/activities/data-sources/what-is-a-data-source">mapping Data Sources</a>:
@@ -40,7 +40,7 @@
             href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/21/views/2">our roadmap</a>.</p>
       </div>
       <div class="layout-grid top-45">
-        <h2 class="grid-span-2">People involved</h2>
+        <h2 class="grid-item-span-2">People involved</h2>
         <div>
           <p><strong>The PDAP non-profit</strong> builds a collection of open-source apps and services to help the
             community write scrapers and archive data. It is funded by grants and individual contributions.</p>
