@@ -21,7 +21,7 @@
               basic question about their local police, courts, or jails.
             </p>
             <a href="https://airtable.com/shrbFfWk6fjzGnNsk">
-              <div class="button">Ask a question</div>
+              <div class="button">Share your question</div>
             </a>
             <p>
               *anyone impacted by policing: residents, journalists, activists, researchers, municipal employees
