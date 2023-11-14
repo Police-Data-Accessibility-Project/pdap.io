@@ -51,7 +51,6 @@ function handleMenuExpansion() {
 			<nav class="nav-menu hide-max-lg" role="navigation">
 				<RouterLink class="nav-link" to="/">Home</RouterLink>
 				<RouterLink class="nav-link" to="/data">Data</RouterLink>
-				<RouterLink class="nav-link" to="/case-studies">Case Studies</RouterLink>
 				<RouterLink class="nav-link" to="/about">About</RouterLink>
 				<RouterLink class="nav-link" to="/donate">Donate</RouterLink>
 				<RouterLink class="nav-link" to="/volunteer">Volunteer</RouterLink>

@@ -4,7 +4,6 @@ import DataView from "@/views/DataView.vue";
 import DonateView from "@/views/DonateView.vue";
 import HomeView from "@/views/HomeView.vue";
 import JobsView from "@/views/JobsView.vue";
-import CaseStudiesView from "@/views/CaseStudiesView.vue";
 import VolunteerView from "@/views/VolunteerView.vue";
 
 const router = createRouter({
@@ -34,11 +33,6 @@ const router = createRouter({
       path: "/jobs",
       name: "jobs",
       component: JobsView,
-    },
-    {
-      path: "/case-studies",
-      name: "case studies",
-      component: CaseStudiesView,
     },
     {
       path: "/volunteer",
