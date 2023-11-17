@@ -1,6 +1,3 @@
-<script setup>
-  import HelpTextIcon from '@/components/HelpTextIcon.vue';
-</script>
 <template>
     <div class="section">
         <div class="container">
