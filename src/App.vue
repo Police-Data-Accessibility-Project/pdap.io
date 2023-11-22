@@ -1,71 +1,65 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
+import { Header, Footer } from 'pdap-design-system';
+import { provide } from 'vue';
+
+provide('navLinks', [
+	{
+		path: '/',
+		text: 'Home',
+	},
+	{
+		path: '/data',
+		text: 'Data',
+	},
+	{
+		path: '/about',
+		text: 'About',
+	},
+	{
+		path: '/donate',
+		text: 'Donate',
+	},
+	{
+		path: '/volunteer',
+		text: 'Volunteer',
+	},
+	{
+		href: 'https://docs.pdap.io/',
+		text: 'Docs and Resources',
+	},
+]);
 </script>
 
 <template>
-	<Header></Header>
-	<RouterView />
-	<Footer></Footer>
+	<Header />
+	<div class="router-view-container">
+		<RouterView />
+	</div>
+	<Footer />
 </template>
 
 <style>
-/* TODO: Remove all of these styles once design system version is bumped to ^1.1.0 */
-@media (max-width: 1024px) {
-	.hide-max-lg {
-		display: none;
-	}
+/* Global styles */
+.airtable-box {
+	margin: 10px;
 }
 
-@media (min-width: 1025px) {
-	.hide-min-lg {
-		display: none;
-	}
-}
-
-@media screen and (max-width: 991px) {
-	.nav[data-collapse='medium'] .nav-menu:not(.hide-max-lg) {
-		display: flex;
-	}
-}
-@media (prefers-color-scheme: dark) and (max-width: 1025px) {
-	.nav-menu {
-		background-color: #000;
-	}
-}
-
-@media screen and (max-width: 1024) {
-	.navbar {
-		margin-left: -10px;
-		margin-right: -10px;
-		padding: 20px 10px;
-	}
-}
-
-@media screen and (max-width: 991px) {
-	.navbar {
-		padding: 20px;
-	}
-}
-
-@media screen and (max-width: 767px) {
-	.navbar {
-		padding: 20px 10px;
-	}
-}
-
-.lock-scroll {
+:root {
 	overflow: hidden;
 }
 
-.nav::before,
-.nav::after {
-	content: none;
-	display: none;
+body {
+	overflow: auto;
 }
 
-.nav-open-button {
-	cursor: pointer;
+.router-view-container {
+	margin-top: 175px;
+}
+
+@media (min-width: 768px) {
+	.airtable-box {
+		margin: 40px;
+	}
 }
 </style>

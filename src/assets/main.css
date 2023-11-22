@@ -1,9 +1,0 @@
-.airtable-box {
-    margin:10px;
-}
-
-@media (min-width: 768px) {
-    .airtable-box {
-        margin:40px;
-    }
-}
