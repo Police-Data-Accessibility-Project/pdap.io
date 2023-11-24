@@ -94,9 +94,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped>
-.pdap-grid-item.right {
-	padding-top: 24px;
-}
-</style>
