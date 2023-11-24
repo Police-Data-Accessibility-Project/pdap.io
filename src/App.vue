@@ -54,7 +54,7 @@ body {
 }
 
 .router-view-container {
-	margin-top: 175px;
+	margin-top: 120px;
 }
 
 @media (min-width: 768px) {
