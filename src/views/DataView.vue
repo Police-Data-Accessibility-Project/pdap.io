@@ -38,7 +38,7 @@ export default {
 
 	<section>
 		<GridContainer :columns="1">
-			<GridItem component="h1">How our data is used</GridItem>
+			<GridItem component="h2">How our data is used</GridItem>
 			<GridItem component="p"
 				>We serve as a “data help desk”, where people can use our tools to answer
 				questions.</GridItem
