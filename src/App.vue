@@ -25,6 +25,10 @@ provide('navLinks', [
 		text: 'Volunteer',
 	},
 	{
+		path: '/jobs',
+		text: 'Jobs',
+	},
+	{
 		href: 'https://docs.pdap.io/',
 		text: 'Docs and Resources',
 	},
@@ -33,9 +37,9 @@ provide('navLinks', [
 
 <template>
 	<Header />
-	<div class="router-view-container">
+	<main class="router-view-container">
 		<RouterView />
-	</div>
+	</main>
 	<Footer />
 </template>
 
