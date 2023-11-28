@@ -1,16 +1,3 @@
-<script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
-
-export default {
-	name: 'DataView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-	},
-};
-</script>
-
 <template>
 	<GridContainer component="section" :columns="1">
 		<GridItem component="h1">About</GridItem>
@@ -41,7 +28,7 @@ export default {
 				<a href="https://www.linkedin.com/in/josh-chamberlain/">Josh Chamberlain</a>.
 			</p>
 		</GridItem>
-		<GridItem component="FlexContainer" :spanColumn="1">
+		<GridItem component="FlexContainer" :span-column="1">
 			<h2>Funding</h2>
 			<p>
 				We are proud to receive generous support from
@@ -74,7 +61,7 @@ export default {
 		</GridItem>
 	</GridContainer>
 	<GridContainer component="section" :columns="2">
-		<GridItem component="h2" :spanColumn="2">Frequently Asked Questions</GridItem>
+		<GridItem component="h2" :span-column="2">Frequently Asked Questions</GridItem>
 		<GridItem component="h3">What kind of data do you collect?<br /></GridItem>
 		<GridItem component="p">
 			Anything published by or about a criminal legal system agency: courts, jails, and law
@@ -104,6 +91,19 @@ export default {
 		</GridItem>
 	</GridContainer>
 </template>
+
+<script>
+import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+
+export default {
+	name: 'DataView',
+	components: {
+		FlexContainer,
+		GridContainer,
+		GridItem,
+	},
+};
+</script>
 
 <style scoped>
 h3.pdap-grid-item {

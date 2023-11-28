@@ -1,18 +1,3 @@
-<script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
-import HelpTextIcon from '../components/HelpTextIcon.vue';
-
-export default {
-	name: 'DataView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-		HelpTextIcon,
-	},
-};
-</script>
-
 <template>
 	<GridContainer component="section" :columns="1">
 		<GridItem component="h1">Data</GridItem>
@@ -51,10 +36,10 @@ export default {
 		</GridContainer>
 
 		<GridContainer :columns="2">
-			<GridItem component="h2" :spanColumn="2"
+			<GridItem component="h2" :span-column="2"
 				><i class="fa fa-book"></i> Sharing access to Traffic Stop data</GridItem
 			>
-			<GridItem component="p" :spanColumn="2"
+			<GridItem component="p" :span-column="2"
 				>What is the reality of traffic enforcement in Pittsburgh, given changed policies about
 				enforcing minor traffic violations?</GridItem
 			>
@@ -69,10 +54,10 @@ export default {
 				To see traffic stop data from other places,
 				<a href="https://data-sources.pdap.io/search/traffic/all">start here</a>.
 			</GridItem>
-			<GridItem component="h2" :spanColumn="2"
+			<GridItem component="h2" :span-column="2"
 				><i class="fa fa-phone"></i> Preserving Calls for Service data in Oakland CA</GridItem
 			>
-			<GridItem component="p" :spanColumn="2"
+			<GridItem component="p" :span-column="2"
 				>How are police in Oakland, CA dispatched to address community needs?</GridItem
 			>
 			<GridItem component="p">
@@ -102,11 +87,11 @@ export default {
 		</GridContainer>
 
 		<GridContainer>
-			<GridItem component="h2" :spanColumn="2"
+			<GridItem component="h2" :span-column="2"
 				><i class="fa fa-sitemap"></i> Consolidating records about the Allegheny County
 				Jail</GridItem
 			>
-			<GridItem component="p" :spanColumn="2">
+			<GridItem component="p" :span-column="2">
 				This facility has faced mounting scrutiny, as dozens of people have died in custody in
 				recent years.
 			</GridItem>
@@ -145,3 +130,18 @@ export default {
 		</GridContainer>
 	</section>
 </template>
+
+<script>
+import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+import HelpTextIcon from '../components/HelpTextIcon.vue';
+
+export default {
+	name: 'DataView',
+	components: {
+		FlexContainer,
+		GridContainer,
+		GridItem,
+		HelpTextIcon,
+	},
+};
+</script>

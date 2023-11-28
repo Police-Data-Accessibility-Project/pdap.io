@@ -42,7 +42,7 @@
 						>.
 					</p>
 				</GridItem>
-				<GridItem component="h3" :spanColumn="2">How it leads to better systems</GridItem>
+				<GridItem component="h3" :span-column="2">How it leads to better systems</GridItem>
 				<GridItem>
 					<div>
 						<i class="fa fa-asterisk"></i>
