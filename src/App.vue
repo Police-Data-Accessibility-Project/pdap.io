@@ -3,6 +3,10 @@ import { RouterView } from 'vue-router';
 import { Header, Footer } from 'pdap-design-system';
 import { provide } from 'vue';
 
+// Images needed at root
+import acronym from 'pdap-design-system/images/acronym.svg';
+import lockup from 'pdap-design-system/images/lockup.svg';
+
 provide('navLinks', [
 	{
 		path: '/',
@@ -36,11 +40,11 @@ provide('navLinks', [
 </script>
 
 <template>
-	<Header />
+	<Header :logo-image-src="lockup" />
 	<main class="router-view-container">
 		<RouterView />
 	</main>
-	<Footer />
+	<Footer :logo-image-src="acronym" />
 </template>
 
 <style>
