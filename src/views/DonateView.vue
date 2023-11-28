@@ -111,7 +111,7 @@
 import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 
 export default {
-	name: 'HomeView',
+	name: 'DonateView',
 	components: {
 		FlexContainer,
 		GridContainer,
