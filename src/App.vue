@@ -41,7 +41,7 @@ provide('navLinks', [
 
 <template>
 	<Header :logo-image-src="lockup" />
-	<main class="router-view-container">
+	<main>
 		<RouterView />
 	</main>
 	<Footer :logo-image-src="acronym" />
@@ -59,9 +59,5 @@ provide('navLinks', [
 
 body {
 	overflow: auto;
-}
-
-.router-view-container {
-	margin-top: 120px;
 }
 </style>
