@@ -1,9 +1,16 @@
 <template>
 	<GridContainer component="section" :columns="1">
 		<GridItem component="h1">Data</GridItem>
-		<GridItem component="p">
-			We keep track of data about criminal legal systems
-			<HelpTextIcon>police, courts, and jails</HelpTextIcon> across the United States.
+		<GridItem>
+			<p>
+				We keep track of data about criminal legal systems
+				(police, courts, and jails) across the United States.
+			</p>
+			<p>
+				Information about state, local, and federal government activity in the United States is
+				<a href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States">
+					generally public record</a>.
+			</p>
 		</GridItem>
 		<GridItem component="FlexContainer">
 			<a href="https://data-sources.pdap.io/" class="pdap-button-primary">Search our database</a>

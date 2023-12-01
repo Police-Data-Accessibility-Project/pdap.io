@@ -28,10 +28,6 @@ h3.pdap-grid-item {
 			<strong>persistence</strong>.
 		</GridItem>
 		<GridItem component="h2" :span-column="3">Types of volunteer projects</GridItem>
-		<GridItem component="p" :span-column="3">
-			PDAP collects questions, and shares access to data which could provide answers. Our community
-			does the rest.
-		</GridItem>
 		<GridItem>
 			<h3><i class="fa fa-institution"></i> Research</h3>
 			<p>

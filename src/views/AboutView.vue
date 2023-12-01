@@ -27,6 +27,10 @@
 				Our Executive Director is
 				<a href="https://www.linkedin.com/in/josh-chamberlain/">Josh Chamberlain</a>.
 			</p>
+			<p>
+				Our community includes anyone impacted by policing: 
+				residents, journalists, activists, researchers, municipal employees.
+			</p>
 		</GridItem>
 		<GridItem component="FlexContainer" :span-column="1">
 			<h2>Funding</h2>
@@ -62,6 +66,10 @@
 	</GridContainer>
 	<GridContainer component="section" :columns="2">
 		<GridItem component="h2" :span-column="2">Frequently Asked Questions</GridItem>
+		<GridItem component="h3">What makes you experts?</GridItem>
+		<GridItem component="p">We have done thousands of hours of user research with people
+			who use police data. If you have feedback to share, email 
+			<a href="mailto:contact@pdap.io">contact@pdap.io</a>.</GridItem>
 		<GridItem component="h3">What kind of data do you collect?<br /></GridItem>
 		<GridItem component="p">
 			Anything published by or about a criminal legal system agency: courts, jails, and law

@@ -11,41 +11,30 @@
 				<strong>higher degree of oversight.</strong>
 			</p>
 		</GridItem>
-		<GridItem component="h3" :span-column="2">What we do</GridItem>
-		<GridItem>
-			<i class="fa fa-question"></i>
-			<p>
-				People* usually find us when they're trying to answer a basic question about their local
-				police, courts, or jails.
-			</p>
-			<a class="pdap-button-primary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
-				Share your question 
-			</a>
-			<p>
-				*anyone impacted by policing: residents, journalists, activists, researchers, municipal
-				employees
-			</p>
+		<GridItem class="border-brand-wine" :span-column="2">
+			<h3>Search our database</h3>
+			<!--Replace this with quick search form-->
+			<Form :schema="formSchema" :on-submit="handleSubmit" id="quick-search" name="data-request-form">
+					<Button intent="primary" type="submit">Search Data Sources</Button>
+			</Form>
+			<!--Replace this with quick search form-->
 		</GridItem>
 		<GridItem>
-			<i class="fa fa-map-o"></i>
-			<p>
-				Our database helps them get started by locating public records* needed to answer the
-				question.
-			</p>
-			<RouterLink class="pdap-button-primary" to="/data">Explore the data</RouterLink>
-			<p>
-				*information about government activity is
-				<a href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States"
-					>usually public in the United States</a
-				>.
-			</p>
+			<a class="pdap-button-secondary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
+				Make a request
+			</a>
+		</GridItem>
+		<GridItem>
+			<RouterLink class="pdap-button-secondary" to="/data">
+				Learn about the data
+			</RouterLink>
 		</GridItem>
 		<GridItem component="h3" :span-column="2">How it leads to better systems</GridItem>
 		<GridItem>
 			<div>
 				<i class="fa fa-asterisk"></i>
 				<p>
-					Our network* of experts and volunteers uses our resource kit to turn records into data,
+					Our network of experts and volunteers uses our resource kit to turn records into data,
 					then analyze the data to create information.
 				</p>
 				<a
@@ -54,37 +43,72 @@
 				>
 					Join the community
 				</a>
-				<p>
-					*people with any experience level who are interested in volunteering, collaborating, or
-					receiving updates about a certain region or type of data
-				</p>
 			</div>
 		</GridItem>
 		<GridItem class="right">
 			<div>
 				<i class="fa fa-repeat"></i>
 				<p>
-					As records are located and questions are answered, our growing database can help us
+					As we help people answer questions, our database grows. Eventually, it will help us
 					document all 20,000+ police agencies in the United States.
 				</p>
 				<a class="pdap-button-primary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
 					Get the newsletter
 				</a>
-				<p>We only write when we have news to share.</p>
 			</div>
 		</GridItem>
 	</GridContainer>
 </template>
 
 <script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+import { Button, Form, FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 
 export default {
 	name: 'HomeView',
-	components: {
+	components: {		
+		Button,
+		Form,
 		FlexContainer,
 		GridContainer,
 		GridItem,
 	},
+	data() {
+    return {
+      formSchema: [
+        {
+          id: 'searchTerm',
+          name: 'searchTerm',
+          label: 'Type of data',
+          type: 'text',
+          placeholder: 'A keyword like "complaints" or "all"',
+          value: '',
+		  validators: {
+            minLength: {
+              value: 3
+            },
+          },
+        },
+        {
+          id: 'searchJurisdiction',
+          name: 'searchJurisdiction',
+          label: 'Area or jurisdiction',
+          type: 'text',
+          placeholder: 'e.g. Allegheny County or Louisiana',
+          value: '',
+          validators: {
+            minLength: {
+              value: 3
+            },
+          },
+        }
+      ]
+    }
+  },
+  methods: {
+    handleSubmit: async function(data) {
+      await doRequestStuff(data);
+      this.$router.push('/')
+    }
+  },
 };
 </script>
