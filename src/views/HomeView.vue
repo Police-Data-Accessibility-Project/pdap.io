@@ -8,23 +8,19 @@
 				Our vision: a world where accessible data helps us create fair government systems. We focus
 				on the criminal legal system because its
 				<strong>power to impact people</strong> demands a
-				<strong>higher degree of oversight.</strong>
+				<strong>higher degree of&nbsp;oversight.</strong>
 			</p>
 		</GridItem>
-		<GridItem class="border-brand-wine" :span-column="2">
-			<h3>Search our database</h3>
+		<GridItem class="border-2 border-brand-wine p-8" :span-column="2">
+			<h3 class="mt-0">Search our database</h3>
 			<!--Replace this with quick search form-->
 			<Form :schema="formSchema" :on-submit="handleSubmit" id="quick-search" name="data-request-form">
 					<Button intent="primary" type="submit">Search Data Sources</Button>
 			</Form>
 			<!--Replace this with quick search form-->
-		</GridItem>
-		<GridItem>
 			<a class="pdap-button-secondary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
 				Make a request
 			</a>
-		</GridItem>
-		<GridItem>
 			<RouterLink class="pdap-button-secondary" to="/data">
 				Learn about the data
 			</RouterLink>
