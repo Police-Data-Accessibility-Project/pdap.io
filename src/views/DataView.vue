@@ -20,7 +20,8 @@
 			<a href="https://airtable.com/shrbFfWk6fjzGnNsk" class="pdap-button-primary"
 				>Make a request</a
 			>
-			<p>If we're missing something, or if you're just not a data person, we can help.</p>
+			<p>If we're missing something, or if you're just not a data person, we can help.
+				When you ask questions, our database gets stronger.</p>
 		</GridItem>
 		<GridItem component="FlexContainer">
 			<a href="https://docs.pdap.io/api/introduction" class="pdap-button-primary">Use our API</a>

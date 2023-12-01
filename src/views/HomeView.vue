@@ -29,32 +29,23 @@
 				Learn about the data
 			</RouterLink>
 		</GridItem>
-		<GridItem component="h3" :span-column="2">How it leads to better systems</GridItem>
-		<GridItem>
-			<div>
-				<i class="fa fa-asterisk"></i>
-				<p>
-					Our network of experts and volunteers uses our resource kit to turn records into data,
-					then analyze the data to create information.
-				</p>
-				<a
-					class="pdap-button-primary"
-					href="https://airtable.com/app473MWXVJVaD7Es/shrS4PAZTYVT1zSq8"
-				>
-					Join the community
-				</a>
-			</div>
-		</GridItem>
-		<GridItem class="right">
+		<GridItem :span-column="2">
 			<div>
 				<i class="fa fa-repeat"></i>
 				<p>
-					As we help people answer questions, our database grows. Eventually, it will help us
-					document all 20,000+ police agencies in the United States.
+					Our network of experts and volunteers turns public records into data,
+					and data into information.
 				</p>
-				<a class="pdap-button-primary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
+				<p>
+					We share success stories and updates in our
+					newsletter&mdash;we only write when we have updates to share.
+				</p>
+				<a class="pdap-button-primary" href="https://newsletter.pdap.io">
 					Get the newsletter
 				</a>
+				<RouterLink to="/about" class="pdap-button-secondary">
+					About us
+				</RouterLink>
 			</div>
 		</GridItem>
 	</GridContainer>
