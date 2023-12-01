@@ -29,10 +29,6 @@ provide('navLinks', [
 		text: 'Volunteer',
 	},
 	{
-		path: '/jobs',
-		text: 'Jobs',
-	},
-	{
 		href: 'https://docs.pdap.io/',
 		text: 'Docs and Resources',
 	},
