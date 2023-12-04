@@ -1,6 +1,6 @@
+import './style.css';
 import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import 'pdap-design-system/styles';
-import './style.css'
 
 import { createApp } from 'vue';
 import App from './App.vue';
