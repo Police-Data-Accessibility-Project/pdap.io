@@ -13,11 +13,9 @@
 		</GridItem>
 		<GridItem class="border-2 border-brand-wine p-8" :span-column="2">
 			<h3 class="mt-0">Search our database</h3>
-			<!--Replace this with quick search form-->
-			<Form :schema="formSchema" :on-submit="handleSubmit" id="quick-search" name="data-request-form">
-					<Button intent="primary" type="submit">Search Data Sources</Button>
-			</Form>
-			<!--Replace this with quick search form-->
+			
+			<QuickSearchForm></QuickSearchForm>
+			
 			<a class="pdap-button-secondary" href="https://airtable.com/shrbFfWk6fjzGnNsk">
 				Make a request
 			</a>
@@ -48,7 +46,7 @@
 </template>
 
 <script>
-import { Button, Form, FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
 
 export default {
 	name: 'HomeView',
@@ -58,44 +56,13 @@ export default {
 		FlexContainer,
 		GridContainer,
 		GridItem,
+		QuickSearchForm,
 	},
 	data() {
     return {
-      formSchema: [
-        {
-          id: 'searchTerm',
-          name: 'searchTerm',
-          label: 'Type of data',
-          type: 'text',
-          placeholder: 'A keyword like "complaints" or "all"',
-          value: '',
-		  validators: {
-            minLength: {
-              value: 3
-            },
-          },
-        },
-        {
-          id: 'searchJurisdiction',
-          name: 'searchJurisdiction',
-          label: 'Area or jurisdiction',
-          type: 'text',
-          placeholder: 'e.g. Allegheny County or Louisiana',
-          value: '',
-          validators: {
-            minLength: {
-              value: 3
-            },
-          },
-        }
-      ]
-    }
+      }
   },
   methods: {
-    handleSubmit: async function(data) {
-      await doRequestStuff(data);
-      this.$router.push('/')
-    }
   },
 };
 </script>
