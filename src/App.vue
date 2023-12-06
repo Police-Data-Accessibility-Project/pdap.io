@@ -17,16 +17,16 @@ provide('navLinks', [
 		text: 'Data',
 	},
 	{
+		path: '/volunteer',
+		text: 'Volunteer',
+	},
+	{
 		path: '/about',
 		text: 'About',
 	},
 	{
 		path: '/donate',
 		text: 'Donate',
-	},
-	{
-		path: '/volunteer',
-		text: 'Volunteer',
 	},
 	{
 		href: 'https://docs.pdap.io/',
