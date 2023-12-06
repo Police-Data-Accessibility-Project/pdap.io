@@ -15,7 +15,7 @@
 				<strong>higher degree of&nbsp;oversight.</strong>
 			</p>
 		</GridItem>
-		<GridItem class="border-2 border-brand-wine p-8" :span-column="2">
+		<GridItem class="border-2 border-brand-gold p-8" :span-column="2">
 			<h2 class="mt-0">Search our database</h2>
 			<p class="text-s">
 				If you have a question to answer, we may already know about helpful data in your area.
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Button, Form, FlexContainer, GridContainer, GridItem, /* QuickSearchForm */ } from 'pdap-design-system';
+import { Button, Form, FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 
 export default {
 	name: 'HomeView',
@@ -36,7 +36,7 @@ export default {
 		FlexContainer,
 		GridContainer,
 		GridItem,
-		// QuickSearchForm,
+		QuickSearchForm,
 	},
 };
 </script>
