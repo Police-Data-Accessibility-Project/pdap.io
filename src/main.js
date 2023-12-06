@@ -1,4 +1,4 @@
-import './style.css';
+import './main.css';
 import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import 'pdap-design-system/styles';
 
