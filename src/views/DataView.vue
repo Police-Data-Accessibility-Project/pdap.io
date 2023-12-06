@@ -5,17 +5,17 @@
 		</GridItem>
 		<img 
 			src="public/images/searching.svg" 
-			class="w-10/12 place-self-center hidden lg:block" 
+			class="w-11/12 place-self-center hidden lg:block" 
 			alt="An eye looking through a magnifying glass at a police website."
 		>
 		<img 
 			src="public/images/mapping.svg" 
-			class="w-9/12 place-self-center" 
+			class="w-6/12 place-self-start md:w-10/12 md:place-self-center" 
 			alt="A map scattered with icons representing different kinds of data."
 		>
 		<img 
 			src="public/images/sharing.svg" 
-			class="w-8/12 place-self-center hidden md:block" 
+			class="w-9/12 place-self-start hidden md:block" 
 			alt="A piece of police data being distributed to several people."
 		>
 		<GridItem component="div" :span-column="3">
@@ -109,7 +109,7 @@
 				</p>
 				<p>
 					We made a web scraper 
-					<a href="https://docs.pdap.io/activities/terms-and-definitions" target="blank">
+					<a href="https://docs.pdap.io/activities/terms-and-definitions/terminology" target="blank">
 						<i class="fa fa-question-circle"></i>
 					</a>
 					to archive the data every day, automatically, for free.
