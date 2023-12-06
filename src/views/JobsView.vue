@@ -12,7 +12,7 @@
 					include a resume, personal website, LinkedIn profile, GitHub profile, or combination of
 					these.
 				</p>
-				<div class="small">
+				<div class="text-lg">
 					<h3>Context</h3>
 					<p>
 						Our mission is to help people locate, understand, and share public records about every
@@ -48,15 +48,11 @@
 						We are looking for people with a personal interest in the transparency of their local
 						legal system.
 					</p>
-					<div class="small">
+					<div class="text-lg">
 						<h3>Responsibilities</h3>
 						<ul>
 							<li>
-								Check our
-								<a href="https://docs.pdap.io/activities/data-sources/explore-data-sources"
-									>database</a
-								>
-								for completion and accuracy of the Agencies in your county.
+								Check our database for completion and accuracy of the Agencies in your county.
 							</li>
 							<li>
 								Perform internet research for existing Data Sources in your county, adding them to
@@ -72,8 +68,7 @@
 								and sharing our database where helpful.
 							</li>
 							<li>
-								When public records are not published online, make
-								<a href="https://docs.pdap.io/activities/data-sources/foia">FOIA requests</a> and
+								When public records are not published online, make FOIA requests and
 								otherwise work with local records departments to get data published.
 							</li>
 							<li>
@@ -125,7 +120,7 @@
 					</p>
 					<p>When you apply, please let us know if you're interested in a particular project.</p>
 					<h3>Responsibilities</h3>
-					<div class="small">
+					<div class="text-lg">
 						<ul>
 							<li>Submit code toward one or more of the issues on the roadmap.</li>
 							<li>Write tests for new code, and help with documentation.</li>

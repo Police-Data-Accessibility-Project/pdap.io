@@ -17,6 +17,10 @@ provide('navLinks', [
 		text: 'Data',
 	},
 	{
+		path: '/volunteer',
+		text: 'Volunteer',
+	},
+	{
 		path: '/about',
 		text: 'About',
 	},
@@ -25,23 +29,37 @@ provide('navLinks', [
 		text: 'Donate',
 	},
 	{
-		path: '/volunteer',
-		text: 'Volunteer',
+		href: 'https://docs.pdap.io/',
+		text: 'Docs',
+	},
+]);
+provide('footerLinks', [
+	{
+		href: 'https://newsletter.pdap.io',
+		text: 'Newsletter',
+	},	
+	{
+		href: 'https://github.com/orgs/Police-Data-Accessibility-Project',
+		text: 'Github',
+	},
+	{
+		href: 'https://discord.gg/wMqex8nKZJ',
+		text: 'Discord',
+	},
+	{
+		href: 'https://www.linkedin.com/company/pdap',
+		text: 'LinkedIn',
 	},
 	{
 		path: '/jobs',
 		text: 'Jobs',
-	},
-	{
-		href: 'https://docs.pdap.io/',
-		text: 'Docs and Resources',
-	},
+	}
 ]);
 </script>
 
 <template>
 	<Header :logo-image-src="lockup" />
-	<main class="router-view-container">
+	<main>
 		<RouterView />
 	</main>
 	<Footer :logo-image-src="acronym" />
@@ -59,9 +77,5 @@ provide('navLinks', [
 
 body {
 	overflow: auto;
-}
-
-.router-view-container {
-	margin-top: 120px;
 }
 </style>

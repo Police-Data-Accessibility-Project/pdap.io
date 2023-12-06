@@ -1,134 +1,168 @@
 <template>
-	<GridContainer component="section" :columns="1">
-		<GridItem component="h1">Data</GridItem>
-		<GridItem component="p">
-			We keep track of data about criminal legal systems
-			<HelpTextIcon>police, courts, and jails</HelpTextIcon> across the United States.
+	<GridContainer component="section" columns="3">
+		<GridItem component="h1" :span-column="3">
+			Data Sources
 		</GridItem>
-		<GridItem component="FlexContainer">
-			<a href="https://data-sources.pdap.io/" class="pdap-button-primary">Search our database</a>
-			<p>If you have a question to answer, we may already know about helpful data in your area.</p>
+		<img 
+			src="public/images/searching.svg" 
+			class="w-11/12 place-self-center hidden lg:block" 
+			alt="An eye looking through a magnifying glass at a police website."
+		>
+		<img 
+			src="public/images/mapping.svg" 
+			class="w-6/12 place-self-start md:w-10/12 md:place-self-center" 
+			alt="A map scattered with icons representing different kinds of data."
+		>
+		<img 
+			src="public/images/sharing.svg" 
+			class="w-9/12 place-self-start hidden md:block" 
+			alt="A piece of police data being distributed to several people."
+		>
+		<GridItem component="div" :span-column="3">
+			<p>
+				We <strong>locate, describe, and share</strong> sources of data about police agencies across the United States, which are 
+				<a href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States" target="blank">
+					generally public&nbsp;record.</a>
+			</p>
+			<p>
+				Criminal legal systems in the United States are decentralized, and managed locally.
+				In response, we facilitate local research and organizing to keep the data in context.
+				The goal is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
+			</p>
 		</GridItem>
-		<GridItem component="FlexContainer">
-			<a href="https://airtable.com/shrbFfWk6fjzGnNsk" class="pdap-button-primary"
-				>Make a request</a
-			>
-			<p>If we're missing something, or if you're just not a data person, we can help.</p>
-		</GridItem>
-		<GridItem component="FlexContainer">
-			<a href="https://docs.pdap.io/api/introduction" class="pdap-button-primary">Use our API</a>
-			<p>If you'd like to access our data programmatically.</p>
+		<GridItem component="div" :span-column="3">
+			<p>
+				<a href="https://data-sources.pdap.io">
+					<i class="fa fa-external-link"></i> Search our database
+				</a>
+				to see if anything interests you.
+			</p>
+			<p>
+				<a href="https://airtable.com/shrbFfWk6fjzGnNsk">
+					<i class="fa fa-external-link"></i> Make a request
+				</a>
+				to get help or find collaborators.
+			</p>
+			<p>
+				<a href="https://airtable.com/app473MWXVJVaD7Es/shrJafakrcmTxHU2i">
+					<i class="fa fa-external-link"></i> Submit data
+				</a>
+				if you have something to share.
+			</p>
 		</GridItem>
 	</GridContainer>
-
+	<FlexContainer component="section">
+		<h1>
+			Case studies
+		</h1>
+		<p>
+			We serve as a <strong>data help desk</strong>, where people can use our tools to answer
+			questions. With each successful request, our database grows stronger.
+		</p>
+	</FlexContainer>
 	<section>
-		<GridContainer :columns="1">
-			<GridItem component="h2">How our data is used</GridItem>
-			<GridItem component="p"
-				>We serve as a “data help desk”, where people can use our tools to answer
-				questions.</GridItem
-			>
-			<GridItem component="p">
-				Police in the United States are decentralized, and managed at the municipal and county
-				level. By organizing locally and working backward from community needs, we ensure our work
-				is impactful and relevant to the people who use data about the police every day.
+		<GridContainer class="pt-0 text-xl" :columns="2">
+			<GridItem component="h2" :span-column="2">
+					<i class="fa fa-book"></i> Sharing access to Traffic Stop data
+			</GridItem>
+			<GridItem component="div">
+				<p>
+					Several researchers in Pittsburgh were asking:
+				</p>
+				<p class="border-l-2 border-brand-wine/20 pl-4 my-5 italic">
+					What is the reality of traffic enforcement in Pittsburgh, given changed policies about
+					enforcing minor traffic violations?
+			</p>
+			</GridItem>
+			<GridItem component="div">
+				<p>
+					We requested data from the City of Pittsburgh and
+					<a href="https://data-sources.pdap.io/search/traffic%20stops/pittsburgh">
+						shared it in our database.
+					</a>
+				</p>
+				<p>
+					It led to 
+					<a href="https://www.publicsource.org/pittsburgh-police-traffic-stop-disparity-accountability-race/">
+						this article in Public Source</a>, 
+						among other research.
+				</p>
+			</GridItem>
+		</GridContainer>
+	</section>
+		<GridContainer class="pt-0 text-xl" :columns="2">
+			<GridItem component="h2" :span-column="2">
+				<i class="fa fa-phone"></i> Preserving Calls for Service data in Oakland CA
+			</GridItem>
+			<GridItem component="div">
+				<p class="mb-4">
+					A journalist in Oakland, CA asked:
+				</p>
+				<p class="border-l-2 border-brand-wine/20 pl-4 italic">
+					How does Oakland dispatch its police force to address community needs?
+				</p>
+			</GridItem>
+			<GridItem component="div">
+				<p>
+					Calls for police service were published by the city, but only stayed online for 1&ndash;2
+					days.
+				</p>
+				<p>
+					We made a web scraper 
+					<a href="https://docs.pdap.io/activities/terms-and-definitions/terminology" target="blank">
+						<i class="fa fa-question-circle"></i>
+					</a>
+					to archive the data every day, automatically, for free.
+					<a href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo/tree/main">
+						We made it open-source</a>, so it can be reused by anyone for future zero-budget research projects.
+				</p>
+				<p>
+					We archived data for 3 months before their site went down.
+				</p>
 			</GridItem>
 		</GridContainer>
 
-		<GridContainer :columns="2">
-			<GridItem component="h2" :span-column="2"
-				><i class="fa fa-book"></i> Sharing access to Traffic Stop data</GridItem
-			>
-			<GridItem component="p" :span-column="2"
-				>What is the reality of traffic enforcement in Pittsburgh, given changed policies about
-				enforcing minor traffic violations?</GridItem
-			>
-			<GridItem component="p">
-				Several independent groups in Pittsburgh were trying to answer this question, so we
-				requested data from the City of Pittsburgh and
-				<a href="https://data-sources.pdap.io/search/traffic%20stops/pittsburgh"
-					>shared it in our database</a
-				>. Among other things, it led to this article in Public Source.
+		<GridContainer class="pt-0 text-xl" :columns="2">
+			<GridItem component="h2" :span-column="2">
+				<i class="fa fa-sitemap"></i> Consolidating records about the Allegheny County Jail
 			</GridItem>
 			<GridItem component="p">
-				To see traffic stop data from other places,
-				<a href="https://data-sources.pdap.io/search/traffic/all">start here</a>.
+				This facility has faced mounting scrutiny, and we have helped answer several questions:
 			</GridItem>
-			<GridItem component="h2" :span-column="2"
-				><i class="fa fa-phone"></i> Preserving Calls for Service data in Oakland CA</GridItem
-			>
-			<GridItem component="p" :span-column="2"
-				>How are police in Oakland, CA dispatched to address community needs?</GridItem
-			>
-			<GridItem component="p">
-				Calls for police service were published by the city, but only stayed online for 1&ndash;2
-				days. We made a
-				<a href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo/tree/main"
-					>web scraper</a
-				>
-				to automatically collect the data daily, for free.
+			<GridItem component="div"></GridItem>
+			<GridItem component="p" class="border-l-2 border-brand-wine/20 pl-4 italic">
+				How many people are in jail because they cannot afford bail?
 			</GridItem>
-			<GridItem component="p">
-				We archived data for 3 months before their site went down, and helped a journalist with her
-				research. Our open-source work is a model for future zero-budget research projects.
-			</GridItem>
-			<GridItem component="p">
-				Calls for police service were published by the city, but only stayed online for 1&ndash;2
-				days. We made a
-				<a href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo/tree/main"
-					>web scraper</a
-				>
-				to automatically collect the data daily, for free.
-			</GridItem>
-			<GridItem component="p">
-				We archived data for 3 months before their site went down, and helped a journalist with her
-				research. Our open-source work is a model for future zero-budget research projects.
-			</GridItem>
-		</GridContainer>
-
-		<GridContainer>
-			<GridItem component="h2" :span-column="2"
-				><i class="fa fa-sitemap"></i> Consolidating records about the Allegheny County
-				Jail</GridItem
-			>
-			<GridItem component="p" :span-column="2">
-				This facility has faced mounting scrutiny, as dozens of people have died in custody in
-				recent years.
-			</GridItem>
-			<GridItem component="p"
-				>How many people are in jail because they cannot afford bail? <br
-			/></GridItem>
 			<GridItem component="p">
 				<a href="https://data-sources.pdap.io/data-sources/recn5peRrGMNEksXI"
 					>County jail holding status dashboard</a
 				>
 			</GridItem>
-			<GridItem component="p"
-				>How often are people placed in solitary confinement after it was banned in 2022?</GridItem
-			>
-			<GridItem component="p">
-				<a href="https://data-sources.pdap.io/data-sources/recabQ04zvUH4RKQ0"
-					>Segregated Housing reports</a
-				>
+			<GridItem component="p" class="border-l-2 border-brand-wine/20 pl-4 italic">
+				How often are people placed in solitary confinement after it was banned in 2022?
 			</GridItem>
-			<GridItem component="p"
-				>Do people in the jail receive medical attention when they request it?</GridItem
-			>
+			<GridItem component="p">
+				<a href="https://data-sources.pdap.io/data-sources/recabQ04zvUH4RKQ0">
+					Segregated Housing reports
+				</a>
+			</GridItem>
+			<GridItem component="p" class="border-l-2 border-brand-wine/20 pl-4 italic">
+				Do people in the jail receive medical attention when they request it?
+			</GridItem>
 			<p>
 				<a href="https://data-sources.pdap.io/data-sources/recPdBv9M0QhyKKZN">2021</a> &
 				<a href="https://data-sources.pdap.io/data-sources/recFUDsFf9RPpCZX6">2022</a> surveys of
 				incarcerated population
 			</p>
-			<GridItem component="p"
-				>Has the city documented any health code violations at the Allegheny County Jail?</GridItem
-			>
+			<GridItem component="p" class="border-l-2 border-brand-wine/20 pl-4 italic">
+				Has the city documented any health code violations at the Allegheny County Jail?
+			</GridItem>
 			<GridItem component="p">
-				<a href="https://data-sources.pdap.io/search/health%20/allegheny"
-					>Inspection records from the Health Department</a
-				>
+				<a href="https://data-sources.pdap.io/search/health%20/allegheny">
+					Inspection records from the Health Department
+				</a>
 			</GridItem>
 		</GridContainer>
-	</section>
 </template>
 
 <script>
