@@ -4,8 +4,8 @@
 		<GridItem component="h2">Contact</GridItem>
 		<GridItem component="p">
 			Email us at <a href="mailto:contact@pdap.io">contact@pdap.io</a> or
-			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch. We also have a
-			<a href="https://newsletter.pdap.io">newsletter</a>.
+			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch. We share success stories and updates in our
+			<a href="https://newsletter.pdap.io">newsletter</a>&mdash;we only write when we have updates to share.
 		</GridItem>
 		<GridItem component="FlexContainer">
 			<h2>People</h2>

@@ -13,10 +13,6 @@
 			</p>
 		</GridItem>
 		<GridItem component="FlexContainer">
-			<a href="https://data-sources.pdap.io/" class="pdap-button-primary">Search our database</a>
-			<p>If you have a question to answer, we may already know about helpful data in your area.</p>
-		</GridItem>
-		<GridItem component="FlexContainer">
 			<a href="https://airtable.com/shrbFfWk6fjzGnNsk" class="pdap-button-primary"
 				>Make a request</a
 			>
