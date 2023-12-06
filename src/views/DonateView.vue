@@ -52,32 +52,32 @@
 				journalism, and accountability, or reform.
 			</p>
 			<h3>Testimonials</h3>
-			<div class="boxed">
-				<p class="quote">
+			<div class="p-4 my-4 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
+				<p>
 					“PDAP's work was invaluable in helping us find and access data we wouldn't have been able
 					to otherwise.“
 				</p>
-				<p class="citation">
+				<p class="italic mb-0">
 					&mdash;Dr. Jesse Wozniak, Director of Law & Public Policy at the
 					<a href="https://apa-pgh.org/">Alliance for Police Accountability</a>
 				</p>
 			</div>
-			<div class="boxed">
-				<p class="quote">
+			<div class="p-4 my-4 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
+				<p>
 					“PDAP’s feedback helped us revise our published data to be more beneficial to the public.“
 				</p>
-				<p class="citation">
+				<p class="italic mb-0">
 					&mdash;Philip Lukens, Chief of Police in
 					<a href="https://www.cityofalliance.net/186/Police">Alliance, NE</a>
 				</p>
 			</div>
-			<div class="boxed">
-				<p class="quote">
+			<div class="p-4 my-4 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
+				<p>
 					“PDAP provides data necessary to understand how police use-of-force incidents are
 					processed in the courts, which reveals whether legal accountability mechanisms actually
 					work on-the-ground.“
 				</p>
-				<p class="citation">
+				<p class="italic mb-0">
 					&mdash;<a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>, UC Berkeley
 				</p>
 			</div>
