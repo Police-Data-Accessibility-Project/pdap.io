@@ -1,18 +1,36 @@
 <template>
-	<FlexContainer component="section">
-		<h1>
+	<GridContainer component="section" columns="3">
+		<GridItem component="h1" :span-column="3">
 			Data Sources
-		</h1>
+		</GridItem>
+		<img 
+			src="public/images/searching.svg" 
+			class="w-10/12 place-self-center hidden lg:block" 
+			alt="An eye looking through a magnifying glass at a police website."
+		>
+		<img 
+			src="public/images/mapping.svg" 
+			class="w-9/12 place-self-center" 
+			alt="A map scattered with icons representing different kinds of data."
+		>
+		<img 
+			src="public/images/sharing.svg" 
+			class="w-8/12 place-self-center hidden md:block" 
+			alt="A piece of police data being distributed to several people."
+		>
+		<GridItem component="div" :span-column="3">
 			<p>
-				We track of any source of data about criminal legal systems across the United States, which is 
+				We <strong>locate, describe, and share</strong> sources of data about police agencies across the United States, which are 
 				<a href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States" target="blank">
-					generally public record.</a>
+					generally public&nbsp;record.</a>
 			</p>
 			<p>
-				Police in the United States are decentralized, and managed locally.
+				Criminal legal systems in the United States are decentralized, and managed locally.
 				In response, we facilitate local research and organizing to keep the data in context.
 				The goal is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
 			</p>
+		</GridItem>
+		<GridItem component="div" :span-column="3">
 			<p>
 				<a href="https://data-sources.pdap.io">
 					<i class="fa fa-external-link"></i> Search our database
@@ -31,7 +49,8 @@
 				</a>
 				if you have something to share.
 			</p>
-	</FlexContainer>
+		</GridItem>
+	</GridContainer>
 	<FlexContainer component="section">
 		<h1>
 			Case studies
