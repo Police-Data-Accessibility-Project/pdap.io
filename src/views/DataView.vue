@@ -25,6 +25,12 @@
 				</a>
 				to get help or find collaborators.
 			</p>
+			<p>
+				<a href="https://airtable.com/app473MWXVJVaD7Es/shrJafakrcmTxHU2i">
+					<i class="fa fa-external-link"></i> Submit data
+				</a>
+				if you have something to share.
+			</p>
 	</FlexContainer>
 	<FlexContainer component="section">
 		<h1>
@@ -36,7 +42,7 @@
 		</p>
 	</FlexContainer>
 	<section>
-		<GridContainer class="pt-0" :columns="2">
+		<GridContainer class="pt-0 text-xl" :columns="2">
 			<GridItem component="h2" :span-column="2">
 					<i class="fa fa-book"></i> Sharing access to Traffic Stop data
 			</GridItem>
@@ -65,7 +71,7 @@
 			</GridItem>
 		</GridContainer>
 	</section>
-		<GridContainer class="pt-0" :columns="2">
+		<GridContainer class="pt-0 text-xl" :columns="2">
 			<GridItem component="h2" :span-column="2">
 				<i class="fa fa-phone"></i> Preserving Calls for Service data in Oakland CA
 			</GridItem>
@@ -97,7 +103,7 @@
 			</GridItem>
 		</GridContainer>
 
-		<GridContainer class="pt-0" :columns="2">
+		<GridContainer class="pt-0 text-xl" :columns="2">
 			<GridItem component="h2" :span-column="2">
 				<i class="fa fa-sitemap"></i> Consolidating records about the Allegheny County Jail
 			</GridItem>
