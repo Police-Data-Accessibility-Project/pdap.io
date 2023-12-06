@@ -10,7 +10,7 @@
 			</p>
 			<p>
 				Police in the United States are decentralized, and managed locally.
-				In response, we facilitate local research and organizing.
+				In response, we facilitate local research and organizing to keep the data in context.
 				The goal is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
 			</p>
 			<p>

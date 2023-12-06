@@ -12,7 +12,7 @@
 					include a resume, personal website, LinkedIn profile, GitHub profile, or combination of
 					these.
 				</p>
-				<div class="small">
+				<div class="text-lg">
 					<h3>Context</h3>
 					<p>
 						Our mission is to help people locate, understand, and share public records about every
@@ -48,7 +48,7 @@
 						We are looking for people with a personal interest in the transparency of their local
 						legal system.
 					</p>
-					<div class="small">
+					<div class="text-lg">
 						<h3>Responsibilities</h3>
 						<ul>
 							<li>
@@ -125,7 +125,7 @@
 					</p>
 					<p>When you apply, please let us know if you're interested in a particular project.</p>
 					<h3>Responsibilities</h3>
-					<div class="small">
+					<div class="text-lg">
 						<ul>
 							<li>Submit code toward one or more of the issues on the roadmap.</li>
 							<li>Write tests for new code, and help with documentation.</li>
