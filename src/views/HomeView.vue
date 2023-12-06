@@ -29,10 +29,6 @@
 				To learn about the data,
 				<RouterLink to="/data">read more here</RouterLink>
 			</p>
-			<p>
-				To contribute code or data,
-				<RouterLink to="/volunteer">start here</RouterLink>
-			</p>
 		</GridItem>
 	</GridContainer>
 </template>
