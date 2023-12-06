@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Button, Form, FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
 
 export default {
 	name: 'HomeView',
