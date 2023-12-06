@@ -30,8 +30,30 @@ provide('navLinks', [
 	},
 	{
 		href: 'https://docs.pdap.io/',
-		text: 'Docs and Resources',
+		text: 'Docs',
 	},
+]);
+provide('footerLinks', [
+	{
+		href: 'https://newsletter.pdap.io',
+		text: 'Newsletter',
+	},	
+	{
+		href: 'https://github.com/orgs/Police-Data-Accessibility-Project',
+		text: 'Github',
+	},
+	{
+		href: 'https://discord.gg/wMqex8nKZJ',
+		text: 'Discord',
+	},
+	{
+		href: 'https://www.linkedin.com/company/pdap',
+		text: 'LinkedIn',
+	},
+	{
+		path: '/jobs',
+		text: 'Jobs',
+	}
 ]);
 </script>
 
