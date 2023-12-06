@@ -72,7 +72,7 @@
 		<GridItem component="h3">Is this legal?</GridItem>
 		<GridItem component="p">
 			Yes. We're consolidating public information, in accordance with
-			<a href="https://docs.pdap.io/meta/legal">established legal precedents</a>.<br />
+			<a href="https://docs.pdap.io/meta/operations/legal">established legal precedents</a>.<br />
 		</GridItem>
 		<GridItem component="h3">Are you affiliated with a political party?<br /></GridItem>
 		<GridItem component="p">

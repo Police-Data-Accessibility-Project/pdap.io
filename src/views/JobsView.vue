@@ -52,11 +52,7 @@
 						<h3>Responsibilities</h3>
 						<ul>
 							<li>
-								Check our
-								<a href="https://docs.pdap.io/activities/data-sources/explore-data-sources"
-									>database</a
-								>
-								for completion and accuracy of the Agencies in your county.
+								Check our database for completion and accuracy of the Agencies in your county.
 							</li>
 							<li>
 								Perform internet research for existing Data Sources in your county, adding them to
@@ -72,8 +68,7 @@
 								and sharing our database where helpful.
 							</li>
 							<li>
-								When public records are not published online, make
-								<a href="https://docs.pdap.io/activities/data-sources/foia">FOIA requests</a> and
+								When public records are not published online, make FOIA requests and
 								otherwise work with local records departments to get data published.
 							</li>
 							<li>
