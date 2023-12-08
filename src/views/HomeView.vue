@@ -15,28 +15,31 @@
 				<strong>higher degree of&nbsp;oversight.</strong>
 			</p>
 		</GridItem>
-		<GridItem class="border-2 border-brand-gold p-8" :span-column="2">
+		<GridItem class="border-2 border-brand-gold p-4 md:p-6" :span-column="2">
 			<h2 class="mt-0">Search our database</h2>
-			<p class="text-s">
+			<p class="pb-4 md:pb-8">
 				If you have a question to answer, we may already know about helpful data in your area.
+				<RouterLink to="/data">Learn more about the data here.</RouterLink>
 			</p>
-			<QuickSearchForm></QuickSearchForm> <!-- TODO: import it below when merged into design system -->
+			<QuickSearchForm></QuickSearchForm>
 		</GridItem>
 	</GridContainer>
 </template>
 
 <script>
 import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
+import { RouterLink } from 'vue-router';
 
 export default {
 	name: 'HomeView',
-	components: {		
-		Button,
-		Form,
-		FlexContainer,
-		GridContainer,
-		GridItem,
-		QuickSearchForm,
-	},
+	components: {
+    Button,
+    Form,
+    FlexContainer,
+    GridContainer,
+    GridItem,
+    QuickSearchForm,
+    RouterLink
+},
 };
 </script>
