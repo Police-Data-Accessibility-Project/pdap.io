@@ -1,3 +1,10 @@
+<template>
+	<Header :logo-image-src="lockup" />
+		<RouterView />
+	<Footer :logo-image-src="acronym" />
+</template>
+
+
 <script setup>
 import { RouterView } from 'vue-router';
 import { Header, Footer } from 'pdap-design-system';
@@ -56,14 +63,6 @@ provide('footerLinks', [
 	}
 ]);
 </script>
-
-<template>
-	<Header :logo-image-src="lockup" />
-	<main>
-		<RouterView />
-	</main>
-	<Footer :logo-image-src="acronym" />
-</template>
 
 <style>
 /* Global styles */
