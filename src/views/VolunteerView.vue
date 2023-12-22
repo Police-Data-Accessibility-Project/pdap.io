@@ -1,25 +1,5 @@
-<script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
-import HelpTextIcon from '@/components/HelpTextIcon.vue';
-
-export default {
-	name: 'VolunteerView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-	},
-};
-</script>
-
-<style scoped>
-h3.pdap-grid-item {
-	margin-top: 0;
-}
-</style>
-
 <template>
-	<GridContainer component="section" :columns="3">
+	<GridContainer class="px-4 md:px-8" component="section" :columns="3">
 		<GridItem component="h1" :span-column="3">Volunteer</GridItem>
 		<GridItem component="div" :span-column="3">
 			<p>
@@ -78,3 +58,17 @@ h3.pdap-grid-item {
 		</div>
 	</FlexContainer>
 </template>
+
+<script>
+import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+import HelpTextIcon from '@/components/HelpTextIcon.vue';
+
+export default {
+	name: 'VolunteerView',
+	components: {
+		FlexContainer,
+		GridContainer,
+		GridItem,
+	},
+};
+</script>

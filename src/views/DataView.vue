@@ -1,5 +1,5 @@
 <template>
-	<GridContainer component="section" columns="3">
+	<GridContainer class="px-4 md:px-8" component="section" columns="3">
 		<GridItem component="h1" :span-column="3"> Data Sources </GridItem>
 		<img
 			src="/images/searching.svg"
