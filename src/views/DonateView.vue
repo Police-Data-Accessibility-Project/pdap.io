@@ -1,5 +1,5 @@
 <template>
-	<GridContainer :columns="2">
+	<GridContainer class="px-4 md:px-8" component="section" :columns="2">
 		<GridItem component="h1" :span-column="2">Donate to PDAP</GridItem>
 		<GridItem component="p" :span-column="2"
 			>Thank you for your interest in helping our mission!</GridItem
