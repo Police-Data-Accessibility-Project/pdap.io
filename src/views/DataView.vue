@@ -118,7 +118,6 @@
 					We made it open-source</a
 				>, so it can be reused by anyone for future zero-budget research projects.
 			</p>
-			<p>We archived data for 3 months before their site went down.</p>
 		</GridItem>
 	</GridContainer>
 
