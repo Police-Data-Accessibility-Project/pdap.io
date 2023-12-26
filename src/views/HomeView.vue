@@ -1,5 +1,5 @@
 <template>
-	<GridContainer class="px-4 md:px-8" component="section" :columns="2">
+	<GridContainer component="section" :columns="2">
 		<GridItem :span-column="2">
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
 				Learning about our police&nbsp;systems

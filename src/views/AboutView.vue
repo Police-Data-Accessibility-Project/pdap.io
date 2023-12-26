@@ -1,5 +1,5 @@
 <template>
-	<GridContainer class="px-4 md:px-8" component="section" :columns="1">
+	<GridContainer component="section" :columns="1">
 		<GridItem component="h1">About</GridItem>
 		<GridItem component="h2">Contact</GridItem>
 		<GridItem component="p">
@@ -95,3 +95,9 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+h3.pdap-grid-item {
+	margin-top: 0;
+}
+</style>
