@@ -33,7 +33,6 @@
 			</p>
 		</GridItem>
 	</GridContainer>
-
 	<FlexContainer component="section">
 		<p>
 			This work is multidisciplinary, and beginner-friendly.
@@ -41,21 +40,10 @@
 		</p>
 		<p>
 			<a href="https://airtable.com/app473MWXVJVaD7Es/shrS4PAZTYVT1zSq8">
-			<i class="fa fa-external-link"></i> Use this form</a>
+			<i class="fa fa-external-link"></i> Use this form to volunteer</a>,
 			or email <a href="mailto:operations@pdap.io">operations@pdap.io</a>
-			to volunteer or learn more about a request.
+			to learn more.
 		</p>
-		<div class="airtable-box">
-			<iframe
-				class="airtable-embed"
-				src="https://airtable.com/embed/app473MWXVJVaD7Es/shrpwCQ0z5hOFQuOV?backgroundColor=gray&viewControls=on"
-				frameborder="0"
-				onmousewheel=""
-				width="100%"
-				height="850"
-				style="background: transparent; border: 1px solid #512a4f"
-			></iframe>
-		</div>
 	</FlexContainer>
 </template>
 
