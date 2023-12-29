@@ -42,7 +42,7 @@
 			</p>
 		</GridItem>
 	</GridContainer>
-	<GridContainer component="section" :columns="2">
+	<GridContainer component="section" class="mb-12" :columns="2">
 		<GridItem component="h2" :span-column="2">Frequently Asked Questions</GridItem>
 		<GridItem component="h3">What makes you experts?</GridItem>
 		<GridItem component="p">We have done thousands of hours of user research with people
