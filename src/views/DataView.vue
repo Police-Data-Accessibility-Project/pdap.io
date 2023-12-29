@@ -33,7 +33,7 @@
 				is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
 			</p>
 		</GridItem>
-		<GridItem component="div" :span-column="3">
+		<GridItem component="div" class="mb-12" :span-column="3">
 			<p>
 				<a href="https://data-sources.pdap.io">
 					<i class="fa fa-external-link"></i> Search our database

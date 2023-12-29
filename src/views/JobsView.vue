@@ -1,5 +1,5 @@
 <template>
-	<FlexContainer class="px-4 md:px-8" component="section">
+	<FlexContainer class="px-4 md:px-8 mb-12" component="section">
 		<div class="container">
 			<div>
 				<h1>Jobs at PDAP</h1>

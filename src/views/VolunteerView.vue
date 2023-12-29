@@ -33,7 +33,7 @@
 			</p>
 		</GridItem>
 	</GridContainer>
-	<FlexContainer component="section">
+	<FlexContainer component="section" class="mb-12">
 		<p>
 			This work is multidisciplinary, and beginner-friendly.
 			The two most important skills are <strong>collaboration</strong> and <strong>persistence</strong>.
