@@ -133,7 +133,7 @@
 			How many people are in jail because they cannot afford bail?
 		</GridItem>
 		<GridItem component="p">
-			<a href="https://data-sources.pdap.io/data-sources/recn5peRrGMNEksXI"
+			<a href="https://data-sources.pdap.io/search/interactive%20population/allegheny%20county%20jail"
 				>County jail holding status dashboard</a
 			>
 		</GridItem>
@@ -141,7 +141,7 @@
 			How often are people placed in solitary confinement after it was banned in 2022?
 		</GridItem>
 		<GridItem component="p">
-			<a href="https://data-sources.pdap.io/data-sources/recabQ04zvUH4RKQ0">
+			<a href="https://data-sources.pdap.io/search/segregated%20housing/allegheny%20county%20jail">
 				Segregated Housing reports
 			</a>
 		</GridItem>
@@ -149,15 +149,15 @@
 			Do people in the jail receive medical attention when they request it?
 		</GridItem>
 		<p>
-			<a href="https://data-sources.pdap.io/data-sources/recPdBv9M0QhyKKZN">2021</a> &
-			<a href="https://data-sources.pdap.io/data-sources/recFUDsFf9RPpCZX6">2022</a> surveys of
-			incarcerated population
+			<a href="https://data-sources.pdap.io/search/survey/allegheny%20county%20jail">
+				2021 & 2022 surveys
+			</a> of the incarcerated population
 		</p>
 		<GridItem component="p" class="border-l-2 border-brand-wine/20 pl-4 italic">
 			Has the city documented any health code violations at the Allegheny County Jail?
 		</GridItem>
 		<GridItem component="p">
-			<a href="https://data-sources.pdap.io/search/health%20/allegheny">
+			<a href="https://data-sources.pdap.io/search/health%20/allegheny%20county%jail">
 				Inspection records from the Health Department
 			</a>
 		</GridItem>
