@@ -106,7 +106,7 @@ import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import HelpTextIcon from '@/components/HelpTextIcon.vue';
 
 export default {
-	name: 'VolunteerView',
+	name: 'CommunityView',
 	components: {
 		FlexContainer,
 		GridContainer,
