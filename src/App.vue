@@ -17,8 +17,8 @@ provide('navLinks', [
 		text: 'Data',
 	},
 	{
-		path: '/volunteer',
-		text: 'Volunteer',
+		path: '/community',
+		text: 'Community',
 	},
 	{
 		path: '/about',
