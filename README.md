@@ -5,7 +5,7 @@ This website serves as the official voice of PDAP.
 ## Info for Developers
 
 ### Tech
-This site is built with HTML. It was designed in Webflow and exported.
+This site is built with [Vue](https://vuejs.org/) and [Tailwind](https://tailwindcss.com/).
 
 ### Etiquette
 Head to [\#outreach](https://discord.com/channels/828274060034965575/853442226034442260/) in our [Discord](https://discord.gg/vKhDv7nC8B) if you'd like to collect feedback from the wider group.
@@ -26,4 +26,4 @@ In your terminal:
 
 ### Staging
 
-Merge into the `dev` branch, allow 5–30 minutes for the auto-deploy, and visit pdap.dev.
+Merge into the `dev` branch, allow 5 minutes for the auto-deploy, and visit pdap.dev.

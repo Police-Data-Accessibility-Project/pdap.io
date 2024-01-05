@@ -4,8 +4,7 @@
 		<GridItem component="h2">Contact</GridItem>
 		<GridItem component="p">
 			Email us at <a href="mailto:contact@pdap.io">contact@pdap.io</a> or
-			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch. We share success stories and updates in our
-			<a href="https://newsletter.pdap.io">newsletter</a>&mdash;we only write when we have updates to share.
+			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch.
 		</GridItem>
 		<GridItem component="FlexContainer">
 			<h2>People</h2>
@@ -42,7 +41,7 @@
 			</p>
 		</GridItem>
 	</GridContainer>
-	<GridContainer component="section" :columns="2">
+	<GridContainer component="section" class="mb-12" :columns="2">
 		<GridItem component="h2" :span-column="2">Frequently Asked Questions</GridItem>
 		<GridItem component="h3">What makes you experts?</GridItem>
 		<GridItem component="p">We have done thousands of hours of user research with people
