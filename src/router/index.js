@@ -4,7 +4,7 @@ import DataView from '@/views/DataView.vue';
 import DonateView from '@/views/DonateView.vue';
 import HomeView from '@/views/HomeView.vue';
 import JobsView from '@/views/JobsView.vue';
-import VolunteerView from '@/views/VolunteerView.vue';
+import CommunityView from '@/views/CommunityView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -35,9 +35,9 @@ const router = createRouter({
 			component: JobsView,
 		},
 		{
-			path: '/volunteer',
-			name: 'volunteer',
-			component: VolunteerView,
+			path: '/community',
+			name: 'community',
+			component: CommunityView,
 		},
 	],
 	linkActiveClass: 'current',
