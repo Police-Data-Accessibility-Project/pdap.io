@@ -2,7 +2,7 @@
 	<GridContainer class="px-4 md:px-8" component="section" :columns="2">
 		<GridItem :span-column="2">
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
-				We use public data to investigate our police&nbsp;systems.
+				We use public data to document our&nbsp;police systems.
 			</h1>
 			<p>
 				Our <a href="/community">community</a> collects data about legal systems because their

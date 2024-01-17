@@ -3,7 +3,7 @@
 		<GridItem component="h1" :span-column="3">Join our community</GridItem>
 		<GridItem :span-column="3">
 			<p>
-				Join us in
+				To find collaborators or ask questions, join us in
 				<a href="https://discord.gg/wMqex8nKZJ">Discord</a> 
 				and see our activity in
 				<a href="https://github.com/Police-Data-Accessibility-Project">GitHub.</a>
