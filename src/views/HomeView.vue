@@ -2,15 +2,10 @@
 	<GridContainer class="px-4 md:px-8" component="section" :columns="2">
 		<GridItem :span-column="2">
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
-				Learning about our police&nbsp;systems
-				starts with public data.
+				We use public data to document our&nbsp;police systems.
 			</h1>
 			<p>
-				We envision a world where better access to public records helps us 
-				create fair infrastructure for all of us. 
-			</p>
-			<p>
-				We focus on the criminal legal system because its
+				Our <a href="/community">community</a> collects data about legal systems because their
 				<strong>power to impact people</strong> demands a
 				<strong>higher degree of&nbsp;oversight.</strong>
 			</p>
@@ -22,8 +17,8 @@
 	<FlexContainer component="section">
 		<h1>Case studies</h1>
 		<p>
-			We serve as a <strong>data help desk</strong>, where people can use our tools to answer
-			questions. With each successful request, our database grows stronger.
+			We find data and share resources to help each other <strong>answer questions
+			and strengthen our database</strong> over time.
 		</p>
 	</FlexContainer>
 	<section>
