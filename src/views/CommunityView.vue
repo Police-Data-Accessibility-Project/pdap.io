@@ -3,17 +3,17 @@
 		<GridItem component="h1" :span-column="3">Join our community</GridItem>
 		<GridItem :span-column="3">
 			<p>
-				We're active on 
+				Join us in
 				<a href="https://discord.gg/wMqex8nKZJ">Discord</a> 
-				and 
+				and see our activity in
 				<a href="https://github.com/Police-Data-Accessibility-Project">GitHub.</a>
 			</p>
 			<p>
-				By signing up, you will receive (occasional) updates about our software and data projects.
-				You'll also be the first to be invited to create a PDAP account.
+				You can also sign up below to receive occasional updates about our software and data projects.
+				You'll be the first to be invited to create a PDAP account.
 			</p>
 			<p>
-				We only write when we have updates to share.
+				We only write when we have updates.
 			</p>
 			<form
 			action="https://buttondown.email/api/emails/embed-subscribe/pdap"
@@ -32,7 +32,7 @@
 					/>
 					<label 
 						for="bd-email" 
-						class="max-w-[max-content] text-lg py-2 mt-0 font-medium"
+						class="max-w-[max-content] text-lg py-1 mt-0 font-medium"
 					>
 						Enter your email
 					</label>
@@ -56,15 +56,16 @@
 		<GridItem component="h1" :span-column="3">Volunteer for data requests</GridItem>
 		<GridItem component="div" :span-column="3">
 			<p>
-				Most data requests are for help <strong>answering questions about local police systems.</strong> They usually come to us <a href="https://airtable.com/shrbFfWk6fjzGnNsk">via this form</a>. 
+				Most data requests are for help <strong>answering questions about local police systems.</strong> 
+				They usually come to us 
+				<a href="https://airtable.com/shrbFfWk6fjzGnNsk">via this form</a>. 
 			</p>
 			<p>
 				<a href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
-					Use this form to volunteer
-				</a>,
-				or email <a href="mailto:operations@pdap.io">
-					operations@pdap.io
-				</a>.
+					Use this form to volunteer</a>,
+				or email 
+				<a href="mailto:operations@pdap.io">
+						operations@pdap.io</a>.
 			</p>
 		</GridItem>
 		<GridItem class="text-xl hyphens-auto" lang="en">
