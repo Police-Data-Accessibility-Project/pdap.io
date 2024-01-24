@@ -11,7 +11,7 @@
 			</p>
 		</GridItem>
 		<GridItem class="border-2 border-brand-gold p-4 md:p-6" :span-column="2">
-			<QuickSearchForm />
+			<QuickSearchForm :baseUrlForRedirect="baseUrlForRedirect" />
 		</GridItem>
 	</GridContainer>
 	<FlexContainer component="section">
@@ -137,6 +137,13 @@ export default {
     GridItem,
     QuickSearchForm,
     RouterLink
-},
+	},
+	data() {
+		return {
+			baseUrlForRedirect: import.meta.env.MODE === 'production' 
+			? 'https://data-sources.pdap.io' 
+			: 'https://data-sources.pdap.dev'
+		};
+	}
 };
 </script>
