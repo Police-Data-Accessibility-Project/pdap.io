@@ -9,26 +9,31 @@
     
     <!-- About Page -->
     <url>
-        <loc>https://pdap.io/about.html</loc>
+        <loc>https://pdap.io/about</loc>
         <priority>0.8</priority>
     </url>
     
     <!-- Jobs Page -->
     <url>
-        <loc>https://pdap.io/jobs.html</loc>
+        <loc>https://pdap.io/jobs</loc>
         <priority>0.5</priority>
     </url>
     
     <!-- Donate Page -->
     <url>
-        <loc>https://pdap.io/donate.html</loc>
-        <priority>0.8</priority>
+        <loc>https://pdap.io/donate</loc>
+        <priority>0.7</priority>
     </url>
     
-    <!-- Data Sources Page -->
+    <!-- Data Page -->
     <url>
-        <loc>https://pdap.io/data-sources.html</loc>
+        <loc>https://pdap.io/data</loc>
         <priority>0.9</priority>
     </url>
-    
+
+    <!-- Community Page -->
+    <url>
+        <loc>https://pdap.io/community</loc>
+        <priority>0.8</priority>
+    </url>
 </urlset>
