@@ -36,7 +36,7 @@
 						>
 					</p>
 				</div>
-				<div class="top-45">
+				<div class="mt-12">
 					<h2 id="regional-data-experts">Regional Data Experts</h2>
 					<h4><i class="fa fa-info-circle"></i> Remote, temporary</h4>
 					<p>
@@ -50,7 +50,7 @@
 					</p>
 					<div class="text-lg">
 						<h3>Responsibilities</h3>
-						<ul>
+						<ul class="list-disc list-inside">
 							<li>
 								Check our database for completion and accuracy of the Agencies in your county.
 							</li>
@@ -85,7 +85,7 @@
 						<h3>Compensation</h3>
 						<p>$25 per hour minimum.</p>
 						<h3>Characteristics of strong applicants</h3>
-						<ul>
+						<ul class="list-disc list-inside">
 							<li>Understands our mission, and is excited about contributing to it.</li>
 							<li>Demonstrates proficiency in web research and navigation with a browser.</li>
 							<li>
@@ -99,7 +99,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="top-45">
+				<div class="mt-12">
 					<h2 id="software-development-opportunities">Software development opportunities</h2>
 					<h4><i class="fa fa-info-circle"></i> Remote, temporary</h4>
 					<p>
@@ -121,7 +121,7 @@
 					<p>When you apply, please let us know if you're interested in a particular project.</p>
 					<h3>Responsibilities</h3>
 					<div class="text-lg">
-						<ul>
+						<ul class="list-disc list-inside">
 							<li>Submit code toward one or more of the issues on the roadmap.</li>
 							<li>Write tests for new code, and help with documentation.</li>
 						</ul>
@@ -136,7 +136,7 @@
 							based on experience and time commitment.
 						</p>
 						<h3>Characteristics of strong applicants</h3>
-						<ul>
+						<ul class="list-disc list-inside">
 							<li>Can exhibit basic knowledge of Python.</li>
 							<li>Feels excited about contributing to our mission.</li>
 							<li>Is comfortable with feedback and iteration.</li>
