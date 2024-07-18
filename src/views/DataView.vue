@@ -53,6 +53,14 @@
 				if you have something to share.
 			</p>
 		</GridItem>
+		<GridItem component="div" :span-column="3">
+			<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
+			<p>
+				Our database currently documents data sources from <br>
+				<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia.
+			</p>
+			<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
+		</GridItem>
 	</GridContainer>
 	<GridContainer class="px-4 md:px-8 mb-12" component="section" :columns="2">
 		<GridItem component="h2" :span-column="2">
@@ -73,6 +81,19 @@
 import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import HelpTextIcon from '../components/HelpTextIcon.vue';
 
+const baseUrl = "https://data-sources.pdap.io/api/";
+const api_key = import.meta.env.VITE_API_KEY;
+
+const headers = {
+  'Authorization': `Bearer ${api_key}`,
+  'Content-Type': 'application/json'
+};
+
+const body = {
+    "email": "lilymac000@gmail.com",
+    "password": "FourPlugTripMint"
+}
+
 export default {
 	name: 'DataView',
 	components: {
@@ -81,5 +102,57 @@ export default {
 		GridItem,
 		HelpTextIcon,
 	},
-};
+	data: () => ({
+		agenciesCount: 0,
+		countiesCount: 0,
+		statesCount: 0,
+	}),
+	mounted: async function(){
+			const newKey = await (await fetch(`${baseUrl}login`, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify(body),
+			})).json();
+
+			const newHeaders = {
+			'Authorization': `Bearer ${newKey.data}`,
+			'Content-Type': 'application/json'
+			};
+
+			let tempAgencyCount = 1;
+			let page = 1;
+			let states = [];
+			let counties = [];
+			let agencies =[];
+
+			while (tempAgencyCount !== 0) {
+				const tempAgencies = await (await fetch(`${baseUrl}agencies/${page}`, {
+					method: 'GET',
+					headers: newHeaders,
+				})).json();
+
+				for (const entry of tempAgencies.data){
+					if (entry.count_data_sources > 0){
+						const tempAgency = entry.name;
+						if (!agencies.includes(tempAgency)) {
+							agencies.push(tempAgency);
+						}
+						const tempState = entry.state_iso;
+						if (!states.includes(tempState)) {
+							states.push(tempState);
+						}
+						const tempCounty = entry.county_fips;
+						if (!counties.includes(tempCounty)) {
+							counties.push(tempCounty);
+						}
+					}
+				}
+				page += 1; 
+				tempAgencyCount = tempAgencies.count;
+			}
+			this.statesCount = states.length-2;
+			this.countiesCount = counties.length;
+			this.agenciesCount = agencies.length;
+		},
+	};
 </script>

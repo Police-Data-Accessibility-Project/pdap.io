@@ -67,6 +67,11 @@
 				<a href="mailto:operations@pdap.io">
 						operations@pdap.io</a>.
 			</p>
+			<h2><i class="fa fa-code-fork"></i> Merged Pull Requests</h2>
+				<p>We have merged <strong>{{ mergeCount }} pull requests</strong> across <strong>{{ repoCount }} repositories</strong>.</p>
+				<a href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1">
+					<i class="fa fa-external-link"></i> Good first issues
+				</a>
 		</GridItem>
 		<GridItem class="text-xl hyphens-auto" lang="en">
 			<h3><i class="fa fa-map-o" aria-hidden="true"></i> Locate sources</h3>
@@ -113,5 +118,15 @@ export default {
 		GridContainer,
 		GridItem,
 	},
-};
+	data: () => ({
+		repoCount: 0,
+		mergeCount: 0,
+	}),
+	mounted: async function (){
+			const repos = await (await fetch(`https://api.github.com/orgs/Police-Data-Accessibility-Project/repos`)).json()
+			this.repoCount = repos.length;
+			const merges = await (await fetch(`https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+is:pr+is:merged`)).json()
+			this.mergeCount = merges.total_count
+		},
+	};
 </script>

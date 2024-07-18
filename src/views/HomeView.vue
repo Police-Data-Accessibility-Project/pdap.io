@@ -21,6 +21,13 @@
 		</GridItem>
 	</GridContainer>
 	<FlexContainer component="section">
+		<h2><i class="fa fa-check-square-o"></i> Completed Data Requests</h2>
+		<p>Completed <strong> {{ requests }} data requests</strong> since January 9, 2023.</p>
+		<a href="https://airtable.com/shrbFfWk6fjzGnNsk">
+			<i class="fa fa-external-link"></i> Make a request
+		</a>
+	</FlexContainer>
+	<FlexContainer component="section">
 		<h1>Case studies</h1>
 		<p>
 			We find data and share resources to help each other <strong>answer questions
@@ -133,6 +140,13 @@
 import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
 import { RouterLink } from 'vue-router';
 
+const airtable_api_key = import.meta.env.VITE_AIRTABLE_API_KEY;
+
+const headers = {
+  'Authorization': `Bearer ${airtable_api_key}`,
+  'Content-Type': 'application/json'
+};
+
 export default {
 	name: 'HomeView',
 	components: {
@@ -144,12 +158,19 @@ export default {
     QuickSearchForm,
     RouterLink
 	},
-	data() {
-		return {
-			baseUrlForRedirect: import.meta.env.MODE === 'production' 
-			? 'https://data-sources.pdap.io' 
-			: 'https://data-sources.pdap.dev'
-		};
-	}
-};
+	data: () => ({
+		requests: 0,
+		baseUrlForRedirect: import.meta.env.MODE === 'production' 
+		? 'https://data-sources.pdap.io' 
+		: 'https://data-sources.pdap.dev'
+	}),
+	mounted: async function(){
+			const dataRequests = await (await fetch(`https://api.airtable.com/v0/app473MWXVJVaD7Es/Data%20Requests?filterByFormula=%28%7Brequest_status%7D%3D%27Complete%27%29`, { 
+				method: 'GET',
+				headers: headers
+			})
+			).json();
+			this.requests = dataRequests.records.length;
+		},
+	};
 </script>
