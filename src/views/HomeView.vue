@@ -137,7 +137,8 @@
 </template>
 
 <script>
-import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
+// import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
+import { Button, Form, QuickSearchForm } from 'pdap-design-system';
 import { RouterLink } from 'vue-router';
 
 const airtable_api_key = import.meta.env.VITE_AIRTABLE_API_KEY;
@@ -152,9 +153,9 @@ export default {
 	components: {
     Button,
     Form,
-    FlexContainer,
-    GridContainer,
-    GridItem,
+    // FlexContainer,
+    // GridContainer,
+    // GridItem,
     QuickSearchForm,
     RouterLink
 	},

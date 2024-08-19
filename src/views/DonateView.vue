@@ -86,15 +86,15 @@
 </template>
 
 <script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 
 export default {
 	name: 'DonateView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-	},
+	// components: {
+	// 	FlexContainer,
+	// 	GridContainer,
+	// 	GridItem,
+	// },
 };
 </script>
 

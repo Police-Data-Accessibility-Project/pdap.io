@@ -108,16 +108,16 @@
 </template>
 
 <script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import HelpTextIcon from '@/components/HelpTextIcon.vue';
 
 export default {
 	name: 'CommunityView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-	},
+	// components: {
+	// 	FlexContainer,
+	// 	GridContainer,
+	// 	GridItem,
+	// },
 	data: () => ({
 		repoCount: 0,
 		mergeCount: 0,

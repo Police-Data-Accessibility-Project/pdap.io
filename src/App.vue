@@ -78,4 +78,16 @@ provide('footerLinks', [
 body {
 	overflow: auto;
 }
+
+h1, h2, h3 {
+    margin:0;
+}
+
+.pdap-grid-container{
+	padding: 32px;
+}
+
+.pdap-grid-container-columns-2{
+	grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
+}
 </style>

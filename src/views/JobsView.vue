@@ -81,12 +81,12 @@
 </template>
 
 <script>
-import { FlexContainer } from 'pdap-design-system';
+// import { FlexContainer } from 'pdap-design-system';
 
 export default {
 	name: 'JobsView',
-	components: {
-		FlexContainer,
-	},
+	// components: {
+	// 	FlexContainer,
+	// },
 };
 </script>

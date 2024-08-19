@@ -53,7 +53,7 @@
 				if you have something to share.
 			</p>
 		</GridItem>
-		<GridItem component="div" :span-column="3">
+		<GridItem component="div" class="loading-shimmer h-48 bg-neutral-500" :span-column="3">
 			<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
 			<p>
 				Our database currently documents data sources from <br>
@@ -78,47 +78,32 @@
 </template>
 
 <script>
-import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 import HelpTextIcon from '../components/HelpTextIcon.vue';
 
 const baseUrl = "https://data-sources.pdap.io/api/";
-const api_key = import.meta.env.VITE_API_KEY;
+const api_key = import.meta.env.VITE_PDAP_API_KEY;
 
 const headers = {
   'Authorization': `Bearer ${api_key}`,
   'Content-Type': 'application/json'
 };
 
-const body = {
-    "email": "lilymac000@gmail.com",
-    "password": "FourPlugTripMint"
-}
-
 export default {
 	name: 'DataView',
-	components: {
-		FlexContainer,
-		GridContainer,
-		GridItem,
-		HelpTextIcon,
-	},
+	// components: {
+	// 	FlexContainer,
+	// 	GridContainer,
+	// 	GridItem,
+	// 	HelpTextIcon,
+	// },
 	data: () => ({
 		agenciesCount: 0,
 		countiesCount: 0,
 		statesCount: 0,
 	}),
 	mounted: async function(){
-			const newKey = await (await fetch(`${baseUrl}login`, {
-				method: 'POST',
-				headers: headers,
-				body: JSON.stringify(body),
-			})).json();
-
-			const newHeaders = {
-			'Authorization': `Bearer ${newKey.data}`,
-			'Content-Type': 'application/json'
-			};
-
+			
 			let tempAgencyCount = 1;
 			let page = 1;
 			let states = [];
@@ -128,7 +113,7 @@ export default {
 			while (tempAgencyCount !== 0) {
 				const tempAgencies = await (await fetch(`${baseUrl}agencies/${page}`, {
 					method: 'GET',
-					headers: newHeaders,
+					headers: headers,
 				})).json();
 
 				for (const entry of tempAgencies.data){
