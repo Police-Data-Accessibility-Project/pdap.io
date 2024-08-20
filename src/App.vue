@@ -79,9 +79,9 @@ body {
 	overflow: auto;
 }
 
-h1, h2, h3 {
+/* h1, h2, h3 {
     margin:0;
-}
+} */
 
 .pdap-grid-container{
 	padding: 32px;

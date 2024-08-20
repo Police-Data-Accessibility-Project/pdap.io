@@ -1,6 +1,6 @@
 <template>
-	<GridContainer class="px-4 md:px-8" component="section" columns="3">
-		<GridItem component="h1" :span-column="3"> Data Sources </GridItem>
+	<section class="pdap-grid-container px-4 md:px-8">
+		<h1 class="col-span-full"> Data Sources </h1>
 		<img
 			src="/images/searching.svg"
 			class="w-11/12 place-self-center hidden lg:block"
@@ -16,7 +16,7 @@
 			class="w-9/12 place-self-start hidden md:block"
 			alt="A piece of police data being distributed to several people."
 		/>
-		<GridItem component="div" :span-column="3">
+		<div class="col-span-full">
 			<p>
 				We <strong>locate, describe, and share</strong> sources of data about police agencies across
 				the United States, which are
@@ -32,8 +32,8 @@
 				response, we facilitate local research and organizing to keep the data in context. The goal
 				is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
 			</p>
-		</GridItem>
-		<GridItem component="div" :span-column="3">
+		</div>
+		<div class="col-span-full">
 			<p>
 				<a href="https://data-sources.pdap.io">
 					<i class="fa fa-external-link"></i> Search our database
@@ -52,29 +52,29 @@
 				</a>
 				if you have something to share.
 			</p>
-		</GridItem>
-		<GridItem component="div" class="loading-shimmer h-48 bg-neutral-500" :span-column="3">
+		</div>
+		<div class="col-span-full loading-shimmer h-48 bg-neutral-500">
 			<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
 			<p>
 				Our database currently documents data sources from <br>
 				<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia.
 			</p>
 			<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
-		</GridItem>
-	</GridContainer>
-	<GridContainer class="px-4 md:px-8 mb-12" component="section" :columns="2">
-		<GridItem component="h2" :span-column="2">
+		</div>
+	</section>
+	<section class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
+		<h2 class="col-span-full">
 			Other things we're building with data
-		</GridItem>
-		<GridItem component="div">
+		</h2>
+		<div>
 			We create <a href="https://github.com/Police-Data-Accessibility-Project/automatic-archives">automatic archives</a> of 
 			data sources, so they are not lost to time and poor data retention policies. Fragile URLs are turned into lasting resources for future use. 
-		</GridItem>
-		<GridItem component="div">
+		</div>
+		<div>
 			We're <a href="https://github.com/Police-Data-Accessibility-Project/data-source-map">mapping what is available</a> in each jurisdiction, and advocating for transparency.
 			What kinds of research are possible? What does model transparency look like?
-		</GridItem>
-	</GridContainer>
+		</div>
+	</section>
 </template>
 
 <script>

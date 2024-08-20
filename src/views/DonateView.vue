@@ -1,10 +1,10 @@
 <template>
-	<GridContainer class="px-4 md:px-8 mb-12" component="section" :columns="2">
-		<GridItem component="h1" :span-column="2">Donate to PDAP</GridItem>
-		<GridItem component="p" :span-column="2"
-			>Thank you for your interest in helping our mission!</GridItem
+	<section class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
+		<h1 class="col-span-full">Donate to PDAP</h1>
+		<p class="col-span-full"
+			>Thank you for your interest in helping our mission!</p
 		>
-		<GridItem component="div" class="text-lg">
+		<div class="text-lg">
 				<iframe
 					src="https://donorbox.org/embed/pdap"
 					name="donorbox"
@@ -27,9 +27,9 @@
 				If your employer offers a donation match, submit your receipt to your employer and have
 				them reach out to <a href="mailto:operations@pdap.io">operations@pdap.io</a>.
 			</p>
-		</GridItem>
-		<GridItem component="FlexContainer" class="text-lg">
-			<h3 class="mt-0">We can't fix what we can't measure.</h3>
+		</div>
+		<div class="pdap-flex-container text-lg" style="padding:0 32 32 32">
+			<h3>We can't fix what we can't measure.</h3>
 			<p>
 				The ability of the criminal legal system to impact people's lives demands a higher 
 				degree of scrutiny regarding its fairness. 
@@ -81,8 +81,8 @@
 					Sharing best practices for publishing data with people who work in local government.
 				</li>
 			</ul>
-		</GridItem>
-	</GridContainer>
+		</div>
+	</section>
 </template>
 
 <script>

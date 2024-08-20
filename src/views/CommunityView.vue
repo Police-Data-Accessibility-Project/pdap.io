@@ -1,5 +1,5 @@
 <template>
-	<section class="pdap-grid-container  px-4 md:px-8">
+	<section class="pdap-grid-container px-4 md:px-8">
 		<h1 class="col-span-full">Join our community</h1>
 			<div class="col-span-full">
 			<p>
@@ -53,7 +53,7 @@
 				</div>
 			</form>
 		</div>
-		<h1 class="col-span-full">Volunteer for data requests</h1>
+		<h1 class="col-span-full mt-0">Volunteer for data requests</h1>
 		<div class="col-span-full">
 			<p>
 				Most data requests are for help <strong>answering questions about local police systems.</strong> 

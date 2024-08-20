@@ -1,5 +1,5 @@
 <template>
-	<FlexContainer class="px-4 md:px-8 mb-12" component="section">
+	<section class="pdap-grid-container px-4 md:px-8 mb-12">
 		<div class="container">
 			<div>
 				<h1>Jobs at PDAP</h1>
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 		</div>
-	</FlexContainer>
+	</section>
 </template>
 
 <script>
