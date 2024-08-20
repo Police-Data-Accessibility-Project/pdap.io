@@ -1,7 +1,7 @@
 <template>
-	<GridContainer class="px-4 md:px-8" component="section" :columns="3">
-		<GridItem component="h1" :span-column="3">Join our community</GridItem>
-		<GridItem :span-column="3">
+	<section class="pdap-grid-container  px-4 md:px-8">
+		<h1 class="col-span-full">Join our community</h1>
+			<div class="col-span-full">
 			<p>
 				To find collaborators or ask questions, join us in
 				<a href="https://discord.gg/wMqex8nKZJ">Discord</a> 
@@ -52,9 +52,9 @@
 					</button>
 				</div>
 			</form>
-		</GridItem>
-		<GridItem component="h1" :span-column="3">Volunteer for data requests</GridItem>
-		<GridItem component="div" :span-column="3">
+		</div>
+		<h1 class="col-span-full">Volunteer for data requests</h1>
+		<div class="col-span-full">
 			<p>
 				Most data requests are for help <strong>answering questions about local police systems.</strong> 
 				They usually come to us 
@@ -67,27 +67,29 @@
 				<a href="mailto:operations@pdap.io">
 						operations@pdap.io</a>.
 			</p>
+		</div>
+		<div class="col-span-full">
 			<h2><i class="fa fa-code-fork"></i> Merged Pull Requests</h2>
 				<p>We have merged <strong>{{ mergeCount }} pull requests</strong> across <strong>{{ repoCount }} repositories</strong>.</p>
 				<a href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1">
 					<i class="fa fa-external-link"></i> Good first issues
 				</a>
-		</GridItem>
-		<GridItem class="text-xl hyphens-auto" lang="en">
+			</div>
+		<div class="text-xl hyphens-auto" lang="en">
 			<h3><i class="fa fa-map-o" aria-hidden="true"></i> Locate sources</h3>
 			<p>
 				Some public records are already online, waiting to be classified and used to answer questions.
 				You could find data sources to track, making it more accessible to everyone.
 			</p>
-		</GridItem>
-		<GridItem class="text-xl hyphens-auto" lang="en">
+		</div>
+		<div class="text-xl hyphens-auto" lang="en">
 			<h3><i class="fa fa-eye-slash"></i> Research</h3>
 			<p>
 				Many useful public records can't be easily found online. We work with local experts and request records from
 				relevant agencies, making it easier to answer important questions.
 			</p>
-		</GridItem>
-		<GridItem class="text-xl hyphens-auto" lang="en">
+		</div>
+		<div class="text-xl hyphens-auto" lang="en">
 			<h3><i class="fa fa-file-code-o"></i> Code</h3>
 			<p>
 				Everything you see is open source, built by a small team of volunteers and staff. 
@@ -96,15 +98,15 @@
 					Good First Issues
 				</a> in GitHub.
 			</p>
-		</GridItem>
-	</GridContainer>
-	<FlexContainer component="section" class="mb-12">
+		</div>
+	</section>
+	<section class="pdap-grid-container mb-12">
 		<p>
 			This work is multidisciplinary, and beginner-friendly.
 			No matter what your level of experience, you can be a valuable contributor! 
 			The two most important skills are <strong>collaboration</strong> and <strong>persistence</strong>.
 		</p>
-	</FlexContainer>
+	</section>
 </template>
 
 <script>
