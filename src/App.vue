@@ -79,10 +79,6 @@ body {
 	overflow: auto;
 }
 
-/* h1, h2, h3 {
-    margin:0;
-} */
-
 .pdap-grid-container{
 	padding: 32px;
 }
@@ -90,4 +86,8 @@ body {
 .pdap-grid-container-columns-2{
 	grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
 }
+.loading-shimmer{
+	/* animation-duration: 500ms; */
+}
+
 </style>

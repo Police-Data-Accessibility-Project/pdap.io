@@ -53,14 +53,28 @@
 				if you have something to share.
 			</p>
 		</div>
-		<div class="col-span-full loading-shimmer h-48 bg-neutral-500">
-			<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
-			<p>
-				Our database currently documents data sources from <br>
-				<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia.
-			</p>
-			<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
-		</div>
+		<Suspense>
+			<template #default>
+				<div class="col-span-full">
+					<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
+					<p>
+						Our database currently documents data sources from <br>
+					    <strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia.
+					</p>
+					<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
+				</div>
+			</template>
+			<template #fallback>
+				<div class="col-span-full loading-shimmer h-48 bg-neutral-500">
+					<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
+					<p>
+						Our database currently documents data sources from <br>
+						<!-- <strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia. -->
+					</p>
+					<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
+				</div>
+			</template>
+	</Suspense>
 	</section>
 	<section class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
 		<h2 class="col-span-full">
@@ -78,8 +92,7 @@
 </template>
 
 <script>
-// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
-import HelpTextIcon from '../components/HelpTextIcon.vue';
+import { ref } from 'vue'
 
 const baseUrl = "https://data-sources.pdap.io/api/";
 const api_key = import.meta.env.VITE_PDAP_API_KEY;
@@ -89,55 +102,63 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
-export default {
-	name: 'DataView',
-	// components: {
-	// 	FlexContainer,
-	// 	GridContainer,
-	// 	GridItem,
-	// 	HelpTextIcon,
-	// },
-	data: () => ({
-		agenciesCount: 0,
-		countiesCount: 0,
-		statesCount: 0,
-	}),
-	mounted: async function(){
+const loadData = async () => {
+    return new Promise(async (resolve) => {
+		let tempAgencyCount = 1;
+		let page = 1;
+		let states = [];
+		let counties = [];
+		let agencies =[];
+
+		while (tempAgencyCount !== 0) {
+			const tempAgencies = await (await fetch(`${baseUrl}agencies/${page}`, {
+				method: 'GET',
+				headers: headers,
+			})).json();
 			
-			let tempAgencyCount = 1;
-			let page = 1;
-			let states = [];
-			let counties = [];
-			let agencies =[];
-
-			while (tempAgencyCount !== 0) {
-				const tempAgencies = await (await fetch(`${baseUrl}agencies/${page}`, {
-					method: 'GET',
-					headers: headers,
-				})).json();
-
-				for (const entry of tempAgencies.data){
-					if (entry.count_data_sources > 0){
-						const tempAgency = entry.name;
-						if (!agencies.includes(tempAgency)) {
-							agencies.push(tempAgency);
-						}
-						const tempState = entry.state_iso;
-						if (!states.includes(tempState)) {
-							states.push(tempState);
-						}
-						const tempCounty = entry.county_fips;
-						if (!counties.includes(tempCounty)) {
-							counties.push(tempCounty);
-						}
+			for (const entry of tempAgencies.data){
+				if (entry.count_data_sources > 0){
+					const tempAgency = entry.name;
+					if (!agencies.includes(tempAgency)) {
+						agencies.push(tempAgency);
+					}
+					const tempState = entry.state_iso;
+					if (!states.includes(tempState)) {
+						states.push(tempState);
+					}
+					const tempCounty = entry.county_fips;
+					if (!counties.includes(tempCounty)) {
+						counties.push(tempCounty);
 					}
 				}
-				page += 1; 
-				tempAgencyCount = tempAgencies.count;
 			}
-			this.statesCount = states.length-2;
-			this.countiesCount = counties.length;
-			this.agenciesCount = agencies.length;
-		},
+		page += 1; 
+		tempAgencyCount = tempAgencies.count;
+		}
+		// this.statesCount = states.length-2;
+		// this.countiesCount = counties.length;
+		// this.agenciesCount = agencies.length;
+		resolve({
+			statesCount: states.length-2,
+			countiesCount: counties.length,
+			agenciesCount: agencies.length,
+		})
+    })
+}
+
+export default {
+	name: 'DataView',
+	// data: () => ({
+	// 	agenciesCount: undefined,
+	// 	countiesCount: undefined,
+	// 	statesCount: undefined,
+	// }),
+	// mounted: 
+	async function(){
+		const userData = ref(await loadData())
+		this.agenciesCount = userData.value.agenciesCount;
+		this.countiesCount = userData.value.countiesCount;
+		this.statesCount= userData.value.statesCount;
+	},
 	};
 </script>
