@@ -33,7 +33,7 @@
 				is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
 			</p>
 		</GridItem>
-		<GridItem component="div" class="mb-12" :span-column="3">
+		<GridItem component="div" :span-column="3">
 			<p>
 				<a href="https://data-sources.pdap.io">
 					<i class="fa fa-external-link"></i> Search our database
@@ -52,6 +52,19 @@
 				</a>
 				if you have something to share.
 			</p>
+		</GridItem>
+	</GridContainer>
+	<GridContainer class="px-4 md:px-8 mb-12" component="section" :columns="2">
+		<GridItem component="h2" :span-column="2">
+			Other things we're building with data
+		</GridItem>
+		<GridItem component="div">
+			We create <a href="https://github.com/Police-Data-Accessibility-Project/automatic-archives">automatic archives</a> of 
+			data sources, so they are not lost to time and poor data retention policies. Fragile URLs are turned into lasting resources for future use. 
+		</GridItem>
+		<GridItem component="div">
+			We're <a href="https://github.com/Police-Data-Accessibility-Project/data-source-map">mapping what is available</a> in each jurisdiction, and advocating for transparency.
+			What kinds of research are possible? What does model transparency look like?
 		</GridItem>
 	</GridContainer>
 </template>

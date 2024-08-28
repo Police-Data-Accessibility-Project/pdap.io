@@ -74,7 +74,7 @@
 			<p>85% goes toward our program.</p>
 			<p>15% goes toward operations.</p>
 			<h3>How we spend our time</h3>
-			<ul>
+			<ul class="list-disc list-inside">
 				<li>Helping people find data and answer questions about local criminal legal systems.</li>
 				<li>Connecting skilled volunteers and collaborators with impactful projects.</li>
 				<li>

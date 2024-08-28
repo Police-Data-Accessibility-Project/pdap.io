@@ -2,12 +2,18 @@
 	<GridContainer class="px-4 md:px-8" component="section" :columns="2">
 		<GridItem :span-column="2">
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
-				We use public data to document our&nbsp;police systems.
+				We help people use public data for police oversight.
 			</h1>
 			<p>
-				Our <a href="/community">community</a> collects data about legal systems because their
-				<strong>power to impact people</strong> demands a
-				<strong>higher degree of&nbsp;oversight.</strong>
+				We collect data about legal systems because their
+				<strong>power to impact people</strong> demands the
+				<strong>highest degree of transparency.</strong>
+			</p>
+			<p>
+				If you have a question to answer, we can help. 
+				 <a href="https://airtable.com/shrbFfWk6fjzGnNsk">
+					Make a request <i class="fa fa-external-link"></i>
+				</a>
 			</p>
 		</GridItem>
 		<GridItem class="border-2 border-brand-gold p-4 md:p-6" :span-column="2">
