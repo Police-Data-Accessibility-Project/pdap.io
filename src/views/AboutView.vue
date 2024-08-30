@@ -27,6 +27,9 @@
 				Our Executive Director is
 				<a href="https://www.linkedin.com/in/josh-chamberlain/">Josh Chamberlain</a>.
 			</p>
+			<p>
+				Our Lead Software Engineer is <a href="https://www.linkedin.com/in/maxachis/">Max Chis</a>.
+			</p>
 		</GridItem>
 		<GridItem component="FlexContainer" :span-column="1">
 			<h2>Funding</h2>
