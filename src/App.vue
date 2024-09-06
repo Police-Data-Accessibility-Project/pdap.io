@@ -90,4 +90,8 @@ body {
 	/* animation-duration: 500ms; */
 }
 
+h3{
+	margin-top: 0px;
+}
+
 </style>

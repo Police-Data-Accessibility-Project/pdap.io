@@ -42,11 +42,13 @@
 						type="submit" 
 						class="pdap-button-primary h-[max-content]" 
 						value="Sign up" 
+						style="margin:0px 4px 0px 4px;"
 					/>
 					<button
 						class="pdap-button-secondary h-[max-content]"
 						value="Archives"
 						onclick="window.open('https://newsletter.pdap.io/archive', '_blank')"
+						style="margin:0px 4px 0px 4px;"
 					>
 						View archives
 					</button>

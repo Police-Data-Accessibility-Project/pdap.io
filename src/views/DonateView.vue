@@ -17,11 +17,13 @@
 					width="100%"
 				></iframe>
 				<p>PDAP is a non-profit, so your donations may be tax deductible.</p>
+				<br>
 				<h3>Send a check</h3>
 			<p>
 				Police Data Accessibility Project Inc. <br />239 Fourth Avenue, Suite 1401 #3180
 				<br />Pittsburgh, PA 15222
 			</p>
+			<br>
 			<h3>Donation match</h3>
 			<p>
 				If your employer offers a donation match, submit your receipt to your employer and have
@@ -40,6 +42,7 @@
 				This is the foundation of any research, advocacy, journalism, accountability, 
 				or reform.
 			</p>
+			<br>
 			<h3>Testimonials</h3>
 			<div class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
 				<p>
@@ -70,9 +73,11 @@
 					&mdash;<a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>, UC Berkeley
 				</p>
 			</div>
+			<br>
 			<h3>How we spend money</h3>
 			<p>85% goes toward our program.</p>
 			<p>15% goes toward operations.</p>
+			<br>
 			<h3>How we spend our time</h3>
 			<ul class="list-disc list-inside">
 				<li>Helping people find data and answer questions about local criminal legal systems.</li>
