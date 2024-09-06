@@ -1,13 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,css}",
-  ],
-  /* Avoid customizing the tailwind config of this app, and modify the design system instead. */
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+import { tailwindConfig } from "pdap-design-system";
 
+/** @type {import('tailwindcss').Config} */
+export default {
+	...tailwindConfig,
+	content: ["index.html", "src/**/*.{vue,js,css}"],
+	plugins: [],
+};
