@@ -3,8 +3,10 @@
 		<div class="container">
 			<div>
 				<h1>Jobs at PDAP</h1>
+				<br>
 				<h3>Open positions</h3>
 				<a href="#software-development-opportunities">Software development opportunities</a><br />
+				<br>
 				<h3>How to apply</h3>
 				<p>
 					Send an email to <a href="mailto:operations@pdap.io">operations@pdap.io</a>. Please
@@ -12,6 +14,7 @@
 					these.
 				</p>
 				<div class="text-lg">
+					<br>
 					<h3>Context</h3>
 					<p>
 						Our mission is to help people locate, understand, and share public records about every
@@ -22,6 +25,7 @@
 						years. We put down roots in Pittsburgh as a non-profit and received grant funding in
 						July of 2022. Our second funded year begins in July 2023.
 					</p>
+					<br>
 					<h3>Equal Opportunity Employment</h3>
 					<p>
 						We are an equal opportunity employer, and make hiring decisions based on merit. Valuing
@@ -51,21 +55,25 @@
 						seem like a good fit for your skills.
 					</p>
 					<p>When you apply, please let us know if you're interested in a particular project.</p>
+					<br>
 					<h3>Responsibilities</h3>
 					<div class="text-lg">
 						<ul class="list-disc list-inside">
 							<li>Submit code toward one or more of the issues on the roadmap.</li>
 							<li>Write tests for new code, and help with documentation.</li>
 						</ul>
+						<br>
 						<h3>Time commitment</h3>
 						<p>
 							We will agree on a schedule of work and check-ins which fits your availability for the
 							duration of each project.
 						</p>
+						<br>
 						<h3>Compensation</h3>
 						<p>
 							$25 per hour minimum, scaled based on experience and time commitment. Our annual budget for this work is $150,000&ndash;200,000.
 						</p>
+						<br>
 						<h3>Characteristics of strong applicants</h3>
 						<ul class="list-disc list-inside">
 							<li>Can exhibit basic knowledge of Python.</li>
@@ -81,12 +89,8 @@
 </template>
 
 <script>
-// import { FlexContainer } from 'pdap-design-system';
 
 export default {
 	name: 'JobsView',
-	// components: {
-	// 	FlexContainer,
-	// },
 };
 </script>
