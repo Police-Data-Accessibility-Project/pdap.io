@@ -85,14 +85,8 @@
 </template>
 
 <script>
-// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
 
 export default {
 	name: 'AboutView',
-	// components: {
-	// 	FlexContainer,
-	// 	GridContainer,
-	// 	GridItem,
-	// },
 };
 </script>

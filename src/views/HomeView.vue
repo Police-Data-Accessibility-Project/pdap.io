@@ -141,7 +141,6 @@
 </template>
 
 <script>
-// import { Button, Form, FlexContainer, GridContainer, GridItem, QuickSearchForm } from 'pdap-design-system';
 import { Button, Form, QuickSearchForm } from 'pdap-design-system';
 import { RouterLink } from 'vue-router';
 
@@ -157,9 +156,6 @@ export default {
 	components: {
     Button,
     Form,
-    // FlexContainer,
-    // GridContainer,
-    // GridItem,
     QuickSearchForm,
     RouterLink
 	},
@@ -170,7 +166,7 @@ export default {
 		: 'https://data-sources.pdap.dev'
 	}),
 	mounted: async function(){
-			const dataRequests = await (await fetch(`https://api.airtable.com/v0/app473MWXVJVaD7Es/Data%20Requests?filterByFormula=%28%7Brequest_status%7D%3D%27Complete%27%29`, { 
+			const dataRequests = await (await fetch(`https://api.airtable.com/v0/app473MWXVJVaD7Es/Data%20Requests?filterByFormula=%28%7Bstatus (deprecated)%7D%3D%27Complete%27%29`, { 
 				method: 'GET',
 				headers: headers
 			})
