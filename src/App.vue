@@ -87,7 +87,7 @@ body {
 	grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
 }
 .loading-shimmer{
-	/* animation-duration: 500ms; */
+	animation-duration: 800ms;
 }
 
 h3{

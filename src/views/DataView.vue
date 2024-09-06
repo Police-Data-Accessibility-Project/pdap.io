@@ -53,8 +53,8 @@
 				if you have something to share.
 			</p>
 		</div>
-		<Suspense>
-			<template #default>
+		<!-- <Suspense> -->
+			<template v-if="dataLoaded">
 				<div class="col-span-full">
 					<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
 					<p>
@@ -64,17 +64,17 @@
 					<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
 				</div>
 			</template>
-			<template #fallback>
-				<div class="col-span-full loading-shimmer h-48 bg-neutral-500">
+			<template v-if="!dataLoaded">
+				<div class="col-span-full loading-shimmer">
 					<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
 					<p>
 						Our database currently documents data sources from <br>
-						<!-- <strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong> and the District of Columbia. -->
+						<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong>.
 					</p>
 					<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
 				</div>
 			</template>
-	</Suspense>
+	<!-- </Suspense> -->
 	</section>
 	<section class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
 		<h2 class="col-span-full">
@@ -148,17 +148,19 @@ const loadData = async () => {
 
 export default {
 	name: 'DataView',
-	// data: () => ({
-	// 	agenciesCount: undefined,
-	// 	countiesCount: undefined,
-	// 	statesCount: undefined,
-	// }),
-	// mounted: 
+	data: () => ({
+		agenciesCount: undefined,
+		countiesCount: undefined,
+		statesCount: undefined,
+		dataLoaded: false,
+	}),
+	mounted: 
 	async function(){
 		const userData = ref(await loadData())
 		this.agenciesCount = userData.value.agenciesCount;
 		this.countiesCount = userData.value.countiesCount;
 		this.statesCount= userData.value.statesCount;
+		this.dataLoaded = true;
 	},
 	};
 </script>
