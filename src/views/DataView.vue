@@ -69,7 +69,7 @@
 					<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
 					<p>
 						Our database currently documents data sources from <br>
-						<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states </strong>.
+						<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across all <strong>{{ statesCount }} states</strong>.
 					</p>
 					<a href="https://data-sources.pdap.io"><i class="fa fa-external-link"></i> Explore the data</a>
 				</div>

@@ -43,6 +43,11 @@
 				or reform.
 			</p>
 			<br>
+			<h3>Our Donors</h3>
+			<p>
+				Received <strong>${{ amount }}</strong> from <strong>${{ donorCount }}</strong> donors since January 9, 2023.
+			</p>
+			<br>
 			<h3>Testimonials</h3>
 			<div class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
 				<p>
@@ -91,15 +96,26 @@
 </template>
 
 <script>
-// import { FlexContainer, GridContainer, GridItem } from 'pdap-design-system';
+
+const donorbox_api_key = import.meta.env.VITE_DONORBOX_API_KEY;
+
 
 export default {
 	name: 'DonateView',
-	// components: {
-	// 	FlexContainer,
-	// 	GridContainer,
-	// 	GridItem,
-	// },
+	// TODO: finish donorbox API connection
+	// data: () => ({
+	// 	amount: 0,
+	// 	donorCount: 0,
+	// }),
+	// mounted: async function(){
+	// 		const dataRequests = await (await fetch(`https://donorbox.org/pdap/`, { 
+	// 			method: 'GET',
+	// 			headers: headers
+	// 		})
+	// 		).json();
+	// 		console.log(dataRequests)
+	// 		this.requests = dataRequests.records.length;
+	// 	},
 };
 </script>
 
