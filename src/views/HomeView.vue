@@ -101,7 +101,7 @@
 		<h2 class="col-span-full">
 			<i class="fa fa-sitemap"></i> Consolidating records about the Allegheny County Jail
 		</h2>
-		<p>
+		<p class="col-span-full">
 			This facility has faced mounting scrutiny, and we have helped answer several questions:
 		</p>
 		<p class="border-l-2 border-brand-wine/20 pl-4 italic">
