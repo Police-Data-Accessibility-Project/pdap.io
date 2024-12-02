@@ -31,6 +31,11 @@
 			</p>
 		</div>
 		<div class="pdap-flex-container col-span-full" >
+			<p>
+				Our Lead Software Engineer is <a href="https://www.linkedin.com/in/maxachis/">Max Chis</a>.
+			</p>
+		</GridItem>
+		<GridItem component="FlexContainer" :span-column="1">
 			<h2>Funding</h2>
 			<p>
 				We are proud to receive generous support from
