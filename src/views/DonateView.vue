@@ -5,17 +5,22 @@
 			>Thank you for your interest in helping our mission!</p
 		>
 		<div class="text-lg">
-				<iframe
-					src="https://donorbox.org/embed/pdap"
-					name="donorbox"
-					allowpaymentrequest="allowpaymentrequest"
-					seamless
-					frameborder="0"
-					scrolling="no"
-					ref="iframe"
-					height="700px"
-					width="100%"
-				></iframe>
+			<script src="https://donorbox.org/widget.js" paypalExpress="false">
+			</script>
+			<iframe 
+				src="https://donorbox.org/embed/2025-general-support?default_interval=o" 
+				name="donorbox" 
+				allowpaymentrequest="allowpaymentrequest" 
+				seamless="seamless" 
+				frameborder="0" 
+				scrolling="no" 
+				height="700px" 
+				width="100%" 
+				style="max-width: 500px; 
+				min-width: 310px; 
+				max-height:none!important" 
+				allow="payment">
+			</iframe>
 				<p>PDAP is a non-profit, so your donations may be tax deductible.</p>
 				<br>
 				<h3>Send a check</h3>
