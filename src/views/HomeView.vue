@@ -104,7 +104,6 @@
 		<p>
 			This facility has faced mounting scrutiny, and we have helped answer several questions:
 		</p>
-		<GridItem component="div"></GridItem>
 		<p class="border-l-2 border-brand-wine/20 pl-4 italic">
 			How many people are in jail because they cannot afford bail?
 		</p>
