@@ -4,6 +4,7 @@
 		<p class="col-span-full"
 			>Thank you for your interest in helping our mission!</p
 		>
+		<h2 class="col-span-full">2025 General Support fund</h2>
 		<div class="text-lg">
 			<script src="https://donorbox.org/widget.js" paypalExpress="false">
 			</script>
@@ -14,7 +15,7 @@
 				seamless="seamless" 
 				frameborder="0" 
 				scrolling="no" 
-				height="700px" 
+				height="900px" 
 				width="100%" 
 				style="max-width: 500px; 
 				min-width: 310px; 
