@@ -6,8 +6,6 @@
 		>
 		<h2 class="col-span-full">2025 General Support fund</h2>
 		<div class="text-lg">
-			<script src="https://donorbox.org/widget.js" paypalExpress="false">
-			</script>
 			<iframe 
 				src="https://donorbox.org/embed/2025-general-support?default_interval=o" 
 				name="donorbox" 
@@ -104,24 +102,43 @@
 <script>
 
 const donorbox_api_key = import.meta.env.VITE_DONORBOX_API_KEY;
-
+const donorbox_email = import.meta.env.VITE_DONORBOX_EMAIL;
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${donorbox_api_key}`, // Assuming the API uses Bearer tokens
+};
 
 export default {
-	name: 'DonateView',
-	// TODO: finish donorbox API connection
-	// data: () => ({
-	// 	amount: 0,
-	// 	donorCount: 0,
-	// }),
-	// mounted: async function(){
-	// 		const dataRequests = await (await fetch(`https://donorbox.org/pdap/`, { 
-	// 			method: 'GET',
-	// 			headers: headers
-	// 		})
-	// 		).json();
-	// 		console.log(dataRequests)
-	// 		this.requests = dataRequests.records.length;
-	// 	},
+  name: "DonateView",
+  data: () => ({
+    amount: 0,
+    donorCount: 0,
+  }),
+  mounted: async function () {
+    try {
+      const response = await fetch("https://donorbox.org/api/v1/donations", {
+        method: "GET",
+        headers: {
+          Authorization: `Basic ${btoa(`${donorbox_email}:${donorbox_api_key}`)}`, // Encode email and API key
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("API error:", response.status, response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      console.log(data); // Debugging: Inspect the API response
+
+      // Replace these keys with actual ones from the API response
+      this.amount = data.total_donations || 0;
+      this.donorCount = data.total_donors || 0;
+    } catch (error) {
+      console.error("Error fetching donation data:", error);
+    }
+  },
 };
 </script>
 
