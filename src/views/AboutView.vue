@@ -62,8 +62,8 @@
 			>
 			in our docs.</p>
 			<p>
-				We are not creating a massive, interoperable database. 
-				This is a defense mechanism against aggregating data about criminalized people.
+				We are not creating a big interoperable database of data about criminalized people.
+				Data stays in its local context. It is made more accessible through documentation and location, not aggregation.
 			</p>
 		</div>
 		<h3>Who is this data for?<br /></h3>
