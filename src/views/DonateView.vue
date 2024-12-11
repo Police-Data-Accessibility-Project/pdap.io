@@ -94,13 +94,7 @@
 </template>
 
 <script>
-
-const donorbox_api_key = import.meta.env.VITE_DONORBOX_API_KEY;
-const donorbox_email = import.meta.env.VITE_DONORBOX_EMAIL;
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${donorbox_api_key}`, // Assuming the API uses Bearer tokens
-};
+import axios from 'axios';
 
 export default {
   name: "DonateView",
@@ -109,14 +103,21 @@ export default {
     donorCount: 0,
   }),
   mounted: async function () {
-    try {
-      const response = await fetch("https://donorbox.org/api/v1/donations", {
-        method: "GET",
-        headers: {
-          Authorization: `Basic ${btoa(`${donorbox_email}:${donorbox_api_key}`)}`, // Encode email and API key
-          "Content-Type": "application/json",
-        },
-      });
+		const donorbox_api_key = import.meta.env.VITE_DONORBOX_API_KEY;
+		const donorbox_email = import.meta.env.VITE_DONORBOX_EMAIL;
+		const headers = {
+			"Content-Type": "application/json",
+			Authorization: `Basic ${btoa(donorbox_email + ':' + donorbox_api_key)}`
+		};
+
+		try {
+			const response = await axios.get(`https://thingproxy.freeboard.io/fetch/https://donorbox.org/api/v1/donations`, {
+				headers
+			}).then(response => {
+				console.debug({response})
+			})
+
+			
 
       if (!response.ok) {
         console.error("API error:", response.status, response.statusText);
