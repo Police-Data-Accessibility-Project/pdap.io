@@ -20,7 +20,7 @@
 			<QuickSearchForm :baseUrlForRedirect="baseUrlForRedirect" />
 		</div>
 	</section>
-	<section class="pdap-grid-container">
+	<!-- <section class="pdap-grid-container">
 		<div class="col-span-full">
 		<h2><i class="fa fa-check-square-o"></i> Completed Data Requests</h2>
 		<p>Completed <strong> {{ requests }} data requests</strong> since January 9, 2023.</p>
@@ -28,7 +28,7 @@
 			<i class="fa fa-external-link"></i> Make a request
 		</a>
 	</div>
-	</section>
+	</section> -->
 	<section class="pdap-grid-container">
 		<div class="col-span-full">
 		<h1>Case studies</h1>
