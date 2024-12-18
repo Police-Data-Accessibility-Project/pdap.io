@@ -74,10 +74,6 @@
 					&mdash;<a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>, UC Berkeley
 				</p>
 			</div>
-			<h3 class="pt-4">Our Donors</h3>
-			<p>
-				We have received <strong>${{ amount }}</strong> from <strong>${{ donorCount }}</strong> individual donors since January 9, 2023.
-			</p>
 			<h3 class="pt-4">How we spend money</h3>
 			<p>85% goes toward our program.</p>
 			<p>15% goes toward operations.</p>
@@ -92,49 +88,6 @@
 		</div>
 	</section>
 </template>
-
-<script>
-
-const donorbox_api_key = import.meta.env.VITE_DONORBOX_API_KEY;
-const donorbox_email = import.meta.env.VITE_DONORBOX_EMAIL;
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${donorbox_api_key}`, // Assuming the API uses Bearer tokens
-};
-
-export default {
-  name: "DonateView",
-  data: () => ({
-    amount: 0,
-    donorCount: 0,
-  }),
-  mounted: async function () {
-    try {
-      const response = await fetch("https://donorbox.org/api/v1/donations", {
-        method: "GET",
-        headers: {
-          Authorization: `Basic ${btoa(`${donorbox_email}:${donorbox_api_key}`)}`, // Encode email and API key
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        console.error("API error:", response.status, response.statusText);
-        return;
-      }
-
-      const data = await response.json();
-      console.log(data); // Debugging: Inspect the API response
-
-      // Replace these keys with actual ones from the API response
-      this.amount = data.total_donations || 0;
-      this.donorCount = data.total_donors || 0;
-    } catch (error) {
-      console.error("Error fetching donation data:", error);
-    }
-  },
-};
-</script>
 
 <style scoped>
 h3.pdap-grid-item {
