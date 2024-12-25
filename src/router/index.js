@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AboutView from '@/views/AboutView.vue';
-import DataView from '@/views/DataView.vue';
 import DonateView from '@/views/DonateView.vue';
 import HomeView from '@/views/HomeView.vue';
 import JobsView from '@/views/JobsView.vue';
@@ -23,11 +22,6 @@ const router = createRouter({
 			path: '/donate',
 			name: 'donate',
 			component: DonateView,
-		},
-		{
-			path: '/data',
-			name: 'data',
-			component: DataView,
 		},
 		{
 			path: '/jobs',
