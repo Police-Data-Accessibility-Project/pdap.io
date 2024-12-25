@@ -1,14 +1,38 @@
 <template>
 	<section class="pdap-grid-container px-4 md:px-8">
+		<div class="col-span-full border-2 border-brand-gold p-4 md:p-6">
+			<QuickSearchForm :baseUrlForRedirect="baseUrlForRedirect" />
+		</div>
+		<template v-if="dataLoaded">
+			<div class="col-span-full">
+				<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
+				<p>
+					Our database currently documents data sources from <br>
+					<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across <strong>{{ statesCount }} states </strong> and the District of Columbia.
+				</p>
+			</div>
+		</template>
+		<template v-if="!dataLoaded">
+			<div class="col-span-full">
+				<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
+				<p>
+					Our database currently documents data sources from agencies 
+					in hundreds of counties across all 50 states and the 
+					District of Columbia.
+				</p>
+			</div>
+		</template>
+	</section>
+	<section class="pdap-grid-container">
 		<div class="col-span-full"> 
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
-				We help people use public data for police oversight.
+				Find collaborators
 			</h1>
 			<p>
-				We collect data about legal systems because their
-				<strong>power to impact people</strong> demands the
-				<strong>highest degree of transparency.</strong>
+				In addition to our database, we are a place for people to find collaborators 
+				on analysis and collection projects.
 			</p>
+			<p>Our community has completed <strong> {{ requests }} data requests</strong> since January 9, 2023.</p>
 			<p>
 				If you have a question to answer, we can help. 
 				 <a href="https://airtable.com/shrbFfWk6fjzGnNsk">
@@ -16,19 +40,64 @@
 				</a>
 			</p>
 		</div>
-		<div class="col-span-full border-2 border-brand-gold p-4 md:p-6">
-			<QuickSearchForm :baseUrlForRedirect="baseUrlForRedirect" />
+		<div class="col-span-full">
+			<h2><i class="fa fa-check-square-o"></i> Completed Data Requests</h2>
+	</div>
+	</section>
+	<section class="pdap-grid-container">
+		<div class="col-span-full">
+			<h2>Strategy</h2>
+			<p>
+				We <strong>locate, describe, and share</strong> sources of data about police agencies across
+				the United States, which are
+				<a
+					href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States"
+					target="blank"
+				>
+					generally public&nbsp;record.</a
+				>
+			</p>
+			<p>
+				We collect data about police systems because their
+				<strong>power to impact people</strong> demands the
+				<strong>highest degree of transparency.</strong>
+			</p>
+			<p>
+				Criminal legal systems in the United States are decentralized, and managed locally. 
+				In response, we facilitate local research and organizing to keep the data in context. The goal
+				is a <strong>relevant</strong> database, and <strong>impactful</strong> open-source tools.
+			</p>
+		</div>
+		<div class="col-span-full">
+			<p>
+				<a href="https://data-sources.pdap.io">
+					<i class="fa fa-external-link"></i> Search our database
+				</a>
+				to see if anything interests you.
+			</p>
+			<p>
+				<a href="https://airtable.com/shrbFfWk6fjzGnNsk">
+					<i class="fa fa-external-link"></i> Make a request
+				</a>
+				to get help or find collaborators.
+			</p>
+			<p>
+				<a href="https://airtable.com/app473MWXVJVaD7Es/shrJafakrcmTxHU2i">
+					<i class="fa fa-external-link"></i> Submit data
+				</a>
+				if you have something to share.
+			</p>
 		</div>
 	</section>
-	<!-- <section class="pdap-grid-container">
-		<div class="col-span-full">
-		<h2><i class="fa fa-check-square-o"></i> Completed Data Requests</h2>
-		<p>Completed <strong> {{ requests }} data requests</strong> since January 9, 2023.</p>
-		<a href="https://airtable.com/shrbFfWk6fjzGnNsk">
-			<i class="fa fa-external-link"></i> Make a request
-		</a>
-	</div>
-	</section> -->
+	<section class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
+		<h2 class="col-span-full">
+			Other things we're building with data
+		</h2>
+		<div>
+			We create <a href="https://github.com/Police-Data-Accessibility-Project/automatic-archives">automatic archives</a> of 
+			data sources, so they are not lost to time and poor data retention policies. Fragile URLs are turned into lasting resources for future use. 
+		</div>
+	</section>
 	<section class="pdap-grid-container">
 		<div class="col-span-full">
 		<h1>Case studies</h1>
@@ -142,35 +211,132 @@
 <script>
 import { Button, Form, QuickSearchForm } from 'pdap-design-system';
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
 
+// Airtable API Configuration
 const airtable_api_key = import.meta.env.VITE_AIRTABLE_API_KEY;
+const airtableHeaders = {
+  Authorization: `Bearer ${airtable_api_key}`,
+  'Content-Type': 'application/json',
+};
 
-const headers = {
-  'Authorization': `Bearer ${airtable_api_key}`,
-  'Content-Type': 'application/json'
+// PDAP API Configuration
+const baseUrl = "https://data-sources.pdap.io/api/";
+const api_key = import.meta.env.VITE_PDAP_API_KEY;
+const pdapHeaders = {
+  Authorization: `Bearer ${api_key}`,
+  'Content-Type': 'application/json',
+};
+
+// Load PDAP Data Function
+const loadData = async () => {
+  return new Promise(async (resolve) => {
+    let tempAgencyCount = 1;
+    let page = 1;
+    let states = [];
+    let counties = [];
+    let agencies = [];
+
+    while (tempAgencyCount !== 0) {
+      const tempAgencies = await (
+        await fetch(`${baseUrl}agencies/${page}`, {
+          method: 'GET',
+          headers: pdapHeaders,
+        })
+      ).json();
+
+      for (const entry of tempAgencies.data) {
+        if (entry.count_data_sources > 0) {
+          const tempAgency = entry.name;
+          if (!agencies.includes(tempAgency)) {
+            agencies.push(tempAgency);
+          }
+          const tempState = entry.state_iso;
+          if (!states.includes(tempState)) {
+            states.push(tempState);
+          }
+          const tempCounty = entry.county_fips;
+          if (!counties.includes(tempCounty)) {
+            counties.push(tempCounty);
+          }
+        }
+      }
+      page += 1;
+      tempAgencyCount = tempAgencies.count;
+    }
+
+    resolve({
+      statesCount: states.length - 2,
+      countiesCount: counties.length,
+      agenciesCount: agencies.length,
+    });
+  });
 };
 
 export default {
-	name: 'HomeView',
-	components: {
+  name: 'HomeView',
+  components: {
     Button,
     Form,
     QuickSearchForm,
-    RouterLink
-	},
-	data: () => ({
-		requests: 0,
-		baseUrlForRedirect: import.meta.env.MODE === 'production' 
-		? 'https://data-sources.pdap.io' 
-		: 'https://data-sources.pdap.dev'
-	}),
-	mounted: async function(){
-			const dataRequests = await (await fetch(`https://api.airtable.com/v0/app473MWXVJVaD7Es/Data%20Requests?filterByFormula=%28%7Bstatus (deprecated)%7D%3D%27Complete%27%29`, { 
-				method: 'GET',
-				headers: headers
-			})
-			).json();
-			this.requests = dataRequests.records.length;
-		},
-	};
+    RouterLink,
+  },
+  data: () => ({
+    // Airtable Requests
+    requests: 0,
+
+    // GitHub Issues
+    issues: [],
+
+    // PDAP Data
+    agenciesCount: undefined,
+    countiesCount: undefined,
+    statesCount: undefined,
+    dataLoaded: false,
+
+    // Base URL for Redirect
+    baseUrlForRedirect:
+      import.meta.env.MODE === 'production'
+        ? 'https://data-sources.pdap.io'
+        : 'https://data-sources.pdap.dev',
+  }),
+  mounted: async function () {
+    // Fetch Airtable data requests
+    const dataRequests = await (
+      await fetch(
+        `https://api.airtable.com/v0/app473MWXVJVaD7Es/Data%20Requests?filterByFormula=%28%7Bstatus (deprecated)%7D%3D%27Complete%27%29`,
+        {
+          method: 'GET',
+          headers: airtableHeaders,
+        }
+      )
+    ).json();
+    this.requests = dataRequests.records.length;
+
+    // Fetch GitHub "good first issues"
+    const issues = await (
+      await fetch(
+        `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+is:issue+label:"good first issue"&per_page=6`
+      )
+    ).json();
+    this.issues = issues.items.map((issue) => {
+      const allowedTags = issue.labels.filter(
+        (label) => !['forbidden-tag-id', 'forbidden-tag-name'].includes(label.name)
+      );
+      return {
+        id: issue.id,
+        title: issue.title,
+        url: issue.html_url,
+        allowedTags: allowedTags,
+      };
+    });
+
+    // Fetch PDAP Data
+    const userData = ref(await loadData());
+    this.agenciesCount = userData.value.agenciesCount;
+    this.countiesCount = userData.value.countiesCount;
+    this.statesCount = userData.value.statesCount;
+    this.dataLoaded = true;
+  },
+};
 </script>

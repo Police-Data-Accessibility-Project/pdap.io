@@ -10,10 +10,6 @@ import lockup from 'pdap-design-system/images/lockup.svg';
 provide('navLinks', [
 	{
 		path: '/',
-		text: 'Home',
-	},
-	{
-		path: '/data',
 		text: 'Data',
 	},
 	{
