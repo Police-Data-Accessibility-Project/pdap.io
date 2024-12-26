@@ -1,31 +1,112 @@
-<!doctype html>
-<html lang="">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <title>Police Data Accessibility Project</title>
-  </head>
-  <body>
-    <noscript>
-      <strong
-        >We're sorry but this website doesn't work properly without JavaScript
-        enabled. Please enable it to continue.</strong
-      >
-    </noscript>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PDAP</title>
+		<link rel="icon" type="image/x-icon" href="./node_modules/pdap-design-system/public/images/favicon.png">
+		<meta
+			name="description"
+			content="Explore our database to see what kind of data is published about any police system in the United States. Find misconduct, budgets, and more."
+		/>
+		<meta
+			name="keywords"
+			content="police data, public records, open data, police transparency, police oversight"
+		/>
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<!-- schema.org -->
+		<script type="application/ld+json">
+			{
+				"@context": "http://schema.org",
+				"@type": "NGO",
+				"name": "Police Data Access Point",
+				"alternateName": "PDAP",
+				"description": "A web app for helping people find and use public data about police systems.",
+				"url": "https://pdap.io",
+				"sameAs": [
+					"https://www.guidestar.org/profile/85-4207132",
+					"https://www.linkedin.com/company/pdap/",
+					"https://github.com/Police-Data-Accessibility-Project"
+				],
+				"foundingDate": "2021",
+				"areaServed": "United States",
+				"purpose": "Access to public records and promoting transparency in policing.",
+				"contactPoint": [
+					{
+						"@type": "ContactPoint",
+						"email": "contact@pdap.io",
+						"contactType": "General Contact"
+					}
+				],
+				"knowsAbout": [
+					"public records",
+					"transparency",
+					"police",
+					"court",
+					"jail",
+					"legal system",
+					"scraping",
+					"FOIA"
+				]
+			}
+		</script>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100..900&display=swap" rel="stylesheet">
+		<link
+			href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-REKS6B95BL"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-REKS6B95BL');
+		</script>
+		<!-- Google ads tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11016541790"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'AW-11016541790');
+		</script>
+		<!-- Event snippet for newsletter signup conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+		<script>
+			function gtag_report_conversion(url) {
+				var callback = function () {
+					if (typeof url != 'undefined') {
+						window.location = url;
+					}
+				};
+				gtag('event', 'conversion', {
+					send_to: 'AW-11016541790/BTkiCN2cyoEYEN6sjIUp',
+					event_callback: callback,
+				});
+				return false;
+			}
+		</script>
+		<link
+			href="node_modules/pdap-design-system/system/images/favicon.png"
+			rel="shortcut icon"
+			type="image/x-icon"
+		/>
+		<link href="node_modules/pdap-design-system/system/images/webclip.gif" rel="apple-touch-icon" />
+	</head>
+	<body>
+		<div id="app"></div>
+		<script type="module" src="/src/main.js"></script>
+	</body>
 </html>
