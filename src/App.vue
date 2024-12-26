@@ -3,9 +3,6 @@ import { RouterView } from 'vue-router';
 import { Header, Footer } from 'pdap-design-system';
 import { provide } from 'vue';
 
-// Images needed at root
-import acronym from 'pdap-design-system/images/acronym.svg';
-
 provide('navLinks', [
 	{
 		path: '/',
