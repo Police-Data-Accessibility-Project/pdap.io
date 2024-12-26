@@ -26,13 +26,17 @@
 	<section class="pdap-grid-container">
 		<div class="col-span-full"> 
 			<h1 class="font-medium mt-0 text-4xl md:text-5xl md:leading-tight">
-				Find collaborators
+				Collaborate on data requests
 			</h1>
 			<p>
 				In addition to our database, we are a place for people to find collaborators 
 				on analysis and collection projects.
 			</p>
-			<p>Our community has completed <strong> {{ requests }} data requests</strong> since January 9, 2023.</p>
+			<p>Our community has completed 
+				<strong v-if="requests > 0"> {{ requests }} data requests</strong>
+				<strong v-else> over 100 data requests</strong>
+				since January 9, 2023.
+			</p>
 			<p>
 				If you have a question to answer, we can help. 
 				 <a href="https://airtable.com/shrbFfWk6fjzGnNsk">
@@ -40,9 +44,6 @@
 				</a>
 			</p>
 		</div>
-		<div class="col-span-full">
-			<h2><i class="fa fa-check-square-o"></i> Completed Data Requests</h2>
-	</div>
 	</section>
 	<section class="pdap-grid-container">
 		<div class="col-span-full">
