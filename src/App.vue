@@ -5,7 +5,6 @@ import { provide } from 'vue';
 
 // Images needed at root
 import acronym from 'pdap-design-system/images/acronym.svg';
-import lockup from 'pdap-design-system/images/lockup.svg';
 
 provide('navLinks', [
 	{
@@ -54,11 +53,11 @@ provide('footerLinks', [
 </script>
 
 <template>
-	<Header :logo-image-src="lockup" />
+	<Header />
 	<main>
 		<RouterView />
 	</main>
-	<Footer :logo-image-src="acronym" />
+	<Footer />
 </template>
 
 <style>
