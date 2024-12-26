@@ -27,3 +27,23 @@ In your terminal:
 ### Staging
 
 Merge into the `dev` branch, allow 5 minutes for the auto-deploy, and visit pdap.dev.
+
+### For local development: Add environment secrets
+
+Either add a `.env` file to your local root directory or manually export these secrets. Reach out to contact@pdap.io or make noise in Discord if you'd like access. 
+
+#### Sample `.env` file
+```
+# Local development
+#Airtable API key
+VITE_AIRTABLE_API_KEY=secret
+
+#PDAP data sources API key
+VITE_PDAP_API_KEY=secret
+```
+
+#### shell
+```
+export VITE_AIRTABLE_API_KEY=secret
+export VITE_PDAP_API_KEY=secret
+```

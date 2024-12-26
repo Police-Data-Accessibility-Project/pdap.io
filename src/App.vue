@@ -78,4 +78,20 @@ provide('footerLinks', [
 body {
 	overflow: auto;
 }
+
+.pdap-grid-container{
+	padding: 32px;
+}
+
+.pdap-grid-container-columns-2{
+	grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
+}
+.loading-shimmer{
+	animation-duration: 800ms;
+}
+
+h3{
+	margin-top: 0px;
+}
+
 </style>
