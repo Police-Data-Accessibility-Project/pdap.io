@@ -3,22 +3,10 @@ import { RouterView } from 'vue-router';
 import { Header, Footer } from 'pdap-design-system';
 import { provide } from 'vue';
 
-// Images needed at root
-import acronym from 'pdap-design-system/images/acronym.svg';
-import lockup from 'pdap-design-system/images/lockup.svg';
-
 provide('navLinks', [
 	{
 		path: '/',
-		text: 'Home',
-	},
-	{
-		path: '/data',
 		text: 'Data',
-	},
-	{
-		path: '/community',
-		text: 'Community',
 	},
 	{
 		path: '/about',
@@ -32,6 +20,10 @@ provide('navLinks', [
 		href: 'https://docs.pdap.io/',
 		text: 'Docs',
 	},
+	{
+		path: '/api',
+		text: 'API',
+	}
 ]);
 provide('footerLinks', [
 	{
@@ -58,11 +50,11 @@ provide('footerLinks', [
 </script>
 
 <template>
-	<Header :logo-image-src="lockup" />
+	<Header />
 	<main>
 		<RouterView />
 	</main>
-	<Footer :logo-image-src="acronym" />
+	<Footer />
 </template>
 
 <style>
