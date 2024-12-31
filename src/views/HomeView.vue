@@ -3,25 +3,72 @@
 		<div class="col-span-full border-2 border-brand-gold p-4 md:p-6">
 			<QuickSearchForm :baseUrlForRedirect="baseUrlForRedirect" />
 		</div>
-		<template v-if="dataLoaded">
-			<div class="col-span-full">
-				<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
-				<p>
-					Our database currently documents data sources from <br>
-					<strong>{{ agenciesCount }} agencies</strong> in <strong>{{ countiesCount }} counties</strong> across <strong>{{ statesCount }} states </strong> and the District of Columbia.
-				</p>
-			</div>
-		</template>
-		<template v-if="!dataLoaded">
-			<div class="col-span-full">
-				<h2><i class="fa fa-globe"></i> Geographic Coverage</h2>
-				<p>
-					Our database currently documents data sources from agencies 
-					in hundreds of counties across all 50 states and the 
-					District of Columbia.
-				</p>
-			</div>
-		</template>
+		<div class="col-span-full">
+			<h2>About the data</h2>
+			<p> We document Data Sources (<a href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source"><i class="fa fa-question-circle"></i></a>), places on the internet where public records can be found. 
+				Each one describes one of the ~20,000 agencies we have documented.</p>
+			<p v-if="dataLoaded">
+				Our database currently documents data sources from <br>
+				<strong>{{ agenciesCount }} agencies</strong> in 
+				<strong>{{ countiesCount }} counties</strong> across 
+				<strong>{{ statesCount }} states </strong> and the District of Columbia.
+				They are published by both government agencies and independent organizations.
+			</p>
+			<p v-else>
+				Our database currently documents data sources from agencies 
+				in hundreds of counties across all 50 states and the 
+				District of Columbia. They are published by both government agencies 
+				and independent organizations.
+			</p>
+		</div>
+	</section>
+	<section class="pdap-grid-container">
+		<h1 class="col-span-full">
+			Programs
+		</h1>
+		<div>
+			<img
+				src="/images/mapping.svg"
+				class="w-6/12 place-self-start md:w-10/12 md:place-self-center"
+				alt="A map scattered with icons representing different kinds of data."
+			/>
+			<p>Finding and cataloguing sources of data</p>
+			<button>Help label Data Sources</button>
+		</div>
+		<div>
+			<img
+					src="/images/searching.svg"
+					class="w-11/12 place-self-center hidden lg:block"
+					alt="An eye looking through a magnifying glass at a police website."
+			/>
+			<p>Project-based scraping and records requests</p>
+			<button>Improve access to data in your area</button>
+		</div>
+		<div>
+			<img
+				src="/images/sharing.svg"
+				class="w-9/12 place-self-start hidden md:block"
+				alt="A piece of police data being distributed to several people."
+			/>
+			<p>Connecting projects to data & resources</p>
+			<button>Open a Data Request</button>
+		</div>
+		<p class="col-span-full">
+			The problem we address is the inaccessibility of data about the systems 
+			with the greatest impact on our lives. 
+			Records which should be public are disorganized, 
+			scattered across obscure municipal websites, 
+			kept behind tedious request processes,
+			or not published at all.
+		</p>
+		<p class="col-span-full">
+			We envision a future where every person in the United States can easily 
+			access and understand well-documented public data about local police systems.
+			Police agencies will be reshaped by the demand for transparency, 
+			with leading communities setting positive examples for others to follow. 
+			Our impartial, open-source work will enable people to track data about 
+			any public system that impacts their community.
+		</p>
 	</section>
 	<section class="pdap-grid-container">
 		<div class="col-span-full"> 
