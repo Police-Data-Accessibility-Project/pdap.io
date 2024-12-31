@@ -9,10 +9,6 @@ provide('navLinks', [
 		text: 'Data',
 	},
 	{
-		path: '/community',
-		text: 'Community',
-	},
-	{
 		path: '/about',
 		text: 'About',
 	},
@@ -24,6 +20,10 @@ provide('navLinks', [
 		href: 'https://docs.pdap.io/',
 		text: 'Docs',
 	},
+	{
+		path: '/api',
+		text: 'API',
+	}
 ]);
 provide('footerLinks', [
 	{
