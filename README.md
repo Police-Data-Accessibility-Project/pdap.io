@@ -12,7 +12,7 @@ The web application for all things PDAP.
 VITE_API_KEY=key_from_pdap_staff
 VITE_API_URL=https://data-sources-v2.pdap.dev/api # Or 'https://data-sources-v2.pdap.dev/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
 
-# V2 feature flags - these are temporary. They should be set to "enabled" for development.
+# V2 feature flags - these are **temporary**. They should be set to "enabled" for development.
 VITE_V2_FEATURE_ENHANCED_SEARCH=enabled
 VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
@@ -34,6 +34,7 @@ npm i && npm run dev
 | -------------- | ----------------------------------------------------------------------------- |
 | `build`        | Builds the application in production mode                                     |
 | `serve`        | Serves the built assets. Requires `build` to be run first                     |
+| `format`       | Formats the codebase with `prettier`                                          |
 | `lint`         | Lints the codebase with `eslint`                                              |
 | `lint:fix`     | Lints the codebase with `eslint` and applies a fix for any issues if possible |
 | `test`         | Runs unit tests with debug output                                             |
