@@ -5,7 +5,7 @@ export const useDataRequestsStore = defineStore("data-requests", {
     /** Searches performed during session. */
     cache: {},
     /** Previous route visited - useful for determining whether we are incrementing or decrementing pages in data request by id */
-    previousDataRequestRoute: null,
+    previousDataRequestRoute: null
   }),
   getters: {
     getDataRequestFromCache: (state) => (key) => {
@@ -13,7 +13,7 @@ export const useDataRequestsStore = defineStore("data-requests", {
         return null;
       }
       return state.cache[key];
-    },
+    }
   },
 
   actions: {
@@ -26,14 +26,14 @@ export const useDataRequestsStore = defineStore("data-requests", {
       this.$patch((state) => {
         state.cache[key] = {
           data,
-          timestamp,
+          timestamp
         };
       });
     },
     setPreviousDataRequestRoute(route) {
       this.$patch({
-        previousDataSourceRoute: route,
+        previousDataSourceRoute: route
       });
-    },
-  },
+    }
+  }
 });

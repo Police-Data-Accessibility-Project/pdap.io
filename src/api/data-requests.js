@@ -5,12 +5,12 @@ import { isCachedResponseValid } from "@/api/util";
 
 const REQUESTS_BASE = `${import.meta.env.VITE_API_URL}/data-requests`;
 const HEADERS_BASE = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 
 const HEADERS_BASIC = {
   ...HEADERS_BASE,
-  authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+  authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
 /**
@@ -29,7 +29,7 @@ export async function getAllRequests(params = {}) {
     isCachedResponseValid({
       cacheTime: cached.timestamp,
       // Cache for 3 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 3,
+      intervalBeforeInvalidation: 1000 * 60 * 3
     })
   ) {
     return cached.data;
@@ -41,8 +41,8 @@ export async function getAllRequests(params = {}) {
       headers: HEADERS_BASIC,
       params: {
         ...params,
-        page,
-      },
+        page
+      }
     });
 
     response.data.data.forEach((obj) => totalRequests.push(obj));
@@ -63,14 +63,14 @@ export async function getDataRequest(id) {
     isCachedResponseValid({
       cacheTime: cached.timestamp,
       // Cache for 5 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 3,
+      intervalBeforeInvalidation: 1000 * 60 * 3
     })
   ) {
     return cached.data;
   }
 
   const response = await axios.get(`${REQUESTS_BASE}/${id}`, {
-    headers: HEADERS_BASIC,
+    headers: HEADERS_BASIC
   });
 
   requestsStore.setDataRequestToCache(id, response);
@@ -85,8 +85,8 @@ export async function createRequest(data) {
   const response = await axios.post(REQUESTS_BASE, data, {
     headers: {
       ...HEADERS_BASE,
-      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 
   requestsStore.clearCache();

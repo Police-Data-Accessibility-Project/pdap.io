@@ -5,65 +5,65 @@ export const ALL_LOCATION_TYPES = ["locality", "county", "state", "federal"];
 export const NAV_LINKS = [
   {
     path: "/",
-    text: "Search",
+    text: "Search"
   },
   {
     path: "/data",
-    text: "Data",
+    text: "Data"
   },
   {
     path: "/community",
-    text: "Community",
+    text: "Community"
   },
   {
     path: "/about",
-    text: "About",
+    text: "About"
   },
   {
     path: "/donate",
-    text: "Donate",
+    text: "Donate"
   },
   {
     path: "/jobs",
-    text: "Jobs",
+    text: "Jobs"
   },
   {
     href: "https://docs.pdap.io/",
-    text: "Docs",
-  },
+    text: "Docs"
+  }
 ];
 
 export const FOOTER_LINKS = [
   {
     href: "https://github.com/orgs/Police-Data-Accessibility-Project",
     text: "Github",
-    icon: FOOTER_LINK_ICONS.GITHUB,
+    icon: FOOTER_LINK_ICONS.GITHUB
   },
   {
     href: "https://discord.gg/wMqex8nKZJ",
     text: "Discord",
-    icon: FOOTER_LINK_ICONS.DISCORD,
+    icon: FOOTER_LINK_ICONS.DISCORD
   },
   {
     href: "https://www.linkedin.com/company/pdap",
     text: "LinkedIn",
-    icon: FOOTER_LINK_ICONS.LINKEDIN,
+    icon: FOOTER_LINK_ICONS.LINKEDIN
   },
   {
     href: "https://pdap.io/jobs",
     text: "Jobs",
-    icon: FOOTER_LINK_ICONS.JOBS,
+    icon: FOOTER_LINK_ICONS.JOBS
   },
   {
     href: "https://newsletter.pdap.io/",
     text: "Newsletter",
-    icon: FOOTER_LINK_ICONS.NEWSLETTER,
+    icon: FOOTER_LINK_ICONS.NEWSLETTER
   },
   {
     href: "https://docs.pdap.io/",
     text: "Docs",
-    icon: FOOTER_LINK_ICONS.DOCS,
-  },
+    icon: FOOTER_LINK_ICONS.DOCS
+  }
 ];
 
 export const STATES_TO_ABBREVIATIONS = new Map([
@@ -126,7 +126,7 @@ export const STATES_TO_ABBREVIATIONS = new Map([
   ["Washington", "WA"],
   ["West Virginia", "WV"],
   ["Wisconsin", "WI"],
-  ["Wyoming", "WY"],
+  ["Wyoming", "WY"]
 ]);
 
 export const ABBREVIATIONS_TO_STATES = new Map([
@@ -189,5 +189,5 @@ export const ABBREVIATIONS_TO_STATES = new Map([
   ["WA", "Washington"],
   ["WV", "West Virginia"],
   ["WI", "Wisconsin"],
-  ["WY", "Wyoming"],
+  ["WY", "Wyoming"]
 ]);

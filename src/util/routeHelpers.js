@@ -4,17 +4,17 @@ import getBaseUrl from "@/util/getBaseUrl";
 const DEFAULT_META_TAGS = new Map([
   [
     "description",
-    "Data and tools for answering questions about any police system in the United States",
+    "Data and tools for answering questions about any police system in the United States"
   ],
   ["title", "Police Data Accessibility Project"],
   [
     "og:description",
-    "Data and tools for answering questions about any police system in the United States",
+    "Data and tools for answering questions about any police system in the United States"
   ],
   ["og:title", "Police Data Accessibility Project"],
   ["og:type", "website"],
   ["og:site_name", "PDAP"],
-  ["og:image", acronym],
+  ["og:image", acronym]
 ]);
 const META_PROPERTIES = [...DEFAULT_META_TAGS.keys(), "og:url"];
 
@@ -54,13 +54,13 @@ function getNearestRouteByMetaProperty(to, property) {
 function refreshMetaTags(to, nearestRouteWithMeta) {
   // Remove current tags
   Array.from(document.querySelectorAll("[data-controlled-meta]")).forEach(
-    (el) => el.parentNode.removeChild(el),
+    (el) => el.parentNode.removeChild(el)
   );
 
   META_PROPERTIES.filter((prop) => prop !== "title")
     .map((prop) => {
       const tagInRouteMetaData = nearestRouteWithMeta?.meta?.metaTags?.find(
-        (tag) => tag.property === prop,
+        (tag) => tag.property === prop
       );
 
       let content;

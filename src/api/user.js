@@ -5,7 +5,7 @@ import { useUserStore } from "@/stores/user";
 
 const USER_BASE = `${import.meta.env.VITE_API_URL}/user`;
 const HEADERS = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 
 export async function changePassword(oldPassword, newPassword) {
@@ -18,9 +18,9 @@ export async function changePassword(oldPassword, newPassword) {
     {
       headers: {
         ...HEADERS,
-        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-      },
-    },
+        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+      }
+    }
   );
 
   return await auth.signInWithEmail(user.email, newPassword);
@@ -33,7 +33,7 @@ export async function getUser() {
   return await axios.get(`${USER_BASE}/${user.id}`, {
     headers: {
       ...HEADERS,
-      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 }

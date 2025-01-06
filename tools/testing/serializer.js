@@ -9,7 +9,7 @@ const helpers = {
   },
   isVueWrapper: function (received) {
     return typeof received === "object" && typeof received.html === "function";
-  },
+  }
 };
 
 function test(received) {
@@ -23,5 +23,5 @@ function print(received) {
 
 export default {
   print,
-  test,
+  test
 };

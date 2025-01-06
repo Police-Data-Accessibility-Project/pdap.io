@@ -3,11 +3,11 @@ import { ENDPOINTS } from "./constants";
 
 const CHECK_BASE = `${import.meta.env.VITE_API_URL}/check`;
 const HEADERS = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 const HEADERS_BASIC = {
   ...HEADERS,
-  authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+  authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
 export async function findDuplicateURL(url) {
@@ -15,10 +15,10 @@ export async function findDuplicateURL(url) {
     `${CHECK_BASE}/${ENDPOINTS.CHECK.UNIQUE_URL}`,
     {
       params: {
-        url,
+        url
       },
-      headers: HEADERS_BASIC,
-    },
+      headers: HEADERS_BASIC
+    }
   );
 
   return response;

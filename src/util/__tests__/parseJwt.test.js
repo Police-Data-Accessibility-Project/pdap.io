@@ -9,7 +9,7 @@ describe("parseJwt", () => {
     expect(parseJwt(token)).toEqual({
       exp: 1708717760,
       iat: 1708717460,
-      sub: 69,
+      sub: 69
     });
   });
 });

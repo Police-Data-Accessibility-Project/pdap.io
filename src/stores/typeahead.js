@@ -5,13 +5,13 @@ export const useTypeaheadStore = defineStore("typeahead", {
     /** Searches performed during session. */
     cache: {
       agencies: {},
-      locations: {},
-    },
+      locations: {}
+    }
   }),
   getters: {
     getTypeaheadResultsFromCache: (state) => (type, key) => {
       return state.cache?.[type]?.[key] ?? null;
-    },
+    }
   },
 
   actions: {
@@ -20,9 +20,9 @@ export const useTypeaheadStore = defineStore("typeahead", {
         // Use object notation for setting cache data
         state.cache[type][key] = {
           data,
-          timestamp: new Date().getTime(),
+          timestamp: new Date().getTime()
         };
       });
-    },
-  },
+    }
+  }
 });

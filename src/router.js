@@ -10,7 +10,7 @@ const router = createRouter({
   scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) return savedPosition;
     return { top: 0 };
-  },
+  }
 });
 
 if (import.meta.hot && !import.meta.test) {
@@ -43,7 +43,7 @@ router.afterEach((to, from, failure) => {
 router.onError((error) => {
   console.error("router error", error);
   toast.error("An error occurred. Please try again later.", {
-    autoClose: false,
+    autoClose: false
   });
 });
 

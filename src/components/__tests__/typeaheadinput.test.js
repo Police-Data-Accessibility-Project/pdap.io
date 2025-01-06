@@ -42,9 +42,9 @@ const mountComponent = (props = {}) => {
   return mount(TypeaheadInput, {
     props: {
       items: MOCK_ITEMS,
-      ...props,
+      ...props
     },
-    attachTo: document.body,
+    attachTo: document.body
   });
 };
 
@@ -114,7 +114,7 @@ describe("TypeaheadInput", () => {
     await getInput(wrapper).trigger("click");
     await getInput(wrapper).trigger("keydown", {
       key: "ArrowDown",
-      keyCode: 40,
+      keyCode: 40
     });
 
     expect(document.activeElement).toBe(item1.element);
@@ -134,7 +134,7 @@ describe("TypeaheadInput", () => {
     await item2.trigger("keydown", { key: "ArrowUp", keyCode: 38 });
 
     expect(document.activeElement.innerText).toContain(
-      item1.element.textContent,
+      item1.element.textContent
     );
     expect(wrapper.html()).toMatchSnapshot();
   });
@@ -198,13 +198,13 @@ describe("TypeaheadInput", () => {
     vm.input = "test";
 
     expect(vm.boldMatchText("This is a test string")).toBe(
-      "This is a <strong>test</strong> string",
+      "This is a <strong>test</strong> string"
     );
   });
 
   it("computes wrapperId correctly", () => {
     const { vm } = mountComponent({
-      id: "test-id",
+      id: "test-id"
     });
 
     expect(vm.wrapperId).toBe("test-id_wrapper");

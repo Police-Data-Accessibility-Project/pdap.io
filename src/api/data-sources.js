@@ -6,11 +6,11 @@ import { useSearchStore } from "@/stores/search";
 
 const DATA_SOURCES_BASE = `${import.meta.env.VITE_API_URL}/data-sources`;
 const HEADERS_BASE = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 const HEADERS_BASIC = {
   ...HEADERS_BASE,
-  authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+  authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
 export async function createDataSource(data) {
@@ -21,8 +21,8 @@ export async function createDataSource(data) {
   const response = await axios.post(DATA_SOURCES_BASE, data, {
     headers: {
       ...HEADERS_BASE,
-      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 
   dataSourceStore.clearCache();
@@ -40,14 +40,14 @@ export async function getDataSource(id) {
     isCachedResponseValid({
       cacheTime: cached.timestamp,
       // Cache for 3 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 3,
+      intervalBeforeInvalidation: 1000 * 60 * 3
     })
   ) {
     return cached.data;
   }
 
   const response = await axios.get(`${DATA_SOURCES_BASE}/${id}`, {
-    headers: HEADERS_BASIC,
+    headers: HEADERS_BASIC
   });
 
   dataSourceStore.setDataSourceToCache(id, response);

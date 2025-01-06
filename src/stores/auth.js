@@ -7,18 +7,18 @@ export const useAuthStore = defineStore("auth", {
     tokens: {
       accessToken: {
         value: null,
-        expires: new Date().getTime(),
+        expires: new Date().getTime()
       },
       refreshToken: {
         value: null,
-        expires: new Date().getTime(),
-      },
+        expires: new Date().getTime()
+      }
     },
-    redirectTo: null,
+    redirectTo: null
   }),
   persist: {
     storage: localStorage,
-    pick: ["tokens"],
+    pick: ["tokens"]
   },
   getters: {
     isAuthenticated: (state) => {
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
         !!state.$state.tokens.accessToken.value &&
         state.$state.tokens.accessToken.expires > time &&
         !!user.id;
-    },
+    }
   },
   actions: {
     parseTokensAndSetData(response) {
@@ -43,25 +43,25 @@ export const useAuthStore = defineStore("auth", {
         tokens: {
           accessToken: {
             value: accessToken,
-            expires: new Date(accessTokenParsed.exp * 1000).getTime(),
+            expires: new Date(accessTokenParsed.exp * 1000).getTime()
           },
           refreshToken: {
             value: refreshToken,
-            expires: new Date(refreshTokenParsed.exp * 1000).getTime(),
-          },
-        },
+            expires: new Date(refreshTokenParsed.exp * 1000).getTime()
+          }
+        }
       });
 
       user.$patch({
         id: accessTokenParsed.sub,
-        email: accessTokenParsed.user_email,
+        email: accessTokenParsed.user_email
       });
     },
 
     setRedirectTo(route) {
       this.$patch({
-        redirectTo: route,
+        redirectTo: route
       });
-    },
-  },
+    }
+  }
 });

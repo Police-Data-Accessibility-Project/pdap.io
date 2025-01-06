@@ -3,14 +3,14 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
   state: () => ({
     id: "",
-    email: "",
+    email: ""
   }),
   persist: {
-    storage: sessionStorage,
+    storage: sessionStorage
   },
   actions: {
     setEmail(email) {
       this.$patch({ email });
-    },
-  },
+    }
+  }
 });

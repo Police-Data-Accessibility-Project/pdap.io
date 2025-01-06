@@ -21,7 +21,7 @@ const makeTypeaheadHandler = (type) => async (e) => {
     isCachedResponseValid({
       cacheTime: cached.timestamp,
       // Cache for 1 day. This data won't change often.
-      intervalBeforeInvalidation: 1000 * 60 * 60 * 24,
+      intervalBeforeInvalidation: 1000 * 60 * 60 * 24
     })
   ) {
     return store.getTypeaheadResultsFromCache(type, key).data;
@@ -30,11 +30,11 @@ const makeTypeaheadHandler = (type) => async (e) => {
   try {
     const response = await axios.get(`${TYPEAHEAD_BASE}/${type}`, {
       headers: {
-        Authorization: import.meta.env.VITE_API_KEY,
+        Authorization: import.meta.env.VITE_API_KEY
       },
       params: {
-        query: e.target.value,
-      },
+        query: e.target.value
+      }
     });
 
     const suggestions = response.data.suggestions;

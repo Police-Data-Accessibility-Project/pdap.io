@@ -27,7 +27,7 @@ export function groupResultsByAgency(results) {
 
     resultsGroupedByLocalityThenAgency[locale] = {
       count: results.data[locale].count,
-      sourcesByAgency,
+      sourcesByAgency
     };
   });
 

@@ -5,10 +5,10 @@ export const useDataSourceStore = defineStore("data-source", {
     /** Previous route visited - useful for determining whether we are incrementing or decrementing pages in data source by id */
     previousDataSourceRoute: null,
     /** Cache by ID -- useful for avoiding unnecessary API calls */
-    cache: {},
+    cache: {}
   }),
   persist: {
-    storage: sessionStorage,
+    storage: sessionStorage
   },
   getters: {
     getDataSourceFromCache: (state) => (key) => {
@@ -16,7 +16,7 @@ export const useDataSourceStore = defineStore("data-source", {
         return null;
       }
       return state.cache[key];
-    },
+    }
   },
   actions: {
     clearCache() {
@@ -27,7 +27,7 @@ export const useDataSourceStore = defineStore("data-source", {
 
     setPreviousDataSourceRoute(route) {
       this.$patch({
-        previousDataSourceRoute: route,
+        previousDataSourceRoute: route
       });
     },
 
@@ -35,9 +35,9 @@ export const useDataSourceStore = defineStore("data-source", {
       this.$patch((state) => {
         state.cache[key] = {
           data,
-          timestamp: new Date().getTime(),
+          timestamp: new Date().getTime()
         };
       });
-    },
-  },
+    }
+  }
 });

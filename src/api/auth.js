@@ -6,7 +6,7 @@ import getBaseUrl from "@/util/getBaseUrl";
 
 const AUTH_BASE = `${import.meta.env.VITE_API_URL}/auth`;
 const HEADERS = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 
 export async function signUpWithEmail(email, password) {
@@ -15,7 +15,7 @@ export async function signUpWithEmail(email, password) {
   await axios.post(
     `${AUTH_BASE}/${ENDPOINTS.AUTH.SIGNUP}`,
     { email, password },
-    { headers: HEADERS },
+    { headers: HEADERS }
   );
   // Update store with email
   user.$patch({ email });
@@ -29,11 +29,11 @@ export async function signInWithEmail(email, password) {
     { email, password },
     {
       headers: {
-        ...HEADERS,
+        ...HEADERS
         // TODO: API should require auth
         // authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
-      },
-    },
+      }
+    }
   );
 
   auth.parseTokensAndSetData(response);
@@ -41,7 +41,7 @@ export async function signInWithEmail(email, password) {
 
 export async function beginOAuthLogin(redirectPath = "/sign-in") {
   const redirectTo = encodeURI(
-    `${AUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}?redirect_url=${getBaseUrl()}${redirectPath}`,
+    `${AUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}?redirect_url=${getBaseUrl()}${redirectPath}`
   );
 
   window.location.href = redirectTo;
@@ -55,9 +55,9 @@ export async function signInWithGithub(gh_access_token) {
     { gh_access_token },
     {
       headers: {
-        ...HEADERS,
-      },
-    },
+        ...HEADERS
+      }
+    }
   );
 
   auth.parseTokensAndSetData(response);
@@ -72,10 +72,10 @@ export async function linkAccountWithGithub(gh_access_token) {
     { gh_access_token, user_email },
     {
       headers: {
-        ...HEADERS,
+        ...HEADERS
         // authorization: `Bearer ${this.$state.tokens.accessToken.value}`,
-      },
-    },
+      }
+    }
   );
 }
 
@@ -99,9 +99,9 @@ export async function refreshTokens() {
       {
         headers: {
           ...HEADERS,
-          authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-        },
-      },
+          authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+        }
+      }
     );
     return auth.parseTokensAndSetData(response);
   } catch (error) {
@@ -118,9 +118,9 @@ export async function validateEmail(token) {
     {
       headers: {
         ...HEADERS,
-        Authorization: `Bearer ${token}`,
-      },
-    },
+        Authorization: `Bearer ${token}`
+      }
+    }
   );
 
   auth.parseTokensAndSetData(response);
@@ -134,9 +134,9 @@ export async function resendValidationEmail() {
     { email },
     {
       headers: {
-        ...HEADERS,
-      },
-    },
+        ...HEADERS
+      }
+    }
   );
 }
 
@@ -144,7 +144,7 @@ export async function requestPasswordReset(email) {
   return await axios.post(
     `${AUTH_BASE}/${ENDPOINTS.AUTH.REQUEST_RESET_PASSWORD}`,
     { email },
-    { headers: HEADERS },
+    { headers: HEADERS }
   );
 }
 
@@ -152,7 +152,7 @@ export async function resetPassword(password, token) {
   return await axios.post(
     `${AUTH_BASE}/${ENDPOINTS.AUTH.RESET_PASSWORD}`,
     { password },
-    { headers: { ...HEADERS, Authorization: "Bearer " + token } },
+    { headers: { ...HEADERS, Authorization: "Bearer " + token } }
   );
 }
 
@@ -162,8 +162,8 @@ export async function generateAPIKey() {
   return await axios.post(`${AUTH_BASE}/${ENDPOINTS.AUTH.API_KEY}`, null, {
     headers: {
       ...HEADERS,
-      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 }
 
@@ -176,8 +176,8 @@ export async function validateResetPasswordToken(token) {
     {
       headers: {
         ...HEADERS,
-        Authorization: `Bearer ${token}`,
-      },
-    },
+        Authorization: `Bearer ${token}`
+      }
+    }
   );
 }

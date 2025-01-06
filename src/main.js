@@ -26,9 +26,9 @@ app.use(Vue3Toastify, {
   containerClassName: "pdap-toast-container",
   toastClassName: "pdap-toast",
   style: {
-    opacity: 0.95,
+    opacity: 0.95
   },
-  theme: "auto",
+  theme: "auto"
 });
 
 app.mount("#app");

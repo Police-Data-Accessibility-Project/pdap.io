@@ -6,11 +6,11 @@ import { isCachedResponseValid } from "@/api/util";
 
 const SEARCH_BASE = `${import.meta.env.VITE_API_URL}/search`;
 const HEADERS = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 };
 const HEADERS_BASIC = {
   ...HEADERS,
-  authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+  authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
 export async function search(params) {
@@ -23,7 +23,7 @@ export async function search(params) {
     isCachedResponseValid({
       cacheTime: cached.timestamp,
       // Cache for 5 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 5,
+      intervalBeforeInvalidation: 1000 * 60 * 5
     })
   ) {
     return cached.data;
@@ -37,11 +37,11 @@ export async function search(params) {
         ...HEADERS_BASIC,
         ...(authStore.isAuthenticated()
           ? {
-              Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`,
+              Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
             }
-          : {}),
-      },
-    },
+          : {})
+      }
+    }
   );
 
   searchStore.setSearchToCache(JSON.stringify(params), response);
@@ -54,12 +54,12 @@ export async function followSearch(location_id) {
 
   return await axios.post(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, null, {
     params: {
-      location_id,
+      location_id
     },
     headers: {
       ...HEADERS,
-      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 }
 export async function getFollowedSearches() {
@@ -70,9 +70,9 @@ export async function getFollowedSearches() {
     {
       headers: {
         ...HEADERS,
-        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-      },
-    },
+        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+      }
+    }
   );
 
   response.data.data.map((followed) => {
@@ -96,7 +96,7 @@ export async function getFollowedSearch(location_id) {
 
     const found = response.data.data.find(
       ({ location_id: followed_id }) =>
-        Number(followed_id) === Number(location_id),
+        Number(followed_id) === Number(location_id)
     );
     return found;
   } catch (error) {
@@ -108,11 +108,11 @@ export async function deleteFollowedSearch(location_id) {
 
   return await axios.delete(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
     params: {
-      location_id,
+      location_id
     },
     headers: {
       ...HEADERS,
-      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`,
-    },
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
   });
 }

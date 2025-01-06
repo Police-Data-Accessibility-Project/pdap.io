@@ -44,7 +44,7 @@ export const DATA_SOURCE_UI_SHAPE = [
         key: "source_url",
         component: "a",
         attributes: { target: "_blank", rel: "noreferrer" },
-        classNames: "w-full inline-block truncate-text",
+        classNames: "w-full inline-block truncate-text"
       },
       // {
       // 	key: 'source_url_cache',
@@ -59,14 +59,14 @@ export const DATA_SOURCE_UI_SHAPE = [
       {
         title: "Last Archived",
         key: "last_cached",
-        isDate: true,
+        isDate: true
       },
       {
         title: "ReadMe URL",
         key: "readme_url",
         component: "a",
         classNames: "w-full inline-block truncate-text",
-        attributes: { target: "_blank", rel: "noreferrer" },
+        attributes: { target: "_blank", rel: "noreferrer" }
       },
       { title: "Access Type", key: "access_type" },
       {
@@ -74,14 +74,14 @@ export const DATA_SOURCE_UI_SHAPE = [
         key: "record_formats",
         component: "span",
         classNames:
-          "mt-1 py-[.125rem] px-3 rounded-full bg-slate-200 dark:bg-slate-600 w-fit small text-neutral-800 border-solid border-[1px] border-neutral-500 rounded-xl px-2 bg-neutral-200 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg p-1 overflow-hidden",
+          "mt-1 py-[.125rem] px-3 rounded-full bg-slate-200 dark:bg-slate-600 w-fit small text-neutral-800 border-solid border-[1px] border-neutral-500 rounded-xl px-2 bg-neutral-200 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg p-1 overflow-hidden"
       },
       { title: "Detail Level", key: "detail_level" },
       { title: "Size", key: "size" },
-      { title: "Access Notes", key: "access_notes" },
+      { title: "Access Notes", key: "access_notes" }
       // records_not_online to be hidden
       // { title: "Records Not Online", key: "records_not_online" },
-    ],
+    ]
   },
   {
     header: "Provenance",
@@ -89,8 +89,8 @@ export const DATA_SOURCE_UI_SHAPE = [
       { title: "Agency Supplied", key: "agency_supplied" },
       { title: "Supplying Entity", key: "supplying_entity" },
       { title: "Agency Originated", key: "agency_originated" },
-      { title: "Originating Entity", key: "originating_entity" },
-    ],
+      { title: "Originating Entity", key: "originating_entity" }
+    ]
   },
   {
     header: "Coverage & retention",
@@ -98,22 +98,22 @@ export const DATA_SOURCE_UI_SHAPE = [
       {
         title: "Coverage Start Date",
         key: "coverage_start",
-        isDate: true,
+        isDate: true
       },
       { title: "Coverage End Date", key: "coverage_end", isDate: true },
       {
         title: "Source Last Updated",
         key: "updated_at",
-        isDate: true,
+        isDate: true
       },
       { title: "Update Frequency", key: "update_frequency" },
       { title: "Update Method", key: "update_method" },
       { title: "Retention Schedule", key: "retention_schedule" },
       {
         title: "Number of Records Available",
-        key: "number_of_records_available",
-      },
-    ],
+        key: "number_of_records_available"
+      }
+    ]
   },
   {
     header: "Data Source Meta",
@@ -123,13 +123,13 @@ export const DATA_SOURCE_UI_SHAPE = [
         key: "scraper_url",
         component: "a",
         attributes: { target: "_blank", rel: "noreferrer" },
-        classNames: "w-full inline-block truncate-text",
+        classNames: "w-full inline-block truncate-text"
       },
       { title: "Created", key: "created_at", isDate: true },
       { title: "Agency ID", key: "agency_ids" },
-      { title: "Data Source ID", key: "id" },
-    ],
-  },
+      { title: "Data Source ID", key: "id" }
+    ]
+  }
 ];
 
 // TODO: update this util to use `date-fns`
