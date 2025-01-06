@@ -9,13 +9,13 @@ import { useUserStore } from "@/stores/user";
 const { mockRefreshAccessToken, mockSignOut, replace } = vi.hoisted(() => ({
   mockRefreshAccessToken: vi.fn(),
   mockSignOut: vi.fn(),
-  replace: vi.fn()
+  replace: vi.fn(),
 }));
 
 vi.mock("../../api/auth", async () => {
   return {
     refreshTokens: mockRefreshAccessToken,
-    signOut: mockSignOut
+    signOut: mockSignOut,
   };
 });
 
@@ -26,12 +26,12 @@ vi.mock("vue-router", async () => {
     ...actual,
     useRouter: vi.fn(() => {
       return {
-        replace
+        replace,
       };
     }),
     useRoute: vi.fn(() => {
       return routeMock;
-    })
+    }),
   };
 });
 
@@ -39,14 +39,14 @@ const MockIntersectionObserver = vi.fn(() => ({
   disconnect: vi.fn(),
   observe: vi.fn(),
   takeRecords: vi.fn(),
-  unobserve: vi.fn()
+  unobserve: vi.fn(),
 }));
 vi.stubGlobal(`IntersectionObserver`, MockIntersectionObserver);
 
 const routeMock = {
   meta: {
-    auth: true
-  }
+    auth: true,
+  },
 };
 
 let wrapper;
@@ -59,8 +59,8 @@ describe("AuthWrapper", () => {
   beforeEach(() => {
     wrapper = mount(AuthWrapper, {
       global: {
-        plugins: [createTestingPinia()]
-      }
+        plugins: [createTestingPinia()],
+      },
     });
 
     // vi.unstubAllGlobals();
@@ -79,9 +79,9 @@ describe("AuthWrapper", () => {
       tokens: {
         accessToken: {
           value: "foo",
-          expires: NOW_PLUS_THIRTY
-        }
-      }
+          expires: NOW_PLUS_THIRTY,
+        },
+      },
     });
     user.$patch({ id: 42 });
 
@@ -98,9 +98,9 @@ describe("AuthWrapper", () => {
       tokens: {
         accessToken: {
           value: "foo",
-          expires: NOW_MINUS_THIRTY
-        }
-      }
+          expires: NOW_MINUS_THIRTY,
+        },
+      },
     });
     user.$patch({ id: 42 });
 

@@ -20,9 +20,9 @@ watch(isHeaderVisible, (visible) => {
     ...globalOptions.value,
     style: {
       ...globalOptions.style,
-      top: visible ? "120px" : "20px"
+      top: visible ? "120px" : "20px",
     },
-    theme: "auto"
+    theme: "auto",
   });
 });
 
@@ -31,7 +31,7 @@ onMounted(() => {
     ([entry]) => {
       isHeaderVisible.value = entry.isIntersecting;
     },
-    { threshold: 0 }
+    { threshold: 0 },
   );
 
   const navbar = document.querySelector(".pdap-header");
@@ -60,7 +60,7 @@ const handlers = {
   touchcancel: refreshAuth,
   touchmove: refreshAuth,
   scroll: refreshAuth,
-  submit: refreshAuth
+  submit: refreshAuth,
 };
 
 function handleAuthRefresh() {

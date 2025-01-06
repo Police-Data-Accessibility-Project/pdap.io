@@ -1,16 +1,18 @@
 # PDAP.IO
+
 The web application for all things PDAP.
 
 ## Quick start for local development
+
 1. Clone the repo
 2. Create a `.env` file at the root of the project. You'll need the `VITE_API_KEY` value from the PDAP staff (reach out in [Discord](https://discord.gg/vKhDv7nC8B)). Once you have it, your env file should look something like this:
 
 ```shell
-# API 
+# API
 VITE_API_KEY=key_from_pdap_staff
 VITE_API_URL=https://data-sources-v2.pdap.dev/api # Or 'https://data-sources-v2.pdap.dev/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
 
-# V2 feature flags - these are temporary. They should be set to "enabled" for development. 
+# V2 feature flags - these are temporary. They should be set to "enabled" for development.
 VITE_V2_FEATURE_ENHANCED_SEARCH=enabled
 VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
@@ -18,16 +20,16 @@ VITE_V2_FEATURE_CREATE_RECORDS=enabled
 
 _Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you , by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`
 
-
 3. From the root of the project:
+
 ```shell
 npm i && npm run dev
 ```
 
 4. Navigate to `localhost:8888` in any browser and you should be up and running.
 
-
 ### NPM Scripts
+
 | Script         | What it does                                                                  |
 | -------------- | ----------------------------------------------------------------------------- |
 | `build`        | Builds the application in production mode                                     |

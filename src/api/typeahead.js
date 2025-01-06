@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const TYPEAHEAD_BASE = `${import.meta.env.VITE_API_URL}/typeahead`;
 
-import { useTypeaheadStore } from '@/stores/typeahead';
-import { isCachedResponseValid } from '@/api/util';
+import { useTypeaheadStore } from "@/stores/typeahead";
+import { isCachedResponseValid } from "@/api/util";
 
 /**
  * Returns a function that can be used to handle typeahead requests.
@@ -11,41 +11,41 @@ import { isCachedResponseValid } from '@/api/util';
  * @param {locations|agencies} type Record to search. Locations or agencies
  */
 const makeTypeaheadHandler = (type) => async (e) => {
-	const store = useTypeaheadStore();
-	const key = e.target.value;
+  const store = useTypeaheadStore();
+  const key = e.target.value;
 
-	const cached = store.getTypeaheadResultsFromCache(type, key);
+  const cached = store.getTypeaheadResultsFromCache(type, key);
 
-	if (
-		cached &&
-		isCachedResponseValid({
-			cacheTime: cached.timestamp,
-			// Cache for 1 day. This data won't change often.
-			intervalBeforeInvalidation: 1000 * 60 * 60 * 24,
-		})
-	) {
-		return store.getTypeaheadResultsFromCache(type, key).data;
-	}
+  if (
+    cached &&
+    isCachedResponseValid({
+      cacheTime: cached.timestamp,
+      // Cache for 1 day. This data won't change often.
+      intervalBeforeInvalidation: 1000 * 60 * 60 * 24,
+    })
+  ) {
+    return store.getTypeaheadResultsFromCache(type, key).data;
+  }
 
-	try {
-		const response = await axios.get(`${TYPEAHEAD_BASE}/${type}`, {
-			headers: {
-				Authorization: import.meta.env.VITE_API_KEY,
-			},
-			params: {
-				query: e.target.value,
-			},
-		});
+  try {
+    const response = await axios.get(`${TYPEAHEAD_BASE}/${type}`, {
+      headers: {
+        Authorization: import.meta.env.VITE_API_KEY,
+      },
+      params: {
+        query: e.target.value,
+      },
+    });
 
-		const suggestions = response.data.suggestions;
+    const suggestions = response.data.suggestions;
 
-		store.setTypeaheadResultsToCache(type, key, suggestions);
+    store.setTypeaheadResultsToCache(type, key, suggestions);
 
-		return suggestions;
-	} catch (err) {
-		console.error(err);
-	}
+    return suggestions;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const getTypeaheadLocations = makeTypeaheadHandler('locations');
-export const getTypeaheadAgencies = makeTypeaheadHandler('agencies');
+export const getTypeaheadLocations = makeTypeaheadHandler("locations");
+export const getTypeaheadAgencies = makeTypeaheadHandler("agencies");

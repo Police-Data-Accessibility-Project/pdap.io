@@ -1,76 +1,76 @@
-import { defineConfig, loadEnv } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import svgLoader from 'vite-svg-loader';
-import VueRouter from 'unplugin-vue-router/vite';
-import path from 'path';
+import { defineConfig, loadEnv } from "vite";
+import vue from "@vitejs/plugin-vue";
+import svgLoader from "vite-svg-loader";
+import VueRouter from "unplugin-vue-router/vite";
+import path from "path";
 
 export default defineConfig(({ mode }) => {
-	const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), "");
 
-	return {
-		plugins: [
-			VueRouter({
-				routesFolder: 'src/pages',
-				exclude: ['**/_*/{*,_*}.*'],
-				extendRoute(route) {
-					// Add meta from meta map (see below)
-					if (ROUTES_TO_META.has(route.name)) {
-						route.meta = { ...route.meta, ...ROUTES_TO_META.get(route.name) };
-					}
+  return {
+    plugins: [
+      VueRouter({
+        routesFolder: "src/pages",
+        exclude: ["**/_*/{*,_*}.*"],
+        extendRoute(route) {
+          // Add meta from meta map (see below)
+          if (ROUTES_TO_META.has(route.name)) {
+            route.meta = { ...route.meta, ...ROUTES_TO_META.get(route.name) };
+          }
 
-					// Hide authentication routes if flag set to disabled
-					if (
-						env.VITE_V2_FEATURE_AUTHENTICATE === 'disabled' &&
-						[
-							'change-password',
-							'reset-password',
-							'sign-in',
-							'sign-out',
-							'sign-up',
-							'profile',
-						].some((pathFrag) => route.fullPath.includes(pathFrag))
-					) {
-						route.delete();
-					}
+          // Hide authentication routes if flag set to disabled
+          if (
+            env.VITE_V2_FEATURE_AUTHENTICATE === "disabled" &&
+            [
+              "change-password",
+              "reset-password",
+              "sign-in",
+              "sign-out",
+              "sign-up",
+              "profile",
+            ].some((pathFrag) => route.fullPath.includes(pathFrag))
+          ) {
+            route.delete();
+          }
 
-					if (route.fullPath.startsWith('/test/') && mode === 'production') {
-						route.delete();
-					}
-				},
-			}),
-			vue(),
-			svgLoader({ defaultImport: 'url' }),
-		],
-		build: {
-			minify: 'terser',
-			terserOptions: {
-				parse: {
-					html5_comments: false
-				}
-			}	
-		},
-		resolve: {
-			alias: {
-				'@': path.resolve(__dirname, './src'),
-			},
-		},
-		server: {
-			port: 8888,
-		},
-		test: {
-			coverage: {
-				all: true,
-				include: ['src/components/*.vue', 'src/util/**/*.js'],
-				provider: 'v8',
-				reportsDirectory: './coverage',
-			},
-			environment: 'happy-dom',
-			exclude: ['node_modules'],
-			globals: true,
-			include: ['src/{components,util}/{__tests__,__spec__}/*.test.js'],
-			setupFiles: ['tools/testing/setup.js'],
-		},
-	};
+          if (route.fullPath.startsWith("/test/") && mode === "production") {
+            route.delete();
+          }
+        },
+      }),
+      vue(),
+      svgLoader({ defaultImport: "url" }),
+    ],
+    build: {
+      minify: "terser",
+      terserOptions: {
+        parse: {
+          html5_comments: false,
+        },
+      },
+    },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    server: {
+      port: 8888,
+    },
+    test: {
+      coverage: {
+        all: true,
+        include: ["src/components/*.vue", "src/util/**/*.js"],
+        provider: "v8",
+        reportsDirectory: "./coverage",
+      },
+      environment: "happy-dom",
+      exclude: ["node_modules"],
+      globals: true,
+      include: ["src/{components,util}/{__tests__,__spec__}/*.test.js"],
+      setupFiles: ["tools/testing/setup.js"],
+    },
+  };
 });
 
 /**
@@ -80,16 +80,16 @@ export default defineConfig(({ mode }) => {
  * TODO: remove this nonsense and set up in <route> tags at the page level instead.
  */
 const ROUTES_TO_META = new Map([
-	[
-		'/',
-		{
-			title: 'Police Data Accessibility Project - Search',
-			metaTags: [
-				{
-					property: 'og:title',
-					title: 'Police Data Accessibility Project - Search',
-				},
-			],
-		},
-	],
+  [
+    "/",
+    {
+      title: "Police Data Accessibility Project - Search",
+      metaTags: [
+        {
+          property: "og:title",
+          title: "Police Data Accessibility Project - Search",
+        },
+      ],
+    },
+  ],
 ]);

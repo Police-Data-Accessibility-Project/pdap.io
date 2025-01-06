@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 /**
  * Util for parsing JSON Web Tokens
@@ -6,5 +6,5 @@ import { jwtDecode } from 'jwt-decode';
  * @returns {{ expiration: number, iat: number, sub: { id: string; user_email: string } }} Decoded JWT
  */
 export default function parseJwt(token) {
-	return jwtDecode(token);
+  return jwtDecode(token);
 }
