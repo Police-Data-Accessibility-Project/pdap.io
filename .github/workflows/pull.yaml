@@ -5,9 +5,6 @@ on:
 
 jobs:
   setup:
-    defaults:
-      run:
-        working-directory: client    
     name: Setup client
     runs-on: ubuntu-latest
     steps:
@@ -31,9 +28,6 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
   lint:
-    defaults:
-      run:
-        working-directory: client    
     name: Lint client
     needs: setup
     runs-on: ubuntu-latest
