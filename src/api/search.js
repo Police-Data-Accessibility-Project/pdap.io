@@ -10,7 +10,7 @@ const HEADERS = {
 };
 const HEADERS_BASIC = {
 	...HEADERS,
-	authorization: `Basic ${import.meta.env.VITE_ADMIN_API_KEY}`,
+	authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
 };
 
 export async function search(params) {

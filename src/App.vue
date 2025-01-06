@@ -4,14 +4,16 @@
 		<ErrorBoundary component="main">
 			<router-view v-slot="{ Component }">
 				<transition name="route-fade" mode="out-in">
-					<component :is="Component ?? 'main'">
-						<Spinner
-							class="absolute m-auto top-0 right-0 bottom-0 left-0"
-							:show="!Component"
-							:size="64"
-							text="Loading..."
-						/>
-					</component>
+					<div :key="$route.path">
+						<component :is="Component ?? 'main'">
+							<Spinner
+								class="absolute m-auto top-0 right-0 bottom-0 left-0"
+								:show="!Component"
+								:size="64"
+								text="Loading..."
+							/>
+						</component>
+					</div>
 				</transition>
 			</router-view>
 		</ErrorBoundary>

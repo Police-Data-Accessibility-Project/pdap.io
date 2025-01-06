@@ -10,7 +10,7 @@ const HEADERS_BASE = {
 
 const HEADERS_BASIC = {
 	...HEADERS_BASE,
-	authorization: `Basic ${import.meta.env.VITE_ADMIN_API_KEY}`,
+	authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
 };
 
 /**

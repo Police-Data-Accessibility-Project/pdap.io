@@ -41,6 +41,14 @@ export default defineConfig(({ mode }) => {
 			vue(),
 			svgLoader({ defaultImport: 'url' }),
 		],
+		build: {
+			minify: 'terser',
+			terserOptions: {
+				parse: {
+					html5_comments: false
+				}
+			}	
+		},
 		resolve: {
 			alias: {
 				'@': path.resolve(__dirname, './src'),

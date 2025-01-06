@@ -6,32 +6,30 @@ export const NAV_LINKS = [
 	{
 		path: '/',
 		text: 'Search',
-		method: 'route',
 	},
 	{
-		href: 'https://pdap.io/data',
+		path: '/data',
 		text: 'Data',
-		method: 'href',
 	},
 	{
-		href: 'https://pdap.io/community',
+		path: '/community',
 		text: 'Community',
-		method: 'href',
 	},
 	{
-		href: 'https://pdap.io/about',
+		path: '/about',
 		text: 'About',
-		method: 'href',
 	},
 	{
-		href: 'https://pdap.io/donate',
+		path: '/donate',
 		text: 'Donate',
-		method: 'href',
+	},
+	{
+		path: '/jobs',
+		text: 'Jobs',
 	},
 	{
 		href: 'https://docs.pdap.io/',
 		text: 'Docs',
-		method: 'href',
 	},
 ];
 

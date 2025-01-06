@@ -30,7 +30,7 @@ const makeTypeaheadHandler = (type) => async (e) => {
 	try {
 		const response = await axios.get(`${TYPEAHEAD_BASE}/${type}`, {
 			headers: {
-				Authorization: import.meta.env.VITE_ADMIN_API_KEY,
+				Authorization: import.meta.env.VITE_API_KEY,
 			},
 			params: {
 				query: e.target.value,
