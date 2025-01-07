@@ -29,10 +29,9 @@ import acronym from 'pdap-design-system/images/acronym.svg';
 import lockup from 'pdap-design-system/images/lockup.svg';
 
 import { NAV_LINKS, FOOTER_LINKS } from '@/util/constants';
-import { computed, provide, ref } from 'vue';
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { provide, ref } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
 
-const route = useRoute();
 const routeKey = ref(null);
 
 onBeforeRouteUpdate((to, from) => {
@@ -42,13 +41,6 @@ onBeforeRouteUpdate((to, from) => {
     routeKey.value = to.path;
   }
 });
-
-// const routeKey = computed(() => {
-//   return previousPath.value?.includes('data-source') &&
-//     route.path.includes('data-source')
-//     ? 'data-source'
-//     : route.path;
-// });
 
 provide('navLinks', NAV_LINKS);
 provide('footerLinks', FOOTER_LINKS);
