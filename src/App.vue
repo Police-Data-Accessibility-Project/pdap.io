@@ -4,7 +4,7 @@
     <ErrorBoundary component="main">
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in">
-          <div :key="$route.path" class="min-h-[calc(100vh-200px)]">
+          <div :key="routeKey" class="min-h-[calc(100vh-200px)]">
             <component :is="Component ?? 'main'">
               <Spinner
                 class="absolute m-auto top-0 right-0 bottom-0 left-0"
@@ -29,7 +29,26 @@ import acronym from 'pdap-design-system/images/acronym.svg';
 import lockup from 'pdap-design-system/images/lockup.svg';
 
 import { NAV_LINKS, FOOTER_LINKS } from '@/util/constants';
-import { provide } from 'vue';
+import { computed, provide, ref } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+
+const route = useRoute();
+const routeKey = ref(null);
+
+onBeforeRouteUpdate((to, from) => {
+  if ([to.path, from.path].every((path) => path.includes('data-source'))) {
+    routeKey.value = 'data-source';
+  } else {
+    routeKey.value = to.path;
+  }
+});
+
+// const routeKey = computed(() => {
+//   return previousPath.value?.includes('data-source') &&
+//     route.path.includes('data-source')
+//     ? 'data-source'
+//     : route.path;
+// });
 
 provide('navLinks', NAV_LINKS);
 provide('footerLinks', FOOTER_LINKS);
