@@ -4,14 +4,13 @@
     <ErrorBoundary component="main">
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in">
-          <div :key="$route.path">
+          <div :key="$route.path" class="min-h-[calc(100vh-200px)]">
             <component :is="Component ?? 'main'">
               <Spinner
                 class="absolute m-auto top-0 right-0 bottom-0 left-0"
                 :show="!Component"
                 :size="64"
-                text="Loading..."
-              />
+                text="Loading..." />
             </component>
           </div>
         </transition>
@@ -19,22 +18,21 @@
     </ErrorBoundary>
     <Footer
       :logo-image-src="acronym"
-      :fundraising-data="{ raised: 0, goal: 0 }"
-    />
+      :fundraising-data="{ raised: 0, goal: 0 }" />
   </AuthWrapper>
 </template>
 
 <script setup>
-import { ErrorBoundary, Footer, Header, Spinner } from "pdap-design-system";
-import AuthWrapper from "./components/AuthWrapper.vue";
-import acronym from "pdap-design-system/images/acronym.svg";
-import lockup from "pdap-design-system/images/lockup.svg";
+import { ErrorBoundary, Footer, Header, Spinner } from 'pdap-design-system';
+import AuthWrapper from './components/AuthWrapper.vue';
+import acronym from 'pdap-design-system/images/acronym.svg';
+import lockup from 'pdap-design-system/images/lockup.svg';
 
-import { NAV_LINKS, FOOTER_LINKS } from "@/util/constants";
-import { provide } from "vue";
+import { NAV_LINKS, FOOTER_LINKS } from '@/util/constants';
+import { provide } from 'vue';
 
-provide("navLinks", NAV_LINKS);
-provide("footerLinks", FOOTER_LINKS);
+provide('navLinks', NAV_LINKS);
+provide('footerLinks', FOOTER_LINKS);
 </script>
 
 <style>
