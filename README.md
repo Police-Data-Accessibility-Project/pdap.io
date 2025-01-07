@@ -18,7 +18,7 @@ VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
 ```
 
-_Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you , by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`
+_Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you need a different value, by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`
 
 3. From the root of the project:
 
@@ -30,13 +30,17 @@ npm i && npm run dev
 
 ### NPM Scripts
 
-| Script         | What it does                                                                  |
-| -------------- | ----------------------------------------------------------------------------- |
-| `build`        | Builds the application in production mode                                     |
-| `serve`        | Serves the built assets. Requires `build` to be run first                     |
-| `lint`         | Lints the codebase with `eslint`                                              |
-| `lint:fix`     | Lints the codebase with `eslint` and applies a fix for any issues if possible |
-| `test`         | Runs unit tests with debug output                                             |
-| `test:ci`      | Runs unit tests quietly                                                       |
-| `test:changed` | Runs unit tests on changed files only                                         |
-| `coverage`     | Runs unit tests and outputs coverage report                                   |
+| Script         | What it does                                                                      |
+| -------------- | --------------------------------------------------------------------------------- |
+| `build`        | Builds the application in production mode                                         |
+| `serve`        | Serves the built assets. Requires `build` to be run first                         |
+| `lint`         | Lints the codebase with `eslint` and `prettier`                                   |
+| `lint:fix`     | Lints the codebase with `eslint` and `prettier` and fixes all auto-fixable issues |
+| `test`         | Runs unit tests with debug output                                                 |
+| `test:ci`      | Runs unit tests quietly                                                           |
+| `test:changed` | Runs unit tests on changed files only                                             |
+| `coverage`     | Runs unit tests and outputs coverage report                                       |
+
+
+### Contributing
+Interested in contributing code to pdap.io? Check out our guidelines [here](./CONTRIBUTING.md).
