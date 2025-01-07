@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useSearchStore = defineStore("search", {
+export const useSearchStore = defineStore('search', {
   state: () => ({
     /** Searches performed during session. */
     cache: {},
@@ -11,7 +11,7 @@ export const useSearchStore = defineStore("search", {
   }),
   persist: {
     storage: sessionStorage,
-    pick: ["mostRecentSearchIds"]
+    pick: ['mostRecentSearchIds']
   },
   getters: {
     getSearchFromCache: (state) => (key) => {

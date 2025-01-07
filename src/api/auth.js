@@ -1,12 +1,12 @@
-import axios from "axios";
-import { ENDPOINTS } from "./constants";
-import { useAuthStore } from "@/stores/auth";
-import { useUserStore } from "@/stores/user";
-import getBaseUrl from "@/util/getBaseUrl";
+import axios from 'axios';
+import { ENDPOINTS } from './constants';
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
+import getBaseUrl from '@/util/getBaseUrl';
 
 const AUTH_BASE = `${import.meta.env.VITE_API_URL}/auth`;
 const HEADERS = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 
 export async function signUpWithEmail(email, password) {
@@ -39,7 +39,7 @@ export async function signInWithEmail(email, password) {
   auth.parseTokensAndSetData(response);
 }
 
-export async function beginOAuthLogin(redirectPath = "/sign-in") {
+export async function beginOAuthLogin(redirectPath = '/sign-in') {
   const redirectTo = encodeURI(
     `${AUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}?redirect_url=${getBaseUrl()}${redirectPath}`
   );
@@ -152,7 +152,7 @@ export async function resetPassword(password, token) {
   return await axios.post(
     `${AUTH_BASE}/${ENDPOINTS.AUTH.RESET_PASSWORD}`,
     { password },
-    { headers: { ...HEADERS, Authorization: "Bearer " + token } }
+    { headers: { ...HEADERS, Authorization: 'Bearer ' + token } }
   );
 }
 

@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import parseJwt from "@/util/parseJwt";
-import { useUserStore } from "./user";
+import { defineStore } from 'pinia';
+import parseJwt from '@/util/parseJwt';
+import { useUserStore } from './user';
 
-export const useAuthStore = defineStore("auth", {
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     tokens: {
       accessToken: {
@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
   }),
   persist: {
     storage: localStorage,
-    pick: ["tokens"]
+    pick: ['tokens']
   },
   getters: {
     isAuthenticated: (state) => {

@@ -34,7 +34,6 @@ npm i && npm run dev
 | -------------- | ----------------------------------------------------------------------------- |
 | `build`        | Builds the application in production mode                                     |
 | `serve`        | Serves the built assets. Requires `build` to be run first                     |
-| `format`       | Formats the codebase with `prettier`                                          |
 | `lint`         | Lints the codebase with `eslint`                                              |
 | `lint:fix`     | Lints the codebase with `eslint` and applies a fix for any issues if possible |
 | `test`         | Runs unit tests with debug output                                             |

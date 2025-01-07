@@ -1,12 +1,12 @@
-import axios from "axios";
-import { isCachedResponseValid } from "@/api/util";
-import { useAuthStore } from "@/stores/auth";
-import { useDataSourceStore } from "@/stores/data-source";
-import { useSearchStore } from "@/stores/search";
+import axios from 'axios';
+import { isCachedResponseValid } from '@/api/util';
+import { useAuthStore } from '@/stores/auth';
+import { useDataSourceStore } from '@/stores/data-source';
+import { useSearchStore } from '@/stores/search';
 
 const DATA_SOURCES_BASE = `${import.meta.env.VITE_API_URL}/data-sources`;
 const HEADERS_BASE = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 const HEADERS_BASIC = {
   ...HEADERS_BASE,

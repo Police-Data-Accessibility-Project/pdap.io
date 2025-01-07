@@ -1,9 +1,9 @@
-import axios from "axios";
-import { ENDPOINTS } from "./constants";
+import axios from 'axios';
+import { ENDPOINTS } from './constants';
 
 const CHECK_BASE = `${import.meta.env.VITE_API_URL}/check`;
 const HEADERS = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 const HEADERS_BASIC = {
   ...HEADERS,

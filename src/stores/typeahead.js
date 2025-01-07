@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useTypeaheadStore = defineStore("typeahead", {
+export const useTypeaheadStore = defineStore('typeahead', {
   state: () => ({
     /** Searches performed during session. */
     cache: {

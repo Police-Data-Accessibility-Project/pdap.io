@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useDataRequestsStore = defineStore("data-requests", {
+export const useDataRequestsStore = defineStore('data-requests', {
   state: () => ({
     /** Searches performed during session. */
     cache: {},

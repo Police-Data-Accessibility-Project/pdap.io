@@ -4,18 +4,15 @@
     <img
       src="/assets/searching.svg"
       class="w-11/12 place-self-center hidden lg:block"
-      alt="An eye looking through a magnifying glass at a police website."
-    />
+      alt="An eye looking through a magnifying glass at a police website." />
     <img
       src="/assets/mapping.svg"
       class="w-6/12 place-self-start md:w-10/12 md:place-self-center"
-      alt="A map scattered with icons representing different kinds of data."
-    />
+      alt="A map scattered with icons representing different kinds of data." />
     <img
       src="/assets/sharing.svg"
       class="w-9/12 place-self-start hidden md:block"
-      alt="A piece of police data being distributed to several people."
-    />
+      alt="A piece of police data being distributed to several people." />
     <div class="col-span-full">
       <p>
         We
@@ -24,8 +21,7 @@
         are
         <a
           href="https://en.wikipedia.org/wiki/Freedom_of_information_in_the_United_States"
-          target="blank"
-        >
+          target="blank">
           generally public&nbsp;record.
         </a>
       </p>
@@ -41,37 +37,47 @@
     </div>
     <div class="col-span-full">
       <p>
-        <a href="https://data-sources.pdap.io">
-          <i class="fa fa-external-link" />
+        <RouterLink to="/">
+          <FontAwesomeIcon :icon="faExternalLink" />
           Search our database
-        </a>
+        </RouterLink>
         to see if anything interests you.
       </p>
       <p>
-        <a href="https://airtable.com/shrbFfWk6fjzGnNsk">
-          <i class="fa fa-external-link" />
+        <a
+          v-if="!getIsV2FeatureEnabled('CREATE_RECORDS')"
+          href="https://airtable.com/shrbFfWk6fjzGnNsk">
+          <FontAwesomeIcon :icon="faExternalLink" />
           Make a request
         </a>
+        <RouterLink v-else to="/data-request/create">
+          <FontAwesomeIcon :icon="faExternalLink" />
+          Make a request
+        </RouterLink>
         to get help or find collaborators.
       </p>
       <p>
-        <a href="https://airtable.com/app473MWXVJVaD7Es/shrJafakrcmTxHU2i">
-          <i class="fa fa-external-link" />
+        <a
+          v-if="!getIsV2FeatureEnabled('CREATE_RECORDS')"
+          href="https://airtable.com/app473MWXVJVaD7Es/shrJafakrcmTxHU2i">
+          <FontAwesomeIcon :icon="faExternalLink" />
           Submit data
         </a>
-        if you have something to share.
+        <RouterLink v-else to="/data-source/create">
+          <FontAwesomeIcon :icon="faExternalLink" />
+          Submit data
+        </RouterLink>
+        to add a new data source. if you have something to share.
       </p>
     </div>
   </section>
   <section
-    class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12"
-  >
+    class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
     <h2 class="col-span-full">Other things we're building with data</h2>
     <div>
       We create
       <a
-        href="https://github.com/Police-Data-Accessibility-Project/automatic-archives"
-      >
+        href="https://github.com/Police-Data-Accessibility-Project/automatic-archives">
         automatic archives
       </a>
       of data sources, so they are not lost to time and poor data retention
@@ -80,8 +86,7 @@
     <div>
       We're
       <a
-        href="https://github.com/Police-Data-Accessibility-Project/data-source-map"
-      >
+        href="https://github.com/Police-Data-Accessibility-Project/data-source-map">
         mapping what is available
       </a>
       in each jurisdiction, and advocating for transparency. What kinds of
@@ -89,3 +94,11 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { getIsV2FeatureEnabled } from "@/util/featureFlagV2";
+import { RouterLink } from "vue-router";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faExternalLink } from "@fortawesome/free-solid-svg-icons";
+</script>

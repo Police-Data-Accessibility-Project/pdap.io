@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useDataSourceStore = defineStore("data-source", {
+export const useDataSourceStore = defineStore('data-source', {
   state: () => ({
     /** Previous route visited - useful for determining whether we are incrementing or decrementing pages in data source by id */
     previousDataSourceRoute: null,

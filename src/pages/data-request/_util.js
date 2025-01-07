@@ -1,12 +1,12 @@
-import { STATES_TO_ABBREVIATIONS } from "@/util/constants";
+import { STATES_TO_ABBREVIATIONS } from '@/util/constants';
 
 export function formatLocationText(item) {
   switch (item.type) {
-    case "Locality":
+    case 'Locality':
       return `${item.display_name} ${item.county} ${STATES_TO_ABBREVIATIONS.get(item.state)}`;
-    case "County":
+    case 'County':
       return `${item.display_name} ${STATES_TO_ABBREVIATIONS.get(item.state)}`;
-    case "State":
+    case 'State':
     default:
       return item.display_name;
   }

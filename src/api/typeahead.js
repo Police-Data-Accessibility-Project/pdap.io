@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const TYPEAHEAD_BASE = `${import.meta.env.VITE_API_URL}/typeahead`;
 
-import { useTypeaheadStore } from "@/stores/typeahead";
-import { isCachedResponseValid } from "@/api/util";
+import { useTypeaheadStore } from '@/stores/typeahead';
+import { isCachedResponseValid } from '@/api/util';
 
 /**
  * Returns a function that can be used to handle typeahead requests.
@@ -47,5 +47,5 @@ const makeTypeaheadHandler = (type) => async (e) => {
   }
 };
 
-export const getTypeaheadLocations = makeTypeaheadHandler("locations");
-export const getTypeaheadAgencies = makeTypeaheadHandler("agencies");
+export const getTypeaheadLocations = makeTypeaheadHandler('locations');
+export const getTypeaheadAgencies = makeTypeaheadHandler('agencies');

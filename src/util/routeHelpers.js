@@ -1,22 +1,22 @@
-import acronym from "pdap-design-system/images/acronym.svg";
-import getBaseUrl from "@/util/getBaseUrl";
+import acronym from 'pdap-design-system/images/acronym.svg';
+import getBaseUrl from '@/util/getBaseUrl';
 
 const DEFAULT_META_TAGS = new Map([
   [
-    "description",
-    "Data and tools for answering questions about any police system in the United States"
+    'description',
+    'Data and tools for answering questions about any police system in the United States'
   ],
-  ["title", "Police Data Accessibility Project"],
+  ['title', 'Police Data Accessibility Project'],
   [
-    "og:description",
-    "Data and tools for answering questions about any police system in the United States"
+    'og:description',
+    'Data and tools for answering questions about any police system in the United States'
   ],
-  ["og:title", "Police Data Accessibility Project"],
-  ["og:type", "website"],
-  ["og:site_name", "PDAP"],
-  ["og:image", acronym]
+  ['og:title', 'Police Data Accessibility Project'],
+  ['og:type', 'website'],
+  ['og:site_name', 'PDAP'],
+  ['og:image', acronym]
 ]);
-const META_PROPERTIES = [...DEFAULT_META_TAGS.keys(), "og:url"];
+const META_PROPERTIES = [...DEFAULT_META_TAGS.keys(), 'og:url'];
 
 /**
  * Adds meta tags by route
@@ -24,12 +24,12 @@ const META_PROPERTIES = [...DEFAULT_META_TAGS.keys(), "og:url"];
  */
 export function refreshMetaTagsByRoute(to) {
   // Get nearest matched route that has title / meta tag overrides
-  const nearestRouteWithTitle = getNearestRouteByMetaProperty(to, "title");
-  const nearestRouteWithMeta = getNearestRouteByMetaProperty(to, "metaTags");
+  const nearestRouteWithTitle = getNearestRouteByMetaProperty(to, 'title');
+  const nearestRouteWithMeta = getNearestRouteByMetaProperty(to, 'metaTags');
 
   // Update document title
   document.title =
-    nearestRouteWithTitle?.meta?.title ?? DEFAULT_META_TAGS.get("title");
+    nearestRouteWithTitle?.meta?.title ?? DEFAULT_META_TAGS.get('title');
 
   refreshMetaTags(to, nearestRouteWithMeta);
 }
@@ -53,11 +53,11 @@ function getNearestRouteByMetaProperty(to, property) {
  */
 function refreshMetaTags(to, nearestRouteWithMeta) {
   // Remove current tags
-  Array.from(document.querySelectorAll("[data-controlled-meta]")).forEach(
+  Array.from(document.querySelectorAll('[data-controlled-meta]')).forEach(
     (el) => el.parentNode.removeChild(el)
   );
 
-  META_PROPERTIES.filter((prop) => prop !== "title")
+  META_PROPERTIES.filter((prop) => prop !== 'title')
     .map((prop) => {
       const tagInRouteMetaData = nearestRouteWithMeta?.meta?.metaTags?.find(
         (tag) => tag.property === prop
@@ -65,7 +65,7 @@ function refreshMetaTags(to, nearestRouteWithMeta) {
 
       let content;
       switch (true) {
-        case prop === "og:url":
+        case prop === 'og:url':
           content = `${getBaseUrl()}/${to.fullPath}`;
           break;
         case Boolean(tagInRouteMetaData):
@@ -75,10 +75,10 @@ function refreshMetaTags(to, nearestRouteWithMeta) {
           content = DEFAULT_META_TAGS.get(prop);
       }
 
-      const tag = document.createElement("meta");
-      tag.setAttribute(prop.includes(":") ? "property" : "name", prop);
-      tag.setAttribute("content", content);
-      tag.setAttribute("data-controlled-meta", true);
+      const tag = document.createElement('meta');
+      tag.setAttribute(prop.includes(':') ? 'property' : 'name', prop);
+      tag.setAttribute('content', content);
+      tag.setAttribute('data-controlled-meta', true);
       return tag;
     })
     .forEach((tag) => document.head.appendChild(tag));

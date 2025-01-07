@@ -1,11 +1,11 @@
-import axios from "axios";
-import { ENDPOINTS } from "./constants";
-import { useAuthStore } from "@/stores/auth";
-import { useUserStore } from "@/stores/user";
+import axios from 'axios';
+import { ENDPOINTS } from './constants';
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 
 const USER_BASE = `${import.meta.env.VITE_API_URL}/user`;
 const HEADERS = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 
 export async function changePassword(oldPassword, newPassword) {

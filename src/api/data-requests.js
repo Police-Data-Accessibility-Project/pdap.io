@@ -1,11 +1,11 @@
-import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
-import { useDataRequestsStore } from "@/stores/data-requests";
-import { isCachedResponseValid } from "@/api/util";
+import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+import { useDataRequestsStore } from '@/stores/data-requests';
+import { isCachedResponseValid } from '@/api/util';
 
 const REQUESTS_BASE = `${import.meta.env.VITE_API_URL}/data-requests`;
 const HEADERS_BASE = {
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 
 const HEADERS_BASIC = {
@@ -19,7 +19,7 @@ const HEADERS_BASIC = {
 export async function getAllRequests(params = {}) {
   const requestsStore = useDataRequestsStore();
 
-  const cached = requestsStore.getDataRequestFromCache("all-requests");
+  const cached = requestsStore.getDataRequestFromCache('all-requests');
 
   let page = 0;
   const totalRequests = [];
@@ -48,7 +48,7 @@ export async function getAllRequests(params = {}) {
     response.data.data.forEach((obj) => totalRequests.push(obj));
   }
 
-  requestsStore.setDataRequestToCache("all-requests", totalRequests);
+  requestsStore.setDataRequestToCache('all-requests', totalRequests);
 
   return totalRequests;
 }

@@ -1,6 +1,6 @@
 // This file contains utils related to the search results page
 
-import { ALL_LOCATION_TYPES } from "@/util/constants";
+import { ALL_LOCATION_TYPES } from '@/util/constants';
 
 /**
  * Manipulates data to be renderable by search results component (grouped by agency)
@@ -45,7 +45,7 @@ export function normalizeLocaleForHash(locale, results) {
 }
 
 export function getAnchorLinkText(locale) {
-  if (locale === "locality") return "local";
+  if (locale === 'locality') return 'local';
   else return locale;
 }
 

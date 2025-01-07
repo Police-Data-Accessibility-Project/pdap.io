@@ -5,9 +5,9 @@
  * @returns {boolean} Whether the feature is enabled or not
  */
 export function getIsV2FeatureEnabled(featureName) {
-  console.debug("V2 feature flag:", {
+  console.debug('V2 feature flag:', {
     feature:
-      featureName + ": " + import.meta.env[`VITE_V2_FEATURE_${featureName}`]
+      featureName + ': ' + import.meta.env[`VITE_V2_FEATURE_${featureName}`]
   });
-  return import.meta.env[`VITE_V2_FEATURE_${featureName}`] === "enabled";
+  return import.meta.env[`VITE_V2_FEATURE_${featureName}`] === 'enabled';
 }

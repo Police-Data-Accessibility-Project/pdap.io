@@ -30,7 +30,8 @@
         "trailingComma": "none",
         "htmlWhitespaceSensitivity": "ignore",
         "bracketSameLine": true,
-        "singleAttributePerLine": false
+        "singleAttributePerLine": false,
+        "singleQuote": true
       }
     ]
   }
