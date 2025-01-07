@@ -1,7 +1,7 @@
 <template>
   <div class="help-text-icon">
     <a @click="toggleTooltip">
-      <i class="fa fa-question-circle"></i>
+      <FontAwesomeIcon :icon="faQuestionCircle" />
     </a>
     <div class="tooltip" v-if="showTooltip">
       <slot></slot>
@@ -10,10 +10,17 @@
 </template>
 
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+
 export default {
+  components: {
+    FontAwesomeIcon
+  },
   data() {
     return {
       showTooltip: false,
+      faQuestionCircle
     };
   },
   methods: {
