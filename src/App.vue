@@ -21,13 +21,6 @@
       :fundraising-data="{ raised: 0, goal: 0 }" />
   </AuthWrapper>
 </template>
-<template>
-	<Header />
-	<main>
-		<RouterView />
-	</main>
-	<Footer />
-</template>
 
 <script setup>
 import { ErrorBoundary, Footer, Header, Spinner } from 'pdap-design-system';
