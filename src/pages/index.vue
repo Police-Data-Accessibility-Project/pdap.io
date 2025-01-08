@@ -34,7 +34,7 @@
       </h1>
       <div>
         <img
-          src="/public/assets/mapping.svg"
+          src="/assets/mapping.svg"
           class="w-6/12 place-self-start md:w-10/12 md:place-self-center"
           alt="A map scattered with icons representing different kinds of data."
         />
@@ -43,7 +43,7 @@
       </div>
       <div>
         <img
-            src="/public/assets/searching.svg"
+            src="/assets/searching.svg"
             class="w-11/12 place-self-center hidden lg:block"
             alt="An eye looking through a magnifying glass at a police website."
         />
@@ -52,7 +52,7 @@
       </div>
       <div>
         <img
-          src="/public/assets/sharing.svg"
+          src="/assets/sharing.svg"
           class="w-9/12 place-self-start hidden md:block"
           alt="A piece of police data being distributed to several people."
         />
