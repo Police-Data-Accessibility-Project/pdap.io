@@ -1,0 +1,38 @@
+{
+  "root": true,
+  "extends": ["@pdap-design-system/eslint-config"],
+  "plugins": ["prettier"],
+  "settings": {
+    "import/core-modules": ["vue-router/auto-routes"]
+  },
+  "rules": {
+    "vue/multi-word-component-names": [
+      "warn",
+      {
+        "ignores": [
+          "login",
+          "index",
+          "search",
+          "search.results",
+          "request",
+          "profile",
+          "[id]",
+          "results",
+          "create",
+          "validate.email"
+        ]
+      }
+    ],
+
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "none",
+        "htmlWhitespaceSensitivity": "ignore",
+        "bracketSameLine": true,
+        "singleAttributePerLine": false,
+        "singleQuote": true
+      }
+    ]
+  }
+}
