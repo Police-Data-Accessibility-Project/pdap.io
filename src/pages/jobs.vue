@@ -49,7 +49,7 @@
             Software development opportunities
           </h2>
           <h4>
-            <i class="fa fa-info-circle" />
+            <FontAwesomeIcon :icon="faInfoCircle" />
             Remote, temporary
           </h4>
           <p>
@@ -110,3 +110,10 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {
+	faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
+</script>

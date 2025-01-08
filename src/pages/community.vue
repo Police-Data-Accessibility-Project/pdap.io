@@ -76,7 +76,7 @@
     </div>
     <div class="col-span-full">
       <h2>
-        <i class="fa fa-code-fork" />
+        <FontAwesomeIcon :icon="faCodeFork" />
         Merged Pull Requests
       </h2>
       <p v-if="repoCount && mergeCount">
@@ -89,13 +89,13 @@
       <a
         href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1"
       >
-        <i class="fa fa-external-link" />
+      <FontAwesomeIcon :icon="faExternalLink" />
         Good first issues
       </a>
     </div>
     <div class="text-xl hyphens-auto" lang="en">
       <h3>
-        <i class="fa fa-map-o" aria-hidden="true" />
+        <FontAwesomeIcon :icon="faMap" aria-hidden="true" />
         Locate sources
       </h3>
       <p>
@@ -106,7 +106,7 @@
     </div>
     <div class="text-xl hyphens-auto" lang="en">
       <h3>
-        <i class="fa fa-eye-slash" />
+        <FontAwesomeIcon :icon="faEyeSlash" />
         Research
       </h3>
       <p>
@@ -117,7 +117,7 @@
     </div>
     <div class="text-xl hyphens-auto" lang="en">
       <h3>
-        <i class="fa fa-file-code-o" />
+        <FontAwesomeIcon :icon="faFileCode" /> Code
         Code
       </h3>
       <p>
@@ -148,6 +148,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {
+	faCodeFork,
+	faExternalLink,
+	faMap,
+	faEyeSlash,
+	faFileCode
+} from "@fortawesome/free-solid-svg-icons";
 
 const repoCount = ref(0);
 const mergeCount = ref(0);
