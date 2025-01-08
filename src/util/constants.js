@@ -3,17 +3,10 @@ import { FOOTER_LINK_ICONS } from 'pdap-design-system';
 export const ALL_LOCATION_TYPES = ['locality', 'county', 'state', 'federal'];
 
 export const NAV_LINKS = [
+  
   {
     path: '/',
-    text: 'Search'
-  },
-  {
-    path: '/data',
     text: 'Data'
-  },
-  {
-    path: '/community',
-    text: 'Community'
   },
   {
     path: '/about',
@@ -22,10 +15,6 @@ export const NAV_LINKS = [
   {
     path: '/donate',
     text: 'Donate'
-  },
-  {
-    path: '/jobs',
-    text: 'Jobs'
   },
   {
     href: 'https://docs.pdap.io/',
