@@ -16,12 +16,13 @@
       <p>
         Every local police system has people studying it&mdash;that's how most
         of us found this project. Our community includes anyone impacted by
-        policing: residents, journalists, activists, researchers, municipal
+        policing: residents, journalists, activists, researchers, and municipal
         employees.
       </p>
       <p>
-        We're headquartered in Pittsburgh, PA. We have paid staff and volunteers
-        from around the United States and beyond.
+        The Police Data Access Point is published by the Police Data Accessibility Project, 
+				a U.S. nonprofit headquartered in Pittsburgh, PA. We have paid staff 
+				and volunteers from around the United States and beyond.
       </p>
 
       <p>
