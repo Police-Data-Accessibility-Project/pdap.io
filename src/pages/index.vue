@@ -13,16 +13,16 @@
     <section class="col-span-full">
 			<h2>About the data</h2>
 			<p> We document Data Sources (<a href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source"><i class="fa fa-question-circle"></i></a>), places on the internet where public records can be found. 
-				Each one describes one of the ~20,000 agencies we have documented.</p>
+				Each one describes one of the ~20,000 agencies we have indexed.</p>
 			<p v-if="dataLoaded">
-				Our database currently documents data sources from <br>
+				Our database contains Sources from <br>
 				<strong>{{ agenciesCount }} agencies</strong> in 
 				<strong>{{ countiesCount }} counties</strong> across 
 				<strong>{{ statesCount }} states </strong> and the District of Columbia.
 				They are published by both government agencies and independent organizations.
 			</p>
 			<p v-else>
-				Our database currently documents data sources from agencies 
+				Our database contains Sources from agencies 
 				in hundreds of counties across all 50 states and the 
 				District of Columbia. They are published by both government agencies 
 				and independent organizations.
