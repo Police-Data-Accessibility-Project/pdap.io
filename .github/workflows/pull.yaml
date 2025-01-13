@@ -5,7 +5,7 @@ on:
 
 jobs:
   setup:
-    name: Setup client
+    name: Setup
     runs-on: ubuntu-latest
     steps:
       - name: Cancel previous
@@ -28,7 +28,7 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
   lint:
-    name: Lint client
+    name: Lint
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
         run: npm run lint
 
   test:
-    name: Test client
+    name: Test
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +69,7 @@ jobs:
         run: npm run test:ci
 
   build:
-    name: Build client
+    name: Build
     needs: setup
     runs-on: ubuntu-latest
     steps:
