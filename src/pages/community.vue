@@ -21,20 +21,17 @@
         method="post"
         target="popupwindow"
         onsubmit="window.open('https://newsletter.pdap.io', 'popupwindow')"
-        class="grid grid-cols-1 mt-4 sm:grid-cols-2 h-[max-content] gap-4 leading-normal mb-3 w-full"
-      >
+        class="grid grid-cols-1 mt-4 sm:grid-cols-2 h-[max-content] gap-4 leading-normal mb-3 w-full">
         <div class="flex flex-col">
           <input
             id="bd-email"
             type="email"
             name="email"
             placeholder="placeholder@email.com"
-            class="h-12 text-lg px-2 gap-4 leading-normal w-full dark:bg-neutral-950 border border-neutral-500 border-solid px-3 py-2 text-[rgba(0,0,0)"
-          />
+            class="h-12 text-lg px-2 gap-4 leading-normal w-full dark:bg-neutral-950 border border-neutral-500 border-solid px-3 py-2 text-[rgba(0,0,0)" />
           <label
             for="bd-email"
-            class="max-w-[max-content] text-lg py-1 mt-0 font-medium"
-          >
+            class="max-w-[max-content] text-lg py-1 mt-0 font-medium">
             Enter your email
           </label>
         </div>
@@ -43,14 +40,12 @@
             type="submit"
             class="pdap-button-primary h-[max-content]"
             value="Sign up"
-            style="margin: 0px 4px 0px 4px"
-          />
+            style="margin: 0px 4px 0px 4px" />
           <button
             class="pdap-button-secondary h-[max-content]"
             value="Archives"
             onclick="window.open('https://newsletter.pdap.io/archive', '_blank')"
-            style="margin: 0px 4px 0px 4px"
-          >
+            style="margin: 0px 4px 0px 4px">
             View archives
           </button>
         </div>
@@ -87,9 +82,8 @@
         .
       </p>
       <a
-        href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1"
-      >
-      <FontAwesomeIcon :icon="faExternalLink" />
+        href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1">
+        <FontAwesomeIcon :icon="faExternalLink" />
         Good first issues
       </a>
     </div>
@@ -117,15 +111,14 @@
     </div>
     <div class="text-xl hyphens-auto" lang="en">
       <h3>
-        <FontAwesomeIcon :icon="faFileCode" /> Code
-        Code
+        <FontAwesomeIcon :icon="faFileCode" />
+        Code Code
       </h3>
       <p>
         Everything you see is open source, built by a small team of volunteers
         and staff. To contribute code for infrastructure projects, check out our
         <a
-          href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25"
-        >
+          href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25">
           Good First Issues
         </a>
         in GitHub.
@@ -146,16 +139,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
-	faCodeFork,
-	faExternalLink,
-	faMap,
-	faEyeSlash,
-	faFileCode
-} from "@fortawesome/free-solid-svg-icons";
+  faCodeFork,
+  faExternalLink,
+  faMap,
+  faEyeSlash,
+  faFileCode
+} from '@fortawesome/free-solid-svg-icons';
 
 const repoCount = ref(0);
 const mergeCount = ref(0);
@@ -163,11 +156,11 @@ const mergeCount = ref(0);
 onMounted(async () => {
   // TODO: move this fetching to a utility function and cache data with Tanstack when implemented
   const repos = await await axios.get(
-    `https://api.github.com/orgs/Police-Data-Accessibility-Project/repos`,
+    `https://api.github.com/orgs/Police-Data-Accessibility-Project/repos`
   );
 
   const merges = await await axios.get(
-    `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+is:pr+is:merged`,
+    `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+is:pr+is:merged`
   );
 
   repoCount.value = repos.data.length;

@@ -4,69 +4,61 @@
       Passwords must contain at least
       <span
         :class="{
-          valid: validation.fullLength,
-        }"
-        >8 characters</span
-      >
+          valid: validation.fullLength
+        }">
+        8 characters
+      </span>
       and include:
     </span>
     <li
       :class="{
-        valid: validation.uppercase,
-      }"
-    >
+        valid: validation.uppercase
+      }">
       <FontAwesomeIcon
-        :icon="validation.uppercase ? faCheckCircle : faDotCircle"
-      />
+        :icon="validation.uppercase ? faCheckCircle : faDotCircle" />
       1 uppercase letter
     </li>
     <li
       :class="{
-        valid: validation.lowercase,
-      }"
-    >
+        valid: validation.lowercase
+      }">
       <FontAwesomeIcon
-        :icon="validation.lowercase ? faCheckCircle : faDotCircle"
-      />
+        :icon="validation.lowercase ? faCheckCircle : faDotCircle" />
       1 lowercase letter
     </li>
     <li
       :class="{
-        valid: validation.number,
-      }"
-    >
+        valid: validation.number
+      }">
       <FontAwesomeIcon
-        :icon="validation.number ? faCheckCircle : faDotCircle"
-      />
+        :icon="validation.number ? faCheckCircle : faDotCircle" />
       1 number
     </li>
     <li
       :class="{
-        valid: validation.specialCharacter,
-      }"
-    >
+        valid: validation.specialCharacter
+      }">
       <FontAwesomeIcon
-        :icon="validation.specialCharacter ? faCheckCircle : faDotCircle"
-      />
+        :icon="validation.specialCharacter ? faCheckCircle : faDotCircle" />
       1 special character
     </li>
   </ul>
 </template>
 
 <script setup>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faCheckCircle,
-  faDotCircle,
-} from "@fortawesome/free-regular-svg-icons";
-import { reactive } from "vue";
+  faDotCircle
+} from '@fortawesome/free-regular-svg-icons';
+import { reactive } from 'vue';
 
 const validation = reactive({
   fullLength: false,
   lowercase: false,
   number: false,
   specialCharacter: false,
-  uppercase: false,
+  uppercase: false
 });
 
 function updatePasswordValidation(password) {
@@ -117,7 +109,7 @@ function isPasswordValid() {
 
 defineExpose({
   isPasswordValid,
-  updatePasswordValidation,
+  updatePasswordValidation
 });
 
 // onBeforeUpdate(() => {

@@ -62,8 +62,7 @@
             work on our software projects. During an initial interview, we will
             discuss which issues on
             <a
-              href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/21/views/2"
-            >
+              href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/21/views/2">
               the roadmap
             </a>
             seem like a good fit for your skills.
@@ -112,8 +111,6 @@
 </template>
 
 <script setup>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import {
-	faInfoCircle
-} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 </script>

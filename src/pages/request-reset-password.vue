@@ -17,16 +17,14 @@
         name="reset-password"
         :error="error"
         :schema="VALIDATION_SCHEMA_REQUEST_PASSWORD"
-        @submit="onSubmitRequestReset"
-      >
+        @submit="onSubmitRequestReset">
         <InputText
           id="email"
           autocomplete="email"
           data-test="email"
           name="email"
           label="Email"
-          placeholder="Your email address"
-        />
+          placeholder="Your email address" />
         <Button class="max-w-full" :is-loading="loading" type="submit">
           Request password reset
         </Button>
@@ -36,25 +34,25 @@
 </template>
 
 <script setup>
-import { Button, FormV2, InputText } from "pdap-design-system";
-import { useUserStore } from "@/stores/user";
-import { ref, onMounted } from "vue";
-import { requestPasswordReset } from "@/api/auth";
+import { Button, FormV2, InputText } from 'pdap-design-system';
+import { useUserStore } from '@/stores/user';
+import { ref, onMounted } from 'vue';
+import { requestPasswordReset } from '@/api/auth';
 
 // Constants
 const VALIDATION_SCHEMA_REQUEST_PASSWORD = [
   {
-    name: "email",
+    name: 'email',
     validators: {
       required: {
-        value: true,
+        value: true
       },
       email: {
-        message: "Please provide your email address",
-        value: true,
-      },
-    },
-  },
+        message: 'Please provide your email address',
+        value: true
+      }
+    }
+  }
 ];
 
 // Stores

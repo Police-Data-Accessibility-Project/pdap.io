@@ -1,7 +1,6 @@
 <template>
   <section
-    class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12"
-  >
+    class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
     <div class="col-span-full">
       <h1>Donate to PDAP</h1>
       <p class="col-span-full">
@@ -20,8 +19,7 @@
         height="770px"
         width="100%"
         style="max-width: 500px; min-width: 310px; max-height: none !important"
-        allow="payment"
-      />
+        allow="payment" />
       <p>PDAP is a non-profit, so your donations may be tax deductible.</p>
 
       <h3 class="pt-4">Send a check</h3>
@@ -53,8 +51,7 @@
         accountability, or reform.
       </p>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20"
-      >
+        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
         <p>
           “PDAP's work was invaluable in helping us find and access data we
           wouldn't have been able to otherwise.”
@@ -65,8 +62,7 @@
         </p>
       </div>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20"
-      >
+        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
         <p>
           “PDAP's feedback helped us revise our published data to be more
           beneficial to the public.”
@@ -77,8 +73,7 @@
         </p>
       </div>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20"
-      >
+        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
         <p>
           “PDAP provides data necessary to understand how police use-of-force
           incidents are processed in the courts, which reveals whether legal

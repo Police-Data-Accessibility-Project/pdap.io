@@ -7,8 +7,7 @@
     <p
       v-else-if="hasValidatedToken && isExpiredToken"
       data-test="token-expired"
-      class="flex flex-col items-start sm:gap-4"
-    >
+      class="flex flex-col items-start sm:gap-4">
       Sorry, that token has expired.
       <RouterLink
         data-test="re-request-link"
@@ -17,8 +16,7 @@
           isExpiredToken = false;
           error = undefined;
           token = undefined;
-        "
-      >
+        ">
         Click here to request another
       </RouterLink>
     </p>
@@ -33,13 +31,11 @@
       :schema="VALIDATION_SCHEMA_CHANGE_PASSWORD"
       @change="onChange"
       @submit="onSubmitChangePassword"
-      @input="onResetInput"
-    >
+      @input="onResetInput">
       <InputPassword
         v-for="input of FORM_INPUTS_CHANGE_PASSWORD"
         v-bind="{ ...input }"
-        :key="input.name"
-      />
+        :key="input.name" />
 
       <PasswordValidationChecker ref="passwordRef" />
 
@@ -51,59 +47,59 @@
 </template>
 
 <script setup>
-import { Button, FormV2, InputPassword } from "pdap-design-system";
-import PasswordValidationChecker from "@/components/PasswordValidationChecker.vue";
-import { useUserStore } from "@/stores/user";
-import parseJwt from "@/util/parseJwt";
-import { onMounted, ref, watchEffect } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
-import { resetPassword, signInWithEmail } from "@/api/auth";
+import { Button, FormV2, InputPassword } from 'pdap-design-system';
+import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
+import { useUserStore } from '@/stores/user';
+import parseJwt from '@/util/parseJwt';
+import { onMounted, ref, watchEffect } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { resetPassword, signInWithEmail } from '@/api/auth';
 
 // Constants
 const FORM_INPUTS_CHANGE_PASSWORD = [
   {
-    autocomplete: "password",
-    "data-test": "password",
-    id: "password",
-    name: "password",
-    label: "Password",
-    placeholder: "Your updated password",
+    autocomplete: 'password',
+    'data-test': 'password',
+    id: 'password',
+    name: 'password',
+    label: 'Password',
+    placeholder: 'Your updated password'
   },
   {
-    autocomplete: "password",
-    "data-test": "confirm-password",
-    id: "confirmPassword",
-    name: "confirmPassword",
-    label: "Confirm Password",
-    placeholder: "Confirm your updated password",
-  },
+    autocomplete: 'password',
+    'data-test': 'confirm-password',
+    id: 'confirmPassword',
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    placeholder: 'Confirm your updated password'
+  }
 ];
 const VALIDATION_SCHEMA_CHANGE_PASSWORD = [
   {
-    name: "password",
-    label: "Password",
+    name: 'password',
+    label: 'Password',
     validators: {
       required: {
-        value: true,
+        value: true
       },
       password: {
-        message: "Please provide your password",
-        value: true,
-      },
-    },
+        message: 'Please provide your password',
+        value: true
+      }
+    }
   },
   {
-    name: "confirmPassword",
+    name: 'confirmPassword',
     validators: {
       required: {
-        value: true,
+        value: true
       },
       password: {
-        message: "Please confirm your password",
-        value: true,
-      },
-    },
-  },
+        message: 'Please confirm your password',
+        value: true
+      }
+    }
+  }
 ];
 
 const route = useRoute();
@@ -157,7 +153,7 @@ function onChange(formValues) {
 }
 
 function onResetInput(e) {
-  if (e.target.name === "password") {
+  if (e.target.name === 'password') {
     passwordRef.value?.updatePasswordValidation(e.target.value);
   }
 }
@@ -165,7 +161,7 @@ function onResetInput(e) {
 function handleValidatePasswordMatch(formValues) {
   if (formValues.password !== formValues.confirmPassword) {
     if (!error.value) {
-      error.value = "Passwords do not match, please try again.";
+      error.value = 'Passwords do not match, please try again.';
     }
     return false;
   } else {
@@ -178,7 +174,7 @@ async function onSubmitChangePassword(formValues) {
   const isPasswordValid = passwordRef.value?.isPasswordValid();
 
   if (!isPasswordValid) {
-    error.value = "Password is not valid";
+    error.value = 'Password is not valid';
   } else {
     if (error.value) error.value = undefined;
   }
@@ -191,9 +187,9 @@ async function onSubmitChangePassword(formValues) {
     await resetPassword(password, token);
     await signInWithEmail(parseJwt(token).sub.email, password);
 
-    router.push({ path: "profile" });
+    router.push({ path: 'profile' });
   } catch (err) {
-    if (err.message === "The submitted token is invalid") {
+    if (err.message === 'The submitted token is invalid') {
       isExpiredToken.value = true;
     }
     error.value = err.message;

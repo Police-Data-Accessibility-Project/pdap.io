@@ -5,13 +5,13 @@
 </template>
 
 <script setup>
-import debounce from "lodash/debounce";
-import { useAuthStore } from "@/stores/auth";
-import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user";
-import { refreshTokens, signOut } from "@/api/auth";
-import { updateGlobalOptions, globalOptions } from "vue3-toastify";
-import { watch, ref, onMounted } from "vue";
+import debounce from 'lodash/debounce';
+import { useAuthStore } from '@/stores/auth';
+import { useRoute, useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user';
+import { refreshTokens, signOut } from '@/api/auth';
+import { updateGlobalOptions, globalOptions } from 'vue3-toastify';
+import { watch, ref, onMounted } from 'vue';
 
 const isHeaderVisible = ref(true);
 
@@ -20,9 +20,9 @@ watch(isHeaderVisible, (visible) => {
     ...globalOptions.value,
     style: {
       ...globalOptions.style,
-      top: visible ? "120px" : "20px",
+      top: visible ? '120px' : '20px'
     },
-    theme: "auto",
+    theme: 'auto'
   });
 });
 
@@ -31,10 +31,10 @@ onMounted(() => {
     ([entry]) => {
       isHeaderVisible.value = entry.isIntersecting;
     },
-    { threshold: 0 },
+    { threshold: 0 }
   );
 
-  const navbar = document.querySelector(".pdap-header");
+  const navbar = document.querySelector('.pdap-header');
   if (navbar) {
     observer.observe(navbar);
   }
@@ -60,7 +60,7 @@ const handlers = {
   touchcancel: refreshAuth,
   touchmove: refreshAuth,
   scroll: refreshAuth,
-  submit: refreshAuth,
+  submit: refreshAuth
 };
 
 function handleAuthRefresh() {
@@ -77,7 +77,7 @@ function handleAuthRefresh() {
     // User's tokens are all expired, log out.
   } else if (shouldLogout) {
     signOut();
-    if (route?.meta?.auth) router.replace("/sign-in");
+    if (route?.meta?.auth) router.replace('/sign-in');
   } else return;
 }
 </script>

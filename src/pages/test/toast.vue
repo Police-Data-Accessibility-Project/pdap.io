@@ -5,19 +5,19 @@
 </template>
 
 <script setup>
-import { toast } from "vue3-toastify";
+import { toast } from 'vue3-toastify';
 
-toast.success("Success! We did thing you wanted us to do.", {
+toast.success('Success! We did thing you wanted us to do.', {
   onClose: () => {
-    toast.info("This is information", {
+    toast.info('This is information', {
       onClose: () => {
-        toast.warn("This is a warning", {
+        toast.warn('This is a warning', {
           onClose: () => {
-            toast.error("This is an error");
-          },
+            toast.error('This is an error');
+          }
         });
-      },
+      }
     });
-  },
+  }
 });
 </script>

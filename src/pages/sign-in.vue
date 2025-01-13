@@ -5,8 +5,7 @@
     <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
     <div
       v-if="githubLoading"
-      class="flex items-center justify-center h-full w-full"
-    >
+      class="flex items-center justify-center h-full w-full">
       <Spinner :show="githubLoading" text="Logging in" />
     </div>
 
@@ -28,8 +27,7 @@
           class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
           intent="tertiary"
           :disabled="githubAuthData?.userExists"
-          @click="async () => await beginOAuthLogin()"
-        >
+          @click="async () => await beginOAuthLogin()">
           <FontAwesomeIcon :icon="faGithub" />
           Sign in with Github
         </Button>
@@ -43,8 +41,7 @@
         name="login"
         :error="error"
         :schema="VALIDATION_SCHEMA"
-        @submit="onSubmit"
-      >
+        @submit="onSubmit">
         <InputText
           id="email"
           autocomplete="email"
@@ -52,8 +49,7 @@
           name="email"
           label="Email"
           type="text"
-          placeholder="Your email address"
-        />
+          placeholder="Your email address" />
         <InputPassword
           id="password"
           autocomplete="password"
@@ -61,34 +57,29 @@
           name="password"
           label="Password"
           type="password"
-          placeholder="Your password"
-        />
+          placeholder="Your password" />
 
         <Button
           class="max-w-full mt-4"
           :is-loading="loading"
           type="submit"
-          data-test="submit-button"
-        >
+          data-test="submit-button">
           Sign in
         </Button>
       </FormV2>
       <div
-        class="flex flex-col items-start sm:flex-row sm:items-center sm:gap-4 w-full"
-      >
+        class="flex flex-col items-start sm:flex-row sm:items-center sm:gap-4 w-full">
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
           intent="secondary"
           data-test="toggle-button"
-          to="/sign-up"
-        >
+          to="/sign-up">
           Create Account
         </RouterLink>
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
           data-test="reset-link"
-          to="/request-reset-password"
-        >
+          to="/request-reset-password">
           Reset Password
         </RouterLink>
       </div>
@@ -99,16 +90,16 @@
 <script>
 // Data loader - navigation guard and GH auth handling
 // TODO (when GH auth is settled): abstract this into repeatable func. It's duplicated on `/sign-in` and `/sign-up`
-import { NavigationResult } from "unplugin-vue-router/data-loaders";
-import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic";
-import { useAuthStore } from "@/stores/auth";
-import { beginOAuthLogin, signInWithGithub } from "@/api/auth";
+import { NavigationResult } from 'unplugin-vue-router/data-loaders';
+import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
+import { useAuthStore } from '@/stores/auth';
+import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
 
 const auth = useAuthStore();
 
-export const useGithubAuth = defineBasicLoader("/sign-in", async (route) => {
+export const useGithubAuth = defineBasicLoader('/sign-in', async (route) => {
   if (auth.isAuthenticated())
-    throw new NavigationResult(auth.redirectTo ?? { path: "/profile" });
+    throw new NavigationResult(auth.redirectTo ?? { path: '/profile' });
 
   try {
     const githubAccessToken = route.query.gh_access_token;
@@ -117,11 +108,11 @@ export const useGithubAuth = defineBasicLoader("/sign-in", async (route) => {
       const tokens = await signInWithGithub(githubAccessToken);
 
       if (tokens)
-        return new NavigationResult(auth.redirectTo ?? { path: "/profile" });
+        return new NavigationResult(auth.redirectTo ?? { path: '/profile' });
     }
   } catch (error) {
-    if (error.response.data.message.includes("already exists")) {
-      auth.setRedirectTo({ path: "/profile" });
+    if (error.response.data.message.includes('already exists')) {
+      auth.setRedirectTo({ path: '/profile' });
       return { userExists: true };
     } else throw error;
   }
@@ -130,54 +121,54 @@ export const useGithubAuth = defineBasicLoader("/sign-in", async (route) => {
 
 <script setup>
 // Imports
-import { signInWithEmail } from "@/api/auth";
+import { signInWithEmail } from '@/api/auth';
 import {
   Button,
   FormV2,
   InputPassword,
   InputText,
-  Spinner,
-} from "pdap-design-system";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+  Spinner
+} from 'pdap-design-system';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 // Constants
 const VALIDATION_SCHEMA = [
   {
-    name: "email",
+    name: 'email',
     validators: {
       required: {
-        value: true,
+        value: true
       },
       email: {
-        message: "Please provide your email address",
-        value: true,
-      },
-    },
+        message: 'Please provide your email address',
+        value: true
+      }
+    }
   },
   {
-    name: "password",
+    name: 'password',
     validators: {
       required: {
-        value: true,
-      },
+        value: true
+      }
       // password: {
       // 	message: 'Please provide your password',
       // 	value: true,
       // },
-    },
-  },
+    }
+  }
 ];
 
 // Store
 const {
   data: githubAuthData,
   error: githubAuthError,
-  isLoading: githubLoading,
+  isLoading: githubLoading
 } = useGithubAuth();
 
 // Reactive vars
@@ -196,13 +187,13 @@ async function onSubmit(formValues) {
     await signInWithEmail(email, password);
 
     error.value = undefined;
-    router.push(auth.redirectTo ?? "/profile");
+    router.push(auth.redirectTo ?? '/profile');
   } catch (err) {
     console.error(err);
     error.value =
       err.response?.status > 400 && err.response?.status < 500
         ? err.response?.data.message
-        : "Something went wrong, please try again.";
+        : 'Something went wrong, please try again.';
   } finally {
     loading.value = false;
   }
