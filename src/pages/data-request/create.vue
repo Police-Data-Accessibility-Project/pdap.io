@@ -18,14 +18,12 @@
       name="new-request"
       :schema="SCHEMA"
       @error="error"
-      @submit="submit"
-    >
+      @submit="submit">
       <InputText
         :id="'input-' + INPUT_NAMES.title"
         class="md:col-span-2"
         :name="INPUT_NAMES.title"
-        placeholder="Briefly describe the general purpose or topic."
-      >
+        placeholder="Briefly describe the general purpose or topic.">
         <template #label>
           <h4>Request title</h4>
         </template>
@@ -47,8 +45,7 @@
               if (indexToRemove > -1)
                 selectedLocations.splice(indexToRemove, 1);
             }
-          "
-        />
+          " />
       </TransitionGroup>
 
       <Typeahead
@@ -71,18 +68,23 @@
             }
           }
         "
-        @on-input="fetchTypeaheadResults"
-      >
+        @on-input="fetchTypeaheadResults">
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
-          <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
           <span
-            v-html="typeaheadRef?.boldMatchText(getFullLocationText(item))"
-          />
+            v-html="typeaheadRef?.boldMatchText(getFullLocationText(item))" />
           <span class="locale-type">
             {{ item.type }}
           </span>
           <span class="select">Select</span>
+        </template>
+        <template #not-found>
+          <span>
+            We don't have agencies in the place you're looking for. Is it
+            spelled correctly? If our database is missing something, please
+            reach us at
+            <a href="mailto:contat@pdap.io">contact@pdap.io</a>
+          </span>
         </template>
       </Typeahead>
 
@@ -93,8 +95,7 @@
         placeholder="What dates or years should the data cover?"
         year-picker
         range
-        position="left"
-      >
+        position="left">
         <template #label>
           <h4>Coverage range</h4>
         </template>
@@ -105,8 +106,7 @@
         class="md:col-span-2"
         :name="INPUT_NAMES.target"
         :options="SELECT_OPTS"
-        placeholder="When would you like to see this request filled?"
-      >
+        placeholder="When would you like to see this request filled?">
         <template #label>
           <h4>Target date</h4>
         </template>
@@ -117,8 +117,7 @@
         class="md:col-start-1 md:col-end-2"
         :name="INPUT_NAMES.notes"
         placeholder="What are you trying to learn? Is there anything you've already tried?"
-        rows="4"
-      >
+        rows="4">
         <template #label>
           <h4>Request notes</h4>
         </template>
@@ -129,31 +128,27 @@
         class="md:col-start-2 md:col-end-3"
         :name="INPUT_NAMES.requirements"
         placeholder="Details the data must have, like 'case numbers' or 'incident location'."
-        rows="4"
-      >
+        rows="4">
         <template #label>
           <h4>Data requirements</h4>
         </template>
       </InputTextArea>
 
       <div
-        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
-      >
+        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
         <Button
           :disabled="requestPending"
           :is-loading="requestPending"
           class="min-w-52"
           intent="primary"
-          type="submit"
-        >
+          type="submit">
           Submit request
         </Button>
         <Button
           :disabled="requestPending"
           intent="secondary"
           type="button"
-          @click="clear"
-        >
+          @click="clear">
           Clear
         </Button>
       </div>
@@ -168,42 +163,42 @@ import {
   InputText,
   InputSelect,
   InputTextArea,
-  InputDatePicker,
-} from "pdap-design-system";
-import Typeahead from "@/components/TypeaheadInput.vue";
-import LocationSelected from "@/components/TypeaheadSelected.vue";
-import { toast } from "vue3-toastify";
-import { createRequest } from "@/api/data-requests";
-import { getFullLocationText } from "@/util/locationFormatters";
-import _debounce from "lodash/debounce";
-import _cloneDeep from "lodash/cloneDeep";
-import { nextTick, ref, watch } from "vue";
-import { getTypeaheadLocations } from "@/api/typeahead";
+  InputDatePicker
+} from 'pdap-design-system';
+import Typeahead from '@/components/TypeaheadInput.vue';
+import LocationSelected from '@/components/TypeaheadSelected.vue';
+import { toast } from 'vue3-toastify';
+import { createRequest } from '@/api/data-requests';
+import { getFullLocationText } from '@/util/locationFormatters';
+import _debounce from 'lodash/debounce';
+import _cloneDeep from 'lodash/cloneDeep';
+import { nextTick, ref, watch } from 'vue';
+import { getTypeaheadLocations } from '@/api/typeahead';
 
 const INPUT_NAMES = {
   // contact: 'contact',
-  title: "title",
-  area: "area",
-  range: "coverage_range",
-  target: "request_urgency",
-  notes: "submission_notes",
-  requirements: "data_requirements",
+  title: 'title',
+  area: 'area',
+  range: 'coverage_range',
+  target: 'request_urgency',
+  notes: 'submission_notes',
+  requirements: 'data_requirements'
 };
 const SELECT_OPTS = [
-  { value: "urgent", label: "Urgent (Less than a week)" },
+  { value: 'urgent', label: 'Urgent (Less than a week)' },
   {
-    value: "somewhat_urgent",
-    label: "Somewhat urgent (Less than a month)",
+    value: 'somewhat_urgent',
+    label: 'Somewhat urgent (Less than a month)'
   },
   {
-    value: "not_urgent",
-    label: "Not urgent (A few months)",
+    value: 'not_urgent',
+    label: 'Not urgent (A few months)'
   },
   {
-    value: "long_term",
-    label: "Long term (6 months or more)",
+    value: 'long_term',
+    label: 'Long term (6 months or more)'
   },
-  { value: "indefinite_unknown", label: "Indefinite/Unknown" },
+  { value: 'indefinite_unknown', label: 'Indefinite/Unknown' }
 ];
 const SCHEMA = [
   // {
@@ -220,47 +215,46 @@ const SCHEMA = [
     validators: {
       required: {
         value: true,
-        message: "Please let us know what to call this request.",
-      },
-    },
+        message: 'Please let us know what to call this request.'
+      }
+    }
   },
   {
     name: INPUT_NAMES.range,
     validators: {
       required: {
         value: true,
-        message: "Please let us know a range of years to look for this data.",
-      },
-    },
+        message: 'Please let us know a range of years to look for this data.'
+      }
+    }
   },
   {
     name: INPUT_NAMES.target,
     validators: {
       required: {
         value: true,
-        message:
-          "Please let us know when you'd like this request to be filled.",
-      },
-    },
+        message: "Please let us know when you'd like this request to be filled."
+      }
+    }
   },
   {
     name: INPUT_NAMES.notes,
     validators: {
       required: {
         value: true,
-        message: "Please let us know a little more about your request.",
-      },
-    },
+        message: 'Please let us know a little more about your request.'
+      }
+    }
   },
   {
     name: INPUT_NAMES.requirements,
     validators: {
       required: {
         value: true,
-        message: "Please let us know the requirements for this request.",
-      },
-    },
-  },
+        message: 'Please let us know the requirements for this request.'
+      }
+    }
+  }
 ];
 
 const selectedLocations = ref([]);
@@ -286,7 +280,7 @@ const fetchTypeaheadResults = _debounce(
     }
   },
   350,
-  { leading: true, trailing: true },
+  { leading: true, trailing: true }
 );
 
 async function clear() {
@@ -296,9 +290,9 @@ async function clear() {
     .reduce(
       (acc, cur) => ({
         ...acc,
-        [cur]: "",
+        [cur]: ''
       }),
-      {},
+      {}
     );
 
   formRef.value.setValues(newVal);
@@ -310,22 +304,22 @@ async function clear() {
 function error(v$) {
   // Janky error handling for typeahead because it's not a controlled input - on form error, check for this error, too
   if (v$.value.$anyDirty && !selectedLocations.value.length) {
-    typeaheadError.value = "Please include a location with your request";
+    typeaheadError.value = 'Please include a location with your request';
   }
 }
 
 async function submit(values) {
   if (!selectedLocations.value.length) {
     // Janky error handling for typeahead because it's not a controlled input - if form doesn't error, check for this error anyway.
-    typeaheadError.value = "Please include a location with your request";
+    typeaheadError.value = 'Please include a location with your request';
     return;
   }
   requestPending.value = true;
 
   if (values[INPUT_NAMES.range]?.length) {
     const range = values[INPUT_NAMES.range]
-      .map((d) => (typeof d === "number" ? String(d) : ""))
-      .join(" - ");
+      .map((d) => (typeof d === 'number' ? String(d) : ''))
+      .join(' - ');
 
     values[INPUT_NAMES.range] = range;
   }
@@ -340,8 +334,8 @@ async function submit(values) {
         delete loc.display_name;
         delete loc.location_id;
         return loc;
-      }),
-    ],
+      })
+    ]
   };
 
   try {
@@ -352,7 +346,7 @@ async function submit(values) {
   } catch (error) {
     if (error) {
       console.error(error);
-      formError.value = "Something went wrong, please try again.";
+      formError.value = 'Something went wrong, please try again.';
       formRef.value.setValues({ ...values });
       var isError = !!error;
     }
@@ -375,9 +369,9 @@ watch(
 
     // clearing and re-applying when dirty
     if (!selected.length && formRef.value.v$.$anyDirty) {
-      typeaheadError.value = "Please include a location with your request";
+      typeaheadError.value = 'Please include a location with your request';
     }
-  },
+  }
 );
 </script>
 
