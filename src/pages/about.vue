@@ -57,19 +57,22 @@
       </form>
     </div>
     <div class="pdap-flex-container col-span-full">
-      <h2>People</h2>
+      <h2>Who we are</h2>
       <p>
-        Every local police system has people studying it&mdash;that's how most
-        of us found this project. Our community includes anyone impacted by
-        policing: residents, journalists, activists, researchers, and municipal
-        employees.
+        In every state, county, and locality, there is a network of people 
+        dedicated to understanding the criminal legal system using data. 
+        This is our community. We are a <strong>national project with a local focus.</strong>
+      </p>
+      <p>
+        Most people find this project when they go looking for data, and come up short. 
+        Our community includes data users and publishers, as well as anyone impacted by policing: 
+        residents, journalists, activists, researchers, and municipal employees.
       </p>
       <p>
         The Police Data Access Point is published by the Police Data Accessibility Project, 
 				a U.S. nonprofit headquartered in Pittsburgh, PA. We have paid staff 
 				and volunteers from around the United States and beyond.
       </p>
-
       <p>
         The board is
         <span>
@@ -131,24 +134,24 @@
     <div class="pdap-flex-container col-span-full">
       <h2>Funding</h2>
       <p>
-        We are proud to receive generous support from
-        <a href="https://www.heinz.org/" target="_blank" rel="noreferrer">
-          The Heinz Endowments,
-        </a>
-        early believers in our vision in 2022 who renewed their grant in 2023.
-      </p>
-      <p>
-        We are also grateful for the financial and advisory support of
+        We are grateful for the generous financial and advisory support of
         <a href="https://ye.gg/" target="_blank" rel="noreferrer">
           Gabriel Weinberg.
         </a>
       </p>
+      <p>
+        We received support from
+        <a href="https://www.heinz.org/" target="_blank" rel="noreferrer">
+          The Heinz Endowments,
+        </a>
+        who funded our core staff from 2022&ndash;2024.
+      </p>
     </div>
   </section>
   <section
-    class="pdap-grid-container pdap-grid-container-columns-2 mb-12 px-4 md:px-8"
+    class="pdap-flex-container pt-12 mb-12 px-4 md:px-8"
   >
-    <h2 class="col-span-full">Frequently Asked Questions</h2>
+    <h1 class="mb-0">Frequently Asked Questions</h1>
     <h3>What makes you experts?</h3>
     <p>
       We have done thousands of hours of user research with people who use
@@ -159,7 +162,6 @@
       What kind of data do you collect?
       <br />
     </h3>
-    <div>
       <p>
         Anything published by or about a criminal legal system agency: courts,
         jails, and law enforcement (police). You can read more about
@@ -176,7 +178,6 @@
         We are not creating a massive, interoperable database. This is a defense
         mechanism against aggregating data about criminalized people.
       </p>
-    </div>
     <h3>
       Who is this data for?
       <br />
