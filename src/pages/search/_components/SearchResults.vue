@@ -4,8 +4,7 @@
       <h4
         v-for="title of HEADING_TITLES"
         :key="title + 'heading'"
-        :class="getClassNameFromHeadingType(title)"
-      >
+        :class="getClassNameFromHeadingType(title)">
         {{ title }}
       </h4>
     </div>
@@ -15,25 +14,21 @@
         v-if="isLoading"
         :show="isLoading"
         :size="64"
-        text="Fetching search results..."
-      />
+        text="Fetching search results..." />
       <template v-else>
         <!-- eslint-disable vue/no-v-for-template-key -->
         <template
           v-for="locale in ALL_LOCATION_TYPES"
-          :key="locale + 'results'"
-        >
+          :key="locale + 'results'">
           <template v-if="results[locale] && 'count' in results[locale]">
             <div
               :id="'scroll-to-' + locale"
               aria-hidden="true"
-              class="w-full"
-            />
+              class="w-full" />
             <!-- Header by agency -->
             <template
               v-for="agency in Object.keys(results[locale].sourcesByAgency)"
-              :key="agency + 'results'"
-            >
+              :key="agency + 'results'">
               <div class="agency-heading-row">
                 <h5>{{ agency }}</h5>
                 <span class="pill">{{ locale }}</span>
@@ -44,8 +39,7 @@
                 v-for="source in results[locale].sourcesByAgency[agency]"
                 :key="source.agency_name"
                 :to="`/data-source/${source.id}`"
-                class="agency-row group"
-              >
+                class="agency-row group">
                 <!-- Source name and record type -->
                 <div :class="getClassNameFromHeadingType(HEADING_TITLES[0])">
                   <h6>
@@ -64,7 +58,7 @@
 
                 <!-- Description -->
                 <p :class="getClassNameFromHeadingType(HEADING_TITLES[2])">
-                  {{ source.description ?? "—" }}
+                  {{ source.description ?? '—' }}
                 </p>
 
                 <!-- Formats and links to data source view and data source url -->
@@ -72,23 +66,20 @@
                   <span
                     v-for="format of source.record_formats"
                     :key="source.data_source_name + format"
-                    class="pill format"
-                  >
+                    class="pill format">
                     {{ format }}
                   </span>
                 </div>
                 <div class="links">
                   <FontAwesomeIcon
                     class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300"
-                    :icon="faInfo"
-                  />
+                    :icon="faInfo" />
                   <a
                     :href="source.source_url"
                     target="_blank"
                     rel="noreferrer"
                     @keydown.stop.enter=""
-                    @click.stop=""
-                  >
+                    @click.stop="">
                     <FontAwesomeIcon :icon="faLink" />
                     source
                   </a>
@@ -103,27 +94,27 @@
 </template>
 
 <script setup>
-import { ALL_LOCATION_TYPES } from "@/util/constants";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faInfo, faLink } from "@fortawesome/free-solid-svg-icons";
-import { RecordTypeIcon, Spinner } from "pdap-design-system";
-import { useRoute } from "vue-router";
-import { ref, watchEffect } from "vue";
+import { ALL_LOCATION_TYPES } from '@/util/constants';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faInfo, faLink } from '@fortawesome/free-solid-svg-icons';
+import { RecordTypeIcon, Spinner } from 'pdap-design-system';
+import { useRoute } from 'vue-router';
+import { ref, watchEffect } from 'vue';
 
 const route = useRoute();
 
 // constants
 const HEADING_TITLES = [
-  "agency, name, record type",
-  "time range",
-  "description",
-  "formats",
-  "details",
+  'agency, name, record type',
+  'time range',
+  'description',
+  'formats',
+  'details'
 ];
 
 const { results, isLoading } = defineProps({
   results: Object,
-  isLoading: Boolean,
+  isLoading: Boolean
 });
 
 const containerRef = ref();
@@ -131,17 +122,17 @@ const containerRef = ref();
 function handleScrollTo() {
   if (route.hash) {
     const scrollToTop = document.getElementById(
-      "scroll-to-" + route.hash.replace("#", ""),
+      'scroll-to-' + route.hash.replace('#', '')
     )?.offsetTop;
 
-    containerRef.value?.scrollTo({ top: scrollToTop, behavior: "smooth" });
+    containerRef.value?.scrollTo({ top: scrollToTop, behavior: 'smooth' });
   }
 }
 watchEffect(handleScrollTo);
 
 // TODO: try to handle this with IntersectionObserver instead (i.e. set hash when div intersects, so hash remains up-to-date)
 defineExpose({
-  handleScrollTo,
+  handleScrollTo
 });
 
 /**
@@ -153,12 +144,12 @@ function getYearRange(start, end) {
   const startYear = new Date(start).getFullYear();
   const endYear = (end ? new Date(end) : new Date()).getFullYear();
 
-  return start ? `${startYear} to ${endYear}` : "—";
+  return start ? `${startYear}–${endYear}` : '—';
 }
 
 function getClassNameFromHeadingType(heading) {
-  if (heading === "details") return "links";
-  return heading.replaceAll(",", "").split(" ").join("-");
+  if (heading === 'details') return 'links';
+  return heading.replaceAll(',', '').split(' ').join('-');
 }
 </script>
 
@@ -179,7 +170,7 @@ h6 {
 .agency-row {
   /* Tailwind is a pain for complex grids, so using standard CSS */
   grid-template-columns: 6fr 2fr 1fr;
-  grid-template-areas: "name name name" "range formats formats";
+  grid-template-areas: 'name name name' 'range formats formats';
   grid-template-rows: repeat(2, auto);
 }
 
@@ -214,7 +205,7 @@ h4.formats {
   .agency-row {
     /* Tailwind is a pain for complex grids, so using standard CSS */
     grid-template-columns: 5fr 2fr 3fr;
-    grid-template-areas: "name name name" "range formats links";
+    grid-template-areas: 'name name name' 'range formats links';
   }
 }
 
@@ -225,7 +216,7 @@ h4.formats {
 
     grid-template-columns: 320px 125px 1fr 128px 115px;
     grid-template-rows: repeat(1, auto);
-    grid-template-areas: "name range description formats links";
+    grid-template-areas: 'name range description formats links';
   }
 }
 
