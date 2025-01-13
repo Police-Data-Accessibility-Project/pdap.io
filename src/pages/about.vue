@@ -10,6 +10,51 @@
         <a href="https://discord.gg/wMqex8nKZJ">join the Discord</a>
         to get in touch.
       </p>
+      <p>
+        You can also sign up for our newsletter to receive updates about our
+        software and data projects. You'll be the first to be invited to create
+        a PDAP account.
+      </p>
+      <h3>Newsletter</h3>
+      <p>We only write when we have updates.</p>
+      <form
+        action="https://buttondown.email/api/emails/embed-subscribe/pdap"
+        method="post"
+        target="popupwindow"
+        onsubmit="window.open('https://newsletter.pdap.io', 'popupwindow')"
+        class="grid grid-cols-1 mt-4 sm:grid-cols-2 h-[max-content] gap-4 leading-normal mb-3 w-full">
+        <div class="flex flex-col">
+          <input
+            id="bd-email"
+            type="email"
+            name="email"
+            placeholder="placeholder@email.com"
+            class="h-12 text-lg px-2 gap-4 leading-normal w-full dark:bg-neutral-950 border border-neutral-500 border-solid px-3 py-2 text-[rgba(0,0,0)"
+          />
+          <label
+            for="bd-email"
+            class="max-w-[max-content] text-lg py-1 mt-0 font-medium"
+          >
+            Enter your email
+          </label>
+        </div>
+        <div class="flex flex-row">
+          <input
+            type="submit"
+            class="pdap-button-primary h-[max-content]"
+            value="Sign up"
+            style="margin: 0px 4px 0px 4px"
+          />
+          <button
+            class="pdap-button-secondary h-[max-content]"
+            value="Archives"
+            onclick="window.open('https://newsletter.pdap.io/archive', '_blank')"
+            style="margin: 0px 4px 0px 4px"
+          >
+            View archives
+          </button>
+        </div>
+      </form>
     </div>
     <div class="pdap-flex-container col-span-full">
       <h2>People</h2>
