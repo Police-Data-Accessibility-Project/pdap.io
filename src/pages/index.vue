@@ -39,9 +39,6 @@
           alt="A map scattered with icons representing different kinds of data."
         />
         <p>Finding and cataloguing sources of data</p>
-        <Button class="mt-4">
-          Help label Data Sources
-        </Button>
       </div>
       <div>
         <img
@@ -50,9 +47,6 @@
             alt="An eye looking through a magnifying glass at a police website."
         />
         <p>Project-based scraping and records requests</p>
-        <Button class="mt-4">
-          Improve access to data in your area
-        </Button>
       </div>
       <div>
         <img
@@ -61,29 +55,72 @@
           alt="A piece of police data being distributed to several people."
         />
         <p>Connecting projects to data & resources</p>
-        <Button class="mt-4">
-          Open a Data Request
+      </div>
+      <div class="col-span-full text-lg">
+        <p>
+          The problem we address is the inaccessibility of data about the systems 
+          with the <strong>greatest impact on our lives. </strong>
+          Records which should be public are disorganized, 
+          scattered across obscure municipal websites, 
+          kept behind tedious request processes,
+          or not published at all.
+        </p>
+        <p>
+          <strong>We envision a future</strong> where every person in the United States can easily 
+          access and understand well-documented public data about local police systems.
+        </p>
+        <p>
+          Our impartial, open-source work will enable people to track data about 
+          any public system that impacts their community.
+        </p>
+        <p>All of our programs exist to help people answer questions with data.
+          <strong>If you are starting a data project, we can help.</strong>
+          <Button class="mt-2" intent="primary">
+            Open a Data Request
+          </Button>
+        </p>
+      </div>
+	  </section>
+    <section class="col-span-full pdap-flex-container">
+      <h1>Join our Community</h1>
+      <p>
+        This work is multidisciplinary and beginner-friendly.
+        No matter what your level of experience, you can be a valuable contributor!
+        The most important skill is <strong>persistence.</strong>
+      </p>
+      <div>
+        <h2 class="pt-4">Locate sources</h2>
+        <p>
+          Some public records are already online, waiting to be indexed and used. Adding them to our database makes them more accessible to everyone. 
+        </p>
+        <Button class="mt-2" intent="secondary">
+          Help label Data Sources
         </Button>
       </div>
-      <p class="col-span-full">
-        The problem we address is the inaccessibility of data about the systems 
-        with the greatest impact on our lives. 
-        Records which should be public are disorganized, 
-        scattered across obscure municipal websites, 
-        kept behind tedious request processes,
-        or not published at all.
-      </p>
-      <p class="col-span-full">
-        We envision a future where every person in the United States can easily 
-        access and understand well-documented public data about local police systems.
-        Police agencies will be reshaped by the demand for transparency, 
-        with leading communities setting positive examples for others to follow. 
-        Our impartial, open-source work will enable people to track data about 
-        any public system that impacts their community.
-      </p>
-	  </section>
+      <div>
+        <h2 class="pt-4">Research requests</h2>
+        <p>
+          Some research projects could benefit from extra help. We need people to help with data analysis, web scraping, or local records requests.
+        </p>
+        <h3>Open data requests</h3>
+        <p>request 1</p>
+        <p>request 2</p>
+        <Button class="mt-2" intent="secondary">
+          Improve data access in your area
+        </Button> <br />
+      </div>
+      <div>
+        <h2 class="pt-4">Contribute code</h2>
+        <p>
+          Everything you see is open source, built by a small team of volunteers and staff. We use Python for most backend and web scraping, and VueJS for front end.
+        </p>
+        <h3>Good first issues</h3>
+        <p>issue 1</p>
+        <p>issue 2</p>
+      </div>
+    </section>
     <section class="pdap-flex-container col-span-full text-lg">
-      <h2>Praise for our work</h2>
+      <h1>Praise for our work</h1>
       <div
         class="p-4 my-2 mx-0 border-2 border-solid border-wineneutral-300"
       >
@@ -120,40 +157,6 @@
           &mdash;
           <a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>, UC Berkeley
         </p>
-      </div>
-    </section>
-    <section class="col-span-full pdap-flex-container">
-      <h1>Join our Community</h1>
-      <p>
-        This work is multidisciplinary and beginner-friendly.
-        No matter what your level of experience, you can be a valuable contributor!
-        The most important skill is <strong>persistence.</strong>
-      </p>
-      <div>
-        <h2>Locate sources</h2>
-        <p>
-          Some public records are already online, waiting to be indexed and used. Adding them to our database makes them more accessible to everyone. 
-        </p>
-        <button>Help label data sources</button>
-      </div>
-      <div>
-        <h2>Research requests</h2>
-        <p>
-          Some research projects could benefit from extra help. We need people to help with data analysis, web scraping, or local records requests.
-        </p>
-        <h3>Open data requests</h3>
-        <p>request 1</p>
-        <p>request 2</p>
-        <button>View more data requests</button>
-      </div>
-      <div>
-        <h2>Open source code</h2>
-        <p>
-          Everything you see is open source, built by a small team of volunteers and staff. We use Python for most backend and web scraping, and VueJS for front end.
-        </p>
-        <h3>Good first issues</h3>
-        <p>issue 1</p>
-        <p>issue 2</p>
       </div>
     </section>
     <section class="col-span-full pdap-grid-container grid-cols-2">
@@ -256,6 +259,7 @@
 </template>
 
 <script setup>
+import { Button } from 'pdap-design-system';
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import SearchForm from "@/components/SearchForm.vue";
@@ -267,7 +271,6 @@ import {
   faCircleNotch,
   faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
-// import Button from 'pdap-design-system';
 
 // TODO: get agenciesCount, countiesCount, statesCount from the PDAP API once endpoints are surfaced
 
