@@ -1,7 +1,6 @@
 <template>
   <div
-    class="col-span-1 flex flex-col gap-6 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0"
-  >
+    class="col-span-1 flex flex-col gap-6 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
     <TypeaheadInput
       :id="TYPEAHEAD_ID"
       ref="typeaheadRef"
@@ -9,8 +8,7 @@
       :items="items"
       :placeholder="placeholder ?? 'Enter a place'"
       @select-item="onSelectRecord"
-      @on-input="fetchTypeaheadResults"
-    >
+      @on-input="fetchTypeaheadResults">
       <!-- Pass label as slot to typeahead -->
       <template #label>
         <h4 class="uppercase">Search location</h4>
@@ -27,8 +25,9 @@
       </template>
       <template #not-found>
         <span>
-          <strong>No results found.</strong> Please check your spelling and
-          search for a place in the United States.
+          <strong>No results found.</strong>
+          Please check your spelling and search for a place in the United
+          States.
         </span>
       </template>
     </TypeaheadInput>
@@ -40,17 +39,16 @@
     ref="formRef"
     class="grid grid-cols-1 auto-rows-auto max-w-full gap:0 @md:gap-4 @md:grid-cols-2 @lg:grid-cols-3 gap-0"
     @change="onChange"
-    @submit="submit"
-  >
+    @submit="submit">
     <InputCheckbox
       v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
       :id="id"
       :key="name"
       :default-checked="defaultChecked"
-      :name="name"
-    >
+      :name="name">
       <template #label>
-        <RecordTypeIcon :record-type="label" /> {{ label }}
+        <RecordTypeIcon :record-type="label" />
+        {{ label }}
       </template>
     </InputCheckbox>
 
@@ -58,9 +56,8 @@
       :disabled="isButtonDisabled"
       intent="primary"
       type="submit"
-      class="mt-4"
-    >
-      {{ buttonCopy ?? "Search" }}
+      class="mt-4">
+      {{ buttonCopy ?? 'Search' }}
     </Button>
   </FormV2>
   <div>
@@ -70,8 +67,7 @@
     <RouterLink
       v-if="getIsV2FeatureEnabled('CREATE_RECORDS')"
       class="pdap-button-primary"
-      :to="'/data-request/create'"
-    >
+      :to="'/data-request/create'">
       Make a Request
     </RouterLink>
     <a
@@ -79,8 +75,7 @@
       class="pdap-button-primary"
       href="https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk"
       target="_blank"
-      rel="noreferrer"
-    >
+      rel="noreferrer">
       Make a request
     </a>
   </div>
@@ -91,85 +86,85 @@ import {
   Button,
   FormV2,
   InputCheckbox,
-  RecordTypeIcon,
-} from "pdap-design-system";
-import TypeaheadInput from "@/components/TypeaheadInput.vue";
-import { computed, onMounted, ref } from "vue";
+  RecordTypeIcon
+} from 'pdap-design-system';
+import TypeaheadInput from '@/components/TypeaheadInput.vue';
+import { computed, onMounted, ref } from 'vue';
 import {
   getFullLocationText,
   mapLocationToSearchParams,
-  mapSearchParamsToLocation,
-} from "@/util/locationFormatters";
-import _debounce from "lodash/debounce";
-import _isEqual from "lodash/isEqual";
-import { useRouter, RouterLink, useRoute } from "vue-router";
-import { getTypeaheadLocations } from "@/api/typeahead";
-import { getIsV2FeatureEnabled } from "@/util/featureFlagV2";
+  mapSearchParamsToLocation
+} from '@/util/locationFormatters';
+import _debounce from 'lodash/debounce';
+import _isEqual from 'lodash/isEqual';
+import { useRouter, RouterLink, useRoute } from 'vue-router';
+import { getTypeaheadLocations } from '@/api/typeahead';
+import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const router = useRouter();
 
 const { buttonCopy } = defineProps({
   buttonCopy: String,
-  placeholder: String,
+  placeholder: String
 });
 
-const emit = defineEmits(["searched"]);
+const emit = defineEmits(['searched']);
 const { query: params } = useRoute();
 
 /* constants */
-const TYPEAHEAD_ID = "pdap-search-typeahead";
+const TYPEAHEAD_ID = 'pdap-search-typeahead';
 const CHECKBOXES = [
   {
-    id: "all-data-types",
+    id: 'all-data-types',
     get defaultChecked() {
       return (
         params.record_categories?.includes(this.label) ||
         !params.record_categories?.length
       );
     },
-    name: "all-data-types",
-    label: "All data types",
+    name: 'all-data-types',
+    label: 'All data types'
   },
   {
-    id: "interactions",
+    id: 'interactions',
     get defaultChecked() {
       return params.record_categories?.includes(this.label);
     },
-    name: "police-and-public-interactions",
-    label: "Police & public interactions",
+    name: 'police-and-public-interactions',
+    label: 'Police & public interactions'
   },
   {
-    id: "info-officers",
+    id: 'info-officers',
     get defaultChecked() {
       return params.record_categories?.includes(this.label);
     },
-    name: "info-about-officers",
-    label: "Info about officers",
+    name: 'info-about-officers',
+    label: 'Info about officers'
   },
   {
-    id: "info-agencies",
+    id: 'info-agencies',
     get defaultChecked() {
       return params.record_categories?.includes(this.label);
     },
-    name: "info-about-agencies",
-    label: "Info about agencies",
+    name: 'info-about-agencies',
+    label: 'Info about agencies'
   },
   {
-    id: "agency-published-resources",
+    id: 'agency-published-resources',
     get defaultChecked() {
       return params.record_categories?.includes(this.label);
     },
-    name: "agency-published-resources",
-    label: "Agency-published resources",
+    name: 'agency-published-resources',
+    label: 'Agency-published resources'
   },
   {
-    id: "jails-and-courts",
+    id: 'jails-and-courts',
     get defaultChecked() {
       return params.record_categories?.includes(this.label);
     },
-    name: "jails-and-courts",
-    label: "Jails & Courts",
-  },
+    name: 'jails-and-courts',
+    label: 'Jails & Courts'
+  }
 ];
 
 const items = ref([]);
@@ -184,7 +179,7 @@ const isButtonDisabled = computed(() => {
 
   const selectedRecordEqualsInitiallySearched = _isEqual(
     selectedRecord.value,
-    initiallySearchedRecord.value,
+    initiallySearchedRecord.value
   );
 
   // If there is a selected record, the button should be enabled
@@ -224,7 +219,7 @@ function submit(values) {
   const params = new URLSearchParams(buildParams(values));
   const path = `/search/results?${params.toString()}`;
   router.push(path);
-  emit("searched");
+  emit('searched');
 }
 
 function buildParams(values) {
@@ -232,7 +227,7 @@ function buildParams(values) {
 
   /* Handle record from typeahead input */
   const recordFilteredByParamsKeys = mapLocationToSearchParams(
-    selectedRecord.value ?? initiallySearchedRecord.value,
+    selectedRecord.value ?? initiallySearchedRecord.value
   );
 
   Object.keys(recordFilteredByParamsKeys).forEach((key) => {
@@ -243,14 +238,14 @@ function buildParams(values) {
   /* Handle form values from checkboxes */
   // Return obj without setting record_types if 'all-data-types' is true or no checkboxes checked
   if (
-    values["all-data-types"] ||
+    values['all-data-types'] ||
     Object.values(values).every((val) => !val || !val)
   ) {
     return obj;
   }
   // Otherwise set record_types array
   const inputIdsToRecordTypes = new Map(
-    CHECKBOXES.map(({ name, label }) => [name, label]),
+    CHECKBOXES.map(({ name, label }) => [name, label])
   );
   obj.record_categories = Object.entries(values)
     .map(([key, val]) => val && inputIdsToRecordTypes.get(key))
@@ -260,11 +255,11 @@ function buildParams(values) {
 }
 
 function onChange(values, event) {
-  if (event.target.name === "all-data-types") {
+  if (event.target.name === 'all-data-types') {
     if (event.target.checked) {
       const update = {};
       CHECKBOXES.map(({ name }) => name).forEach((key) => {
-        if (key !== "all-data-types") {
+        if (key !== 'all-data-types') {
           update[key] = false;
           const checkbox = document.querySelector(`input[name=${key}]`);
           checkbox.checked = false;
@@ -274,15 +269,15 @@ function onChange(values, event) {
     }
   } else {
     const allTypesCheckbox = document.querySelector(
-      'input[name="all-data-types"]',
+      'input[name="all-data-types"]'
     );
     if (allTypesCheckbox.checked && event.target.checked) {
-      formRef.value.setValues({ ...values, ["all-data-types"]: false });
+      formRef.value.setValues({ ...values, ['all-data-types']: false });
       allTypesCheckbox.checked = false;
     }
   }
 
-  if (event.target.type === "checkbox") hasUpdatedCategories.value = true;
+  if (event.target.type === 'checkbox') hasUpdatedCategories.value = true;
 }
 
 function onSelectRecord(item) {
@@ -305,7 +300,7 @@ const fetchTypeaheadResults = _debounce(
     }
   },
   350,
-  { leading: true, trailing: true },
+  { leading: true, trailing: true }
 );
 </script>
 
