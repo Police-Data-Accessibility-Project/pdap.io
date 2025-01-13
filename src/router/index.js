@@ -6,35 +6,35 @@ import JobsView from '@/views/JobsView.vue';
 import CommunityView from '@/views/CommunityView.vue';
 
 const router = createRouter({
-	history: createWebHistory('/'),
-	routes: [
-		{
-			path: '/',
-			name: 'home',
-			component: HomeView,
-		},
-		{
-			path: '/about',
-			name: 'about',
-			component: AboutView,
-		},
-		{
-			path: '/donate',
-			name: 'donate',
-			component: DonateView,
-		},
-		{
-			path: '/jobs',
-			name: 'jobs',
-			component: JobsView,
-		},
-		{
-			path: '/community',
-			name: 'community',
-			component: CommunityView,
-		},
-	],
-	linkActiveClass: 'current',
+  history: createWebHistory('/'),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView
+    },
+    {
+      path: '/donate',
+      name: 'donate',
+      component: DonateView
+    },
+    {
+      path: '/jobs',
+      name: 'jobs',
+      component: JobsView
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: CommunityView
+    }
+  ],
+  linkActiveClass: 'current'
 });
 
 export default router;

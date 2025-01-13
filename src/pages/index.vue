@@ -39,7 +39,9 @@
           alt="A map scattered with icons representing different kinds of data."
         />
         <p>Finding and cataloguing sources of data</p>
-        <button>Help label Data Sources</button>
+        <Button class="mt-4">
+          Help label Data Sources
+        </Button>
       </div>
       <div>
         <img
@@ -48,7 +50,9 @@
             alt="An eye looking through a magnifying glass at a police website."
         />
         <p>Project-based scraping and records requests</p>
-        <button>Improve access to data in your area</button>
+        <Button class="mt-4">
+          Improve access to data in your area
+        </Button>
       </div>
       <div>
         <img
@@ -57,7 +61,9 @@
           alt="A piece of police data being distributed to several people."
         />
         <p>Connecting projects to data & resources</p>
-        <button>Open a Data Request</button>
+        <Button class="mt-4">
+          Open a Data Request
+        </Button>
       </div>
       <p class="col-span-full">
         The problem we address is the inaccessibility of data about the systems 
@@ -261,7 +267,6 @@ import {
   faCircleNotch,
   faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
-
 // import Button from 'pdap-design-system';
 
 // TODO: get agenciesCount, countiesCount, statesCount from the PDAP API once endpoints are surfaced
