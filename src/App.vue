@@ -35,8 +35,9 @@ import { onBeforeRouteUpdate } from 'vue-router';
 const routeKey = ref(null);
 
 onBeforeRouteUpdate((to, from) => {
-  if ([to.path, from.path].every((path) => path.includes('data-source'))) {
-    routeKey.value = 'data-source';
+  // preserves static key for data source by ID route so that component transition overrides top-level route
+  if ([to.path, from.path].every((path) => path.includes('data-source') && !path.includes('create'))) {
+    routeKey.value = 'data-source-by-id';
   } else {
     routeKey.value = to.path;
   }

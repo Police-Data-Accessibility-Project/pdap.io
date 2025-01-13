@@ -50,7 +50,7 @@
       :name="name"
     >
       <template #label>
-        {{ label }} <RecordTypeIcon :record-type="label" />
+        <RecordTypeIcon :record-type="label" /> {{ label }}
       </template>
     </InputCheckbox>
 

@@ -153,7 +153,7 @@ function getYearRange(start, end) {
   const startYear = new Date(start).getFullYear();
   const endYear = (end ? new Date(end) : new Date()).getFullYear();
 
-  return start ? `${startYear} to ${endYear}` : "—";
+  return start ? `${startYear}–${endYear}` : "—";
 }
 
 function getClassNameFromHeadingType(heading) {
