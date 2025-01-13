@@ -146,6 +146,15 @@
         </a>
         who funded our core staff from 2022&ndash;2024.
       </p>
+      <p>
+        We have primarily been funded by major grants and donations to establish our core programs,
+        supplemented by individual contributions.
+      </p>
+      <p>
+        Now that our core programs are built, we may rely more heavily on individual contributions
+        for maintenance. We are open to funding our work through partnerships with data publishers
+        or consumers. We will never charge for access to data.
+      </p>
     </div>
   </section>
   <section
