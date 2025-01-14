@@ -1,6 +1,6 @@
 <route>
 	{
-		alias: '/search',
+		alias: ['/search', '/data'],
 	}
 </route>
 
