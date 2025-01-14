@@ -75,7 +75,7 @@
         </p>
         <p>All of our programs exist to help people answer questions with data.
           <strong>If you are starting a data project, we can help.</strong>
-          <Button class="mt-2" intent="primary">
+          <Button class="mt-2" intent="primary" href="https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk">
             Open a Data Request
           </Button>
         </p>
@@ -93,21 +93,25 @@
         <p>
           Some public records are already online, waiting to be indexed and used. Adding them to our database makes them more accessible to everyone. 
         </p>
-        <Button class="mt-2" intent="secondary">
-          Help label Data Sources
+        <Button class="mt-2" intent="primary" href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+          Help find & label Data Sources
         </Button>
       </div>
       <div>
         <h2 class="pt-4">Research requests</h2>
         <p>
-          Some research projects could benefit from extra help. We need people to help with data analysis, web scraping, or local records requests.
+          Some research projects could benefit from help with data analysis, web scraping, 
+          or records requests. PDAP is a place for collaborators to find each other.
+        </p>
+        <p>
+          To see open requests for a particular area, search for a location above.
         </p>
         <h3>Open data requests</h3>
         <p>request 1</p>
         <p>request 2</p>
-        <Button class="mt-2" intent="secondary">
-          Improve data access in your area
-        </Button> <br />
+        <Button class="mt-2" intent="primary" href="https://docs.pdap.io">
+          Volunteer for data requests
+        </Button>
       </div>
       <div>
         <h2 class="pt-4">Contribute code</h2>
@@ -117,6 +121,9 @@
         <h3>Good first issues</h3>
         <p>issue 1</p>
         <p>issue 2</p>
+        <Button class="mt-2" intent="primary" href="https://github.com/Police-Data-Accessibility-Project">
+          Check out our GitHub org
+        </Button>
       </div>
     </section>
     <section class="pdap-flex-container col-span-full text-lg">
