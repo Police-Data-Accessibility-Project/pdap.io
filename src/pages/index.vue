@@ -16,9 +16,9 @@
 				Each one describes one of the ~20,000 agencies we have indexed.</p>
 			<p v-if="dataLoaded">
 				Our database contains Sources from <br>
-				<strong>{{ agenciesCount }} agencies</strong> in 
-				<strong>{{ countiesCount }} counties</strong> across 
-				<strong>{{ statesCount }} states </strong> and the District of Columbia.
+				<strong>{{ metrics.agencyCount }} agencies</strong> in 
+				<strong>{{ metrics.countyCount }} counties</strong> across 
+				<strong>{{ metrics.stateCount }} states </strong> and the District of Columbia.
 				They are published by both government agencies and independent organizations.
 			</p>
 			<p v-else>
@@ -279,7 +279,31 @@ import {
   faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: get agenciesCount, countiesCount, statesCount from the PDAP API once endpoints are surfaced
+import { getMetrics } from "@/api/metrics";
+
+const metrics = ref({
+  agencyCount: 0,
+  countyCount: 0,
+  stateCount: 0,
+});
+
+const dataLoaded = ref(false);
+
+onMounted(async () => {
+  try {
+    const response = await getMetrics();
+    console.log("Metrics API response:", response);
+    metrics.value = {
+      agencyCount: response.agency_count,
+      countyCount: response.county_count,
+      stateCount: response.state_count,
+    };
+    dataLoaded.value = true;
+  } catch (error) {
+    console.error('Error fetching metrics:', error);
+    dataLoaded.value = false;
+  }
+});
 
 // TODO: get 3 recent data requests from the API, with a graceful fallback
 

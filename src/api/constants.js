@@ -49,5 +49,8 @@ export const ENDPOINTS = {
     ID: {
       UPDATE_PASSWORD: 'update-password'
     }
+  },
+  METRICS: {
+    METRICS: 'metrics'
   }
 };
