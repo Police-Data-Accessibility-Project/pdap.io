@@ -18,7 +18,7 @@
 				Our database contains Sources from <br>
 				<strong>{{ metrics.agencyCount }} agencies</strong> in 
 				<strong>{{ metrics.countyCount }} counties</strong> across 
-				<strong>{{ metrics.stateCount }} states </strong> and the District of Columbia.
+				<strong>50 states </strong> and the District of Columbia.
 				They are published by both government agencies and independent organizations.
 			</p>
 			<p v-else>
