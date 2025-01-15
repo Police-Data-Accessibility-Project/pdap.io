@@ -15,10 +15,10 @@
 			<p> We document Data Sources (<a href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source"><i class="fa fa-question-circle"></i></a>), places on the internet where public records can be found. 
 				Each one describes one of the ~20,000 agencies we have indexed.</p>
 			<p v-if="dataLoaded">
-				Our database contains Sources from <br>
+				Our database contains <strong> {{ metrics.sourceCount }} Sources</strong> from <br>
 				<strong>{{ metrics.agencyCount }} agencies</strong> in 
 				<strong>{{ metrics.countyCount }} counties</strong> across 
-				<strong>50 states </strong> and the District of Columbia.
+				<strong>all 50 states </strong> and the District of Columbia.
 				They are published by both government agencies and independent organizations.
 			</p>
 			<p v-else>
@@ -294,6 +294,7 @@ onMounted(async () => {
     const response = await getMetrics();
     console.log("Metrics API response:", response);
     metrics.value = {
+      sourceCount: response.source_count,
       agencyCount: response.agency_count,
       countyCount: response.county_count,
       stateCount: response.state_count,
