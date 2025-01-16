@@ -97,8 +97,9 @@ export async function getRecentRequests() {
   const params = {
     sort_by: 'date_created',
     sort_order: 'DESC'
-    // requested_columns: 'id,title',
-    // request_statuses: 'Intake', // should be 'Ready to start'
+    // requested_columns: 'id,title', // was not working, see data-sources-app/issues/581
+    // request_statuses: 'Intake', // used for testing, should be 'Ready to start'
+    // limit: 3, // not supported, see data-sources-app/issues/579
   };
 
   try {
@@ -107,7 +108,6 @@ export async function getRecentRequests() {
       params
     });
 
-    // Map the response data to the desired structure
     return response.data.data.map((item) => ({
       id: item.id,
       title: item.title,
