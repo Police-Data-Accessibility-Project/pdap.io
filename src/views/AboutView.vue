@@ -1,13 +1,6 @@
 <template>
 	<section class="pdap-grid-container px-4 md:px-8" >
 		<h1 class="col-span-full">About</h1>
-		<div class="col-span-full">
-		<h2>Contact</h2>
-		<p>
-			Email us at <a href="mailto:contact@pdap.io">contact@pdap.io</a> or
-			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch.
-		</p>
-		</div>
 		<div class="pdap-flex-container col-span-full">
 			<h2>People</h2>
 			<p>
@@ -44,6 +37,13 @@
 				We are also grateful for the financial and advisory support of
 				<a href="https://ye.gg/">Gabriel Weinberg</a>.
 			</p>
+		</div>
+		<div class="col-span-full">
+		<h2>Contact</h2>
+		<p>
+			Email us at <a href="mailto:contact@pdap.io">contact@pdap.io</a> or
+			<a href="https://discord.gg/wMqex8nKZJ">join the Discord</a> to get in touch.
+		</p>
 		</div>
 	</section>
 	<section class="pdap-grid-container pdap-grid-container-columns-2 mb-12 px-4 md:px-8">
