@@ -10,8 +10,8 @@ const HEADERS_BASIC = {
 };
 
 export async function getMetrics() {
-    const response = await axios.get(`${METRICS_BASE}`, {
-      headers: HEADERS_BASIC,
-    });
-    return response.data;
-  }
+  const response = await axios.get(`${METRICS_BASE}`, {
+    headers: HEADERS_BASIC
+  });
+  return response.data;
+}

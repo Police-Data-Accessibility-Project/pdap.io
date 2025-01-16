@@ -92,3 +92,35 @@ export async function createRequest(data) {
   requestsStore.clearCache();
   return response.data;
 }
+
+export async function getRecentRequests() {
+  const params = {
+    sort_by: 'date_created',
+    sort_order: 'DESC'
+    // requested_columns: 'id,title',
+    // request_statuses: 'Intake', // should be 'Ready to start'
+  };
+
+  try {
+    const response = await axios.get(REQUESTS_BASE, {
+      headers: HEADERS_BASIC,
+      params
+    });
+
+    // Map the response data to the desired structure
+    return response.data.data.map((item) => ({
+      id: item.id,
+      title: item.title,
+      status: item.request_status,
+      locationDisplayName:
+        item.locations?.[0]?.display_name || 'Unknown location',
+      route: `/data-request/${item.id}`
+    }));
+  } catch (error) {
+    console.error(
+      'Error fetching recent requests:',
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}

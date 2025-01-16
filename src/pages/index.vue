@@ -14,7 +14,7 @@
 			<h2>About the data</h2>
 			<p> We document Data Sources (<a href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source"><i class="fa fa-question-circle"></i></a>), places on the internet where public records can be found. 
 				Each one describes one of the ~20,000 agencies we have indexed.</p>
-			<p v-if="dataLoaded">
+			<p v-if="metricsLoaded">
 				Our database contains <strong> {{ metrics.sourceCount }} Sources</strong> from <br>
 				<strong>{{ metrics.agencyCount }} agencies</strong> in 
 				<strong>{{ metrics.countyCount }} counties</strong> across 
@@ -103,12 +103,21 @@
           Some research projects could benefit from help with data analysis, web scraping, 
           or records requests. PDAP is a place for collaborators to find each other.
         </p>
+        <!-- can be un-commented when we close data-sources-app/issues/580
         <p>
           To see open requests for a particular area, search for a location above.
         </p>
+        -->
         <h3>Open data requests</h3>
-        <p>request 1</p>
-        <p>request 2</p>
+        <ul v-if="requestsLoaded">
+          <li v-for="request in recentRequests" :key="request.id">
+            <strong>{{ request.title }}</strong>
+            Location: {{ request.locationDisplayName }}
+            <router-link :to="request.route">
+              Details <FontAwesomeIcon :icon="faExternalLink" />
+            </router-link>
+          </li>
+        </ul>
         <Button class="mt-2" intent="primary" href="https://docs.pdap.io">
           Volunteer for data requests
         </Button>
@@ -276,10 +285,14 @@ import {
   faPhone,
   faCodeFork,
   faCircleNotch,
-  faCircleCheck
+  faCircleCheck,
+  faExternalLink
 } from "@fortawesome/free-solid-svg-icons";
 
 import { getMetrics } from "@/api/metrics";
+import { getRecentRequests } from "@/api/data-requests";
+
+// Get metrics
 
 const metrics = ref({
   agencyCount: 0,
@@ -287,26 +300,41 @@ const metrics = ref({
   stateCount: 0,
 });
 
-const dataLoaded = ref(false);
+const metricsLoaded = ref(false);
 
 onMounted(async () => {
   try {
     const response = await getMetrics();
-    console.log("Metrics API response:", response);
     metrics.value = {
       sourceCount: response.source_count,
       agencyCount: response.agency_count,
       countyCount: response.county_count,
       stateCount: response.state_count,
     };
-    dataLoaded.value = true;
+    metricsLoaded.value = true;
   } catch (error) {
     console.error('Error fetching metrics:', error);
-    dataLoaded.value = false;
+    metricsLoaded.value = false;
   }
 });
 
-// TODO: get 3 recent data requests from the API, with a graceful fallback
+// Get recent data requests
+
+// TODO: Uncomment this to close pdap.io/issues/208
+// blocked by data-sources-app/issues/580
+
+// const recentRequests = ref([]);
+// const requestsLoaded = ref(false);
+
+// onMounted(async () => {
+//   try {
+//     recentRequests.value = await getRecentRequests();
+//     console.log("Requests API response:", recentRequests.value);
+//     requestsLoaded.value = true;
+//   } catch (error) {
+//     console.error('Error loading recent requests:', error);
+//   }
+// });
 
 // TODO: get 3 good first issues from github, with a graceful fallback
 
