@@ -94,33 +94,47 @@ export async function createRequest(data) {
 }
 
 export async function getRecentRequests() {
+  const requestsStore = useDataRequestsStore();
+
+  const cached = requestsStore.getDataRequestFromCache('recent-requests');
+
+  if (
+    cached &&
+    isCachedResponseValid({
+      cacheTime: cached.timestamp,
+      intervalBeforeInvalidation: 1000 * 60 * 3, // 3 minutes
+    })
+  ) {
+    return cached.data;
+  }
+
   const params = {
     sort_by: 'date_created',
-    sort_order: 'DESC'
-    // requested_columns: 'id,title', // was not working, see data-sources-app/issues/581
-    // request_statuses: 'Intake', // used for testing, should be 'Ready to start'
-    // limit: 3, // not supported, see data-sources-app/issues/579
+    sort_order: 'DESC',
+    // requested_columns: 'id,title', // Was not working, see data-sources-app/issues/581
+    // request_statuses: 'Intake', // Used for testing, should be 'Ready to start'
+    // limit: 3, // Not supported, see data-sources-app/issues/579
   };
 
-  try {
-    const response = await axios.get(REQUESTS_BASE, {
-      headers: HEADERS_BASIC,
-      params
-    });
+  const response = await axios.get(REQUESTS_BASE, {
+    headers: HEADERS_BASIC,
+    params,
+  });
 
-    return response.data.data.map((item) => ({
+  // Limit results to 3 items on the front end and process the data
+  const recentRequests = response.data.data
+    .slice(0, 3) // Limit to 3 items
+    .map((item) => ({
       id: item.id,
       title: item.title,
       status: item.request_status,
       locationDisplayName:
         item.locations?.[0]?.display_name || 'Unknown location',
-      route: `/data-request/${item.id}`
+      route: `/data-request/${item.id}`,
     }));
-  } catch (error) {
-    console.error(
-      'Error fetching recent requests:',
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+
+  // Cache the processed data
+  requestsStore.setDataRequestToCache('recent-requests', recentRequests);
+
+  return recentRequests;
 }
