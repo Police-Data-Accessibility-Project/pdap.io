@@ -27,17 +27,23 @@
 				District of Columbia. They are published by both government agencies 
 				and independent organizations.
 			</p>
-      <div v-if="sourcesLoaded" class="grid grid-cols-3">
+      <div v-if="sourcesLoaded" class="grid grid-cols-3 mt-6 gap-4">
         <h3 class="col-span-3">Recently added Data Sources</h3>
-        <div v-for="source in formattedSources" :key="source.id">
-          <strong>{{ source.name }}&nbsp;</strong>
-          <router-link :to="source.route">
-            <FontAwesomeIcon :icon="faExternalLink" />
-          </router-link><br />
-          Created: {{ source.formattedCreatedAt }}<br />
-          <a :href="source.sourceUrl" target="_blank" rel="noopener noreferrer">
-            Source Link <FontAwesomeIcon :icon="faExternalLink" />
-          </a><br />
+        <div v-for="source in formattedSources" :key="source.id" class="flex-column outline outline-goldneutral-200 px-4 py-2">
+          <p><strong>{{ source.name }}&nbsp;</strong>
+            <a :href="source.sourceUrl" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon :icon="faExternalLink" />
+            </a>
+          </p>
+          <p>
+            Added {{ source.formattedCreatedAt }}
+            <router-link :to="source.route">
+              <FontAwesomeIcon :icon="faInfoCircle" />
+            </router-link>
+          </p>
+          <p>
+            
+          </p>
         </div>
       </div>
 		</section>
@@ -299,7 +305,8 @@ import {
   faCodeFork,
   faCircleNotch,
   faCircleCheck,
-  faExternalLink
+  faExternalLink,
+  faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 import { getMetrics } from "@/api/metrics";
