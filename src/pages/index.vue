@@ -27,6 +27,19 @@
 				District of Columbia. They are published by both government agencies 
 				and independent organizations.
 			</p>
+      <div v-if="sourcesLoaded" class="grid grid-cols-3">
+        <h3 class="col-span-3">Recently added Data Sources</h3>
+        <div v-for="source in formattedSources" :key="source.id">
+          <strong>{{ source.name }}&nbsp;</strong>
+          <router-link :to="source.route">
+            <FontAwesomeIcon :icon="faExternalLink" />
+          </router-link><br />
+          Created: {{ source.formattedCreatedAt }}<br />
+          <a :href="source.sourceUrl" target="_blank" rel="noopener noreferrer">
+            Source Link <FontAwesomeIcon :icon="faExternalLink" />
+          </a><br />
+        </div>
+      </div>
 		</section>
     <section class="pdap-grid-container col-span-full">
       <h1 class="col-span-full">
@@ -98,7 +111,7 @@
         </Button>
       </div>
       <div>
-        <h2 class="pt-4">Research requests</h2>
+        <h2 class="pt-4">Data projects</h2>
         <p>
           Some research projects could benefit from help with data analysis, web scraping, 
           or records requests. PDAP is a place for collaborators to find each other.
@@ -276,7 +289,7 @@
 
 <script setup>
 import { Button } from 'pdap-design-system';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import SearchForm from "@/components/SearchForm.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -290,7 +303,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { getMetrics } from "@/api/metrics";
-import { getRecentRequests } from "@/api/data-requests";
+import { getRecentSources } from "@/api/data-sources"
+import { formatDateForSearchResults } from "@/util/dateFormatters";
+// import { getRecentRequests } from "@/api/data-requests";
 
 // Get metrics
 
@@ -318,14 +333,33 @@ onMounted(async () => {
   }
 });
 
+// Get recent data sources
+
+const recentSources = ref([]);
+const sourcesLoaded = ref(false);
+
+onMounted(async () => {
+  try {
+    recentSources.value = await getRecentSources();
+    sourcesLoaded.value = true;
+  } catch (error) {
+    console.error('Error loading recent sources:', error);
+  }
+});
+
+// Format dates
+
+const formattedSources = computed(() =>
+  recentSources.value.map((source) => ({
+    ...source,
+    formattedCreatedAt: formatDateForSearchResults(source.createdAt),
+  }))
+);
+
+// TODO: Uncomment the below to close pdap.io/issues/208; blocked by data-sources-app/issues/580
 // Get recent data requests
-
-// TODO: Uncomment this to close pdap.io/issues/208
-// blocked by data-sources-app/issues/580
-
 // const recentRequests = ref([]);
-// const requestsLoaded = ref(false);
-
+const requestsLoaded = ref(false);
 // onMounted(async () => {
 //   try {
 //     recentRequests.value = await getRecentRequests();
