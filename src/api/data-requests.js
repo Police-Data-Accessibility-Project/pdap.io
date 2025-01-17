@@ -62,7 +62,7 @@ export async function getDataRequest(id) {
     cached &&
     isCachedResponseValid({
       cacheTime: cached.timestamp,
-      // Cache for 5 minutes
+      // Cache for 3 minutes
       intervalBeforeInvalidation: 1000 * 60 * 3
     })
   ) {
@@ -102,7 +102,8 @@ export async function getRecentRequests() {
     cached &&
     isCachedResponseValid({
       cacheTime: cached.timestamp,
-      intervalBeforeInvalidation: 1000 * 60 * 3, // 3 minutes
+      // Cache for 3 minutes
+      intervalBeforeInvalidation: 1000 * 60 * 3,
     })
   ) {
     return cached.data;
@@ -121,9 +122,8 @@ export async function getRecentRequests() {
     params,
   });
 
-  // Limit results to 3 items on the front end and process the data
   const recentRequests = response.data.data
-    .slice(0, 3) // Limit to 3 items
+    .slice(0, 3)
     .map((item) => ({
       id: item.id,
       title: item.title,
@@ -133,7 +133,6 @@ export async function getRecentRequests() {
       route: `/data-request/${item.id}`,
     }));
 
-  // Cache the processed data
   requestsStore.setDataRequestToCache('recent-requests', recentRequests);
 
   return recentRequests;
