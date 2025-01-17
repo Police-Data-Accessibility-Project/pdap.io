@@ -48,32 +48,32 @@
       </div>
 		</section>
     <section class="pdap-grid-container col-span-full">
-      <h1 class="col-span-full">
+      <h1 class="col-span-full mb-0 pb-0">
         Programs
       </h1>
-      <div>
+      <div class="col-span-full md:col-span-1 flex-column content-end justify-stretch">
         <img
           src="/assets/mapping.svg"
-          class="w-6/12 place-self-start md:w-10/12 md:place-self-center"
+          class="w-6/12 self-center hidden md:block md:w-10/12 md:place-self-center"
           alt="A map scattered with icons representing different kinds of data."
         />
-        <p>Finding and cataloguing sources of data</p>
+        <p class="font-semibold lg:text-center">Finding and cataloguing sources of data</p>
       </div>
-      <div>
+      <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
             src="/assets/searching.svg"
-            class="w-11/12 place-self-center hidden lg:block"
+            class="w-11/12 self-center hidden md:block md:pb-4"
             alt="An eye looking through a magnifying glass at a police website."
         />
-        <p>Project-based scraping and records requests</p>
+        <p class="font-semibold lg:text-center">Project-based scraping and records requests</p>
       </div>
-      <div>
+      <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
           src="/assets/sharing.svg"
-          class="w-9/12 place-self-start hidden md:block"
+          class="w-9/12 self-center hidden md:block"
           alt="A piece of police data being distributed to several people."
         />
-        <p>Connecting projects to data & resources</p>
+        <p class="font-semibold lg:text-center">Connecting projects to data & resources</p>
       </div>
       <div class="col-span-full text-lg">
         <p>
