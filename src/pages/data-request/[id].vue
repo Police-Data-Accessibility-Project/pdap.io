@@ -5,25 +5,21 @@
       :request-ids="searchStore.mostRecentRequestIds"
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
-      :set-nav-is="(val) => (navIs = val)"
-    />
+      :set-nav-is="(val) => (navIs = val)" />
 
     <transition mode="out-in" :name="navIs">
       <div
         v-if="isLoading"
-        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
-      >
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative">
         <Spinner
           :show="isLoading"
           :size="64"
-          text="Fetching data source results..."
-        />
+          text="Fetching data source results..." />
       </div>
 
       <div
         v-else
-        class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full"
-      >
+        class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
         <template v-if="!isLoading && error">
           <h1>An error occurred loading the data request</h1>
           <p>Please refresh the page and try again.</p>
@@ -44,8 +40,7 @@
                 <p
                   v-for="type of dataRequest.record_types_required"
                   :key="type.record_types_required"
-                  class="pill w-max"
-                >
+                  class="pill w-max">
                   <RecordTypeIcon :record-type="type" />
                   {{ type }}
                 </p>
@@ -76,8 +71,7 @@
             :href="dataRequest.github_issue_url"
             class="pdap-button-primary mt-2 mb-4"
             _target="blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Help out with this issue on Github
             <FontAwesomeIcon :icon="faLink" />
           </a>
@@ -89,15 +83,15 @@
 
 <script>
 // Data loader
-import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic";
-import { useDataRequestsStore } from "@/stores/data-requests";
-import { DataLoaderErrorPassThrough } from "@/util/errors";
-import { getDataRequest } from "@/api/data-requests";
+import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
+import { useDataRequestsStore } from '@/stores/data-requests';
+import { DataLoaderErrorPassThrough } from '@/util/errors';
+import { getDataRequest } from '@/api/data-requests';
 
 const dataRequestsStore = useDataRequestsStore();
 
 export const useDataRequestData = defineBasicLoader(
-  "/request/:id",
+  '/request/:id',
   async (route) => {
     const dataSourceId = route.params.id;
 
@@ -109,21 +103,21 @@ export const useDataRequestData = defineBasicLoader(
     } catch (error) {
       throw new DataLoaderErrorPassThrough(error);
     }
-  },
+  }
 );
 </script>
 
 <script setup>
-import { RecordTypeIcon, Spinner } from "pdap-design-system";
-import PrevNextNav from "./_components/Nav.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { useSearchStore } from "@/stores/search";
-import { getMinimalLocationText } from "@/util/locationFormatters";
-import { REQUEST_URGENCY } from "./_constants";
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useSwipe } from "@vueuse/core";
+import { RecordTypeIcon, Spinner } from 'pdap-design-system';
+import PrevNextNav from './_components/Nav.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { useSearchStore } from '@/stores/search';
+import { getMinimalLocationText } from '@/util/locationFormatters';
+import { REQUEST_URGENCY } from './_constants';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useSwipe } from '@vueuse/core';
 
 const route = useRoute();
 const router = useRouter();
@@ -132,56 +126,56 @@ const { data: dataRequest, isLoading, error } = useDataRequestData();
 
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first
-  searchStore.mostRecentRequestIds.indexOf(Number(route.params.id)),
+  searchStore.mostRecentRequestIds.indexOf(Number(route.params.id))
 );
 const nextIdIndex = computed(() =>
   currentIdIndex.value < searchStore.mostRecentRequestIds.length - 1
     ? currentIdIndex.value + 1
-    : null,
+    : null
 );
 const previousIdIndex = computed(() =>
-  currentIdIndex.value > 0 ? currentIdIndex.value - 1 : null,
+  currentIdIndex.value > 0 ? currentIdIndex.value - 1 : null
 );
 
 const showExpandDescriptionButton = ref(false);
 const descriptionRef = ref();
 const mainRef = ref();
-const navIs = ref("");
+const navIs = ref('');
 
 // Handle swipe
 const { direction } = useSwipe(mainRef, {
   onSwipe: () => {
     switch (direction.value) {
-      case "left":
-        navIs.value = "increment";
-        if (typeof nextIdIndex.value === "number" && nextIdIndex.value > -1)
+      case 'left':
+        navIs.value = 'increment';
+        if (typeof nextIdIndex.value === 'number' && nextIdIndex.value > -1)
           router.replace(
-            `/data-request/${searchStore.mostRecentRequestIds[nextIdIndex.value]}`,
+            `/data-request/${searchStore.mostRecentRequestIds[nextIdIndex.value]}`
           );
         break;
-      case "right":
-        navIs.value = "decrement";
+      case 'right':
+        navIs.value = 'decrement';
         if (
-          typeof previousIdIndex.value === "number" &&
+          typeof previousIdIndex.value === 'number' &&
           previousIdIndex.value > -1
         )
           router.replace(
-            `/data-request/${searchStore.mostRecentRequestIds[previousIdIndex.value]}`,
+            `/data-request/${searchStore.mostRecentRequestIds[previousIdIndex.value]}`
           );
         break;
       default:
         return;
     }
-  },
+  }
 });
 
 onMounted(() => {
   handleShowMoreButton();
-  window.addEventListener("resize", handleShowMoreButton);
+  window.addEventListener('resize', handleShowMoreButton);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", handleShowMoreButton);
+  window.removeEventListener('resize', handleShowMoreButton);
 });
 
 function handleShowMoreButton() {

@@ -30,24 +30,21 @@
           <a
             href="https://www.linkedin.com/in/eddie-johnbrown/"
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             Eddie&nbsp;Brown,
           </a>
         </span>
         <a
           href="https://www.linkedin.com/in/wakin/"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Alec&nbsp;Akin,
         </a>
         and
         <a
           href="https://www.linkedin.com/in/joshlintag/"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Josh&nbsp;Lintag.
         </a>
       </p>
@@ -56,8 +53,7 @@
         <a
           href="https://www.linkedin.com/in/josh-chamberlain/"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Josh Chamberlain.
         </a>
       </p>
@@ -66,8 +62,7 @@
         <a
           href="https://www.linkedin.com/in/maxachis/"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Max Chis.
         </a>
       </p>
@@ -76,8 +71,7 @@
         <a
           href="https://www.linkedin.com/in/joshuadgraber/"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Joshua Graber.
         </a>
       </p>
@@ -100,8 +94,7 @@
     </div>
   </section>
   <section
-    class="pdap-grid-container pdap-grid-container-columns-2 mb-12 px-4 md:px-8"
-  >
+    class="pdap-grid-container pdap-grid-container-columns-2 mb-12 px-4 md:px-8">
     <h2 class="col-span-full">Frequently Asked Questions</h2>
     <h3>What makes you experts?</h3>
     <p>
@@ -120,8 +113,7 @@
         <a
           href="https://docs.pdap.io/activities/data-sources/what-is-a-data-source"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           what a Data Source is
         </a>
         in our docs.
@@ -154,8 +146,7 @@
       <a
         href="https://docs.pdap.io/meta/operations/legal"
         target="_blank"
-        rel="noreferrer"
-      >
+        rel="noreferrer">
         established legal precedents.
       </a>
       <br />

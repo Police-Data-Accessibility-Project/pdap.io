@@ -96,9 +96,9 @@
 </template>
 
 <script setup>
-import { getIsV2FeatureEnabled } from "@/util/featureFlagV2";
-import { RouterLink } from "vue-router";
+import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
+import { RouterLink } from 'vue-router';
 
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faExternalLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
 </script>

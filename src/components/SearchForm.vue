@@ -25,9 +25,9 @@
       </template>
       <template #not-found>
         <span>
-          <strong>No results found.</strong>
-          Please check your spelling and search for a place in the United
-          States.
+          We don't have agencies in the place you're looking for. Is it spelled
+          correctly? If our database is missing something, please reach us at
+          <a href="mailto:contat@pdap.io">contact@pdap.io</a>
         </span>
       </template>
     </TypeaheadInput>

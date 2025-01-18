@@ -5,25 +5,21 @@
       :search-ids="searchStore.mostRecentSearchIds"
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
-      :set-nav-is="(val) => (navIs = val)"
-    />
+      :set-nav-is="(val) => (navIs = val)" />
 
     <transition mode="out-in" :name="navIs">
       <div
         v-if="isLoading"
-        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
-      >
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative">
         <Spinner
           :show="isLoading"
           :size="64"
-          text="Fetching data source results..."
-        />
+          text="Fetching data source results..." />
       </div>
 
       <div
         v-else
-        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative"
-      >
+        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
         <template v-if="!isLoading && error">
           <h1>An error occurred loading the data source</h1>
           <p>Please refresh the page and try again.</p>
@@ -60,8 +56,7 @@
                   <h4 class="m-0">Agency</h4>
                   <p
                     v-for="agency in dataSource.agencies"
-                    :key="agency.submitted_name"
-                  >
+                    :key="agency.submitted_name">
                     {{ agency.submitted_name }}
                   </p>
                 </div>
@@ -69,12 +64,11 @@
                   <h4 class="m-0">County, State</h4>
                   <p
                     v-for="agency in dataSource.agencies"
-                    :key="agency.county_name?.[0]"
-                  >
+                    :key="agency.county_name?.[0]">
                     {{
-                      typeof agency.county_name === "string"
+                      typeof agency.county_name === 'string'
                         ? agency.county_name
-                        : agency.county_name?.join(", ")
+                        : agency.county_name?.join(', ')
                     }}, {{ agency.state_iso }}
                   </p>
                 </div>
@@ -83,8 +77,7 @@
                   <p
                     v-for="agency in dataSource.agencies"
                     :key="agency.agency_type"
-                    class="capitalize"
-                  >
+                    class="capitalize">
                     {{ agency.agency_type }}
                   </p>
                 </div>
@@ -93,8 +86,7 @@
                   <p
                     v-for="agency in dataSource.agencies"
                     :key="agency.jurisdiction_type"
-                    class="capitalize"
-                  >
+                    class="capitalize">
                     {{ agency.jurisdiction_type }}
                   </p>
                 </div>
@@ -104,8 +96,7 @@
               :href="dataSource.source_url"
               class="pdap-button-primary py-3 px-4 h-max mr-4"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Visit Data Source
               <FontAwesomeIcon :icon="faLink" />
             </a>
@@ -116,17 +107,15 @@
               ref="descriptionRef"
               class="description"
               :class="{
-                'truncate-2': !isDescriptionExpanded,
-              }"
-            >
+                'truncate-2': !isDescriptionExpanded
+              }">
               {{ dataSource.description }}
             </p>
             <Button
               v-if="showExpandDescriptionButton"
               intent="tertiary"
-              @click="isDescriptionExpanded = !isDescriptionExpanded"
-            >
-              {{ isDescriptionExpanded ? "See less" : "See more" }}
+              @click="isDescriptionExpanded = !isDescriptionExpanded">
+              {{ isDescriptionExpanded ? 'See less' : 'See more' }}
             </Button>
           </div>
 
@@ -134,14 +123,12 @@
           <div
             v-for="section in DATA_SOURCE_UI_SHAPE"
             :key="section.header"
-            class="section"
-          >
+            class="section">
             <h2>{{ section.header }}</h2>
             <div
               v-for="record in section.records"
               :key="record.title"
-              class="flex flex-col"
-            >
+              class="flex flex-col">
               <!-- Only render if the key exists in the data source record -->
               <template v-if="dataSource[record.key]">
                 <h4>{{ record.title }}</h4>
@@ -149,14 +136,12 @@
                 <!-- If an array, render and nest inside of div -->
                 <div
                   v-if="Array.isArray(dataSource[record.key])"
-                  class="flex gap-2"
-                >
+                  class="flex gap-2">
                   <component
                     :is="record.component ?? 'p'"
                     v-for="item in dataSource[record.key]"
                     :key="item"
-                    :class="record.classNames"
-                  >
+                    :class="record.classNames">
                     {{ formatResult(record, item) }}
                   </component>
                 </div>
@@ -172,8 +157,7 @@
                   "
                   :class="record.classNames"
                   target="record.attributes.target"
-                  rel="record.attributes.rel"
-                >
+                  rel="record.attributes.rel">
                   {{ formatResult(record, dataSource[record.key]) }}
                 </component>
               </template>
@@ -187,17 +171,17 @@
 
 <script>
 // Data loader
-import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic";
-import { useRoute, useRouter } from "vue-router";
-import { useSwipe } from "@vueuse/core";
-import { ref } from "vue";
-import { useDataSourceStore } from "@/stores/data-source";
-import { DataLoaderErrorPassThrough } from "@/util/errors";
-import { getDataSource } from "@/api/data-sources";
+import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
+import { useRoute, useRouter } from 'vue-router';
+import { useSwipe } from '@vueuse/core';
+import { ref } from 'vue';
+import { useDataSourceStore } from '@/stores/data-source';
+import { DataLoaderErrorPassThrough } from '@/util/errors';
+import { getDataSource } from '@/api/data-sources';
 const dataSourceStore = useDataSourceStore();
 
 export const useDataSourceData = defineBasicLoader(
-  "/data-source/:id",
+  '/data-source/:id',
   async (route) => {
     const dataSourceId = route.params.id;
 
@@ -209,20 +193,20 @@ export const useDataSourceData = defineBasicLoader(
     } catch (error) {
       throw new DataLoaderErrorPassThrough(error);
     }
-  },
+  }
 );
 </script>
 
 <script setup>
-import { Button, RecordTypeIcon, Spinner } from "pdap-design-system";
-import PrevNextNav from "./_components/Nav.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { useSearchStore } from "@/stores/search";
-import { DATA_SOURCE_UI_SHAPE } from "./_util";
-import { formatDateForSearchResults } from "@/util/dateFormatters";
-import { isDescendantOf } from "@/util/DOM";
-import { computed, onMounted, onUnmounted } from "vue";
+import { Button, RecordTypeIcon, Spinner } from 'pdap-design-system';
+import PrevNextNav from './_components/Nav.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { useSearchStore } from '@/stores/search';
+import { DATA_SOURCE_UI_SHAPE } from './_util';
+import { formatDateForSearchResults } from '@/util/dateFormatters';
+import { isDescendantOf } from '@/util/DOM';
+import { computed, onMounted, onUnmounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -231,15 +215,15 @@ const { data: dataSource, isLoading, error } = useDataSourceData();
 
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first
-  searchStore.mostRecentSearchIds.indexOf(Number(route.params.id)),
+  searchStore.mostRecentSearchIds.indexOf(Number(route.params.id))
 );
 const nextIdIndex = computed(() =>
   currentIdIndex.value < searchStore.mostRecentSearchIds.length - 1
     ? currentIdIndex.value + 1
-    : null,
+    : null
 );
 const previousIdIndex = computed(() =>
-  currentIdIndex.value > 0 ? currentIdIndex.value - 1 : null,
+  currentIdIndex.value > 0 ? currentIdIndex.value - 1 : null
 );
 
 const agenciesRef = ref();
@@ -247,10 +231,10 @@ const isDescriptionExpanded = ref(false);
 const showExpandDescriptionButton = ref(false);
 const descriptionRef = ref();
 const mainRef = ref();
-const navIs = ref("");
+const navIs = ref('');
 
 // Handle swipe
-const { direction, isSwiping } = useSwipe(mainRef, {
+const { direction } = useSwipe(mainRef, {
   onSwipeEnd: (e) => {
     if (isDescendantOf(e.target, agenciesRef.value)) {
       e.preventDefault();
@@ -259,15 +243,15 @@ const { direction, isSwiping } = useSwipe(mainRef, {
     }
 
     switch (direction.value) {
-      case "left":
-        navIs.value = "increment";
-        if (typeof nextIdIndex.value === "number" && nextIdIndex.value > -1)
+      case 'left':
+        navIs.value = 'increment';
+        if (typeof nextIdIndex.value === 'number' && nextIdIndex.value > -1)
           router.replace(`/data-source/${getNext()}`);
         break;
-      case "right":
-        navIs.value = "decrement";
+      case 'right':
+        navIs.value = 'decrement';
         if (
-          typeof previousIdIndex.value === "number" &&
+          typeof previousIdIndex.value === 'number' &&
           previousIdIndex.value > -1
         )
           router.replace(`/data-source/${getPrev()}`);
@@ -275,7 +259,7 @@ const { direction, isSwiping } = useSwipe(mainRef, {
       default:
         return;
     }
-  },
+  }
 });
 function getNext() {
   return searchStore.mostRecentSearchIds[nextIdIndex.value];
@@ -286,11 +270,11 @@ function getPrev() {
 
 onMounted(() => {
   handleShowMoreButton();
-  window.addEventListener("resize", handleShowMoreButton);
+  window.addEventListener('resize', handleShowMoreButton);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", handleShowMoreButton);
+  window.removeEventListener('resize', handleShowMoreButton);
 });
 
 function handleShowMoreButton() {

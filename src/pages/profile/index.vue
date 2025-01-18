@@ -15,8 +15,7 @@
       <section>
         <h3 class="like-h4">Email</h3>
         <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }"
-        >
+          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
           <p>
             {{ profileData?.email }}
           </p>
@@ -27,14 +26,12 @@
       <section>
         <h3 class="like-h4">Github account</h3>
         <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }"
-        >
+          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
           <template
-            v-if="didLinkGithub || profileData?.external_accounts.github"
-          >
+            v-if="didLinkGithub || profileData?.external_accounts.github">
             <p>
-              <FontAwesomeIcon :icon="faGithub" /> Your account is linked with
-              Github
+              <FontAwesomeIcon :icon="faGithub" />
+              Your account is linked with Github
             </p>
           </template>
 
@@ -42,8 +39,7 @@
             <Button
               class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
               intent="tertiary"
-              @click="async () => await beginOAuthLogin('/profile')"
-            >
+              @click="async () => await beginOAuthLogin('/profile')">
               <FontAwesomeIcon :icon="faGithub" />
               Link account with Github
             </Button>
@@ -56,14 +52,12 @@
         <h3 class="like-h4">API Key</h3>
 
         <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }"
-        >
+          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
           <Button
             :class="{ 'mb-5': apiKey }"
             intent="secondary"
             type="button"
-            @click="createAPIKey"
-          >
+            @click="createAPIKey">
             Regenerate API Key
           </Button>
         </div>
@@ -76,8 +70,7 @@
                 () => {
                   apiKeyIsDismissed = true;
                 }
-              "
-            />
+              " />
           </div>
         </transition>
       </section>
@@ -111,11 +104,10 @@
       <template #center="{ item }">
         <p
           v-for="(location, i) of item.locations"
-          :key="'profile-request' + getFullLocationText(location)"
-        >
+          :key="'profile-request' + getFullLocationText(location)">
           {{
             getFullLocationText(location) +
-            (i === item.locations.length - 1 ? "" : ", ")
+            (i === item.locations.length - 1 ? '' : ', ')
           }}
         </p>
       </template>
@@ -126,8 +118,7 @@
           target="_blank"
           rel="noopener noreferrer"
           @keydown.stop.enter=""
-          @click.stop=""
-        >
+          @click.stop="">
           <FontAwesomeIcon :icon="faLink" />
           Github
         </a>
@@ -143,15 +134,14 @@
           {{ getFullLocationText(item) }}
         </p>
       </template>
-      <template #center> <span /></template>
+      <template #center><span /></template>
       <template #right="{ item }">
         <Button
           class="h-full w-full max-w-full text-right"
           intent="tertiary"
           type="button"
           @keydown.stop.prevent.enter="() => unFollow(item)"
-          @click.stop.prevent="() => unFollow(item)"
-        >
+          @click.stop.prevent="() => unFollow(item)">
           <FontAwesomeIcon :icon="faCircleXmark" />
           Unfollow
         </Button>
@@ -167,8 +157,7 @@
           <p
             v-for="category of item.record_categories"
             :key="category"
-            class="pill w-max text-xxs"
-          >
+            class="pill w-max text-xxs">
             <RecordTypeIcon :record-type="category" />
             {{ category }}
           </p>
@@ -187,22 +176,22 @@
 </template>
 
 <script>
-import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic";
-import { useAuthStore } from "@/stores/auth";
+import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
+import { useAuthStore } from '@/stores/auth';
 // import { useUserStore } from '@/stores/user';
 import {
   getFullLocationText,
-  mapLocationToSearchParams,
-} from "@/util/locationFormatters";
-import { deleteFollowedSearch } from "@/api/search";
-import { linkAccountWithGithub, signOut, beginOAuthLogin } from "@/api/auth";
-import { getUser } from "@/api/user";
-import { computed, ref } from "vue";
+  mapLocationToSearchParams
+} from '@/util/locationFormatters';
+import { deleteFollowedSearch } from '@/api/search';
+import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
+import { getUser } from '@/api/user';
+import { computed, ref } from 'vue';
 
 const auth = useAuthStore();
 // const user = useUserStore();
 
-export const useGithubLink = defineBasicLoader("/profile", async (route) => {
+export const useGithubLink = defineBasicLoader('/profile', async (route) => {
   let linked = false;
 
   const githubAccessToken = route.query.gh_access_token;
@@ -216,32 +205,32 @@ export const useGithubLink = defineBasicLoader("/profile", async (route) => {
 });
 
 export const useProfileData = defineBasicLoader(
-  "/profile",
+  '/profile',
   async () => {
     const response = await getUser();
     return response.data.data;
-  },
+  }
   // { lazy: true },
 );
 </script>
 
 <script setup>
-import { Button, RecordTypeIcon } from "pdap-design-system";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { useRoute, useRouter } from "vue-router";
-import { toast } from "vue3-toastify";
-import ProfileAPIKey from "./_components/APIKey.vue";
-import ProfileTable from "./_components/ThreeColumnTable.vue";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
-import { generateAPIKey } from "@/api/auth";
+import { Button, RecordTypeIcon } from 'pdap-design-system';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import ProfileAPIKey from './_components/APIKey.vue';
+import ProfileTable from './_components/ThreeColumnTable.vue';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { generateAPIKey } from '@/api/auth';
 
 const route = useRoute();
 const router = useRouter();
 
 const {
-  data: didLinkGithub,
+  data: didLinkGithub
   // loading: githubLinking,
   // error: githubLinkingError,
   // reload,
@@ -251,14 +240,14 @@ const {
   data: profileData,
   isLoading: profileLoading,
   // error: profileError,
-  reload: refetchProfile,
+  reload: refetchProfile
 } = useProfileData();
 
 const requests = computed(() =>
   profileData.value?.data_requests.data.map((req) => ({
     ...req,
-    to: `/data-request/${req.id}`,
-  })),
+    to: `/data-request/${req.id}`
+  }))
 );
 const followedSearches = computed(() =>
   profileData.value?.followed_searches.data.map((search) => {
@@ -266,13 +255,13 @@ const followedSearches = computed(() =>
 
     return {
       ...search,
-      to: `/search/results?${params.toString()}`,
+      to: `/search/results?${params.toString()}`
     };
-  }),
+  })
 );
 const recentSearches = computed(() =>
   profileData.value?.recent_searches.data.map((search) => {
-    const allAt = search.record_categories.indexOf("All");
+    const allAt = search.record_categories.indexOf('All');
     const catWithOutAll =
       allAt === -1
         ? search.record_categories
@@ -281,16 +270,16 @@ const recentSearches = computed(() =>
       ...mapLocationToSearchParams(search),
       ...(catWithOutAll.length
         ? {
-            record_categories: [...catWithOutAll],
+            record_categories: [...catWithOutAll]
           }
-        : {}),
+        : {})
     });
 
     return {
       ...search,
-      to: `/search/results?${params.toString()}`,
+      to: `/search/results?${params.toString()}`
     };
-  }),
+  })
 );
 
 const apiKey = ref();
@@ -304,7 +293,7 @@ async function createAPIKey() {
 async function signOutWithRedirect() {
   auth.setRedirectTo(route);
   await signOut();
-  router.replace("/sign-in");
+  router.replace('/sign-in');
 }
 
 async function unFollow(followed) {
@@ -352,7 +341,7 @@ async function unFollow(followed) {
 }
 
 /* Apply loading shimmer effect when parent is loading */
-:where([class*="profile-loading"]) {
+:where([class*='profile-loading']) {
   @apply animate-pulse;
 }
 
@@ -377,7 +366,7 @@ async function unFollow(followed) {
     rgba(var(--color-gold-neutral-800), 0)
   );
   animation: shimmer 2s infinite;
-  content: "";
+  content: '';
   z-index: 999;
 }
 

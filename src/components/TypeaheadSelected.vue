@@ -10,20 +10,20 @@
 </template>
 
 <script setup>
-import { Button } from "pdap-design-system";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faMinus } from "@fortawesome/free-solid-svg-icons";
-import { ref } from "vue";
+import { Button } from 'pdap-design-system';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { ref } from 'vue';
 
 const show = ref(true);
 
 const { onClick } = defineProps({
   content: {
-    type: String,
+    type: String
   },
   onClick: {
-    type: Function,
-  },
+    type: Function
+  }
 });
 
 function click() {

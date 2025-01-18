@@ -36,7 +36,11 @@ const routeKey = ref(null);
 
 onBeforeRouteUpdate((to, from) => {
   // preserves static key for data source by ID route so that component transition overrides top-level route
-  if ([to.path, from.path].every((path) => path.includes('data-source') && !path.includes('create'))) {
+  if (
+    [to.path, from.path].every(
+      (path) => path.includes('data-source') && !path.includes('create')
+    )
+  ) {
     routeKey.value = 'data-source-by-id';
   } else {
     routeKey.value = to.path;

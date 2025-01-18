@@ -4,8 +4,7 @@
     :id="wrapperId"
     data-test="typeahead-wrapper"
     class="pdap-typeahead"
-    :class="{ 'pdap-typeahead-expanded': isListOpen }"
-  >
+    :class="{ 'pdap-typeahead-expanded': isListOpen }">
     <label v-if="$slots.label" class="col-span-2" :for="id">
       <slot name="label" />
     </label>
@@ -29,13 +28,11 @@
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
-      @keydown.down.prevent="onArrowDown"
-    />
+      @keydown.down.prevent="onArrowDown" />
     <ul
       v-if="itemsToDisplay?.length && inputRef?.value"
       data-test="typeahead-list"
-      class="pdap-typeahead-list"
-    >
+      class="pdap-typeahead-list">
       <li
         v-for="(item, index) in itemsToDisplay"
         :key="index"
@@ -46,8 +43,7 @@
         @click="selectItem(item)"
         @keydown.enter.prevent="selectItem(item)"
         @keydown.down.prevent="onArrowDown"
-        @keydown.up.prevent="onArrowUp"
-      >
+        @keydown.up.prevent="onArrowUp">
         <slot v-if="$slots.item" name="item" v-bind="item" />
         <span v-else>{{ boldMatchText(item) }}</span>
       </li>
@@ -55,16 +51,15 @@
     <ul
       v-else-if="typeof itemsToDisplay === 'undefined' && input.length > 1"
       class="pdap-typeahead-list"
-      data-test="typeahead-list-not-found"
-    >
+      data-test="typeahead-list-not-found">
       <li class="max-w-[unset]">
         <slot
           v-if="$slots['not-found']"
           name="not-found"
-          v-bind="notFound ?? {}"
-        />
+          v-bind="notFound ?? {}" />
         <span v-else>
-          <strong>No results found.</strong> Please check your spelling.
+          <strong>No results found.</strong>
+          Please check your spelling.
         </span>
       </li>
     </ul>
@@ -78,33 +73,33 @@ import {
   onMounted,
   onUnmounted,
   watch,
-  onBeforeUpdate,
-} from "vue";
+  onBeforeUpdate
+} from 'vue';
 
 /* Props and emits */
 const props = defineProps({
   id: {
-    type: String,
+    type: String
   },
   placeholder: {
     type: String,
-    default: "",
+    default: ''
   },
   items: {
-    type: Array,
+    type: Array
   },
   formatItemForDisplay: {
-    type: Function,
+    type: Function
   },
   error: {
-    type: String,
-  },
+    type: String
+  }
 });
-const emit = defineEmits(["onInput", "onFocus", "onBlur", "selectItem"]);
+const emit = defineEmits(['onInput', 'onFocus', 'onBlur', 'selectItem']);
 
 /* Refs and reactive vars */
 const inputRef = ref();
-const input = ref("");
+const input = ref('');
 
 /* Computed vars */
 const wrapperId = computed(() => `${props.id}_wrapper`);
@@ -112,18 +107,18 @@ const itemsToDisplay = computed(() => props.items);
 const isListOpen = computed(
   () =>
     (itemsToDisplay.value?.length && inputRef?.value?.value) ||
-    (typeof itemsToDisplay.value === "undefined" && input.value.length > 1),
+    (typeof itemsToDisplay.value === 'undefined' && input.value.length > 1)
 );
 
 /* Lifecycle methods and listeners */
 onMounted(() => {
-  window.addEventListener("resize", setInputPositionForList);
+  window.addEventListener('resize', setInputPositionForList);
 });
 
 onBeforeUpdate(setInputPositionForList);
 
 onUnmounted(() => {
-  window.removeEventListener("resize", setInputPositionForList);
+  window.removeEventListener('resize', setInputPositionForList);
 });
 
 /* Watch expressions */
@@ -131,38 +126,38 @@ watch(
   () => inputRef.value,
   (ref) => {
     if (ref) setInputPositionForList();
-  },
+  }
 );
 
 /* Methods */
 function setInputPositionForList() {
   document.documentElement.style.setProperty(
-    "--typeaheadBottom",
-    inputRef.value.offsetTop + inputRef.value.offsetHeight + "px",
+    '--typeaheadBottom',
+    inputRef.value.offsetTop + inputRef.value.offsetHeight + 'px'
   );
   document.documentElement.style.setProperty(
-    "--typeaheadListWidth",
-    inputRef.value.offsetWidth + "px",
+    '--typeaheadListWidth',
+    inputRef.value.offsetWidth + 'px'
   );
 }
 function onInput(e) {
-  emit("onInput", e);
+  emit('onInput', e);
 }
 function onFocus(e) {
   if (Array.isArray(itemsToDisplay.value) && !itemsToDisplay.value.length) {
     clearInput();
-    emit("selectItem", undefined);
+    emit('selectItem', undefined);
   }
 
-  emit("onFocus", e);
+  emit('onFocus', e);
 }
 function onBlur(e) {
-  emit("onBlur", e);
+  emit('onBlur', e);
 }
 
 function onArrowDown() {
   const items = Array.from(
-    document.getElementsByClassName("pdap-typeahead-list-item"),
+    document.getElementsByClassName('pdap-typeahead-list-item')
   );
 
   const focusedIndex = items.indexOf(document.activeElement);
@@ -178,7 +173,7 @@ function onArrowDown() {
 
 function onArrowUp() {
   const items = Array.from(
-    document.getElementsByClassName("pdap-typeahead-list-item"),
+    document.getElementsByClassName('pdap-typeahead-list-item')
   );
 
   const focusedIndex = items.indexOf(document.activeElement);
@@ -195,18 +190,18 @@ function selectItem(item) {
     ? props.formatItemForDisplay(item)
     : item;
   inputRef.value.blur();
-  emit("selectItem", item);
+  emit('selectItem', item);
 }
 
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 function boldMatchText(text) {
-  const regexp = new RegExp(`(${escapeRegExp(input.value)})`, "ig");
-  return text.replace(regexp, "<strong>$1</strong>");
+  const regexp = new RegExp(`(${escapeRegExp(input.value)})`, 'ig');
+  return text.replace(regexp, '<strong>$1</strong>');
 }
 function clearInput() {
-  input.value = "";
+  input.value = '';
 }
 // function getInput() {
 // 	return inputRef.value;
@@ -226,7 +221,7 @@ defineExpose({
   focusInput,
   get value() {
     return input.value;
-  },
+  }
 });
 </script>
 

@@ -1,17 +1,16 @@
 <template>
   <main class="pdap-flex-container">
     <h1>
-      {{ error ? "Error validating your account" : "Validating your account" }}
+      {{ error ? 'Error validating your account' : 'Validating your account' }}
     </h1>
     <p
       v-if="error || (hasValidatedToken && isExpiredToken)"
       data-test="token-expired"
-      class="flex flex-col items-start sm:gap-4"
-    >
+      class="flex flex-col items-start sm:gap-4">
       {{
         isExpiredToken
-          ? "Sorry, that token has expired."
-          : "Sorry, that token is invalid."
+          ? 'Sorry, that token has expired.'
+          : 'Sorry, that token is invalid.'
       }}
       <Button intent="primary" @click="requestResendValidationEmail">
         Click here to request another
@@ -21,7 +20,8 @@
     <div v-if="error">
       <p class="max-w-full">
         Error validating your email. Try again, or contact
-        <a href="mailto:contact@pdap.io">contact@pdap.io</a> for assistance.
+        <a href="mailto:contact@pdap.io">contact@pdap.io</a>
+        for assistance.
       </p>
     </div>
 
@@ -30,13 +30,13 @@
 </template>
 
 <script setup>
-import { Button, Spinner } from "pdap-design-system";
-import { useUserStore } from "@/stores/user";
-import parseJwt from "@/util/parseJwt";
-import { h, onMounted, ref, watchEffect } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { toast } from "vue3-toastify";
-import { resendValidationEmail, validateEmail } from "@/api/auth";
+import { Button, Spinner } from 'pdap-design-system';
+import { useUserStore } from '@/stores/user';
+import parseJwt from '@/util/parseJwt';
+import { h, onMounted, ref, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { resendValidationEmail, validateEmail } from '@/api/auth';
 
 // Composables
 const route = useRoute();
@@ -65,7 +65,7 @@ onMounted(async () => {
   try {
     await validateToken();
     await validateEmail(token);
-    router.replace({ path: "/profile" });
+    router.replace({ path: '/profile' });
   } catch (err) {
     error.value = err.message;
   }
@@ -98,24 +98,24 @@ async function requestResendValidationEmail() {
 
   try {
     await resendValidationEmail();
-    toast.success("A new email has been sent to " + user.email);
+    toast.success('A new email has been sent to ' + user.email);
   } catch (err) {
     error.value = err.message;
     toast.error(
-      h("p", [
-        `There was an error sending the email to ${user.email ? user.email : "your email address"}. Try again or contact `,
+      h('p', [
+        `There was an error sending the email to ${user.email ? user.email : 'your email address'}. Try again or contact `,
         h(
-          "a",
+          'a',
           {
-            href: "mailto:contact@pdap.io",
+            href: 'mailto:contact@pdap.io'
           },
-          "contact@pdap.io",
+          'contact@pdap.io'
         ),
-        " for assistance.",
+        ' for assistance.'
       ]),
       {
-        autoClose: false,
-      },
+        autoClose: false
+      }
     );
   }
 }
