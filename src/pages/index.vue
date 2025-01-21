@@ -44,7 +44,7 @@
         </div>
       </div>
 		</section>
-    <section class="pdap-grid-container col-span-full">
+    <section class="pdap-grid-container col-span-full border-t-[3px] border-wineneutral-100">
       <h1 class="col-span-full pt-8 mb-0">
         Programs
       </h1>
@@ -97,7 +97,7 @@
         </p>
       </div>
 	  </section>
-    <section class="col-span-full pdap-flex-container pt-8">
+    <section class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
       <h1>Take action</h1>
       <p>
         This work is multidisciplinary and beginner-friendly.
@@ -153,10 +153,10 @@
         </Button>
       </div>
     </section>
-    <section class="pdap-flex-container col-span-full text-lg mt-8">
+    <section class="pdap-flex-container col-span-full text-lg pt-8 border-t-[3px] border-wineneutral-100">
       <h1>Praise for our work</h1>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-wineneutral-300"
+        class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200"
       >
         <p>
           “PDAP's work was invaluable in helping us find and access data we
@@ -168,7 +168,7 @@
         </p>
       </div>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-wineneutral-300"
+        class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200"
       >
         <p>
           “PDAP's feedback helped us revise our published data to be more
@@ -180,7 +180,7 @@
         </p>
       </div>
       <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-wineneutral-300"
+        class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200"
       >
         <p>
           “PDAP provides data necessary to understand how police use-of-force
@@ -193,7 +193,7 @@
         </p>
       </div>
     </section>
-    <section class="col-span-full pdap-grid-container grid-cols-2 mt-8">
+    <section class="col-span-full pdap-grid-container grid-cols-2 pt-8 border-t-[3px] border-wineneutral-100">
       <div class="col-span-full">
         <h1>Examples of our work</h1>
         <p>
@@ -251,7 +251,7 @@
         </p>
       </div>
 		</section>
-    <section class="col-span-full pdap-flex-container mt-8">
+    <section class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
       <h1>Software documentation</h1>
       <p><a href="https://docs.pdap.io">docs.pdap.io</a> is the starting point for using our tools to do things with data.</p>
       <p><a href="https://docs.pdap.io/api">docs.pdap.io/api</a> are the Data Sources API docs.</p>
@@ -272,33 +272,33 @@
       <ul>
         <h3>2023&ndash;2024</h3>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Develop a database for tracking sources of police data
         </li>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Seed the database with volunteer-collected sources and low-hanging fruit
         </li>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Build an app for searching our database
         </li>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faCircleCheck" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Respond to 100+ Data Requests to learn how people use public data, and where they get stuck
         </li>
         <h3>In testing for early 2025 release</h3>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faCircleNotch" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faCircleNotch" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Add accounts & login, and the ability “follow” any search location
         </li>
         <h3>Up next in 2025</h3>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faWandMagicSparkles" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faWandMagicSparkles" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Expand our toolset for locating and documenting sources of data
         </li>
         <li class="flex flex-row pt-2">
-          <FontAwesomeIcon :icon="faArrowUpRightDots" class="pt-1.5 pr-3" /> 
+          <FontAwesomeIcon :icon="faArrowUpRightDots" class="pt-1.5 pr-3 text-brand-wine-300" /> 
           Use our tools to locate data and rapidly grow the database
         </li>
       </ul>
