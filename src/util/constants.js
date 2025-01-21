@@ -8,6 +8,10 @@ export const NAV_LINKS = [
     text: 'Data'
   },
   {
+    href: 'https://docs.pdap.io/activities/publish-data',
+    text: 'Publish data'
+  },
+  {
     path: '/about',
     text: 'About'
   },
@@ -31,11 +35,6 @@ export const FOOTER_LINKS = [
     href: 'https://discord.gg/wMqex8nKZJ',
     text: 'Discord',
     icon: FOOTER_LINK_ICONS.DISCORD
-  },
-  {
-    href: 'https://www.linkedin.com/company/pdap',
-    text: 'LinkedIn',
-    icon: FOOTER_LINK_ICONS.LINKEDIN
   },
   {
     href: 'https://pdap.io/jobs',
