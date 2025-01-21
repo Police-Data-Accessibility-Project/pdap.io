@@ -413,7 +413,8 @@ onMounted(async () => {
     mergeCount.value = mergesResponse.data.total_count;
 
     const issuesResponse = await axios.get(
-      `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+label:"good first issue"+state:open&sort=created&order=desc&per_page=3`
+      `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+label:"good first issue"+state:open+-label:"resolved in dev"&sort=created&order=desc&per_page=3`
+      // gets issues with "good first issue" label and applies other filters
     );
 
     goodFirstIssues.value = issuesResponse.data.items.map((issue) => ({
