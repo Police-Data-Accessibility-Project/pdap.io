@@ -149,7 +149,7 @@
           </div>
         </form>
       </div>
-  </section>
+    </section>
     <section
       class="pdap-flex-container pt-8 col-span-full border-t-[3px] border-wineneutral-100">
       <h1 class="mb-0">Frequently Asked Questions</h1>

@@ -37,11 +37,6 @@ export const FOOTER_LINKS = [
     icon: FOOTER_LINK_ICONS.DISCORD
   },
   {
-    href: 'https://pdap.io/jobs',
-    text: 'Jobs',
-    icon: FOOTER_LINK_ICONS.JOBS
-  },
-  {
     href: 'https://newsletter.pdap.io/',
     text: 'Newsletter',
     icon: FOOTER_LINK_ICONS.NEWSLETTER
@@ -50,6 +45,11 @@ export const FOOTER_LINKS = [
     href: 'https://docs.pdap.io/',
     text: 'Docs',
     icon: FOOTER_LINK_ICONS.DOCS
+  },
+  {
+    href: 'mailto:contact@pdap.io',
+    text: 'Email',
+    icon: FOOTER_LINK_ICONS.EMAIL
   }
 ];
 
