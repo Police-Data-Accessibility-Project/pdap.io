@@ -104,14 +104,23 @@
         No matter what your level of experience, you can be a valuable contributor!
         The most important skill is <strong>persistence.</strong>
       </p>
-      <h2>Locate sources</h2>
+      <p>
+        Our documentation at <strong><a href="https://docs.pdap.io">docs.pdap.io</a></strong> 
+        is the starting point for using our tools to do things with data.</p>
+      <h2>
+        <FontAwesomeIcon :icon="faMagnifyingGlassLocation" class="text-brand-wine-300" />
+        Locate sources
+      </h2>
       <p>
         Some public records are already online, waiting to be indexed and used. Adding them to our database makes them more accessible to everyone. 
       </p>
       <Button class="mt-2" intent="primary" href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
         Help find & label Data Sources
       </Button>
-      <h2 class="pt-8">Data projects</h2>
+      <h2 class="pt-8">
+        <FontAwesomeIcon :icon="faPeopleCarryBox" class="text-brand-wine-300" />
+        Collaborate on data projects
+      </h2>
       <p>
         Some research projects could benefit from help with data analysis, web scraping, 
         or records requests. PDAP is a place for collaborators to find each other.
@@ -134,7 +143,10 @@
       <Button class="mt-2" intent="primary" href="https://docs.pdap.io">
         Volunteer for data requests
       </Button>
-      <h2 class="pt-4 col-span-full">Contribute code</h2>
+      <h2 class="pt-4 col-span-full">
+        <FontAwesomeIcon :icon="faCodePullRequest" class="text-brand-wine-300" />
+        Contribute code
+      </h2>
       <p class="col-span-full">
         Everything you see is open source, built by a small team of volunteers and staff. We use Python for most backend and web scraping, and VueJS for front end.
       </p>
@@ -200,17 +212,17 @@
           Access to data and collaborators helps people answer questions. Ultimately, our goal is to make new research possible.
         </p>
       </div>
-			<h2 class="col-span-full">
-				<FontAwesomeIcon :icon="faBook" /> Sharing access to Traffic Stop data
+			<h2 class="col-span-full my-0">
+				<FontAwesomeIcon :icon="faBook" class="text-brand-wine-300" /> Sharing access to Traffic Stop data
 			</h2>
-			<div>
+			<div class="text-lg">
 				<p>Several researchers in Pittsburgh were asking:</p>
 				<p class="border-l-2 border-brand-wine/20 pl-4 my-5 italic">
 					What is the reality of traffic enforcement in Pittsburgh, given changed policies about
 					enforcing minor traffic violations?
 				</p>
       </div>
-			<div>
+			<div class="text-lg">
 				<p>
 					We requested data from the City of Pittsburgh and
 					<a href="https://data-sources.pdap.io/search/traffic%20stops/pittsburgh">
@@ -226,16 +238,16 @@
 					>, among other research.
 				</p>
 			</div>
-      <h2 class="col-span-full">
-			  <FontAwesomeIcon :icon="faPhone" /> Preserving Calls for Service data in Oakland CA
+      <h2 class="col-span-full my-0">
+			  <FontAwesomeIcon :icon="faPhone" class="text-brand-wine-300" /> Preserving Calls for Service data in Oakland CA
       </h2>
-      <div>
+      <div class="text-lg">
         <p class="mb-4">A journalist in Oakland, CA asked:</p>
         <p class="border-l-2 border-brand-wine/20 pl-4 italic">
           How does Oakland dispatch its police force to address community needs?
         </p>
       </div>
-      <div>
+      <div class="text-lg">
         <p>
           Calls for police service were published by the city, but only stayed online for 1&ndash;2
           days.
@@ -252,12 +264,10 @@
       </div>
 		</section>
     <section class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
-      <h1>Software documentation</h1>
-      <p><a href="https://docs.pdap.io">docs.pdap.io</a> is the starting point for using our tools to do things with data.</p>
-      <p><a href="https://docs.pdap.io/api">docs.pdap.io/api</a> are the Data Sources API docs.</p>
-      <p>The <a href="https://github.com/Police-Data-Accessibility-Project/data-source-identification">Data Source Identification repo</a> houses our code for collecting sources for the database.</p>
-      <p>The <a href="https://github.com/Police-Data-Accessibility-Project/data-sources-app">Data Sources App repo</a> is the back end for our Data Sources API.</p>
-      <h2><FontAwesomeIcon :icon="faCodeFork" /> High-level roadmap</h2>
+      <h1>
+        <FontAwesomeIcon :icon="faRoute" class="text-brand-wine-300" /> 
+        Software roadmap
+      </h1>
       <p>  
         <span v-if="repoCount && mergeCount">
           We have merged
@@ -315,14 +325,18 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faBook,
   faPhone,
-  faCodeFork,
+  faRoute,
   faCircleNotch,
   faCircleCheck,
   faExternalLink,
   faInfoCircle,
   faArrowUpRightDots,
   faWandMagicSparkles,
-faWandMagic
+faWandMagic,
+faMagnifyingGlassLocation,
+faDiagramProject,
+faPeopleCarryBox,
+faCodePullRequest
 } from "@fortawesome/free-solid-svg-icons";
 
 import { getMetrics } from "@/api/metrics";
