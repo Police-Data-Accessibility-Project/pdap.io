@@ -30,7 +30,7 @@
               type="email"
               name="email"
               placeholder="placeholder@email.com"
-              class="h-12 text-lg px-2 gap-4 leading-normal w-full dark:bg-neutral-950 border border-neutral-500 border-solid px-3 py-2 text-[rgba(0,0,0)"
+              class="h-12 text-lg px-2 py-2 gap-4 leading-normal w-full dark:bg-neutral-950 border border-neutral-500 border-solid text-[rgba(0,0,0)"
             />
             <label
               for="bd-email"
