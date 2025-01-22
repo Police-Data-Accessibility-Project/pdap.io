@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="pdap-grid-container columns-2 px-4 md:px-8 mb-12"
-  >
+  <section class="pdap-grid-container columns-2 px-4 md:px-8 mb-12">
     <div class="col-span-full">
       <h1>Donate to PDAP</h1>
       <p class="col-span-full">
@@ -53,20 +51,28 @@
       </p>
       <h3>We're making tools that will outlive our organization.</h3>
       <p>
-        Our work is open-source, meaning any progress we make on our software is shared 
-        with the public, and will outlive our organization. 
-        It can apply to any kind of public data, in sectors outside policing.
+        Our work is open-source, meaning any progress we make on our software is
+        shared with the public, and will outlive our organization. It can apply
+        to any kind of public data, in sectors outside policing.
       </p>
       <p>
-        Most of our money goes toward staff and contractor time to advance our software 
-        for finding and sharing data. Some goes toward hosting our app and data. 
-        The remainder goes toward operations.
+        Most of our money goes toward staff and contractor time to advance our
+        software for finding and sharing data. Some goes toward hosting our app
+        and data. The remainder goes toward operations.
       </p>
       <h3>How our paid staff spend their time</h3>
       <ul class="list-disc pl-4">
-        <li>Building software to help people find data and answer questions.</li>
-        <li>Connecting skilled volunteers and collaborators with impactful projects.</li>
-        <li>Sharing best practices for publishing data with people who work in local government.</li>
+        <li>
+          Building software to help people find data and answer questions.
+        </li>
+        <li>
+          Connecting skilled volunteers and collaborators with impactful
+          projects.
+        </li>
+        <li>
+          Sharing best practices for publishing data with people who work in
+          local government.
+        </li>
       </ul>
       <!-- TODO: uncomment this when we figure out how to get donorbox data into the browser because they do not have a solution for this 🙄 -->
       <!-- <h3 class="pt-4">Our Donors</h3>
