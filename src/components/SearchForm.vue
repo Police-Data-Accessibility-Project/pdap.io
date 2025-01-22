@@ -78,9 +78,8 @@ import {
 } from '@/util/locationFormatters';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
-import { useRouter, RouterLink, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const router = useRouter();
 

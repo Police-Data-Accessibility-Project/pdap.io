@@ -409,9 +409,7 @@ import {
   faInfoCircle,
   faArrowUpRightDots,
   faWandMagicSparkles,
-  faWandMagic,
   faMagnifyingGlassLocation,
-  faDiagramProject,
   faPeopleCarryBox,
   faCodePullRequest
 } from '@fortawesome/free-solid-svg-icons';
