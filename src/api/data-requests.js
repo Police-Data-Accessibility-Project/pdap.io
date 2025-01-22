@@ -62,7 +62,7 @@ export async function getDataRequest(id) {
     cached &&
     isCachedResponseValid({
       cacheTime: cached.timestamp,
-      // Cache for 5 minutes
+      // Cache for 3 minutes
       intervalBeforeInvalidation: 1000 * 60 * 3
     })
   ) {
@@ -91,4 +91,49 @@ export async function createRequest(data) {
 
   requestsStore.clearCache();
   return response.data;
+}
+
+export async function getRecentRequests() {
+  const requestsStore = useDataRequestsStore();
+
+  const cached = requestsStore.getDataRequestFromCache('recent-requests');
+
+  if (
+    cached &&
+    isCachedResponseValid({
+      cacheTime: cached.timestamp,
+      // Cache for 3 minutes
+      intervalBeforeInvalidation: 1000 * 60 * 3,
+    })
+  ) {
+    return cached.data;
+  }
+
+  const params = {
+    sort_by: 'date_created',
+    sort_order: 'DESC',
+    // requested_columns: 'id,title', // Was not working, see data-sources-app/issues/581
+    // request_statuses: 'Intake', // Used for testing, should be 'Ready to start'
+    // limit: 3, // Not supported, see data-sources-app/issues/579
+  };
+
+  const response = await axios.get(REQUESTS_BASE, {
+    headers: HEADERS_BASIC,
+    params,
+  });
+
+  const recentRequests = response.data.data
+    .slice(0, 3)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      status: item.request_status,
+      locationDisplayName:
+        item.locations?.[0]?.display_name || 'Unknown location',
+      route: `/data-request/${item.id}`,
+    }));
+
+  requestsStore.setDataRequestToCache('recent-requests', recentRequests);
+
+  return recentRequests;
 }

@@ -1,6 +1,7 @@
 <template>
   <section
-    class="pdap-grid-container pdap-grid-container-columns-2 px-4 md:px-8 mb-12">
+    class="pdap-grid-container columns-2 px-4 md:px-8 mb-12"
+  >
     <div class="col-span-full">
       <h1>Donate to PDAP</h1>
       <p class="col-span-full">
@@ -22,7 +23,7 @@
         allow="payment" />
       <p>PDAP is a non-profit, so your donations may be tax deductible.</p>
 
-      <h3 class="pt-4">Send a check</h3>
+      <h3>Send a check</h3>
       <p>
         Police Data Accessibility Project Inc.
         <br />
@@ -30,7 +31,7 @@
         <br />
         Pittsburgh, PA 15222
       </p>
-      <h3 class="pt-4">Donation match</h3>
+      <h3>Donation match</h3>
       <p>
         If your employer offers a donation match, submit your receipt to your
         employer and have them reach out to
@@ -50,42 +51,23 @@
         This is the foundation of any research, advocacy, journalism,
         accountability, or reform.
       </p>
-      <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
-        <p>
-          “PDAP's work was invaluable in helping us find and access data we
-          wouldn't have been able to otherwise.”
-        </p>
-        <p class="italic mb-0">
-          &mdash;Dr. Jesse Wozniak, Director of Law & Public Policy at the
-          <a href="https://apa-pgh.org/">Alliance for Police Accountability</a>
-        </p>
-      </div>
-      <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
-        <p>
-          “PDAP's feedback helped us revise our published data to be more
-          beneficial to the public.”
-        </p>
-        <p class="italic mb-0">
-          &mdash;Philip Lukens, Chief of Police in
-          <a href="https://www.cityofalliance.net/186/Police">Alliance, NE</a>
-        </p>
-      </div>
-      <div
-        class="p-4 my-2 mx-0 border-2 border-solid border-brand-wine border-opacity-20">
-        <p>
-          “PDAP provides data necessary to understand how police use-of-force
-          incidents are processed in the courts, which reveals whether legal
-          accountability mechanisms actually work on-the-ground.”
-        </p>
-        <p class="italic mb-0">
-          &mdash;
-          <a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>
-          , UC Berkeley
-        </p>
-      </div>
-
+      <h3>We're making tools that will outlive our organization.</h3>
+      <p>
+        Our work is open-source, meaning any progress we make on our software is shared 
+        with the public, and will outlive our organization. 
+        It can apply to any kind of public data, in sectors outside policing.
+      </p>
+      <p>
+        Most of our money goes toward staff and contractor time to advance our software 
+        for finding and sharing data. Some goes toward hosting our app and data. 
+        The remainder goes toward operations.
+      </p>
+      <h3>How our paid staff spend their time</h3>
+      <ul class="list-disc pl-4">
+        <li>Building software to help people find data and answer questions.</li>
+        <li>Connecting skilled volunteers and collaborators with impactful projects.</li>
+        <li>Sharing best practices for publishing data with people who work in local government.</li>
+      </ul>
       <!-- TODO: uncomment this when we figure out how to get donorbox data into the browser because they do not have a solution for this 🙄 -->
       <!-- <h3 class="pt-4">Our Donors</h3>
 			<p>
@@ -95,24 +77,6 @@
 				<strong>${{ donorCount }}</strong>
 				individual donors since January 9, 2023.
 			</p> -->
-      <h3 class="pt-4">How we spend money</h3>
-      <p>85% goes toward our program.</p>
-      <p>15% goes toward operations.</p>
-      <h3 class="pt-4">How we spend our time</h3>
-      <ul class="list-disc list-inside">
-        <li>
-          Helping people find data and answer questions about local criminal
-          legal systems.
-        </li>
-        <li>
-          Connecting skilled volunteers and collaborators with impactful
-          projects.
-        </li>
-        <li>
-          Sharing best practices for publishing data with people who work in
-          local government.
-        </li>
-      </ul>
     </div>
   </section>
 </template>

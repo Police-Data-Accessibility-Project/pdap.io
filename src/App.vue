@@ -26,7 +26,6 @@
 import { ErrorBoundary, Footer, Header, Spinner } from 'pdap-design-system';
 import AuthWrapper from './components/AuthWrapper.vue';
 import acronym from 'pdap-design-system/images/acronym.svg';
-import lockup from 'pdap-design-system/images/lockup.svg';
 
 import { NAV_LINKS, FOOTER_LINKS } from '@/util/constants';
 import { provide, ref } from 'vue';

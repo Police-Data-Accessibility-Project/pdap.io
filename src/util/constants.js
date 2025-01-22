@@ -5,15 +5,11 @@ export const ALL_LOCATION_TYPES = ['locality', 'county', 'state', 'federal'];
 export const NAV_LINKS = [
   {
     path: '/',
-    text: 'Search'
-  },
-  {
-    path: '/data',
     text: 'Data'
   },
   {
-    path: '/community',
-    text: 'Community'
+    href: 'https://docs.pdap.io/activities/publish-data',
+    text: 'Publish data'
   },
   {
     path: '/about',
@@ -22,10 +18,6 @@ export const NAV_LINKS = [
   {
     path: '/donate',
     text: 'Donate'
-  },
-  {
-    path: '/jobs',
-    text: 'Jobs'
   },
   {
     href: 'https://docs.pdap.io/',
@@ -43,11 +35,6 @@ export const FOOTER_LINKS = [
     href: 'https://discord.gg/wMqex8nKZJ',
     text: 'Discord',
     icon: FOOTER_LINK_ICONS.DISCORD
-  },
-  {
-    href: 'https://www.linkedin.com/company/pdap',
-    text: 'LinkedIn',
-    icon: FOOTER_LINK_ICONS.LINKEDIN
   },
   {
     href: 'https://pdap.io/jobs',
