@@ -38,16 +38,17 @@
       </p>
     </div>
     <div class="pdap-flex-container text-lg">
-      <h3>We can't fix what we can't measure.</h3>
+      <h3>We need to monitor our most critical systems.</h3>
       <p>
         The ability of police systems to impact people's lives demands a higher
         degree of scrutiny regarding their fairness. Right now, it is hard to
         answer the most basic questions about most police agencies.
       </p>
       <p>
-        We work toward better shared access to data about our police system.
-        This is the foundation of any research, advocacy, journalism,
-        accountability, or reform.
+        Data is the foundation of any research, advocacy, journalism,
+        accountability, or reform. As communities decide how to structure public
+        services, they can use shared access to data about current systems to
+        evaluate the effectiveness of police and other response programs.
       </p>
       <h3>We're making tools that will outlive our organization.</h3>
       <p>
