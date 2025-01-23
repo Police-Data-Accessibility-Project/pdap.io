@@ -60,25 +60,6 @@
       {{ buttonCopy ?? 'Search' }}
     </Button>
   </FormV2>
-  <div>
-    <p class="text-lg mt-8 mb-4">
-      If you have a question to answer, we can help
-    </p>
-    <RouterLink
-      v-if="getIsV2FeatureEnabled('CREATE_RECORDS')"
-      class="pdap-button-primary"
-      :to="'/data-request/create'">
-      Make a Request
-    </RouterLink>
-    <a
-      v-else
-      class="pdap-button-primary"
-      href="https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk"
-      target="_blank"
-      rel="noreferrer">
-      Make a request
-    </a>
-  </div>
 </template>
 
 <script setup>
@@ -97,9 +78,8 @@ import {
 } from '@/util/locationFormatters';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
-import { useRouter, RouterLink, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const router = useRouter();
 
