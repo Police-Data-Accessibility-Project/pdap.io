@@ -352,7 +352,8 @@
           <FontAwesomeIcon
             :icon="faCircleCheck"
             class="pt-1.5 pr-3 text-brand-wine-300" />
-          Seed the database with volunteer-documented sources and existing collections
+          Seed the database with volunteer-documented sources and existing
+          collections
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
