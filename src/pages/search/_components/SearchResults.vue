@@ -30,7 +30,7 @@
               v-for="agency in Object.keys(results[locale].sourcesByAgency)"
               :key="agency + 'results'">
               <div class="agency-heading-row">
-                <h5>{{ agency }}</h5>
+                <h5 class="font-semibold">{{ agency }}</h5>
                 <span class="pill">{{ locale }}</span>
               </div>
 
@@ -45,7 +45,7 @@
                   <h6>
                     {{ source.data_source_name }}
                   </h6>
-                  <span class="pill flex items-center gap-2 w-max">
+                  <span class="pill flex items-center mt-1 gap-2 w-max">
                     <RecordTypeIcon :record-type="source.record_type" />
                     {{ source.record_type }}
                   </span>
@@ -61,19 +61,13 @@
                   {{ source.description ?? '—' }}
                 </p>
 
-                <!-- Formats and links to data source view and data source url -->
-                <div :class="getClassNameFromHeadingType(HEADING_TITLES[3])">
-                  <span
-                    v-for="format of source.record_formats"
-                    :key="source.data_source_name + format"
-                    class="pill format">
-                    {{ format }}
-                  </span>
-                </div>
+                <!-- Links to data source view and data source url -->
                 <div class="links">
-                  <FontAwesomeIcon
-                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300"
-                    :icon="faInfo" />
+                  <span
+                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300">
+                    <FontAwesomeIcon :icon="faInfoCircle" />
+                    More
+                  </span>
                   <a
                     :href="source.source_url"
                     target="_blank"
@@ -81,7 +75,7 @@
                     @keydown.stop.enter=""
                     @click.stop="">
                     <FontAwesomeIcon :icon="faLink" />
-                    source
+                    Visit
                   </a>
                 </div>
               </RouterLink>
@@ -96,7 +90,7 @@
 <script setup>
 import { ALL_LOCATION_TYPES } from '@/util/constants';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faInfo, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
 import { useRoute } from 'vue-router';
 import { ref, watchEffect } from 'vue';
@@ -105,11 +99,10 @@ const route = useRoute();
 
 // constants
 const HEADING_TITLES = [
-  'agency, name, record type',
+  'name, record type',
   'time range',
   'description',
-  'formats',
-  'details'
+  'actions'
 ];
 
 const { results, isLoading } = defineProps({
@@ -148,7 +141,7 @@ function getYearRange(start, end) {
 }
 
 function getClassNameFromHeadingType(heading) {
-  if (heading === 'details') return 'links';
+  if (heading === 'actions') return 'links';
   return heading.replaceAll(',', '').split(' ').join('-');
 }
 </script>
@@ -169,25 +162,21 @@ h6 {
 .heading-titles,
 .agency-row {
   /* Tailwind is a pain for complex grids, so using standard CSS */
-  grid-template-columns: 6fr 2fr 1fr;
-  grid-template-areas: 'name name name' 'range formats formats';
+  grid-template-columns: 6fr 1fr 2fr 1fr;
+  grid-template-areas: 'name range description links';
   grid-template-rows: repeat(2, auto);
 }
 
 .heading-titles {
-  @apply w-full items-center grid gap-1 gap-y-3 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg p-2 border-solid border-neutral-300 border-2 lg:border-none;
-}
-
-h4.formats {
-  @apply break-all overflow-hidden;
+  @apply w-full items-center grid gap-1 gap-y-3 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg border-solid border-neutral-300 border-2 lg:border-none;
 }
 
 .agency-heading-row {
-  @apply flex items-center sticky top-0 mb-4 justify-between gap-4 bg-neutral-100 p-2 rounded-sm [&>*]:text-xs [&>*]:md:text-med [&>*]:lg:text-lg border-solid border-neutral-300 border-2 z-10;
+  @apply flex items-center sticky top-0 mb-2 justify-between gap-4 bg-wineneutral-100 p-2 [&>*]:text-xs [&>*]:md:text-med [&>*]:lg:text-lg border-solid border-wineneutral-300 border-2 z-10;
 }
 
 .agency-row {
-  @apply grid gap-4 mb-4 p-2 h-auto lg:h-[91px] border-solid border-neutral-300 border-2 rounded-sm [&>*]:text-sm [&>*]:md:text-med [&>*]:lg:text-lg text-neutral-950 hover:bg-neutral-100;
+  @apply grid gap-4 mb-2 p-2 h-auto border-solid border-wineneutral-300 border [&>*]:text-sm [&>*]:md:text-med [&>*]:lg:text-lg text-neutral-950 hover:bg-goldneutral-100;
 }
 
 .agency-row:focus,
@@ -204,8 +193,8 @@ h4.formats {
   .heading-titles,
   .agency-row {
     /* Tailwind is a pain for complex grids, so using standard CSS */
-    grid-template-columns: 5fr 2fr 3fr;
-    grid-template-areas: 'name name name' 'range formats links';
+    grid-template-columns: 5fr 2fr 1fr 1fr;
+    grid-template-areas: 'name range description links';
   }
 }
 
@@ -214,9 +203,9 @@ h4.formats {
   .agency-row {
     @apply gap-4;
 
-    grid-template-columns: 320px 125px 1fr 128px 115px;
+    grid-template-columns: 320px 125px 1fr 115px;
     grid-template-rows: repeat(1, auto);
-    grid-template-areas: 'name range description formats links';
+    grid-template-areas: 'name range description links';
   }
 }
 
@@ -256,21 +245,8 @@ h4.links {
 }
 
 div.links {
-  @apply hidden md:flex h-auto gap-2;
+  @apply hidden md:flex md:flex-col items-end justify-start h-auto gap-2;
 
   grid-area: links;
-}
-
-.formats {
-  @apply flex flex-wrap gap-2 justify-start max-w-32 h-max;
-  grid-area: formats;
-}
-
-div.formats {
-  @apply overflow-hidden h-full;
-}
-
-.format {
-  @apply p-0 px-1 text-med inline-block w-min max-w-[8ch] h-min whitespace-nowrap text-ellipsis line-clamp-1;
 }
 </style>

@@ -5,12 +5,12 @@
     <section class="w-full h-full">
       <div
         class="grid grid-cols-1 md:grid-cols-[1fr,auto] md:grid-rows-[repeat(3,35px)]">
-        <h1 class="like-h4 mb-4">
-          Results
+        <h1 class="text-3xl mb-4">
+          Data
           {{
             searchData &&
             !isLoading &&
-            'for ' + getMinimalLocationText(searchData.params)
+            'about ' + getFullLocationText(searchData.params)
           }}
         </h1>
 
@@ -94,7 +94,7 @@
       </Suspense>
 
       <h2 v-if="searchData" class="like-h4">
-        Data requests for {{ getFullLocationText(searchData.params) }}
+        Data requested about {{ getFullLocationText(searchData.params) }}
       </h2>
       <Requests :requests="requestData" :error="!!requestsError" />
     </section>
