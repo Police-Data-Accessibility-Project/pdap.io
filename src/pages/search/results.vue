@@ -56,12 +56,12 @@
         <nav
           v-if="!error"
           class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg sm:gap-4 md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
-          <span class="text-neutral-500">Jump to:</span>
+          <span class="font-semibold text-wineneutral-700">Jurisdiction level:</span>
           <RouterLink
             v-for="locale in ALL_LOCATION_TYPES"
             :key="`${locale} anchor`"
             :class="{
-              'text-neutral-500 pointer-events-none cursor-auto':
+              'text-goldneutral-500 pointer-events-none cursor-auto border-none':
                 !searchData?.results?.[locale]?.count
             }"
             class="capitalize"
