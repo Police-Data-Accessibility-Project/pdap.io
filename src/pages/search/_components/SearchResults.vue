@@ -46,7 +46,9 @@
                     {{ source.data_source_name }}
                   </h6>
                   <span class="pill flex items-center mt-1 gap-2 w-max">
-                    <RecordTypeIcon :record-type="source.record_type" />
+                    <RecordTypeIcon
+                      :record-type="source.record_type"
+                      class="text-brand-wine-500" />
                     {{ source.record_type }}
                   </span>
                 </div>
@@ -62,7 +64,7 @@
                 </p>
 
                 <!-- Links to data source view and data source url -->
-                <div class="links">
+                <div class="links text-lg">
                   <span
                     class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300">
                     <FontAwesomeIcon :icon="faInfoCircle" />
@@ -172,21 +174,17 @@ h6 {
 }
 
 .agency-heading-row {
-  @apply flex items-center sticky top-0 mb-2 justify-between gap-4 bg-wineneutral-100 p-2 [&>*]:text-xs [&>*]:md:text-med [&>*]:lg:text-lg border-solid border-wineneutral-300 border-2 z-10;
+  @apply flex items-center sticky top-0 mb-2 gap-4 bg-wineneutral-100 p-2 text-xs md:text-med lg:text-lg border-solid border-wineneutral-300 border-2 z-10;
 }
 
 .agency-row {
-  @apply grid gap-4 mb-2 p-2 h-auto border-solid border-wineneutral-300 border [&>*]:text-sm [&>*]:md:text-med [&>*]:lg:text-lg text-neutral-950 hover:bg-goldneutral-100;
+  @apply grid gap-4 mb-2 p-2 h-auto border-solid border-wineneutral-300 border text-sm md:text-med lg:text-lg text-neutral-950 hover:bg-goldneutral-100;
 }
 
 .agency-row:focus,
 .agency-row:focus-visible,
 .agency-row:focus-within {
   @apply hover:brightness-85;
-}
-
-.agency-row * {
-  @apply [&>*]:text-sm [&>*]:md:text-med [&>*]:lg:text-lg;
 }
 
 @media (width >= 768px) {
