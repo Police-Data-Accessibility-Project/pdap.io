@@ -1,11 +1,12 @@
 <template>
-  <main ref="mainRef" class="min-h-[75%] relative">
+  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative">
     <!-- NAV to prev/next data source -->
     <PrevNextNav
       :search-ids="searchStore.mostRecentSearchIds"
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
-      :set-nav-is="(val) => (navIs = val)" />
+      :set-nav-is="(val) => (navIs = val)"
+      class="text-xl font-semibold" />
 
     <transition mode="out-in" :name="navIs">
       <div
@@ -40,18 +41,44 @@
                 <RecordTypeIcon :record-type="dataSource.record_type_name" />
                 {{ dataSource.record_type_name }}
               </p>
+              <p
+                v-for="agency in dataSource.agencies"
+                :key="agency.jurisdiction_type"
+                class="pill">
+                Jurisdiction: {{ agency.jurisdiction_type }}
+              </p>
               <template v-if="Array.isArray(dataSource.tags)">
                 <p v-for="tag in dataSource.tags" :key="tag" class="pill w-max">
                   {{ tag }}
                 </p>
               </template>
             </div>
+            <!-- Description -->
+            <div v-if="dataSource.description" class="relative w-full mt-4">
+              <h4>
+                Description
+              </h4>
+              <p
+                ref="descriptionRef"
+                class="description"
+                :class="{
+                  'truncate-2': !isDescriptionExpanded
+                }">
+                {{ dataSource.description }}
+              </p>
+              <Button
+                v-if="showExpandDescriptionButton"
+                intent="tertiary"
+                @click="isDescriptionExpanded = !isDescriptionExpanded">
+                {{ isDescriptionExpanded ? 'See less' : 'See more' }}
+              </Button>
+            </div>
           </hgroup>
 
           <!-- Agency data -->
-          <div class="flex-[0_0_100%] flex flex-col gap-2 w-full">
-            <div ref="agenciesRef" class="agency-row-container">
-              <div class="agency-row">
+          <div class="flex-[0_0_100%] flex flex-col w-full">
+            <div ref="agenciesRef" class="w-full self-start justify-self-start mb-4">
+              <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
                 <div>
                   <h4 class="m-0">Agency</h4>
                   <p
@@ -81,15 +108,6 @@
                     {{ agency.agency_type }}
                   </p>
                 </div>
-                <div>
-                  <h4 class="m-0">Jurisdiction Type</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.jurisdiction_type"
-                    class="capitalize">
-                    {{ agency.jurisdiction_type }}
-                  </p>
-                </div>
               </div>
             </div>
             <a
@@ -100,23 +118,6 @@
               Visit Data Source
               <FontAwesomeIcon :icon="faLink" />
             </a>
-          </div>
-
-          <div v-if="dataSource.description" class="description-container">
-            <p
-              ref="descriptionRef"
-              class="description"
-              :class="{
-                'truncate-2': !isDescriptionExpanded
-              }">
-              {{ dataSource.description }}
-            </p>
-            <Button
-              v-if="showExpandDescriptionButton"
-              intent="tertiary"
-              @click="isDescriptionExpanded = !isDescriptionExpanded">
-              {{ isDescriptionExpanded ? 'See less' : 'See more' }}
-            </Button>
           </div>
 
           <!-- Sections -->
@@ -293,17 +294,13 @@ function formatResult(record, item) {
 
 <style scoped>
 .section {
-  @apply w-full flex flex-col gap-2 max-w-full md:max-w-[50%] border-solid border-2 border-neutral-300 p-4;
+  @apply w-full flex flex-col gap-2 max-w-full md:max-w-[50%] border-solid border-2 border-neutral-300 p-4 text-lg;
   flex: 1 1 40%;
 }
 
 hgroup {
   @apply mt-4 self-start;
   flex: 0 0 100%;
-}
-
-.description-container {
-  @apply relative w-full mt-4;
 }
 
 .description {
@@ -317,14 +314,6 @@ hgroup {
 
 .pdap-button-tertiary {
   @apply text-brand-gold-600 p-1;
-}
-
-.agency-row {
-  @apply inline-flex gap-8 [&>div]:w-max;
-}
-
-.agency-row-container {
-  @apply w-full overflow-x-scroll self-start justify-self-start my-4;
 }
 
 .increment-enter-active,

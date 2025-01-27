@@ -74,7 +74,7 @@ export const DATA_SOURCE_UI_SHAPE = [
         key: 'record_formats',
         component: 'span',
         classNames:
-          'mt-1 py-[.125rem] px-3 rounded-full bg-slate-200 dark:bg-slate-600 w-fit small text-neutral-800 border-solid border-[1px] border-neutral-500 rounded-xl px-2 bg-neutral-200 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg p-1 overflow-hidden'
+          'pill w-fit border-wineneutral-500 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg overflow-hidden'
       },
       { title: 'Detail Level', key: 'detail_level' },
       { title: 'Size', key: 'size' },
