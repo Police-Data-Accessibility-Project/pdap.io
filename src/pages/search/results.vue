@@ -92,11 +92,12 @@
           <LoadingSpinner />
         </template>
       </Suspense>
-
-      <h2 v-if="searchData" class="like-h4">
-        Data requested about {{ getFullLocationText(searchData.params) }}
-      </h2>
-      <Requests :requests="requestData" :error="!!requestsError" />
+      <div v-if="getIsV2FeatureEnabled('SHOW_REQUESTS')">
+        <h2 v-if="searchData" class="like-h4">
+          Data requested about {{ getFullLocationText(searchData.params) }}
+        </h2>
+        <Requests :requests="requestData" :error="!!requestsError" />
+      </div>
     </section>
 
     <!-- Aside for handling filtering and saved searches -->
