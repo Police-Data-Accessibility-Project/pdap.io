@@ -55,9 +55,7 @@
             </div>
             <!-- Description -->
             <div v-if="dataSource.description" class="relative w-full mt-4">
-              <h4>
-                Description
-              </h4>
+              <h4>Description</h4>
               <p
                 ref="descriptionRef"
                 class="description"
@@ -77,7 +75,9 @@
 
           <!-- Agency data -->
           <div class="flex-[0_0_100%] flex flex-col w-full">
-            <div ref="agenciesRef" class="w-full self-start justify-self-start mb-4">
+            <div
+              ref="agenciesRef"
+              class="w-full self-start justify-self-start mb-4">
               <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
                 <div>
                   <h4 class="m-0">Agency</h4>

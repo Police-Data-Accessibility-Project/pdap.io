@@ -99,14 +99,14 @@
           The problem we address is the inaccessibility of data about the
           systems with the
           <strong>greatest impact on our lives.</strong>
-          Records which should be public are often disorganized, scattered across
-          obscure municipal websites, kept behind tedious request processes, or
-          not published at all.
+          Records which should be public are often disorganized, scattered
+          across obscure municipal websites, kept behind tedious request
+          processes, or not published at all.
         </p>
         <p>
           <strong>We envision a future</strong>
-          where every community in the United States can access public data 
-          to evaluate local police systems and other crisis response programs.
+          where every community in the United States can access public data to
+          evaluate local police systems and other crisis response programs.
         </p>
         <p>
           All of our programs exist to help people answer questions with data.
@@ -131,8 +131,11 @@
       </p>
       <p>
         Our documentation at
-        <strong><a href="https://docs.pdap.io">docs.pdap.io</a>
-        is the starting point</strong> for using our tools to do things with data.
+        <strong>
+          <a href="https://docs.pdap.io">docs.pdap.io</a>
+          is the starting point
+        </strong>
+        for using our tools to do things with data.
       </p>
       <h2>
         <FontAwesomeIcon
