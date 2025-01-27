@@ -17,7 +17,7 @@
   }
 
   .pill {
-    @apply text-neutral-800 border-solid border border-goldneutral-300 rounded-full px-2 bg-goldneutral-100 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg p-1 overflow-hidden;
+    @apply text-goldneutral-950 border-solid border border-goldneutral-300 rounded-full px-2 bg-goldneutral-100 text-xs sm:text-sm [&>*]:md:text-med [&>*]:lg:text-lg p-1 overflow-hidden;
   }
 
   .like-h4 {

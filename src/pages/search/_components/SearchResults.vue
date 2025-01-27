@@ -245,7 +245,7 @@ h4.links {
 }
 
 div.links {
-  @apply hidden md:flex md:flex-col items-end justify-start h-auto gap-2;
+  @apply hidden md:flex md:flex-col items-end justify-start h-auto gap-1;
 
   grid-area: links;
 }
