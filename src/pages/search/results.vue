@@ -1,6 +1,6 @@
 <template>
   <main
-    class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 xl:gap-x-8 max-w-[1800px] mx-auto">
+    class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 max-w-[1800px] mx-auto">
     <!-- Search results -->
     <section class="w-full h-full">
       <div
@@ -57,7 +57,7 @@
           v-if="!error"
           class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg sm:gap-4 md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
           <span class="font-semibold text-neutral-600 dark:text-neutral-300">
-            Jurisdiction level:
+            Geographic level:
           </span>
           <RouterLink
             v-for="locale in ALL_LOCATION_TYPES"
