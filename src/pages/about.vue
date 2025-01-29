@@ -1,5 +1,5 @@
 <template>
-  <main class="pdap-grid-container px-4 md:px-8 mb-24">
+  <main class="pdap-grid-container mb-24">
     <section class="col-span-full pdap-flex-container">
       <h1 class="col-span-full">About</h1>
       <p>

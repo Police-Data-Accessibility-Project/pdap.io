@@ -5,7 +5,7 @@
 </route>
 
 <template>
-  <main class="p-6 py-10 mb-24 pdap-grid-container @container w-full">
+  <main class="mb-24 pdap-grid-container @container w-full">
     <section class="col-span-full">
       <h1>Explore data about police systems</h1>
       <SearchForm />

@@ -7,7 +7,7 @@
 </route>
 
 <template>
-  <main class="overflow-x-hidden max-w-[1080px] px-6 md:px-10 mx-auto">
+  <main class="overflow-x-hidden max-w-[1080px] mx-auto">
     <!-- TODO: this component is massive. Let's break it up into components and move the constants and utils to separate files.
 			------ Also: the additional properties section is probably meaty enough that we want an async import.
 			------ Maybe even a separate sub-route? At `.data-source/create/additional` ? 

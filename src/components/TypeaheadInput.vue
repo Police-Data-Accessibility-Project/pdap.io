@@ -240,7 +240,7 @@ defineExpose({
 
 .pdap-typeahead-input,
 .pdap-typeahead-list {
-  @apply bg-neutral-50 border-2 border-neutral-500 border-solid p-2 text-neutral-950;
+  @apply bg-neutral-50 border-2 border-goldneutral-500 border-solid p-2 text-neutral-950;
 }
 
 .pdap-typeahead-input::placeholder {

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full gap-5">
+  <div class="flex flex-col w-full mb-1">
     <div class="heading-titles">
       <h4
         v-for="title of HEADING_TITLES"
@@ -170,7 +170,7 @@ h6 {
 }
 
 .heading-titles {
-  @apply w-full items-center grid gap-1 gap-y-3 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg border-solid border-neutral-300 border-2 lg:border-none;
+  @apply w-full items-center grid gap-1 gap-y-3 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg;
 }
 
 .agency-heading-row {
