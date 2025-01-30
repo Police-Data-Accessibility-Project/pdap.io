@@ -9,7 +9,8 @@
       :to="`/data-source/${searchIds[previousIndex]}`"
       :class="{ disabled: typeof previousIndex !== 'number' }"
       replace
-      @mouseenter="setNavIs('decrement')">
+      @mouseenter="setNavIs('decrement')"
+      @focus="setNavIs('decrement')">
       PREV
     </RouterLink>
     /
@@ -17,7 +18,8 @@
       :to="`/data-source/${searchIds[nextIndex]}`"
       :class="{ disabled: typeof nextIndex !== 'number' }"
       replace
-      @mouseenter="setNavIs('increment')">
+      @mouseenter="setNavIs('increment')"
+      @focus="setNavIs('increment')">
       NEXT
     </RouterLink>
   </nav>
