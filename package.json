@@ -25,7 +25,7 @@
     "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
-    "pdap-design-system": "^3.1.0-beta.38",
+    "pdap-design-system": "^3.1.0-beta.40",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.19",
