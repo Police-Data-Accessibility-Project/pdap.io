@@ -1,6 +1,6 @@
 <template>
   <div
-    class="col-span-1 flex flex-col gap-6 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
+    class="col-span-1 flex flex-col gap-4 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
     <TypeaheadInput
       :id="TYPEAHEAD_ID"
       ref="typeaheadRef"
@@ -37,7 +37,7 @@
   <FormV2
     id="pdap-data-sources-search"
     ref="formRef"
-    class="grid grid-cols-1 auto-rows-auto max-w-full gap:0 @md:gap-4 @md:grid-cols-2 @lg:grid-cols-3 gap-0"
+    class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
     @change="onChange"
     @submit="submit">
     <InputCheckbox

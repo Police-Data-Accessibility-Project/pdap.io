@@ -7,7 +7,7 @@
 </route>
 
 <template>
-  <main class="overflow-x-hidden max-w-[1080px] px-6 md:px-10 mx-auto">
+  <main class="overflow-x-hidden max-w-[1080px] mx-auto">
     <h1>New request</h1>
 
     <FormV2

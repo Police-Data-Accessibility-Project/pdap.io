@@ -1,16 +1,16 @@
 <template>
   <main
-    class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 xl:gap-x-8 max-w-[1800px] mx-auto">
+    class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 max-w-[1800px] mx-auto">
     <!-- Search results -->
     <section class="w-full h-full">
       <div
         class="grid grid-cols-1 md:grid-cols-[1fr,auto] md:grid-rows-[repeat(3,35px)]">
-        <h1 class="like-h4 mb-4">
-          Results
+        <h1 class="text-3xl mb-4">
+          Data
           {{
             searchData &&
             !isLoading &&
-            'for ' + getMinimalLocationText(searchData.params)
+            'about ' + getFullLocationText(searchData.params)
           }}
         </h1>
 
@@ -56,15 +56,17 @@
         <nav
           v-if="!error"
           class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg sm:gap-4 md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
-          <span class="text-neutral-500">Jump to:</span>
+          <span class="font-semibold text-neutral-600 dark:text-neutral-300">
+            Geographic level:
+          </span>
           <RouterLink
             v-for="locale in ALL_LOCATION_TYPES"
             :key="`${locale} anchor`"
             :class="{
-              'text-neutral-500 pointer-events-none cursor-auto':
+              'text-goldneutral-500 pointer-events-none cursor-auto':
                 !searchData?.results?.[locale]?.count
             }"
-            class="capitalize"
+            class="capitalize border-none"
             :to="{ ...route, hash: `#${locale}` }"
             replace
             @click="
@@ -92,11 +94,12 @@
           <LoadingSpinner />
         </template>
       </Suspense>
-
-      <h2 v-if="searchData" class="like-h4">
-        Data requests for {{ getFullLocationText(searchData.params) }}
-      </h2>
-      <Requests :requests="requestData" :error="!!requestsError" />
+      <div v-if="getIsV2FeatureEnabled('SHOW_REQUESTS')">
+        <h2 v-if="searchData" class="like-h4">
+          Data requested about {{ getFullLocationText(searchData.params) }}
+        </h2>
+        <Requests :requests="requestData" :error="!!requestsError" />
+      </div>
     </section>
 
     <!-- Aside for handling filtering and saved searches -->
