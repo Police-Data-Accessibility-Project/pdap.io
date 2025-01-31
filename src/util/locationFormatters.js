@@ -40,6 +40,7 @@ export function getMostNarrowSearchLocationWithResults(location) {
   if (location?.locality_name) return 'locality';
   if (location?.county_name) return 'county';
   if (location?.state_name) return 'state';
+  if (location?.federal) return 'federal';
   return location?.type?.toLowerCase();
 }
 

@@ -8,7 +8,7 @@
         <h1 class="text-3xl mb-4">
           Data
           {{
-            searchData &&
+            searchData?.params &&
             !isLoading &&
             'about ' + getFullLocationText(searchData.params)
           }}
@@ -176,8 +176,7 @@ export const useSearchData = defineBasicLoader(
     } catch (error) {
       throw new DataLoaderErrorPassThrough(error);
     }
-  },
-  { lazy: true }
+  }
 );
 
 export const useFollowedData = defineBasicLoader(
