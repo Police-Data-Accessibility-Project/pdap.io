@@ -20,7 +20,7 @@ export async function search(params) {
     JSON.stringify(params)
   );
   const federalSearchCached = searchStore.getSearchFromCache(
-    // Hardcoding key as the federal response won't change, and we return with all locations
+    // Hardcoding key as the federal response won't require parameters, and we return with all locations
     'federalSearch'
   );
 
