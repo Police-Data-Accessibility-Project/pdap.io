@@ -3,6 +3,12 @@
     <section class="col-span-full pdap-flex-container">
       <h1 class="col-span-full">About</h1>
       <p>
+        The Police Data Access Point is published by the Police Data
+        Accessibility Project, a U.S. nonprofit headquartered in Pittsburgh, PA.
+        We have paid staff and volunteers from around the United States and
+        beyond.
+      </p>
+      <p>
         In every state, county, and locality, there is a network of people
         dedicated to understanding the criminal legal system using data. This is
         our community. We are a
@@ -13,12 +19,6 @@
         short. Our community includes data users and publishers, as well as
         anyone impacted by policing: residents, journalists, activists,
         researchers, and municipal employees.
-      </p>
-      <p>
-        The Police Data Access Point is published by the Police Data
-        Accessibility Project, a U.S. nonprofit headquartered in Pittsburgh, PA.
-        We have paid staff and volunteers from around the United States and
-        beyond.
       </p>
       <p>
         The board is
