@@ -20,57 +20,83 @@
         anyone impacted by policing: residents, journalists, activists,
         researchers, and municipal employees.
       </p>
+      <h2>Board</h2>
       <p>
-        The board is
-        <span>
+        Our Board President,
           <a
             href="https://www.linkedin.com/in/eddie-johnbrown/"
             target="_blank"
             rel="noreferrer">
             Eddie&nbsp;Brown,
           </a>
-        </span>
-        <a
-          href="https://www.linkedin.com/in/wakin/"
-          target="_blank"
-          rel="noreferrer">
-          Alec&nbsp;Akin,
-        </a>
-        and
-        <a
-          href="https://www.linkedin.com/in/joshlintag/"
-          target="_blank"
-          rel="noreferrer">
-          Josh&nbsp;Lintag.
-        </a>
-      </p>
-      <p>
-        Our Executive Director is
-        <a
-          href="https://www.linkedin.com/in/josh-chamberlain/"
-          target="_blank"
-          rel="noreferrer">
-          Josh Chamberlain.
-        </a>
-      </p>
-      <p>
-        Our Lead Back-end Software Engineer is
-        <a
-          href="https://www.linkedin.com/in/maxachis/"
-          target="_blank"
-          rel="noreferrer">
-          Max Chis.
-        </a>
-      </p>
-      <p>
-        Our Lead Front-end Software Engineer is
-        <a
-          href="https://www.linkedin.com/in/joshuadgraber/"
-          target="_blank"
-          rel="noreferrer">
-          Joshua Graber.
-        </a>
-      </p>
+          is a  is a leader with 35+ years of public service and commercial business experience.
+          He designed and led innovative Department of Defense programs for meeting Federal Government technology needs. 
+          He provides strategy expertise for organizations in every phase of development. 
+        </p>
+        <p>
+          Our Board Treasurer & Director of Security is
+          <a
+            href="https://www.linkedin.com/in/wakin/"
+            target="_blank"
+            rel="noreferrer">
+            Alec&nbsp;Akin,
+          </a>
+          a cybersecurity expert with 10+ years of experience. His knowledge of commercial and government 
+          information systems has helped him advise PDAP on how third-party software can support our 
+          foundational goals and processes. 
+        </p>
+        <p>
+          Our Board Secretary,
+          <a
+            href="https://www.linkedin.com/in/joshlintag/"
+            target="_blank"
+            rel="noreferrer">
+            Josh&nbsp;Lintag,
+          </a>
+          is a Senior Software Engineer and DevOps expert with 7+ years of experience. 
+          He helped establish the founding principles and mission of PDAP with self-service tools for a nascent 
+          community of volunteers.
+        </p>
+        <h2>Key contributors</h2>
+        <p class="font-semibold text-brand-wine-200 dark:text-brand-wine-200">
+          We must first acknowledge the contributions of the hundreds of volunteers who have 
+          contributed since 2020: they seeded our database, formed the non-profit organization,
+          created proofs of concept, and kept the lights on in moments of uncertainty.
+        </p>
+        <p>
+          Our Executive Director is
+          <a
+            href="https://www.linkedin.com/in/josh-chamberlain/"
+            target="_blank"
+            rel="noreferrer">
+            Joshua&nbsp;Chamberlain. </a> 
+            Joshua is a user-centered design expert with 8+ years of experience with collaborative 
+            design processes, and serves as steward the PDAP vision.
+            They have met with hundreds of requesters, experts, and people impacted by policing.
+        </p>
+        <p>
+          Our Lead Back End Software Engineer is
+          <a
+            href="https://www.linkedin.com/in/maxachis/"
+            target="_blank"
+            rel="noreferrer">
+            Max Chis.
+          </a>
+          With 8+ years of experience in programming, data engineering, web app development, and AI research, 
+          Max was previously the Executive Director of Code for Pittsburgh.
+        </p>
+        <p>
+          Our Lead Front End Developer is
+          <a
+            href="https://www.linkedin.com/in/joshuadgraber/"
+            target="_blank"
+            rel="noreferrer">
+            Joshua Graber,
+          </a>
+          a full stack engineer with 5 years of experience building resilient, accessible, scalable web applications. 
+          In addition to his non-profit work, Joshua has worked in the cybersecurity, higher education, 
+          and hospitality industries, bringing a user-centric approach to software development.
+        </p>
       <h2>Funding</h2>
       <p>
         We are grateful for the generous financial and advisory support of
