@@ -16,37 +16,80 @@ const HEADERS_BASIC = {
 export async function search(params) {
   const authStore = useAuthStore();
   const searchStore = useSearchStore();
-  const cached = searchStore.getSearchFromCache(JSON.stringify(params));
+  const baseSearchCached = searchStore.getSearchFromCache(
+    JSON.stringify(params)
+  );
+  const federalSearchCached = searchStore.getSearchFromCache(
+    // Hardcoding key as the federal response won't require parameters, and we return with all locations
+    'federalSearch'
+  );
 
+  let searchResponse;
+  // Handle base response
   if (
-    cached &&
+    baseSearchCached &&
     isCachedResponseValid({
-      cacheTime: cached.timestamp,
+      cacheTime: baseSearchCached.timestamp,
       // Cache for 5 minutes
       intervalBeforeInvalidation: 1000 * 60 * 5
     })
   ) {
-    return cached.data;
+    searchResponse = baseSearchCached.data;
+  } else {
+    const response = await axios.get(
+      `${SEARCH_BASE}/${ENDPOINTS.SEARCH.RESULTS}`,
+      {
+        params,
+        headers: {
+          ...HEADERS_BASIC,
+          ...(authStore.isAuthenticated()
+            ? {
+                Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
+              }
+            : {})
+        }
+      }
+    );
+
+    searchResponse = response;
+
+    searchStore.setSearchToCache(JSON.stringify(params), response);
   }
 
-  const response = await axios.get(
-    `${SEARCH_BASE}/${ENDPOINTS.SEARCH.RESULTS}`,
-    {
-      params,
-      headers: {
-        ...HEADERS_BASIC,
-        ...(authStore.isAuthenticated()
-          ? {
-              Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
-            }
-          : {})
+  // Handle federal response and merge with base response object
+  if (
+    federalSearchCached &&
+    isCachedResponseValid({
+      cacheTime: federalSearchCached.timestamp,
+      // Cache for 15 minutes
+      intervalBeforeInvalidation: 1000 * 60 * 15
+    })
+  ) {
+    searchResponse.data.count =
+      searchResponse.data.count + federalSearchCached.data.count;
+    searchResponse.data.data.federal = federalSearchCached.data.data;
+  } else {
+    const response = await axios.get(
+      `${SEARCH_BASE}/${ENDPOINTS.SEARCH.FEDERAL}`,
+      {
+        headers: {
+          ...HEADERS_BASIC,
+          ...(authStore.isAuthenticated()
+            ? {
+                Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
+              }
+            : {})
+        }
       }
-    }
-  );
+    );
 
-  searchStore.setSearchToCache(JSON.stringify(params), response);
+    searchStore.setSearchToCache('federalSearch', response);
 
-  return response;
+    searchResponse.data.data.federal = response.data;
+    searchResponse.data.count = searchResponse.data.count + response.data.count;
+  }
+
+  return searchResponse;
 }
 
 export async function followSearch(location_id) {

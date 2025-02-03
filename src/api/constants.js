@@ -41,7 +41,8 @@ export const ENDPOINTS = {
   },
   SEARCH: {
     FOLLOW: 'follow',
-    RESULTS: 'search-location-and-record-type'
+    RESULTS: 'search-location-and-record-type',
+    FEDERAL: 'federal'
   },
   USER: {
     DATA_REQUESTS: 'data-requests',
