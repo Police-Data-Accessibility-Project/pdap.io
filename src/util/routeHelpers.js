@@ -6,12 +6,12 @@ const DEFAULT_META_TAGS = new Map([
     'description',
     'Data and tools for answering questions about any police system in the United States'
   ],
-  ['title', 'Police Data Accessibility Project'],
+  ['title', 'Police Data Access Point'],
   [
     'og:description',
     'Data and tools for answering questions about any police system in the United States'
   ],
-  ['og:title', 'Police Data Accessibility Project'],
+  ['og:title', 'Police Data Access Point'],
   ['og:type', 'website'],
   ['og:site_name', 'PDAP'],
   ['og:image', acronym]
