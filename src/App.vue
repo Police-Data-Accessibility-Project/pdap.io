@@ -59,7 +59,7 @@ provide('footerLinks', FOOTER_LINKS);
 
 main {
   @apply relative;
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 100px);
 }
 
 .route-fade-enter-active,
