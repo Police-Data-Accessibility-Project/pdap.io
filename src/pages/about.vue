@@ -132,7 +132,7 @@
       </p>
     </section>
     <section
-      class="pdap-flex-container pt-8 col-span-full border-t-[3px] border-wineneutral-100">
+      class="pdap-flex-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <div class="col-span-full">
         <h1>Contact</h1>
         <p>
@@ -186,7 +186,7 @@
       </div>
     </section>
     <section
-      class="pdap-flex-container pt-8 col-span-full border-t-[3px] border-wineneutral-100">
+      class="pdap-flex-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1 class="mb-0">Frequently Asked Questions</h1>
       <h3>What makes you experts?</h3>
       <p>

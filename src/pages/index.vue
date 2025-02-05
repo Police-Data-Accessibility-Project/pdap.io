@@ -64,7 +64,7 @@
       </div>
     </section>
     <section
-      class="pdap-grid-container col-span-full border-t-[3px] border-wineneutral-100">
+      class="pdap-grid-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1 class="col-span-full pt-8 mb-0">Programs</h1>
       <div
         class="col-span-full md:col-span-1 flex-column content-end justify-stretch">
@@ -121,7 +121,7 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>Take action</h1>
       <p>
         This work is multidisciplinary and beginner-friendly. No matter what
@@ -216,7 +216,7 @@
       </div>
     </section>
     <section
-      class="pdap-flex-container col-span-full text-lg pt-8 border-t-[3px] border-wineneutral-100">
+      class="pdap-flex-container col-span-full text-lg pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>Praise for our work</h1>
       <div class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200">
         <p>
@@ -252,7 +252,7 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-grid-container grid-cols-2 pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-grid-container grid-cols-2 pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <div class="col-span-full">
         <h1>Examples of our work</h1>
         <p>
@@ -321,7 +321,7 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>
         <FontAwesomeIcon :icon="faRoute" class="text-brand-wine-300" />
         Software roadmap
