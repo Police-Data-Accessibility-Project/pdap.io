@@ -44,7 +44,7 @@
         <div
           v-for="source in formattedSources"
           :key="source.id"
-          class="flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
           <p>
             <strong>{{ source.name }}&nbsp;</strong>
             <a
@@ -70,7 +70,7 @@
         class="col-span-full md:col-span-1 flex-column content-end justify-stretch">
         <img
           src="/assets/mapping.svg"
-          class="w-6/12 place-self-center hidden md:block md:w-10/12 md:place-self-center"
+          class="w-3/12 place-self-center md:block md:w-10/12"
           alt="A map scattered with icons representing different kinds of data." />
         <p class="font-semibold lg:text-center">
           Finding and cataloguing sources of data
@@ -79,7 +79,7 @@
       <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
           src="/assets/searching.svg"
-          class="w-11/12 place-self-center hidden md:block md:pb-6"
+          class="w-3/12 place-self-center md:block md:pb-6 md:w-11/12"
           alt="An eye looking through a magnifying glass at a police website." />
         <p class="font-semibold lg:text-center">
           Project-based scraping and records requests
@@ -88,7 +88,7 @@
       <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
           src="/assets/sharing.svg"
-          class="w-9/12 place-self-center hidden md:block"
+          class="w-3/12 place-self-center md:block md:w-9/12"
           alt="A piece of police data being distributed to several people." />
         <p class="font-semibold lg:text-center">
           Connecting people to data and each other
@@ -199,7 +199,7 @@
         <div
           v-for="(issue, index) in goodFirstIssues"
           :key="index"
-          class="flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
           <p>
             <strong>{{ issue.title }}&nbsp;</strong>
             <a :href="issue.url" target="_blank" rel="noopener noreferrer">
