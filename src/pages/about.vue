@@ -61,7 +61,7 @@
         PDAP with self-service tools for a nascent community of volunteers.
       </p>
       <h2>Key contributors</h2>
-      <p class="font-semibold text-brand-wine-200 dark:text-brand-wine-200">
+      <p class="font-semibold text-brand-wine-200">
         We must first acknowledge the work of the hundreds of
         volunteers who have contributed since 2020: they seeded our database,
         formed the non-profit organization, created proofs of concept, and kept
