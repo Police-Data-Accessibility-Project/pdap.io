@@ -62,7 +62,7 @@
       </p>
       <h2>Key contributors</h2>
       <p class="font-semibold text-brand-wine-200 dark:text-brand-wine-200">
-        We must first acknowledge the contributions of the hundreds of
+        We must first acknowledge the work of the hundreds of
         volunteers who have contributed since 2020: they seeded our database,
         formed the non-profit organization, created proofs of concept, and kept
         the lights on in moments of uncertainty.
