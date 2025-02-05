@@ -8,7 +8,7 @@
         <h1 class="text-3xl mb-4">
           Data
           {{
-            searchData &&
+            searchData?.params &&
             !isLoading &&
             'about ' + getFullLocationText(searchData.params)
           }}
@@ -56,7 +56,9 @@
         <nav
           v-if="!error"
           class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg sm:gap-4 md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
-          <span class="font-semibold text-neutral-600 dark:text-neutral-300">
+          <span
+            class="font-semibold text-neutral-600 dark:text-neutral-300 border-2 border-transparent p-2">
+            <!-- aligning with nav buttons -->
             Geographic level:
           </span>
           <RouterLink
@@ -66,7 +68,7 @@
               'text-goldneutral-500 pointer-events-none cursor-auto':
                 !searchData?.results?.[locale]?.count
             }"
-            class="capitalize border-none"
+            class="capitalize border-2 border-transparent p-2"
             :to="{ ...route, hash: `#${locale}` }"
             replace
             @click="
@@ -176,8 +178,7 @@ export const useSearchData = defineBasicLoader(
     } catch (error) {
       throw new DataLoaderErrorPassThrough(error);
     }
-  },
-  { lazy: true }
+  }
 );
 
 export const useFollowedData = defineBasicLoader(
