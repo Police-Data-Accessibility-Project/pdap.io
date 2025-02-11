@@ -333,13 +333,13 @@
         </span>
         <span v-else>
           <strong>over 1000 Pull Requests</strong>
-        </span> 
+        </span>
         (new features and improvements) across
         <span v-if="repoCount">
           <strong>{{ repoCount }} code repositories.</strong>
         </span>
         <span v-else>
-          <strong>our  code repositories.</strong>
+          <strong>our code repositories.</strong>
         </span>
       </p>
       <ul>
