@@ -44,7 +44,7 @@
         <div
           v-for="source in formattedSources"
           :key="source.id"
-          class="flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
           <p>
             <strong>{{ source.name }}&nbsp;</strong>
             <a
@@ -64,13 +64,13 @@
       </div>
     </section>
     <section
-      class="pdap-grid-container col-span-full border-t-[3px] border-wineneutral-100">
+      class="pdap-grid-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1 class="col-span-full pt-8 mb-0">Programs</h1>
       <div
         class="col-span-full md:col-span-1 flex-column content-end justify-stretch">
         <img
           src="/assets/mapping.svg"
-          class="w-6/12 place-self-center hidden md:block md:w-10/12 md:place-self-center"
+          class="w-3/12 place-self-center md:block md:w-10/12"
           alt="A map scattered with icons representing different kinds of data." />
         <p class="font-semibold lg:text-center">
           Finding and cataloguing sources of data
@@ -79,7 +79,7 @@
       <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
           src="/assets/searching.svg"
-          class="w-11/12 place-self-center hidden md:block md:pb-6"
+          class="w-3/12 place-self-center md:block md:pb-6 md:w-11/12"
           alt="An eye looking through a magnifying glass at a police website." />
         <p class="font-semibold lg:text-center">
           Project-based scraping and records requests
@@ -88,7 +88,7 @@
       <div class="col-span-full md:col-span-1 flex-column content-end">
         <img
           src="/assets/sharing.svg"
-          class="w-9/12 place-self-center hidden md:block"
+          class="w-3/12 place-self-center md:block md:w-9/12"
           alt="A piece of police data being distributed to several people." />
         <p class="font-semibold lg:text-center">
           Connecting people to data and each other
@@ -121,7 +121,7 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>Take action</h1>
       <p>
         This work is multidisciplinary and beginner-friendly. No matter what
@@ -199,7 +199,7 @@
         <div
           v-for="(issue, index) in goodFirstIssues"
           :key="index"
-          class="flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
           <p>
             <strong>{{ issue.title }}&nbsp;</strong>
             <a :href="issue.url" target="_blank" rel="noopener noreferrer">
@@ -216,7 +216,7 @@
       </div>
     </section>
     <section
-      class="pdap-flex-container col-span-full text-lg pt-8 border-t-[3px] border-wineneutral-100">
+      class="pdap-flex-container col-span-full text-lg pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>Praise for our work</h1>
       <div class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200">
         <p>
@@ -252,7 +252,7 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-grid-container grid-cols-2 pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-grid-container grid-cols-2 pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <div class="col-span-full">
         <h1>Examples of our work</h1>
         <p>
@@ -321,22 +321,25 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <h1>
         <FontAwesomeIcon :icon="faRoute" class="text-brand-wine-300" />
         Software roadmap
       </h1>
       <p>
-        <span v-if="repoCount && mergeCount">
-          We have merged
+        We have merged
+        <span v-if="mergeCount">
           <strong>{{ mergeCount }} Pull Requests</strong>
-          across
-          <strong>{{ repoCount }} code repositories</strong>
-          since our inception.
         </span>
         <span v-else>
-          We have merged over 1000 Pull Requests across our code repositories
-          since our inception.
+          <strong>over 1000 Pull Requests</strong>
+        </span>
+        (new features and improvements) across
+        <span v-if="repoCount">
+          <strong>{{ repoCount }} code repositories.</strong>
+        </span>
+        <span v-else>
+          <strong>our code repositories.</strong>
         </span>
       </p>
       <ul>
@@ -372,7 +375,7 @@
           <FontAwesomeIcon
             :icon="faCircleNotch"
             class="pt-1.5 pr-3 text-brand-wine-300" />
-          Add accounts & login, and the ability “follow” any search location
+          Add accounts & login, and the ability to “follow” any search location
         </li>
         <h3>Up next in 2025</h3>
         <li class="flex flex-row pt-2">

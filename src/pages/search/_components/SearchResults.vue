@@ -170,7 +170,7 @@ h6 {
 }
 
 .heading-titles {
-  @apply w-full items-center grid gap-1 gap-y-3 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg;
+  @apply w-full items-center grid gap-1 gap-y-3 pb-1 [&>*]:text-[.7rem] [&>*]:md:text-med [&>*]:lg:text-lg;
 }
 
 .agency-heading-row {
@@ -178,7 +178,7 @@ h6 {
 }
 
 .agency-row {
-  @apply grid gap-4 mb-2 p-2 h-auto border-solid border-wineneutral-300 border text-sm md:text-med lg:text-lg text-neutral-950 hover:bg-goldneutral-100;
+  @apply grid gap-4 mb-2 p-2 h-auto border-solid border-goldneutral-300 border text-sm md:text-med lg:text-lg text-neutral-950 hover:bg-goldneutral-50;
 }
 
 .agency-row:focus,
