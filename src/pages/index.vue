@@ -375,7 +375,7 @@
           <FontAwesomeIcon
             :icon="faCircleNotch"
             class="pt-1.5 pr-3 text-brand-wine-300" />
-          Add accounts & login, and the ability “follow” any search location
+          Add accounts & login, and the ability to “follow” any search location
         </li>
         <h3>Up next in 2025</h3>
         <li class="flex flex-row pt-2">
