@@ -24,20 +24,22 @@
       <p v-if="metricsLoaded">
         Our database contains
         <strong>{{ metrics.sourceCount }} Sources</strong>
-        from
+        about
         <br />
         <strong>{{ metrics.agencyCount }} agencies</strong>
         in
         <strong>{{ metrics.countyCount }} counties</strong>
         across
         <strong>all 50 states</strong>
-        and the District of Columbia. They are published by both government
-        agencies and independent organizations.
+        and the District of Columbia, plus aggregated sources covering many
+        agencies at once. They are published by both government agencies and
+        independent organizations.
       </p>
       <p v-else>
-        Our database contains Sources from agencies in hundreds of counties
-        across all 50 states and the District of Columbia. They are published by
-        both government agencies and independent organizations.
+        Our database contains Sources about agencies in hundreds of counties
+        across all 50 states and the District of Columbia, plus aggregated
+        sources covering many agencies at once. They are published by both
+        government agencies and independent organizations.
       </p>
       <div v-if="sourcesLoaded" class="grid grid-cols-3 mt-6 gap-4">
         <h3 class="col-span-3">Recently added Data Sources</h3>
