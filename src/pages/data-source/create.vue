@@ -448,6 +448,7 @@ import { nextTick, ref } from 'vue';
 import { createDataSource } from '@/api/data-sources';
 import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 
 const INPUT_NAMES = {
   // Base properties
@@ -740,6 +741,33 @@ const typeaheadError = ref();
 const formError = ref();
 const requestPending = ref(false);
 
+const queryClient = useQueryClient();
+const createDataSourceMutation = useMutation({
+  mutationFn: async (formValues) => {
+    if (formError.value) {
+      formError.value = '';
+    }
+    await createDataSource(formValues);
+
+    window.scrollTo(0, 0);
+    advancedPropertiesExpanded.value = false;
+    const message = `${formValues.entry_data[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
+    toast.success(message, { autoClose: false });
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: 'dataSource' });
+    queryClient.invalidateQueries({ queryKey: 'searchResults' });
+    selectedAgencies.value = [];
+  },
+  onError: (error) => {
+    if (error) {
+      console.error(error);
+      formError.value = 'Something went wrong, please try again.';
+      formRef.value.setValues({ ...formRef.value.values });
+    }
+  }
+});
+
 function formatDate(date) {
   const offset = date.getTimezoneOffset();
   date = new Date(date.getTime() - offset * 60 * 1000);
@@ -873,29 +901,7 @@ async function submit(values) {
 
   formRef.value.setValues({ ...values });
 
-  try {
-    if (formError.value) {
-      formError.value = '';
-    }
-    await createDataSource(requestBody);
-
-    window.scrollTo(0, 0);
-    advancedPropertiesExpanded.value = false;
-    const message = `${values[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
-    toast.success(message, { autoClose: false });
-  } catch (error) {
-    if (error) {
-      console.error(error);
-      formError.value = 'Something went wrong, please try again.';
-      formRef.value.setValues({ ...values });
-      var isError = !!error;
-    }
-  } finally {
-    if (!isError) {
-      selectedAgencies.value = [];
-    }
-    requestPending.value = false;
-  }
+  createDataSourceMutation.mutate(requestBody);
 }
 </script>
 

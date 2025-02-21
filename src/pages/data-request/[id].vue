@@ -19,6 +19,7 @@
 
       <div
         v-else
+        :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
         <template v-if="!isLoading && error">
           <h1>An error occurred loading the data request</h1>
@@ -81,49 +82,46 @@
   </main>
 </template>
 
-<script>
-// Data loader
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useDataRequestsStore } from '@/stores/data-requests';
-import { DataLoaderErrorPassThrough } from '@/util/errors';
-import { getDataRequest } from '@/api/data-requests';
-
-const dataRequestsStore = useDataRequestsStore();
-
-export const useDataRequestData = defineBasicLoader(
-  '/request/:id',
-  async (route) => {
-    const dataSourceId = route.params.id;
-
-    try {
-      const results = await getDataRequest(dataSourceId);
-      // Then set current route to prev before returning data
-      dataRequestsStore.setPreviousDataRequestRoute(route);
-      return results.data.data;
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  }
-);
-</script>
-
 <script setup>
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
 import PrevNextNav from './_components/Nav.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { getDataRequest } from '@/api/data-requests';
 import { useSearchStore } from '@/stores/search';
 import { getMinimalLocationText } from '@/util/locationFormatters';
 import { REQUEST_URGENCY } from './_constants';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
+import { useQuery } from '@tanstack/vue-query';
 
 const route = useRoute();
 const router = useRouter();
 const searchStore = useSearchStore();
-const { data: dataRequest, isLoading, error } = useDataRequestData();
+const reactiveParams = computed(() => ({
+  id: route.params.id
+}));
+const queryKey = computed(() => ['dataRequest', reactiveParams.value.id]);
 
+const {
+  isPending: dataRequestsPending,
+  isFetching: dataRequestsFetching,
+  data: requestData,
+  error
+} = useQuery({
+  queryKey: queryKey,
+  queryFn: () => getDataRequest(route.params.id),
+  staleTime: 5 * 60 * 1000 // 5 minutes,
+});
+
+const dataRequest = computed(() => {
+  return requestData.value.data.data;
+});
+
+const isLoading = computed(
+  () => dataRequestsPending.value || dataRequestsFetching.value
+);
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first
   searchStore.mostRecentRequestIds.indexOf(Number(route.params.id))
