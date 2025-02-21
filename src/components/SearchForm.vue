@@ -71,11 +71,7 @@ import {
 } from 'pdap-design-system';
 import TypeaheadInput from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
-import {
-  getFullLocationText,
-  mapLocationToSearchParams,
-  mapSearchParamsToLocation
-} from '@/util/locationFormatters';
+import { getFullLocationText } from '@/util/locationFormatters';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
@@ -178,11 +174,9 @@ const isButtonDisabled = computed(() => {
 
 onMounted(() => {
   // Set up selected state based on params
-  if (params.state) {
-    const record = mapSearchParamsToLocation(params);
-
-    selectedRecord.value = record;
-    initiallySearchedRecord.value = record;
+  if (params.location_id) {
+    selectedRecord.value = params;
+    initiallySearchedRecord.value = params;
   }
 
   // Sync values state with default checked state.
@@ -206,14 +200,11 @@ function buildParams(values) {
   const obj = {};
 
   /* Handle record from typeahead input */
-  const recordFilteredByParamsKeys = mapLocationToSearchParams(
-    selectedRecord.value ?? initiallySearchedRecord.value
-  );
+  const selected = selectedRecord.value ?? initiallySearchedRecord.value;
 
-  Object.keys(recordFilteredByParamsKeys).forEach((key) => {
-    if (recordFilteredByParamsKeys[key])
-      obj[key] = recordFilteredByParamsKeys[key];
-  });
+  if (!selected) return obj;
+
+  obj.location_id = selected.location_id;
 
   /* Handle form values from checkboxes */
   // Return obj without setting record_types if 'all-data-types' is true or no checkboxes checked

@@ -50,6 +50,8 @@ export function getAnchorLinkText(locale) {
 }
 
 export function getAllIdsSearched(resultsByAgency) {
+  if (!resultsByAgency) return [];
+
   const ids = [];
   ALL_LOCATION_TYPES.forEach((locale) => {
     if (resultsByAgency[locale].count) {

@@ -3,6 +3,12 @@ import { useAuthStore } from './stores/auth';
 import { routes, handleHotUpdate } from 'vue-router/auto-routes';
 import { refreshMetaTagsByRoute } from '@/util/routeHelpers.js';
 import { toast } from 'vue3-toastify';
+/**
+ * Special cases: redirecting to log in for routes that are partially public but have sub-components that require auth.
+ *
+ * Add the route's path to this set to include in auth redirect logic after routing to `/sign-in`
+ */
+const NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS = new Set(['/search/results']);
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,6 +31,14 @@ router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
 
   if (to.meta.auth) auth.$patch({ redirectTo: to });
+
+  // Special cases: redirecting to log in for routes that are partially public but have sub-components that require auth
+  if (
+    to.path === '/sign-in' &&
+    NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS.has(from.path)
+  ) {
+    auth.$patch({ redirectTo: from });
+  }
 
   if (to.path === '/sign-in') {
     next();
