@@ -383,7 +383,7 @@ h4 {
 }
 
 .locale-type {
-  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md: text-sm px-2 py-1;
+  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md:text-sm px-2 py-1;
 }
 
 .list-move,
