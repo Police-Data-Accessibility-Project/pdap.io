@@ -180,7 +180,10 @@
           </router-link>
         </li>
       </ul>
-      <Button class="mt-2" intent="primary" onclick="window.open('https://docs.pdap.io')">
+      <Button
+        class="mt-2"
+        intent="primary"
+        onclick="window.open('https://docs.pdap.io')">
         Volunteer for data requests
       </Button>
       <h2 class="pt-4 col-span-full">
@@ -209,15 +212,13 @@
             </a>
           </p>
         </div>
-        
-          <Button
-            class="mt-2 col-span-full"
-            intent="primary"
-            onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')"
-          >
-            View more Good First Issues
-          </Button>
-        
+
+        <Button
+          class="mt-2 col-span-full"
+          intent="primary"
+          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
+          View more Good First Issues
+        </Button>
       </div>
     </section>
     <section
