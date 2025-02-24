@@ -327,7 +327,7 @@ async function submit(values) {
 
   const requestBody = {
     request_info: values,
-    location_infos: [
+    location_ids: [
       ...locations.map((loc) => {
         return loc.location_id;
       })
