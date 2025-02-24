@@ -329,9 +329,7 @@ async function submit(values) {
     request_info: values,
     location_infos: [
       ...locations.map((loc) => {
-        delete loc.display_name;
-        delete loc.location_id;
-        return loc;
+        return loc.location_id;
       })
     ]
   };
