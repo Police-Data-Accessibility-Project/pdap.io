@@ -95,7 +95,7 @@
       <p>
         Our Lead Front End Developer is
         <a
-          href="https://www.linkedin.com/in/joshuadgraber/"
+          href="https://www.joshuadgraber.com"
           target="_blank"
           rel="noreferrer">
           Joshua Graber,

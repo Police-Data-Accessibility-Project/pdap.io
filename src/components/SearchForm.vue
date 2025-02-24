@@ -4,7 +4,7 @@
     <TypeaheadInput
       :id="TYPEAHEAD_ID"
       ref="typeaheadRef"
-      :format-item-for-display="getFullLocationText"
+      :format-item-for-display="(item) => item.display_name"
       :items="items"
       :placeholder="placeholder ?? 'Enter a place'"
       @select-item="onSelectRecord"
@@ -17,7 +17,7 @@
       <!-- Item to render passed as scoped slot -->
       <template #item="item">
         <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
-        <span v-html="typeaheadRef?.boldMatchText(getFullLocationText(item))" />
+        <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
         <span class="locale-type">
           {{ item.type }}
         </span>
@@ -72,7 +72,6 @@ import {
 import TypeaheadInput from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
 import {
-  getFullLocationText,
   mapLocationToSearchParams,
   mapSearchParamsToLocation
 } from '@/util/locationFormatters';
