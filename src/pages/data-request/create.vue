@@ -137,15 +137,15 @@
       <div
         class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
         <Button
-          :disabled="requestPending"
-          :is-loading="requestPending"
+          :disabled="createRequestMutation.isLoading"
+          :is-loading="createRequestMutation.isLoading"
           class="min-w-52"
           intent="primary"
           type="submit">
           Submit request
         </Button>
         <Button
-          :disabled="requestPending"
+          :disabled="createRequestMutation.isLoading"
           intent="secondary"
           type="button"
           @click="clear">
@@ -174,6 +174,7 @@ import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nextTick, ref, watch } from 'vue';
 import { getTypeaheadLocations } from '@/api/typeahead';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 
 const INPUT_NAMES = {
   // contact: 'contact',
@@ -263,7 +264,28 @@ const formRef = ref();
 const typeaheadRef = ref();
 const typeaheadError = ref();
 const formError = ref();
-const requestPending = ref(false);
+
+const queryClient = useQueryClient();
+const createRequestMutation = useMutation({
+  mutationFn: async (formValues) => {
+    await createRequest(formValues);
+    const message = `Your request for ${formValues.request_info[INPUT_NAMES.title]} has been submitted successfully!`;
+    window.scrollTo(0, 0);
+    toast.success(message, { autoClose: false });
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: 'dataRequest' });
+    queryClient.invalidateQueries({ queryKey: 'searchLocationRequests' });
+    selectedLocations.value = [];
+  },
+  onError: (error) => {
+    if (error) {
+      console.error(error);
+      formError.value = 'Something went wrong, please try again.';
+      formRef.value.setValues({ ...formRef.value.values });
+    }
+  }
+});
 
 const fetchTypeaheadResults = _debounce(
   async (e) => {
@@ -314,7 +336,6 @@ async function submit(values) {
     typeaheadError.value = 'Please include a location with your request';
     return;
   }
-  requestPending.value = true;
 
   if (values[INPUT_NAMES.range]?.length) {
     const range = values[INPUT_NAMES.range]
@@ -338,24 +359,7 @@ async function submit(values) {
     ]
   };
 
-  try {
-    await createRequest(requestBody);
-    const message = `Your request for ${values[INPUT_NAMES.title]} has been submitted successfully!`;
-    window.scrollTo(0, 0);
-    toast.success(message, { autoClose: false });
-  } catch (error) {
-    if (error) {
-      console.error(error);
-      formError.value = 'Something went wrong, please try again.';
-      formRef.value.setValues({ ...values });
-      var isError = !!error;
-    }
-  } finally {
-    if (!isError) {
-      selectedLocations.value = [];
-    }
-    requestPending.value = false;
-  }
+  createRequestMutation.mutate(requestBody);
 }
 
 watch(

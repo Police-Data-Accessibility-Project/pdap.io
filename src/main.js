@@ -9,16 +9,13 @@ import App from './App.vue';
 import router from './router';
 import 'pdap-design-system/styles';
 import { DataLoaderErrorPassThrough } from '@/util/errors';
-
-// TODO: make router available in store?
-// pinia.use(({ store }) => {
-// 	store.router = markRaw(router);
-// });
+import { VueQueryPlugin } from '@tanstack/vue-query';
 
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPersistState);
 app.use(pinia);
+app.use(VueQueryPlugin);
 app.use(DataLoaderPlugin, { router, errors: [DataLoaderErrorPassThrough] });
 app.use(router);
 app.use(Vue3Toastify, {

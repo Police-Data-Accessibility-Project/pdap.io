@@ -179,10 +179,7 @@
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
 import { useAuthStore } from '@/stores/auth';
 // import { useUserStore } from '@/stores/user';
-import {
-  getFullLocationText,
-  mapLocationToSearchParams
-} from '@/util/locationFormatters';
+import { getFullLocationText } from '@/util/locationFormatters';
 import { deleteFollowedSearch } from '@/api/search';
 import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
@@ -251,7 +248,7 @@ const requests = computed(() =>
 );
 const followedSearches = computed(() =>
   profileData.value?.followed_searches.data.map((search) => {
-    const params = new URLSearchParams(mapLocationToSearchParams(search));
+    const params = new URLSearchParams({ location_id: search.location_id });
 
     return {
       ...search,
@@ -267,7 +264,7 @@ const recentSearches = computed(() =>
         ? search.record_categories
         : search.record_categories.toSpliced(allAt);
     const params = new URLSearchParams({
-      ...mapLocationToSearchParams(search),
+      location_id: search.location_id,
       ...(catWithOutAll.length
         ? {
             record_categories: [...catWithOutAll]
