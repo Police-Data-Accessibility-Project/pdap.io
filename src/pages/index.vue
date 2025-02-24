@@ -114,7 +114,7 @@
           <Button
             class="mt-2"
             intent="primary"
-            href="https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk">
+            onclick="window.open('https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk', '_blank')">
             Open a Data Request
           </Button>
         </p>
@@ -150,7 +150,7 @@
       <Button
         class="mt-2"
         intent="primary"
-        href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+        onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
         Help find & label Data Sources
       </Button>
       <h2 class="pt-8">
@@ -178,7 +178,7 @@
           </router-link>
         </li>
       </ul>
-      <Button class="mt-2" intent="primary" href="https://docs.pdap.io">
+      <Button class="mt-2" intent="primary" onclick="window.open('https://docs.pdap.io')">
         Volunteer for data requests
       </Button>
       <h2 class="pt-4 col-span-full">
@@ -207,12 +207,15 @@
             </a>
           </p>
         </div>
-        <Button
-          class="mt-2 col-span-full"
-          intent="primary"
-          href="https://github.com/Police-Data-Accessibility-Project/projects/26">
-          View more Good First Issues
-        </Button>
+        
+          <Button
+            class="mt-2 col-span-full"
+            intent="primary"
+            onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')"
+          >
+            View more Good First Issues
+          </Button>
+        
       </div>
     </section>
     <section
@@ -247,7 +250,7 @@
         <p class="italic mb-0">
           &mdash;
           <a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>
-          , UC Berkeley
+          at UC Berkeley
         </p>
       </div>
     </section>
