@@ -95,6 +95,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { useQuery } from '@tanstack/vue-query';
+import { DATA_REQUEST } from '@/util/query-keys';
 
 const route = useRoute();
 const router = useRouter();
@@ -102,7 +103,7 @@ const searchStore = useSearchStore();
 const reactiveParams = computed(() => ({
   id: route.params.id
 }));
-const queryKey = computed(() => ['dataRequest', reactiveParams.value.id]);
+const queryKey = computed(() => [DATA_REQUEST, reactiveParams.value.id]);
 
 const {
   isPending: dataRequestsPending,
@@ -110,7 +111,7 @@ const {
   data: requestData,
   error
 } = useQuery({
-  queryKey: queryKey,
+  queryKey,
   queryFn: () => getDataRequest(route.params.id),
   staleTime: 5 * 60 * 1000 // 5 minutes,
 });

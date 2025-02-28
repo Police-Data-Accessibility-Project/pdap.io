@@ -181,6 +181,12 @@ import {
   getFullLocationText,
   getMinimalLocationText
 } from '@/util/locationFormatters';
+import {
+  SEARCH,
+  SEARCH_FOLLOWED,
+  DATA_REQUEST,
+  SEARCH_FEDERAL
+} from '@/util/queryKeys';
 
 const searchStore = useSearchStore();
 
@@ -198,15 +204,10 @@ const reactiveQuery = computed(() => ({
   location_id: route.query.location_id,
   record_categories: route.query.record_categories
 }));
-const queryKeySearch = computed(() => ['searchResults', reactiveQuery.value]);
-const queryKeyFollowed = computed(() => [
-  'searchLocationFollowed',
-  reactiveQuery.value
-]);
-const queryKeyRequests = computed(() => [
-  'searchLocationRequests',
-  reactiveQuery.value
-]);
+
+const queryKeySearch = computed(() => [SEARCH, reactiveQuery.value]);
+const queryKeyFollowed = computed(() => [SEARCH_FOLLOWED, reactiveQuery.value]);
+const queryKeyRequests = computed(() => [DATA_REQUEST, reactiveQuery.value]);
 
 const {
   isPending: isSearchPending,
@@ -245,7 +246,7 @@ const {
   data: fedSearchData,
   error: fedSearchError
 } = useQuery({
-  queryKey: ['federalSearchResults'],
+  queryKey: [SEARCH_FEDERAL],
   queryFn: () => searchFederal(),
   staleTime: 15 * 60 * 1000 // 15 minutes
 });
@@ -287,7 +288,7 @@ const followMutation = useMutation({
     );
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: 'searchLocationFollowed' });
+    queryClient.invalidateQueries({ queryKey: SEARCH_FOLLOWED });
     reloadFollowed();
   },
   onError: () => {

@@ -185,6 +185,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
+import { DATA_SOURCE } from '@/util/queryKeys';
 
 const route = useRoute();
 const router = useRouter();
@@ -193,7 +194,7 @@ const searchStore = useSearchStore();
 const reactiveParams = computed(() => ({
   id: route.params.id
 }));
-const queryKey = computed(() => ['dataSource', reactiveParams.value.id]);
+const queryKey = computed(() => [DATA_SOURCE, reactiveParams.value.id]);
 
 const {
   isPending: dataSourcePending,
@@ -201,7 +202,7 @@ const {
   data: sourceData,
   error
 } = useQuery({
-  queryKey: queryKey,
+  queryKey,
   queryFn: () => getDataSource(route.params.id),
   staleTime: 5 * 60 * 1000 // 5 minutes,
 });

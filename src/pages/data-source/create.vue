@@ -449,7 +449,7 @@ import { createDataSource } from '@/api/data-sources';
 import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-
+import { DATA_SOURCE, SEARCH } from '@/util/queryKeys';
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -755,8 +755,8 @@ const createDataSourceMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: 'dataSource' });
-    queryClient.invalidateQueries({ queryKey: 'searchResults' });
+    queryClient.invalidateQueries({ queryKey: DATA_SOURCE });
+    queryClient.invalidateQueries({ queryKey: SEARCH });
     selectedAgencies.value = [];
   },
   onError: (error) => {
