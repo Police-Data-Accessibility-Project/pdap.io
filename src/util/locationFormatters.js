@@ -1,6 +1,10 @@
 import { STATES_TO_ABBREVIATIONS } from './constants';
 
 export function getFullLocationText(location) {
+  if (Object.hasOwn(location, 'display_name')) {
+    return location.display_name;
+  }
+
   const searched = getMostNarrowSearchLocationWithResults(location);
   switch (searched) {
     case 'locality':
@@ -46,7 +50,7 @@ export function getMostNarrowSearchLocationWithResults(location) {
 
 // TODO: cache getLocationById function and fetch to get locations by id rather than all of this parsing.
 export const mapSearchParamsToLocation = (obj) => {
-  const { state, county, locality, location_id, id } = obj;
+  const { state, county, locality, location_id, id, display_name } = obj;
   const mapped = {};
 
   if (state) {
@@ -62,13 +66,23 @@ export const mapSearchParamsToLocation = (obj) => {
   if (location_id || id) {
     mapped.id = location_id ?? id;
   }
+  if (display_name) {
+    mapped.display_name = display_name;
+  }
 
   return mapped;
 };
 
 export const mapLocationToSearchParams = (obj) => {
-  const { state_name, state_iso, county_name, locality_name, id, location_id } =
-    obj;
+  const {
+    state_name,
+    state_iso,
+    county_name,
+    locality_name,
+    id,
+    location_id,
+    display_name
+  } = obj;
   const mapped = {};
 
   if (state_name || state_iso) {
@@ -82,6 +96,9 @@ export const mapLocationToSearchParams = (obj) => {
   }
   if (id || location_id) {
     mapped.location_id = id ?? location_id;
+  }
+  if (display_name) {
+    mapped.display_name = display_name;
   }
 
   return mapped;
