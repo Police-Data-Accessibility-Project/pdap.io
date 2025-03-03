@@ -32,8 +32,8 @@
               class="sm:block max-h-12"
               intent="primary"
               @click="
-                async () => {
-                  await followMutation.mutate();
+                () => {
+                  followMutation.mutate();
                 }
               ">
               <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserPlus" />
