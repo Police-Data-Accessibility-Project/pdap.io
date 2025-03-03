@@ -10,6 +10,12 @@ const HEADERS_BASIC = {
   authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
+export async function getDataSource(id) {
+  return await axios.get(`${DATA_SOURCES_BASE}/${id}`, {
+    headers: HEADERS_BASIC
+  });
+}
+
 export async function createDataSource(data) {
   const auth = useAuthStore();
   return await axios.post(DATA_SOURCES_BASE, data, {
