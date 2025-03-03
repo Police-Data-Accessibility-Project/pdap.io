@@ -153,6 +153,7 @@ import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute, useRouter } from 'vue-router';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
+// import _isUndefined from 'lodash/isUndefined';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 import {
   getSearchResults,
@@ -181,6 +182,13 @@ import {
   getFullLocationText,
   getMinimalLocationText
 } from '@/util/locationFormatters';
+import {
+  SEARCH,
+  SEARCH_FOLLOWED,
+  DATA_REQUEST,
+  SEARCH_FEDERAL,
+  PROFILE
+} from '@/util/queryKeys';
 
 const searchStore = useSearchStore();
 
@@ -198,18 +206,13 @@ const reactiveQuery = computed(() => ({
   location_id: route.query.location_id,
   record_categories: route.query.record_categories
 }));
-const queryKeySearch = computed(() => ['searchResults', reactiveQuery.value]);
-const queryKeyFollowed = computed(() => [
-  'searchLocationFollowed',
-  reactiveQuery.value
-]);
-const queryKeyRequests = computed(() => [
-  'searchLocationRequests',
-  reactiveQuery.value
-]);
+
+const queryKeySearch = computed(() => [SEARCH, reactiveQuery.value]);
+const queryKeyFollowed = computed(() => [SEARCH_FOLLOWED, reactiveQuery.value]);
+const queryKeyRequests = computed(() => [DATA_REQUEST, reactiveQuery.value]);
 
 const {
-  isPending: isSearchPending,
+  isLoading: isSearchPending,
   isFetching: isSearchFetching,
   // isError,
   data: searchData,
@@ -239,19 +242,19 @@ const {
 });
 
 const {
-  isPending: isFedSearchPending,
+  isLoading: isFedSearchPending,
   isFetching: isFedSearchFetching,
   // isError,
   data: fedSearchData,
   error: fedSearchError
 } = useQuery({
-  queryKey: ['federalSearchResults'],
+  queryKey: [SEARCH_FEDERAL],
   queryFn: () => searchFederal(),
   staleTime: 15 * 60 * 1000 // 15 minutes
 });
 
 const {
-  isPending: isFollowedPending,
+  isLoading: isFollowedPending,
   isFetching: isFollowedFetching,
   // isError,
   data: isFollowed,
@@ -263,7 +266,7 @@ const {
 });
 
 const {
-  isPending: dataRequestsPending,
+  isLoading: dataRequestsPending,
   isFetching: dataRequestsFetching,
   // isError,
   data: requestData,
@@ -287,7 +290,12 @@ const followMutation = useMutation({
     );
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: 'searchLocationFollowed' });
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH_FOLLOWED]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
     reloadFollowed();
   },
   onError: () => {
@@ -381,21 +389,6 @@ onUnmounted(() => {
   hasDisplayedErrorByRouteParams.value.clear();
   window.removeEventListener('resize', onWindowWidthSetIsSearchShown);
 });
-
-// Utilities and handlers
-// async function follow() {
-//   try {
-//     await followSearch(route.query.location_id);
-//     await reloadFollowed();
-//     toast.success(
-//       `Search followed for ${getMinimalLocationText(searchData?.value?.params)}.`
-//     );
-//   } catch (error) {
-//     toast.error(
-//       `Error following search for ${getMinimalLocationText(searchData?.value?.params)}. Please try again.`
-//     );
-//   }
-// }
 
 function onWindowWidthSetIsSearchShown() {
   if (window.innerWidth === dims.width) {

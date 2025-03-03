@@ -397,15 +397,15 @@
       <div
         class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
         <Button
-          :disabled="requestPending"
-          :is-loading="requestPending"
+          :disabled="createDataSourceMutation.isLoading"
+          :is-loading="createDataSourceMutation.isLoading"
           class="min-w-52"
           intent="primary"
           type="submit">
           Submit data source
         </Button>
         <Button
-          :disabled="requestPending"
+          :disabled="createDataSourceMutation.isLoading"
           intent="secondary"
           type="button"
           @click="clear">
@@ -449,7 +449,7 @@ import { createDataSource } from '@/api/data-sources';
 import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-
+import { DATA_SOURCE, SEARCH } from '@/util/queryKeys';
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -755,8 +755,12 @@ const createDataSourceMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: 'dataSource' });
-    queryClient.invalidateQueries({ queryKey: 'searchResults' });
+    queryClient.invalidateQueries({
+      queryKey: [DATA_SOURCE]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH]
+    });
     selectedAgencies.value = [];
   },
   onError: (error) => {

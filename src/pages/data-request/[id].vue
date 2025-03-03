@@ -9,10 +9,10 @@
 
     <transition mode="out-in" :name="navIs">
       <div
-        v-if="isLoading"
+        v-if="dataRequestsPending"
         class="flex items-center justify-center h-[80vh] w-full flex-col relative">
         <Spinner
-          :show="isLoading"
+          :show="dataRequestsPending"
           :size="64"
           text="Fetching data source results..." />
       </div>
@@ -21,7 +21,7 @@
         v-else
         :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
-        <template v-if="!isLoading && error">
+        <template v-if="!dataRequestsPending && error">
           <h1>An error occurred loading the data request</h1>
           <p>Please refresh the page and try again.</p>
         </template>
@@ -95,6 +95,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { useQuery } from '@tanstack/vue-query';
+import { DATA_REQUEST } from '@/util/queryKeys';
 
 const route = useRoute();
 const router = useRouter();
@@ -102,26 +103,21 @@ const searchStore = useSearchStore();
 const reactiveParams = computed(() => ({
   id: route.params.id
 }));
-const queryKey = computed(() => ['dataRequest', reactiveParams.value.id]);
+const queryKey = computed(() => [DATA_REQUEST, reactiveParams.value.id]);
 
 const {
-  isPending: dataRequestsPending,
-  isFetching: dataRequestsFetching,
-  data: requestData,
+  isLoading: dataRequestsPending,
+  data: dataRequest,
   error
 } = useQuery({
-  queryKey: queryKey,
-  queryFn: () => getDataRequest(route.params.id),
+  queryKey,
+  queryFn: async () => {
+    const response = await getDataRequest(route.params.id);
+    return response.data.data;
+  },
   staleTime: 5 * 60 * 1000 // 5 minutes,
 });
 
-const dataRequest = computed(() => {
-  return requestData.value.data.data;
-});
-
-const isLoading = computed(
-  () => dataRequestsPending.value || dataRequestsFetching.value
-);
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first
   searchStore.mostRecentRequestIds.indexOf(Number(route.params.id))

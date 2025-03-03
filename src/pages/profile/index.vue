@@ -10,209 +10,200 @@
   <main>
     <h1>Profile</h1>
 
-    <h2>Basic information</h2>
-    <div class="flex flex-col gap-6">
-      <section>
-        <h3 class="like-h4">Email</h3>
-        <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
-          <p>
-            {{ profileData?.email }}
-          </p>
-        </div>
-      </section>
+    <ErrorBoundary>
+      <div v-if="profileError">
+        <p>There was an error fetching your profile.</p>
+        <Button intent="primary" @click="refetchProfile">Try again</Button>
+      </div>
 
-      <!-- Github info -->
-      <section>
-        <h3 class="like-h4">Github account</h3>
+      <template v-else>
+        <h2>Basic information</h2>
+        <div class="flex flex-col gap-6">
+          <section>
+            <h3 class="like-h4">Email</h3>
+            <div
+              :class="{
+                'profile-loading h-12': !profileData && profileLoading
+              }">
+              <p>
+                {{ profileData?.email }}
+              </p>
+            </div>
+          </section>
+
+          <!-- Github info -->
+          <section>
+            <h3 class="like-h4">Github account</h3>
+            <div
+              :class="{
+                'profile-loading h-12': !profileData && profileLoading
+              }">
+              <template
+                v-if="didLinkGithub || profileData?.external_accounts.github">
+                <p>
+                  <FontAwesomeIcon :icon="faGithub" />
+                  Your account is linked with Github
+                </p>
+              </template>
+
+              <template v-else>
+                <Button
+                  class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
+                  :is-loading="githubAuthIsLoading"
+                  :disabled="githubAuthIsLoading"
+                  intent="tertiary"
+                  @click="async () => await beginOAuthLogin('/profile')">
+                  <FontAwesomeIcon :icon="faGithub" />
+                  Link account with Github
+                </Button>
+              </template>
+            </div>
+          </section>
+
+          <!-- API Key -->
+          <section>
+            <h3 class="like-h4">API Key</h3>
+
+            <div
+              :class="{
+                'profile-loading h-12': !profileData && profileLoading
+              }">
+              <Button
+                :class="{ 'mb-5': apiKey }"
+                intent="secondary"
+                :is-loading="apiKeyIsLoading"
+                :disabled="apiKeyIsLoading"
+                type="button"
+                @click="recreateAPIKey">
+                Regenerate API Key
+              </Button>
+            </div>
+
+            <transition name="dropdown" appear>
+              <div v-if="apiKey">
+                <ProfileAPIKey
+                  :api-key="apiKey"
+                  :on-dismiss="
+                    () => {
+                      resetAPIKeyData();
+                    }
+                  " />
+              </div>
+            </transition>
+          </section>
+
+          <!-- Permissions -->
+          <section v-if="profileData?.permissions.length">
+            <h3 class="like-h4">Permissions</h3>
+            <ul>
+              <li
+                v-for="permission of profileData.permissions"
+                :key="permission">
+                {{ permission }}
+              </li>
+            </ul>
+          </section>
+
+          <div>
+            <Button @click="signOutWithRedirect">Sign out</Button>
+          </div>
+        </div>
+
+        <h2>My stuff</h2>
+
+        <!-- Requests -->
+        <h3 class="like-h4">My requests</h3>
         <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
-          <template
-            v-if="didLinkGithub || profileData?.external_accounts.github">
+          v-if="!profileData && profileLoading"
+          class="profile-loading h-20" />
+        <ProfileTable v-else :items="requests">
+          <template #left="{ item }">
             <p>
-              <FontAwesomeIcon :icon="faGithub" />
-              Your account is linked with Github
+              {{ item.title }}
             </p>
           </template>
+          <template #center="{ item }">
+            <p
+              v-for="(location, i) of item.locations"
+              :key="'profile-request' + getFullLocationText(location)">
+              {{
+                getFullLocationText(location) +
+                (i === item.locations.length - 1 ? '' : ', ')
+              }}
+            </p>
+          </template>
+          <template #right="{ item }">
+            <a
+              v-if="item.github_issue_url"
+              :href="item.github_issue_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              @keydown.stop.enter=""
+              @click.stop="">
+              <FontAwesomeIcon :icon="faLink" />
+              Github
+            </a>
+          </template>
+        </ProfileTable>
 
-          <template v-else>
+        <!-- Followed searches -->
+        <h3 class="like-h4">Followed searches</h3>
+        <div
+          v-if="!profileData && profileLoading"
+          class="profile-loading h-20" />
+        <ProfileTable v-else :items="followedSearches">
+          <template #left="{ item }">
+            <p class="flex items-center justify-start">
+              {{ getFullLocationText(item) }}
+            </p>
+          </template>
+          <template #center><span /></template>
+          <template #right="{ item }">
             <Button
-              class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
+              class="h-full w-full max-w-full text-right"
               intent="tertiary"
-              @click="async () => await beginOAuthLogin('/profile')">
-              <FontAwesomeIcon :icon="faGithub" />
-              Link account with Github
+              type="button"
+              :disabled="unFollowIsLoading"
+              :is-loading="unFollowIsLoading"
+              @keydown.stop.prevent.enter="() => unFollow(item)"
+              @click.stop.prevent="() => unFollow(item)">
+              <FontAwesomeIcon :icon="faCircleXmark" />
+              Unfollow
             </Button>
           </template>
-        </div>
-      </section>
+        </ProfileTable>
 
-      <!-- API Key -->
-      <section>
-        <h3 class="like-h4">API Key</h3>
-
-        <div
-          :class="{ 'profile-loading h-12': !profileData && profileLoading }">
-          <Button
-            :class="{ 'mb-5': apiKey }"
-            intent="secondary"
-            type="button"
-            @click="createAPIKey">
-            Regenerate API Key
-          </Button>
-        </div>
-
-        <transition name="dropdown" appear>
-          <div v-if="apiKey && !apiKeyIsDismissed">
-            <ProfileAPIKey
-              :api-key="apiKey"
-              :on-dismiss="
-                () => {
-                  apiKeyIsDismissed = true;
-                }
-              " />
-          </div>
-        </transition>
-      </section>
-
-      <!-- Permissions -->
-      <section v-if="profileData?.permissions.length">
-        <h3 class="like-h4">Permissions</h3>
-        <ul>
-          <li v-for="permission of profileData.permissions" :key="permission">
-            {{ permission }}
-          </li>
-        </ul>
-      </section>
-
-      <div>
-        <Button @click="signOutWithRedirect">Sign out</Button>
-      </div>
-    </div>
-
-    <h2>My stuff</h2>
-
-    <!-- Requests -->
-    <h3 class="like-h4">My requests</h3>
-    <div v-if="!profileData && profileLoading" class="profile-loading h-20" />
-    <ProfileTable v-else :items="requests">
-      <template #left="{ item }">
-        <p>
-          {{ item.title }}
-        </p>
+        <!-- Recent searches -->
+        <h3 class="like-h4">Recent searches</h3>
+        <div v-if="!profileData && profileLoading" class="h-20" />
+        <ProfileTable v-else :items="recentSearches">
+          <template #left="{ item }">
+            <div class="max-1/3">
+              <p
+                v-for="category of item.record_categories"
+                :key="category"
+                class="pill w-max text-xxs">
+                <RecordTypeIcon :record-type="category" />
+                {{ category }}
+              </p>
+            </div>
+          </template>
+          <template #center="{ item }">
+            <p class="flex items-center justify-start">
+              {{ getFullLocationText(item) }}
+            </p>
+          </template>
+          <template #right>
+            <span />
+          </template>
+        </ProfileTable>
       </template>
-      <template #center="{ item }">
-        <p
-          v-for="(location, i) of item.locations"
-          :key="'profile-request' + getFullLocationText(location)">
-          {{
-            getFullLocationText(location) +
-            (i === item.locations.length - 1 ? '' : ', ')
-          }}
-        </p>
-      </template>
-      <template #right="{ item }">
-        <a
-          v-if="item.github_issue_url"
-          :href="item.github_issue_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          @keydown.stop.enter=""
-          @click.stop="">
-          <FontAwesomeIcon :icon="faLink" />
-          Github
-        </a>
-      </template>
-    </ProfileTable>
-
-    <!-- Followed searches -->
-    <h3 class="like-h4">Followed searches</h3>
-    <div v-if="!profileData && profileLoading" class="profile-loading h-20" />
-    <ProfileTable v-else :items="followedSearches">
-      <template #left="{ item }">
-        <p class="flex items-center justify-start">
-          {{ getFullLocationText(item) }}
-        </p>
-      </template>
-      <template #center><span /></template>
-      <template #right="{ item }">
-        <Button
-          class="h-full w-full max-w-full text-right"
-          intent="tertiary"
-          type="button"
-          @keydown.stop.prevent.enter="() => unFollow(item)"
-          @click.stop.prevent="() => unFollow(item)">
-          <FontAwesomeIcon :icon="faCircleXmark" />
-          Unfollow
-        </Button>
-      </template>
-    </ProfileTable>
-
-    <!-- Recent searches -->
-    <h3 class="like-h4">Recent searches</h3>
-    <div v-if="!profileData && profileLoading" class="profile-loading h-20" />
-    <ProfileTable v-else :items="recentSearches">
-      <template #left="{ item }">
-        <div class="max-1/3">
-          <p
-            v-for="category of item.record_categories"
-            :key="category"
-            class="pill w-max text-xxs">
-            <RecordTypeIcon :record-type="category" />
-            {{ category }}
-          </p>
-        </div>
-      </template>
-      <template #center="{ item }">
-        <p class="flex items-center justify-start">
-          {{ getFullLocationText(item) }}
-        </p>
-      </template>
-      <template #right>
-        <span />
-      </template>
-    </ProfileTable>
+    </ErrorBoundary>
   </main>
 </template>
 
-<script>
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useAuthStore } from '@/stores/auth';
-// import { useUserStore } from '@/stores/user';
-import { getFullLocationText } from '@/util/locationFormatters';
-import { deleteFollowedSearch } from '@/api/search';
-import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
-import { getUser } from '@/api/user';
-import { computed, ref } from 'vue';
-
-const auth = useAuthStore();
-// const user = useUserStore();
-
-export const useGithubLink = defineBasicLoader('/profile', async (route) => {
-  let linked = false;
-
-  const githubAccessToken = route.query.gh_access_token;
-
-  if (githubAccessToken) {
-    await linkAccountWithGithub(githubAccessToken);
-    linked = true;
-  }
-
-  return linked;
-});
-
-export const useProfileData = defineBasicLoader(
-  '/profile',
-  async () => {
-    const response = await getUser();
-    return response.data.data;
-  }
-  // { lazy: true },
-);
-</script>
-
 <script setup>
-import { Button, RecordTypeIcon } from 'pdap-design-system';
+import { Button, RecordTypeIcon, ErrorBoundary } from 'pdap-design-system';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useRoute, useRouter } from 'vue-router';
@@ -222,23 +213,108 @@ import ProfileTable from './_components/ThreeColumnTable.vue';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { generateAPIKey } from '@/api/auth';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { PROFILE } from '@/util/queryKeys';
+import { useAuthStore } from '@/stores/auth';
+import { getFullLocationText } from '@/util/locationFormatters';
+import { deleteFollowedSearch } from '@/api/search';
+import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
+import { getUser } from '@/api/user';
+import { computed, watch } from 'vue';
+import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 
 const route = useRoute();
 const router = useRouter();
 
-const {
-  data: didLinkGithub
-  // loading: githubLinking,
-  // error: githubLinkingError,
-  // reload,
-} = useGithubLink();
+const auth = useAuthStore();
 
+const queryClient = useQueryClient();
+const queryKey = computed(() => [PROFILE, route.query.gh_access_token]);
+
+// Query
 const {
   data: profileData,
+  error: profileError,
   isLoading: profileLoading,
-  // error: profileError,
-  reload: refetchProfile
-} = useProfileData();
+  refetch: refetchProfile
+} = useQuery({
+  queryKey,
+  queryFn: async () => {
+    const response = await getUser();
+    return response.data.data;
+  },
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  onError: (err) => {
+    console.error(err);
+  }
+});
+// Mutations
+const {
+  data: didLinkGithub,
+  mutate: completeGithubAuth,
+  isLoading: githubAuthIsLoading
+} = useMutation({
+  mutationFn: async () => {
+    let linked = false;
+
+    const githubAccessToken = route.query.gh_access_token;
+
+    if (githubAccessToken) {
+      await linkAccountWithGithub(githubAccessToken);
+      linked = true;
+    }
+
+    return linked;
+  },
+  onError: (err) => {
+    if (err)
+      toast.error(
+        err.message ?? 'Error linking your github account, please try again.'
+      );
+  },
+  onSuccess: (data) => {
+    if (data) {
+      toast.success('Successfully linked Github account');
+    }
+    queryClient.invalidateQueries({ queryKey: queryKey.value });
+  }
+});
+
+const { mutate: unFollow, isLoading: unFollowIsLoading } = useMutation({
+  mutationFn: async (followed) => {
+    const text = getFullLocationText(followed);
+    await deleteFollowedSearch(followed.id ?? followed.location_id);
+    toast.success(`Un-followed search for ${text}`);
+    await refetchProfile();
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: [SEARCH_FOLLOWED] });
+  },
+  onError: (err) => {
+    if (err instanceof Error) {
+      console.error(err);
+    }
+    toast.error(`Error un-following search, please try again.`);
+  }
+});
+
+const {
+  data: apiKey,
+  mutate: recreateAPIKey,
+  isLoading: apiKeyIsLoading,
+  reset: resetAPIKeyData
+} = useMutation({
+  mutationFn: async () => {
+    const response = await generateAPIKey();
+    return response.data.api_key;
+  },
+  onError: (err) => {
+    if (err instanceof Error) {
+      console.error(err);
+    }
+    toast.error(`Error re-generating API key, please try again.`);
+  }
+});
 
 const requests = computed(() =>
   profileData.value?.data_requests.data.map((req) => ({
@@ -279,32 +355,12 @@ const recentSearches = computed(() =>
   })
 );
 
-const apiKey = ref();
-const apiKeyIsDismissed = ref(false);
-
-async function createAPIKey() {
-  const response = await generateAPIKey();
-  apiKey.value = response.data.api_key;
-}
+watch(() => route.query, completeGithubAuth());
 
 async function signOutWithRedirect() {
   auth.setRedirectTo(route);
   await signOut();
   router.replace('/sign-in');
-}
-
-async function unFollow(followed) {
-  const text = getFullLocationText(followed);
-  try {
-    await deleteFollowedSearch(followed.id ?? followed.location_id);
-    toast.success(`Un-followed search for ${text}`);
-    await refetchProfile();
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error);
-    }
-    toast.error(`Error un-following search for ${text}, please try again.`);
-  }
 }
 </script>
 
@@ -374,7 +430,7 @@ async function unFollow(followed) {
       90deg,
       rgba(var(--color-wine-neutral-100)) 0,
       rgba(var(--color-wine-neutral-100), 0.2) 20%,
-      rgba(var(--color-wine-neutral-100), 0.5) 30%,
+      rgba(var(--color-wine-neutral-100), 0.2) 30%,
       rgba(var(--color-wine-neutral-100), 0)
     );
   }
