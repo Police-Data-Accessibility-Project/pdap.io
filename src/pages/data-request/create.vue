@@ -327,13 +327,7 @@ async function submit(values) {
 
   const requestBody = {
     request_info: values,
-    location_infos: [
-      ...locations.map((loc) => {
-        delete loc.display_name;
-        delete loc.location_id;
-        return loc;
-      })
-    ]
+    location_ids: [...locations.map((loc) => loc.location_id)]
   };
 
   try {
@@ -383,7 +377,7 @@ h4 {
 }
 
 .locale-type {
-  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md:text-sm px-2 py-1;
+  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs md:text-sm px-2 py-1;
 }
 
 .list-move,
