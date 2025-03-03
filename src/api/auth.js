@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import getBaseUrl from '@/util/getBaseUrl';
 
 const AUTH_BASE = `${import.meta.env.VITE_API_URL}/auth`;
+const OAUTH_BASE = `${import.meta.env.VITE_API_URL}/oauth`;
 const HEADERS = {
   'Content-Type': 'application/json'
 };
@@ -41,7 +42,7 @@ export async function signInWithEmail(email, password) {
 
 export async function beginOAuthLogin(redirectPath = '/sign-in') {
   const redirectTo = encodeURI(
-    `${AUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}?redirect_url=${getBaseUrl()}${redirectPath}`
+    `${OAUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}?redirect_url=${getBaseUrl()}${redirectPath}`
   );
 
   window.location.href = redirectTo;
@@ -51,7 +52,7 @@ export async function signInWithGithub(gh_access_token) {
   const auth = useAuthStore();
 
   const response = await axios.post(
-    `${AUTH_BASE}/${ENDPOINTS.OAUTH.LOGIN_WITH_GITHUB}`,
+    `${OAUTH_BASE}/${ENDPOINTS.OAUTH.LOGIN_WITH_GITHUB}`,
     { gh_access_token },
     {
       headers: {
@@ -68,7 +69,7 @@ export async function linkAccountWithGithub(gh_access_token) {
   const { email: user_email } = useUserStore();
 
   return await axios.post(
-    `${AUTH_BASE}/${ENDPOINTS.OAUTH.LINK_TO_GITHUB}`,
+    `${OAUTH_BASE}/${ENDPOINTS.OAUTH.LINK_TO_GITHUB}`,
     { gh_access_token, user_email },
     {
       headers: {
@@ -95,11 +96,11 @@ export async function refreshTokens() {
   try {
     const response = await axios.post(
       `${AUTH_BASE}/${ENDPOINTS.AUTH.REFRESH_SESSION}`,
-      { refresh_token: auth.$state.tokens.refreshToken.value },
+      {},
       {
         headers: {
           ...HEADERS,
-          authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+          authorization: `Bearer ${auth.$state.tokens.refreshToken.value}`
         }
       }
     );

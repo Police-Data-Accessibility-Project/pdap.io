@@ -38,7 +38,7 @@
           v-for="location in selectedLocations"
           :key="JSON.stringify(location)"
           class="md:col-span-2"
-          :content="getFullLocationText(location)"
+          :content="location.display_name"
           :on-click="
             () => {
               const indexToRemove = selectedLocations.indexOf(location);
@@ -53,7 +53,7 @@
         ref="typeaheadRef"
         class="md:col-span-2"
         :error="typeaheadError"
-        :format-item-for-display="getFullLocationText"
+        :format-item-for-display="(item) => item.display_name"
         :items="items"
         :placeholder="
           selectedLocations.length ? 'Enter another place' : 'Enter a place'
@@ -71,8 +71,7 @@
         @on-input="fetchTypeaheadResults">
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
-          <span
-            v-html="typeaheadRef?.boldMatchText(getFullLocationText(item))" />
+          <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
           <span class="locale-type">
             {{ item.type }}
           </span>
@@ -169,7 +168,6 @@ import Typeahead from '@/components/TypeaheadInput.vue';
 import LocationSelected from '@/components/TypeaheadSelected.vue';
 import { toast } from 'vue3-toastify';
 import { createRequest } from '@/api/data-requests';
-import { getFullLocationText } from '@/util/locationFormatters';
 import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nextTick, ref, watch } from 'vue';
@@ -350,13 +348,7 @@ async function submit(values) {
 
   const requestBody = {
     request_info: values,
-    location_infos: [
-      ...locations.map((loc) => {
-        delete loc.display_name;
-        delete loc.location_id;
-        return loc;
-      })
-    ]
+    location_ids: [...locations.map((loc) => loc.location_id)]
   };
 
   createRequestMutation.mutate(requestBody);
@@ -389,7 +381,7 @@ h4 {
 }
 
 .locale-type {
-  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md:text-sm px-2 py-1;
+  @apply border-solid border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs md:text-sm px-2 py-1;
 }
 
 .list-move,

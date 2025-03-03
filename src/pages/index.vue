@@ -24,20 +24,22 @@
       <p v-if="metricsLoaded">
         Our database contains
         <strong>{{ metrics.sourceCount }} Sources</strong>
-        from
+        about
         <br />
         <strong>{{ metrics.agencyCount }} agencies</strong>
         in
         <strong>{{ metrics.countyCount }} counties</strong>
         across
         <strong>all 50 states</strong>
-        and the District of Columbia. They are published by both government
-        agencies and independent organizations.
+        and the District of Columbia, plus aggregated sources covering many
+        agencies at once. They are published by both government agencies and
+        independent organizations.
       </p>
       <p v-else>
-        Our database contains Sources from agencies in hundreds of counties
-        across all 50 states and the District of Columbia. They are published by
-        both government agencies and independent organizations.
+        Our database contains Sources about agencies in hundreds of counties
+        across all 50 states and the District of Columbia, plus aggregated
+        sources covering many agencies at once. They are published by both
+        government agencies and independent organizations.
       </p>
       <div v-if="sourcesLoaded" class="grid grid-cols-3 mt-6 gap-4">
         <h3 class="col-span-3">Recently added Data Sources</h3>
@@ -114,7 +116,7 @@
           <Button
             class="mt-2"
             intent="primary"
-            href="https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk">
+            onclick="window.open('https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk', '_blank')">
             Open a Data Request
           </Button>
         </p>
@@ -150,7 +152,7 @@
       <Button
         class="mt-2"
         intent="primary"
-        href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+        onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
         Help find & label Data Sources
       </Button>
       <h2 class="pt-8">
@@ -178,7 +180,10 @@
           </router-link>
         </li>
       </ul>
-      <Button class="mt-2" intent="primary" href="https://docs.pdap.io">
+      <Button
+        class="mt-2"
+        intent="primary"
+        onclick="window.open('https://docs.pdap.io')">
         Volunteer for data requests
       </Button>
       <h2 class="pt-4 col-span-full">
@@ -207,10 +212,11 @@
             </a>
           </p>
         </div>
+
         <Button
           class="mt-2 col-span-full"
           intent="primary"
-          href="https://github.com/Police-Data-Accessibility-Project/projects/26">
+          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
           View more Good First Issues
         </Button>
       </div>
@@ -247,7 +253,7 @@
         <p class="italic mb-0">
           &mdash;
           <a href="https://www.kylabourne.net/">Dr. Kyla Bourne</a>
-          , UC Berkeley
+          at UC Berkeley
         </p>
       </div>
     </section>
