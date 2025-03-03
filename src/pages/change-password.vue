@@ -11,68 +11,59 @@
     class="pdap-flex-container"
     :class="{ 'mx-auto max-w-2xl': !isSuccess }">
     <h1>Change your password</h1>
-    <!-- TODO: make this copy conditional based on whether or not user signed up via GH -->
-    <p>
-      You signed up with a Github account linked to the email address you
-      provided.
-    </p>
-    <p>
-      Sign in with Github, or create a password to sign in with this email
-      address.
-    </p>
-    <p>
-      {{ error?.message ?? passwordMatchError }}
-    </p>
-    <!-- END TODO -->
 
-    <Button
-      class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
-      intent="tertiary"
-      @click="() => beginOAuthLogin('/profile')">
-      <FontAwesomeIcon :icon="faGithub" />
-      Sign in with Github
-    </Button>
+    <!-- GH auth user - no password to change -->
+    <template v-if="profileData?.external_accounts.github">
+      <p>
+        You signed up with a Github account linked to the email address you
+        provided. No password is necessary to access your account.
+      </p>
+      <p>
+        {{ error?.message ?? passwordMatchError }}
+      </p>
+    </template>
 
-    <FormV2
-      id="change-password"
-      class="flex flex-col gap-2"
-      data-test="change-password-form"
-      name="change-password"
-      :error="error?.message ?? passwordMatchError"
-      :schema="VALIDATION_SCHEMA"
-      @error="(output) => console.debug(output)"
-      @change="onChange"
-      @submit="updatePassword"
-      @input="onInput">
-      <InputPassword
-        v-for="input of INPUTS"
-        v-bind="{ ...input }"
-        :key="input.name" />
+    <!-- Otherwise, allow change PW -->
+    <template v-else>
+      <FormV2
+        id="change-password"
+        class="flex flex-col gap-2"
+        data-test="change-password-form"
+        name="change-password"
+        :error="error?.message ?? passwordMatchError"
+        :schema="VALIDATION_SCHEMA"
+        @error="(output) => console.debug(output)"
+        @change="onChange"
+        @submit="updatePassword"
+        @input="onInput">
+        <InputPassword
+          v-for="input of INPUTS"
+          v-bind="{ ...input }"
+          :key="input.name" />
 
-      <PasswordValidationChecker ref="passwordRef" class="mt-2" />
+        <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
-      <Button
-        class="max-w-full"
-        :disabled="isLoading"
-        :is-loading="isLoading"
-        type="submit">
-        Change password
-      </Button>
-    </FormV2>
+        <Button
+          class="max-w-full"
+          :disabled="isLoading"
+          :is-loading="isLoading"
+          type="submit">
+          Change password
+        </Button>
+      </FormV2>
+    </template>
   </main>
 </template>
 
 <script setup>
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { ref } from 'vue';
-import { changePassword } from '@/api/user';
-import { beginOAuthLogin } from '@/api/auth';
+import { changePassword, getUser } from '@/api/user';
 import { useRouter } from 'vue-router';
+import { PROFILE } from '@/util/queryKeys';
 
 const router = useRouter();
 
@@ -140,6 +131,23 @@ const VALIDATION_SCHEMA = [
     }
   }
 ];
+const {
+  data: profileData
+  // error: profileError,
+  // isLoading: profileLoading,
+  // refetch: refetchProfile
+} = useQuery({
+  queryKey: [PROFILE],
+  queryFn: async () => {
+    const response = await getUser();
+    return response.data.data;
+  },
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  onError: (err) => {
+    console.error(err);
+  }
+});
+
 const {
   error,
   isSuccess,
