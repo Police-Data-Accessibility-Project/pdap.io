@@ -441,7 +441,7 @@ const { data: recentSources } = useQuery({
 });
 
 const formattedSources = computed(() =>
-  recentSources.value.map((source) => ({
+  recentSources.value?.map((source) => ({
     ...source,
     formattedCreatedAt: formatDateForSearchResults(source.createdAt)
   }))
