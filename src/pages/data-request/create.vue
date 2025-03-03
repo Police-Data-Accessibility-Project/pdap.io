@@ -175,7 +175,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { nextTick, ref, watch } from 'vue';
 import { getTypeaheadLocations } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { DATA_REQUEST } from '@util/queryKeys';
+import { DATA_REQUEST } from '@/util/queryKeys';
 
 const INPUT_NAMES = {
   // contact: 'contact',
@@ -275,7 +275,9 @@ const createRequestMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: DATA_REQUEST });
+    queryClient.invalidateQueries({
+      queryKey: [DATA_REQUEST]
+    });
     selectedLocations.value = [];
   },
   onError: (error) => {

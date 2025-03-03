@@ -7,55 +7,50 @@
 </route>
 
 <template>
-  <main class="pdap-flex-container" :class="{ 'mx-auto max-w-2xl': !success }">
-    <template v-if="success">
-      <h1>Success</h1>
-      <p>Your password has been successfully updated</p>
-    </template>
+  <main
+    class="pdap-flex-container"
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    <h1>Change your password</h1>
+    <!-- TODO: make this copy conditional based on whether or not user signed up via GH -->
+    <p>
+      You signed up with a Github account linked to the email address you
+      provided.
+    </p>
+    <p>
+      Sign in with Github, or create a password to sign in with this email
+      address.
+    </p>
+    <!-- END TODO -->
 
-    <template v-else>
-      <h1>Change your password</h1>
-      <!-- TODO: make this copy conditional based on whether or not user signed up via GH -->
-      <p>
-        You signed up with a Github account linked to the email address you
-        provided.
-      </p>
-      <p>
-        Sign in with Github, or create a password to sign in with this email
-        address.
-      </p>
-      <!-- END TODO -->
+    <Button
+      class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
+      intent="tertiary"
+      @click="() => beginOAuthLogin('/profile')">
+      <FontAwesomeIcon :icon="faGithub" />
+      Sign in with Github
+    </Button>
 
-      <Button
-        class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
-        intent="tertiary"
-        @click="() => beginOAuthLogin('/profile')">
-        <FontAwesomeIcon :icon="faGithub" />
-        Sign in with Github
+    <FormV2
+      id="change-password"
+      class="flex flex-col gap-2"
+      data-test="change-password-form"
+      name="change-password"
+      :error="error?.message"
+      :schema="VALIDATION_SCHEMA"
+      @change="onChange"
+      @submit="updatePassword"
+      @input="onInput">
+      <InputPassword
+        v-for="input of INPUTS"
+        v-bind="{ ...input }"
+        :key="input.name" />
+
+      <PasswordValidationChecker ref="passwordRef" class="mt-2" />
+
+      <Button class="max-w-full" :is-loading="isLoading" type="submit">
+        Change password
       </Button>
-
-      <FormV2
-        id="change-password"
-        class="flex flex-col gap-2"
-        data-test="change-password-form"
-        name="change-password"
-        :error="error"
-        :schema="VALIDATION_SCHEMA"
-        @change="onChange"
-        @submit="onSubmit"
-        @input="onInput">
-        <InputPassword
-          v-for="input of INPUTS"
-          v-bind="{ ...input }"
-          :key="input.name" />
-
-        <PasswordValidationChecker ref="passwordRef" class="mt-2" />
-
-        <Button class="max-w-full" :is-loading="loading" type="submit">
-          Change password
-        </Button>
-      </FormV2>
-    </template>
+    </FormV2>
   </main>
 </template>
 
@@ -63,6 +58,8 @@
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { useMutation } from '@tanstack/vue-query';
+import { toast } from 'vue3-toastify';
 import { useUserStore } from '@/stores/user';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { ref } from 'vue';
@@ -133,15 +130,23 @@ const VALIDATION_SCHEMA = [
     }
   }
 ];
+const {
+  error,
+  isSuccess,
+  isLoading,
+  mutate: updatePassword
+} = useMutation({
+  mutationFn: async (formValues) => onSubmit(formValues),
+  onSuccess: () => {
+    toast.success('Password updated successfully');
+  }
+});
 
 // Stores
 const user = useUserStore();
 
 // Reactive vars
 const passwordRef = ref();
-const error = ref(undefined);
-const loading = ref(false);
-const success = ref(false);
 
 // Functions
 // Handlers
@@ -178,24 +183,13 @@ async function onSubmit(formValues) {
   const isPasswordValid = passwordRef.value.isPasswordValid();
 
   if (!isPasswordValid) {
-    error.value = 'Password is not valid';
-  } else {
-    if (error.value) error.value = undefined;
+    throw new Error('Password is not valid');
   }
 
   if (!handleValidatePasswordMatch(formValues) || !isPasswordValid) return;
 
-  try {
-    loading.value = true;
-    const { password, currentPassword } = formValues;
-    await signInWithEmail(user.email, currentPassword);
-    await changePassword(currentPassword, password);
-
-    success.value = true;
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
+  const { password, currentPassword } = formValues;
+  await signInWithEmail(user.email, currentPassword);
+  await changePassword(currentPassword, password);
 }
 </script>

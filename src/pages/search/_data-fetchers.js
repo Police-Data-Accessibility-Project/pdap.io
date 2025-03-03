@@ -18,7 +18,7 @@ export async function getSearchResults(route) {
 
 export async function getIsFollowed(route) {
   const isFollowed = await getFollowedSearch(route.query.location_id);
-  return isFollowed;
+  return !!isFollowed;
 }
 
 export async function getLocationRequests(route) {

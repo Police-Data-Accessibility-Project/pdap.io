@@ -197,7 +197,7 @@ const reactiveParams = computed(() => ({
 const queryKey = computed(() => [DATA_SOURCE, reactiveParams.value.id]);
 
 const {
-  isPending: dataSourcePending,
+  isLoading: dataSourcePending,
   isFetching: dataSourceFetching,
   data: sourceData,
   error
