@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
-import { useDataRequestsStore } from '@/stores/data-requests';
-import { isCachedResponseValid } from '@/api/util';
 
 const REQUESTS_BASE = `${import.meta.env.VITE_API_URL}/data-requests`;
 const HEADERS_BASE = {
@@ -17,23 +15,8 @@ const HEADERS_BASIC = {
  * Do not use this unless we need to get literally all of the requests in the database.
  */
 export async function getAllRequests(params = {}) {
-  const requestsStore = useDataRequestsStore();
-
-  const cached = requestsStore.getDataRequestFromCache('all-requests');
-
   let page = 0;
   const totalRequests = [];
-
-  if (
-    cached &&
-    isCachedResponseValid({
-      cacheTime: cached.timestamp,
-      // Cache for 3 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 3
-    })
-  ) {
-    return cached.data;
-  }
 
   while (totalRequests.length % 100 === 0) {
     page += 1;
@@ -47,8 +30,6 @@ export async function getAllRequests(params = {}) {
 
     response.data.data.forEach((obj) => totalRequests.push(obj));
   }
-
-  requestsStore.setDataRequestToCache('all-requests', totalRequests);
 
   return totalRequests;
 }
@@ -71,21 +52,6 @@ export async function createRequest(data) {
 }
 
 export async function getRecentRequests() {
-  const requestsStore = useDataRequestsStore();
-
-  const cached = requestsStore.getDataRequestFromCache('recent-requests');
-
-  if (
-    cached &&
-    isCachedResponseValid({
-      cacheTime: cached.timestamp,
-      // Cache for 3 minutes
-      intervalBeforeInvalidation: 1000 * 60 * 3
-    })
-  ) {
-    return cached.data;
-  }
-
   const params = {
     sort_by: 'date_created',
     sort_order: 'DESC'
@@ -107,8 +73,6 @@ export async function getRecentRequests() {
       item.locations?.[0]?.display_name || 'Unknown location',
     route: `/data-request/${item.id}`
   }));
-
-  requestsStore.setDataRequestToCache('recent-requests', recentRequests);
 
   return recentRequests;
 }

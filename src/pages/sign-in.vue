@@ -108,7 +108,7 @@ import {
 } from 'pdap-design-system';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useMutation } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
@@ -155,7 +155,7 @@ const {
   mutationFn: authGithub,
   // onError: (error) => {},
   onSuccess: (data) => {
-    if (data?.userExists) return;
+    if (!data || data?.userExists) return;
     router.replace(auth.redirectTo ?? { path: '/profile' });
   }
 });
@@ -169,27 +169,24 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
     }
   });
 
-onMounted(() => completeGithubAuth());
 watch(() => route.query, completeGithubAuth());
 
 // Reactive vars
 const error = ref(undefined);
 // Handlers
 async function authGithub() {
+  const githubAccessToken = route.query.gh_access_token;
+  if (!githubAccessToken) return null;
+
   if (auth.isAuthenticated())
     return router.push(auth.redirectTo ?? { path: '/profile' });
 
   try {
-    const githubAccessToken = route.query.gh_access_token;
+    const tokens = await signInWithGithub(githubAccessToken);
 
-    if (githubAccessToken) {
-      const tokens = await signInWithGithub(githubAccessToken);
-
-      if (tokens) {
-        return router.push(auth.redirectTo ?? { path: '/profile' });
-      }
+    if (tokens) {
+      return router.push(auth.redirectTo ?? { path: '/profile' });
     }
-    return null;
   } catch (error) {
     if (error.response.data.message.includes('already exists')) {
       auth.setRedirectTo({ path: '/profile' });
