@@ -21,14 +21,14 @@
         ), places on the internet where public records can be found. Each one
         describes one of the ~20,000 agencies we have indexed.
       </p>
-      <p v-if="metricsLoaded">
+      <p v-if="metricsData">
         Our database contains
-        <strong>{{ metrics.sourceCount }} Sources</strong>
+        <strong>{{ metricsData.sourceCount }} Sources</strong>
         about
         <br />
-        <strong>{{ metrics.agencyCount }} agencies</strong>
+        <strong>{{ metricsData.agencyCount }} agencies</strong>
         in
-        <strong>{{ metrics.countyCount }} counties</strong>
+        <strong>{{ metricsData.countyCount }} counties</strong>
         across
         <strong>all 50 states</strong>
         and the District of Columbia, plus aggregated sources covering many
@@ -41,7 +41,7 @@
         sources covering many agencies at once. They are published by both
         government agencies and independent organizations.
       </p>
-      <div v-if="sourcesLoaded" class="grid grid-cols-3 mt-6 gap-4">
+      <div v-if="formattedSources" class="grid grid-cols-3 mt-6 gap-4">
         <h3 class="col-span-3">Recently added Data Sources</h3>
         <div
           v-for="source in formattedSources"
@@ -198,11 +198,11 @@
         for front end.
       </p>
       <div
-        v-if="goodFirstIssues.length"
+        v-if="!githubDataLoading && githubData?.goodFirstIssues.length"
         class="grid grid-cols-3 mt-6 gap-4 text-lg">
         <h3 class="col-span-3">Open good first issues</h3>
         <div
-          v-for="(issue, index) in goodFirstIssues"
+          v-for="(issue, index) in githubData.goodFirstIssues"
           :key="index"
           class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
           <p>
@@ -334,15 +334,15 @@
       </h1>
       <p>
         We have merged
-        <span v-if="mergeCount">
-          <strong>{{ mergeCount }} Pull Requests</strong>
+        <span v-if="githubData?.mergeCount">
+          <strong>{{ githubData.mergeCount }} Pull Requests</strong>
         </span>
         <span v-else>
           <strong>over 1000 Pull Requests</strong>
         </span>
         (new features and improvements) across
-        <span v-if="repoCount">
-          <strong>{{ repoCount }} code repositories.</strong>
+        <span v-if="githubData?.repoCount">
+          <strong>{{ githubData.repoCount }} code repositories.</strong>
         </span>
         <span v-else>
           <strong>our code repositories.</strong>
@@ -403,8 +403,7 @@
 
 <script setup>
 import { Button } from 'pdap-design-system';
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import { ref, computed } from 'vue';
 import SearchForm from '@/components/SearchForm.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
@@ -421,53 +420,25 @@ import {
   faPeopleCarryBox,
   faCodePullRequest
 } from '@fortawesome/free-solid-svg-icons';
-
 import { getMetrics } from '@/api/metrics';
 import { getRecentSources } from '@/api/data-sources';
+import {
+  getPdapRepositories,
+  getPdapPRsMerged,
+  getPdapIssues
+} from '@/api/github';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
-// import { getRecentRequests } from "@/api/data-requests";
+import { useQuery } from '@tanstack/vue-query';
 
-// Get metrics
-
-const metrics = ref({
-  agencyCount: 0,
-  countyCount: 0,
-  stateCount: 0
+// Get recent sources
+const { data: recentSources } = useQuery({
+  queryFn: async () => await getRecentSources(),
+  queryKey: ['recentSources'],
+  onError: (err) => {
+    console.error('Error fetching recent sources:', err);
+  },
+  staleTime: 5 * 60 * 1000 // 5 minutes
 });
-
-const metricsLoaded = ref(false);
-
-onMounted(async () => {
-  try {
-    const response = await getMetrics();
-    metrics.value = {
-      sourceCount: response.source_count,
-      agencyCount: response.agency_count,
-      countyCount: response.county_count,
-      stateCount: response.state_count
-    };
-    metricsLoaded.value = true;
-  } catch (error) {
-    console.error('Error fetching metrics:', error);
-    metricsLoaded.value = false;
-  }
-});
-
-// Get recent data sources
-
-const recentSources = ref([]);
-const sourcesLoaded = ref(false);
-
-onMounted(async () => {
-  try {
-    recentSources.value = await getRecentSources();
-    sourcesLoaded.value = true;
-  } catch (error) {
-    console.error('Error loading recent sources:', error);
-  }
-});
-
-// Format dates
 
 const formattedSources = computed(() =>
   recentSources.value.map((source) => ({
@@ -475,6 +446,34 @@ const formattedSources = computed(() =>
     formattedCreatedAt: formatDateForSearchResults(source.createdAt)
   }))
 );
+
+// Metrics
+const { data: metricsData } = useQuery({
+  queryFn: async () => {
+    const response = await getMetrics();
+    return {
+      sourceCount: response.source_count,
+      agencyCount: response.agency_count,
+      countyCount: response.county_count,
+      stateCount: response.state_count
+    };
+  },
+  queryKey: ['metricsData'],
+  onError: (err) => {
+    console.error('Error fetching metrics:', err);
+  },
+  staleTime: 5 * 60 * 1000 // 5 minutes
+});
+
+// Github data
+const { data: githubData, isLoading: githubDataLoading } = useQuery({
+  queryFn: async () => await getGithubData(),
+  queryKey: ['githubData'],
+  onError: (err) => {
+    console.error('Error fetching data:', err);
+  },
+  staleTime: 5 * 60 * 1000 // 5 minutes,
+});
 
 // TODO: Uncomment the below to close pdap.io/issues/208; blocked by data-sources-app/issues/580
 // Get recent data requests
@@ -490,35 +489,25 @@ const requestsLoaded = ref(false);
 //   }
 // });
 
-// get stats and "good first issues" from GitHub
+// Async utils
+async function getGithubData() {
+  const reposResponse = await getPdapRepositories();
+  const repoCount = reposResponse.data.length;
 
-const repoCount = ref(0);
-const mergeCount = ref(0);
-const goodFirstIssues = ref([]);
+  const mergesResponse = await getPdapPRsMerged();
+  const mergeCount = mergesResponse.data.total_count;
 
-onMounted(async () => {
-  try {
-    const reposResponse = await axios.get(
-      `https://api.github.com/orgs/Police-Data-Accessibility-Project/repos`
-    );
-    repoCount.value = reposResponse.data.length;
+  const issuesResponse = await getPdapIssues();
 
-    const mergesResponse = await axios.get(
-      `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+is:pr+is:merged`
-    );
-    mergeCount.value = mergesResponse.data.total_count;
+  const goodFirstIssues = issuesResponse.data.items.map((issue) => ({
+    title: issue.title,
+    url: issue.html_url
+  }));
 
-    const issuesResponse = await axios.get(
-      `https://api.github.com/search/issues?q=org:Police-Data-Accessibility-Project+label:"good first issue"+state:open+-label:"resolved in dev"&sort=created&order=desc&per_page=3`
-      // gets issues with "good first issue" label and applies other filters
-    );
-
-    goodFirstIssues.value = issuesResponse.data.items.map((issue) => ({
-      title: issue.title,
-      url: issue.html_url
-    }));
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-});
+  return {
+    repoCount,
+    mergeCount,
+    goodFirstIssues
+  };
+}
 </script>
