@@ -20,6 +20,9 @@
       Sign in with Github, or create a password to sign in with this email
       address.
     </p>
+    <p>
+      {{ error?.message ?? passwordMatchError }}
+    </p>
     <!-- END TODO -->
 
     <Button
@@ -35,8 +38,9 @@
       class="flex flex-col gap-2"
       data-test="change-password-form"
       name="change-password"
-      :error="error?.message"
+      :error="error?.message ?? passwordMatchError"
       :schema="VALIDATION_SCHEMA"
+      @error="(output) => console.debug(output)"
       @change="onChange"
       @submit="updatePassword"
       @input="onInput">
@@ -47,7 +51,11 @@
 
       <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
-      <Button class="max-w-full" :is-loading="isLoading" type="submit">
+      <Button
+        class="max-w-full"
+        :disabled="isLoading"
+        :is-loading="isLoading"
+        type="submit">
         Change password
       </Button>
     </FormV2>
@@ -60,11 +68,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useMutation } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
-import { useUserStore } from '@/stores/user';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { ref } from 'vue';
 import { changePassword } from '@/api/user';
-import { beginOAuthLogin, signInWithEmail } from '@/api/auth';
+import { beginOAuthLogin } from '@/api/auth';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // Constants
 const INPUTS = [
@@ -72,7 +82,7 @@ const INPUTS = [
     autocomplete: 'password',
     'data-test': 'password',
     id: 'current-password',
-    name: 'current-password',
+    name: 'currentPassword',
     label: 'Current password',
     type: 'password',
     placeholder: 'Your existing password'
@@ -138,15 +148,17 @@ const {
 } = useMutation({
   mutationFn: async (formValues) => onSubmit(formValues),
   onSuccess: () => {
-    toast.success('Password updated successfully');
+    toast.success('Password updated successfully', {
+      onClose: () => {
+        router.push({ path: '/profile' });
+      }
+    });
   }
 });
 
-// Stores
-const user = useUserStore();
-
 // Reactive vars
 const passwordRef = ref();
+const passwordMatchError = ref();
 
 // Functions
 // Handlers
@@ -156,7 +168,7 @@ const passwordRef = ref();
 function onChange(formValues) {
   passwordRef.value.updatePasswordValidation(formValues.password);
 
-  if (error.value) {
+  if (passwordMatchError.value) {
     handleValidatePasswordMatch(formValues);
   }
 }
@@ -169,17 +181,18 @@ function onInput(e) {
 
 function handleValidatePasswordMatch(formValues) {
   if (formValues.password !== formValues.confirmPassword) {
-    if (!error.value) {
-      error.value = 'Passwords do not match, please try again.';
+    if (!passwordMatchError.value) {
+      passwordMatchError.value = 'Passwords do not match, please try again.';
     }
     return false;
   } else {
-    error.value = undefined;
+    passwordMatchError.value = undefined;
     return true;
   }
 }
 
 async function onSubmit(formValues) {
+  console.debug('submit', { formValues });
   const isPasswordValid = passwordRef.value.isPasswordValid();
 
   if (!isPasswordValid) {
@@ -189,7 +202,7 @@ async function onSubmit(formValues) {
   if (!handleValidatePasswordMatch(formValues) || !isPasswordValid) return;
 
   const { password, currentPassword } = formValues;
-  await signInWithEmail(user.email, currentPassword);
   await changePassword(currentPassword, password);
+  return;
 }
 </script>
