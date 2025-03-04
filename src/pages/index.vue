@@ -184,7 +184,7 @@
       <Button
         class="mt-2"
         intent="primary"
-        onclick="window.open('https://docs.pdap.io')">
+        onclick="window.open('https://docs.pdap.io', '_blank')">
         Volunteer for data requests
       </Button>
       <h2 class="pt-4 col-span-full">
@@ -217,7 +217,7 @@
         <Button
           class="mt-2 col-span-full"
           intent="primary"
-          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
+          onclick="window.open('https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1', '_blank')">
           View more Good First Issues
         </Button>
       </div>
