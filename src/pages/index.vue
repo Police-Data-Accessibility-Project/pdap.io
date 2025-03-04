@@ -113,12 +113,13 @@
         <p>
           All of our programs exist to help people answer questions with data.
           <strong>If you are starting a data project, we can help.</strong>
-          <Button
-            class="mt-2"
-            intent="primary"
-            onclick="window.open('https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk', '_blank')">
-            Open a Data Request
-          </Button>
+          <router-link :to="'/data-request/create'">
+            <Button
+              class="mt-2"
+              intent="primary">
+              Open a Data Request
+            </Button>
+          </router-link>
         </p>
       </div>
     </section>
