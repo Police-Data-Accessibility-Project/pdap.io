@@ -115,7 +115,7 @@
           <strong>If you are starting a data project, we can help.</strong>
           <router-link :to="'/data-request/create'">
             <Button
-              class="mt-2"
+              class="mt-4"
               intent="primary">
               Open a Data Request
             </Button>
@@ -150,12 +150,21 @@
         Some public records are already online, waiting to be indexed and used.
         Adding them to our database makes them more accessible to everyone.
       </p>
-      <Button
-        class="mt-2"
-        intent="primary"
-        onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
-        Help find & label Data Sources
-      </Button>
+      <div class="flex-row">
+        <Button
+          class="mt-2"
+          intent="primary"
+          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
+          Help find & label Data Sources
+        </Button>
+        <router-link :to="'/data-source/create'">
+          <Button
+            class="mt-2 ml-2"
+            intent="secondary">
+            Submit a source you found
+          </Button>
+        </router-link>
+      </div>
       <h2 class="pt-8">
         <FontAwesomeIcon :icon="faPeopleCarryBox" class="text-brand-wine-300" />
         Collaborate on data projects
@@ -170,17 +179,19 @@
         To see open requests for a particular area, search for a location above.
       </p>
       -->
-      <h3 class="mt-2">Open data requests</h3>
-      <ul v-if="requestsLoaded">
-        <li v-for="request in recentRequests" :key="request.id">
-          <strong>{{ request.title }}</strong>
-          Location: {{ request.locationDisplayName }}
-          <router-link :to="request.route">
-            Details
-            <FontAwesomeIcon :icon="faExternalLink" />
-          </router-link>
-        </li>
-      </ul>
+      <div v-if="requestsLoaded">
+        <h3 class="mt-2">Open data requests</h3>
+        <ul>
+          <li v-for="request in recentRequests" :key="request.id">
+            <strong>{{ request.title }}</strong>
+            Location: {{ request.locationDisplayName }}
+            <router-link :to="request.route">
+              Details
+              <FontAwesomeIcon :icon="faExternalLink" />
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <Button
         class="mt-2"
         intent="primary"
