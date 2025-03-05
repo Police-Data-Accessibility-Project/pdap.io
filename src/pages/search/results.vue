@@ -256,13 +256,13 @@ const {
 const {
   isLoading: isFollowedPending,
   isFetching: isFollowedFetching,
-  // isError,
   data: isFollowed,
   isError: isFollowedError,
   refetch: reloadFollowed
 } = useQuery({
   queryKey: queryKeyFollowed,
-  queryFn: () => getIsFollowed(route)
+  queryFn: () => getIsFollowed(route),
+  enabled: false
 });
 
 const {

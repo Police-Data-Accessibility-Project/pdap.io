@@ -444,12 +444,12 @@ import unpluralize from '@/util/unpluralize';
 import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import _startCase from 'lodash/startCase';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, computed } from 'vue';
 import { createDataSource } from '@/api/data-sources';
 import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { DATA_SOURCE, SEARCH } from '@/util/queryKeys';
+import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -832,22 +832,42 @@ function formatData(values) {
   return values;
 }
 
-// TODO: This functionality is duplicated everywhere we're using typeahead.
-const fetchTypeaheadResults = _debounce(
-  async (e) => {
-    try {
-      if (e.target.value.length > 1) {
-        const suggestions = await getTypeaheadAgencies(e);
+const queryKey = computed(() => [
+  TYPEAHEAD_AGENCIES,
+  typeaheadRef.value?.value.toLowerCase()
+]);
 
-        items.value = suggestions.length ? suggestions : undefined;
-      } else {
-        items.value = [];
-      }
-    } catch (err) {
-      console.error(err);
+const typeaheadMutation = useMutation({
+  mutationFn: async (searchValue) => {
+    if (!searchValue || searchValue.length <= 1) {
+      return queryClient.getQueryData(queryKey.value) || [];
     }
+    const response = await getTypeaheadAgencies(searchValue);
+    return response.length ? response : undefined;
   },
-  350,
+  onSuccess: (data) => {
+    items.value = data;
+    // Update the query cache with the new data
+    queryClient.setQueryData(queryKey, data, {
+      staleTime: 5 * 60 * 1000
+    });
+  }
+});
+
+const fetchTypeaheadResults = _debounce(
+  async () => {
+    const searchValue = typeaheadRef.value?.value;
+    // Check cache
+    const cached = queryClient.getQueryData(queryKey);
+    if (cached) {
+      items.value = cached;
+      return;
+    }
+
+    // Otherwise refresh data
+    typeaheadMutation.mutate(searchValue);
+  },
+  200,
   { leading: true, trailing: true }
 );
 
@@ -908,10 +928,6 @@ async function submit(values) {
   createDataSourceMutation.mutate(requestBody);
 }
 </script>
-
-<style>
-@tailwind utilities;
-</style>
 
 <style scoped>
 h4 {

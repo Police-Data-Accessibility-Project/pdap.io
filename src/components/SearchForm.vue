@@ -1,7 +1,7 @@
 <template>
   <div
     class="col-span-1 flex flex-col gap-4 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
-    <TypeaheadInput
+    <Typeahead
       :id="TYPEAHEAD_ID"
       ref="typeaheadRef"
       :format-item-for-display="(item) => item.display_name"
@@ -30,7 +30,7 @@
           <a href="mailto:contat@pdap.io">contact@pdap.io</a>
         </span>
       </template>
-    </TypeaheadInput>
+    </Typeahead>
   </div>
 
   <h4 class="w-full mt-8 like-h4">Types of data</h4>
@@ -69,12 +69,14 @@ import {
   InputCheckbox,
   RecordTypeIcon
 } from 'pdap-design-system';
-import TypeaheadInput from '@/components/TypeaheadInput.vue';
+import Typeahead from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
 const router = useRouter();
 
@@ -170,6 +172,45 @@ const isButtonDisabled = computed(() => {
 
   return false;
 });
+const queryClient = useQueryClient();
+const queryKey = computed(() => [
+  TYPEAHEAD_LOCATIONS,
+  typeaheadRef.value?.value.toLowerCase()
+]);
+
+const typeaheadMutation = useMutation({
+  mutationFn: async (searchValue) => {
+    if (!searchValue || searchValue.length <= 1) {
+      return queryClient.getQueryData(queryKey.value) || [];
+    }
+    const response = await getTypeaheadLocations(searchValue);
+    return response.length ? response : undefined;
+  },
+  onSuccess: (data) => {
+    items.value = data;
+    // Update the query cache with the new data
+    queryClient.setQueryData(queryKey, data, {
+      staleTime: 5 * 60 * 1000
+    });
+  }
+});
+
+const fetchTypeaheadResults = _debounce(
+  async () => {
+    const searchValue = typeaheadRef.value?.value;
+    // Check cache
+    const cached = queryClient.getQueryData(queryKey);
+    if (cached) {
+      items.value = cached;
+      return;
+    }
+
+    // Otherwise refresh data
+    typeaheadMutation.mutate(searchValue);
+  },
+  200,
+  { leading: true, trailing: true }
+);
 
 onMounted(() => {
   // Set up selected state based on params
@@ -254,24 +295,6 @@ function onSelectRecord(item) {
   selectedRecord.value = item;
   items.value = [];
 }
-
-const fetchTypeaheadResults = _debounce(
-  async (e) => {
-    try {
-      if (e.target.value.length > 1) {
-        const suggestions = await getTypeaheadLocations(e);
-
-        items.value = suggestions.length ? suggestions : undefined;
-      } else {
-        items.value = [];
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  },
-  350,
-  { leading: true, trailing: true }
-);
 </script>
 
 <style scoped>
