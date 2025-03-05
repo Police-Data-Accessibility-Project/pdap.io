@@ -113,12 +113,8 @@
         <p>
           All of our programs exist to help people answer questions with data.
           <strong>If you are starting a data project, we can help.</strong>
-          <router-link :to="'/data-request/create'">
-            <Button
-              class="mt-4"
-              intent="primary">
+          <router-link class="pdap-button-primary mt-4" :to="'/data-request/create'">
               Open a Data Request
-            </Button>
           </router-link>
         </p>
       </div>
@@ -151,18 +147,11 @@
         Adding them to our database makes them more accessible to everyone.
       </p>
       <div class="flex-row">
-        <Button
-          class="mt-2"
-          intent="primary"
-          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
+        <a class="mt-2 pdap-button-primary" href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ" target="blank">
           Help find & label Data Sources
-        </Button>
-        <router-link :to="'/data-source/create'">
-          <Button
-            class="mt-2 ml-2"
-            intent="secondary">
+        </a>
+        <router-link class="pdap-button-secondary mt-2 ml-2" :to="'/data-source/create'">
             Submit a source you found
-          </Button>
         </router-link>
       </div>
       <h2 class="pt-8">
@@ -192,12 +181,9 @@
           </li>
         </ul>
       </div>
-      <Button
-        class="mt-2"
-        intent="primary"
-        onclick="window.open('https://docs.pdap.io', '_blank')">
+      <a class="pdap-button-primary mt-2" href="https://docs.pdap.io" target="blank">
         Volunteer for data requests
-      </Button>
+      </a>
       <h2 class="pt-4 col-span-full">
         <FontAwesomeIcon
           :icon="faCodePullRequest"
@@ -224,13 +210,9 @@
             </a>
           </p>
         </div>
-
-        <Button
-          class="mt-2 col-span-full"
-          intent="primary"
-          onclick="window.open('https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1', '_blank')">
+        <a class="pdap-button-primary mt-2 col-span-full" href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1" target="blank">
           View more Good First Issues
-        </Button>
+        </a>
       </div>
     </section>
     <section
@@ -414,7 +396,6 @@
 </template>
 
 <script setup>
-import { Button } from 'pdap-design-system';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import SearchForm from '@/components/SearchForm.vue';
