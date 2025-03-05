@@ -1,6 +1,32 @@
 <template>
   <main
     class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 max-w-[1800px] mx-auto">
+    <!-- Search form -->
+    <aside
+      class="w-full row-start-0 row-end-1 xl:col-start-2 xl:col-end-3 relative">
+      <Button
+        class="mb-2 w-full xl:hidden"
+        intent="primary"
+        @click="isSearchShown = !isSearchShown">
+        {{ isSearchShown ? 'Hide search' : 'Show search' }}
+      </Button>
+
+      <transition>
+        <div v-if="isSearchShown" class="max-h-[900px] overflow-hidden mb-8">
+          <div class="@container">
+            <SearchForm
+              :placeholder="
+                searchData?.location
+                  ? getFullLocationText(searchData.location)
+                  : 'Enter a place'
+              "
+              button-copy="Update search"
+              @searched="onSearchSetIsSearchShown" />
+          </div>
+        </div>
+      </transition>
+    </aside>
+
     <!-- Search results -->
     <section class="w-full h-full">
       <div
@@ -113,32 +139,6 @@
           :error="!!dataRequestsError" />
       </div>
     </section>
-
-    <!-- Aside for handling filtering and saved searches -->
-    <aside
-      class="w-full row-start-1 row-end-2 xl:col-start-2 xl:col-end-3 relative">
-      <Button
-        class="mb-2 w-full xl:hidden"
-        intent="primary"
-        @click="isSearchShown = !isSearchShown">
-        {{ isSearchShown ? 'Hide search' : 'Show search' }}
-      </Button>
-
-      <transition>
-        <div v-if="isSearchShown" class="max-h-[900px] overflow-hidden mb-8">
-          <div class="@container">
-            <SearchForm
-              :placeholder="
-                searchData?.location
-                  ? getFullLocationText(searchData.location)
-                  : 'Enter a place'
-              "
-              button-copy="Update search"
-              @searched="onSearchSetIsSearchShown" />
-          </div>
-        </div>
-      </transition>
-    </aside>
   </main>
 </template>
 
