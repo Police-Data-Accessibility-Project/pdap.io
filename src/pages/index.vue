@@ -113,8 +113,10 @@
         <p>
           All of our programs exist to help people answer questions with data.
           <strong>If you are starting a data project, we can help.</strong>
-          <router-link class="pdap-button-primary mt-4" :to="'/data-request/create'">
-              Open a Data Request
+          <router-link
+            class="pdap-button-primary mt-4"
+            :to="'/data-request/create'">
+            Open a Data Request
           </router-link>
         </p>
       </div>
@@ -147,11 +149,16 @@
         Adding them to our database makes them more accessible to everyone.
       </p>
       <div class="flex-row">
-        <a class="mt-2 pdap-button-primary" href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ" target="blank">
+        <a
+          class="mt-2 pdap-button-primary"
+          href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
+          target="blank">
           Help find & label Data Sources
         </a>
-        <router-link class="pdap-button-secondary mt-2 ml-2" :to="'/data-source/create'">
-            Submit a source you found
+        <router-link
+          class="pdap-button-secondary mt-2 ml-2"
+          :to="'/data-source/create'">
+          Submit a source you found
         </router-link>
       </div>
       <h2 class="pt-8">
@@ -181,7 +188,10 @@
           </li>
         </ul>
       </div>
-      <a class="pdap-button-primary mt-2" href="https://docs.pdap.io" target="blank">
+      <a
+        class="pdap-button-primary mt-2"
+        href="https://docs.pdap.io"
+        target="blank">
         Volunteer for data requests
       </a>
       <h2 class="pt-4 col-span-full">
@@ -210,7 +220,10 @@
             </a>
           </p>
         </div>
-        <a class="pdap-button-primary mt-2 col-span-full" href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1" target="blank">
+        <a
+          class="pdap-button-primary mt-2 col-span-full"
+          href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1"
+          target="blank">
           View more Good First Issues
         </a>
       </div>
