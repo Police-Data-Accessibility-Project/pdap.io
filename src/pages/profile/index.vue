@@ -229,7 +229,7 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const queryClient = useQueryClient();
-const queryKey = computed(() => [PROFILE, route.query.gh_access_token]);
+// const queryReactive = computed(() => route.query);
 
 // Query
 const {
@@ -238,7 +238,7 @@ const {
   isLoading: profileLoading,
   refetch: refetchProfile
 } = useQuery({
-  queryKey,
+  queryKey: [PROFILE],
   queryFn: async () => {
     const response = await getUser();
     return response.data.data;
@@ -276,7 +276,7 @@ const {
     if (data) {
       toast.success('Successfully linked Github account');
     }
-    queryClient.invalidateQueries({ queryKey: queryKey.value });
+    queryClient.invalidateQueries({ queryKey: [PROFILE] });
   }
 });
 
@@ -355,7 +355,14 @@ const recentSearches = computed(() =>
   })
 );
 
-watch(() => route.query, completeGithubAuth());
+watch(
+  () => route.query,
+  (newQuery) => {
+    if (newQuery.gh_access_token) {
+      completeGithubAuth();
+    }
+  }
+);
 
 async function signOutWithRedirect() {
   auth.setRedirectTo(route);
