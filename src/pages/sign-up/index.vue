@@ -199,7 +199,17 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
     }
   });
 
-watch(() => route.query, completeGithubAuth());
+watch(
+  () => route.query.gh_access_token,
+  (newToken, oldToken) => {
+    if (newToken && newToken !== oldToken) {
+      completeGithubAuth();
+    }
+  },
+  {
+    immediate: true
+  }
+);
 
 // Reactive vars
 const passwordRef = ref();
