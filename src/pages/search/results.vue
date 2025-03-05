@@ -257,12 +257,11 @@ const {
   isLoading: isFollowedPending,
   isFetching: isFollowedFetching,
   data: isFollowed,
-  isError: isFollowedError,
-  refetch: reloadFollowed
+  isError: isFollowedError
 } = useQuery({
   queryKey: queryKeyFollowed,
   queryFn: () => getIsFollowed(route),
-  enabled: false
+  staleTime: 5 * 60 * 1000 // 5 minutes
 });
 
 const {
@@ -296,7 +295,6 @@ const followMutation = useMutation({
     queryClient.invalidateQueries({
       queryKey: [PROFILE]
     });
-    reloadFollowed();
   },
   onError: () => {
     toast.error(
