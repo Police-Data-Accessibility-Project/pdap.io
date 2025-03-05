@@ -170,10 +170,10 @@ import { toast } from 'vue3-toastify';
 import { createRequest } from '@/api/data-requests';
 import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
-import { nextTick, ref, watch } from 'vue';
+import { nextTick, ref, watch, computed } from 'vue';
 import { getTypeaheadLocations } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { DATA_REQUEST } from '@/util/queryKeys';
+import { DATA_REQUEST, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
 const INPUT_NAMES = {
   // contact: 'contact',
@@ -265,6 +265,45 @@ const typeaheadError = ref();
 const formError = ref();
 
 const queryClient = useQueryClient();
+const queryKey = computed(() => [
+  TYPEAHEAD_LOCATIONS,
+  typeaheadRef.value?.value.toLowerCase()
+]);
+
+const typeaheadMutation = useMutation({
+  mutationFn: async (searchValue) => {
+    if (!searchValue || searchValue.length <= 1) {
+      return queryClient.getQueryData(queryKey.value) || [];
+    }
+    const response = await getTypeaheadLocations(searchValue);
+    return response.length ? response : undefined;
+  },
+  onSuccess: (data) => {
+    items.value = data;
+    // Update the query cache with the new data
+    queryClient.setQueryData(queryKey, data, {
+      staleTime: 5 * 60 * 1000
+    });
+  }
+});
+
+const fetchTypeaheadResults = _debounce(
+  async () => {
+    const searchValue = typeaheadRef.value?.value;
+    // Check cache
+    const cached = queryClient.getQueryData(queryKey);
+    if (cached) {
+      items.value = cached;
+      return;
+    }
+
+    // Otherwise refresh data
+    typeaheadMutation.mutate(searchValue);
+  },
+  200,
+  { leading: true, trailing: true }
+);
+
 const createRequestMutation = useMutation({
   mutationFn: async (formValues) => {
     await createRequest(formValues);
@@ -287,24 +326,6 @@ const createRequestMutation = useMutation({
   }
 });
 
-const fetchTypeaheadResults = _debounce(
-  async (e) => {
-    try {
-      if (e.target.value.length > 1) {
-        const suggestions = await getTypeaheadLocations(e);
-
-        items.value = suggestions.length ? suggestions : undefined;
-      } else {
-        items.value = [];
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  },
-  350,
-  { leading: true, trailing: true }
-);
-
 async function clear() {
   const newVal = Object.values(INPUT_NAMES)
     // Exclude typeahead
@@ -319,7 +340,7 @@ async function clear() {
 
   formRef.value.setValues(newVal);
   await nextTick();
-  items.value = [];
+  queryClient.setQueryData(queryKey.value, []);
   selectedLocations.value = [];
 }
 
