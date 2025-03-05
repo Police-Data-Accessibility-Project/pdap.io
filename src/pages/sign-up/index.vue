@@ -200,8 +200,20 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
   });
 
 watch(
+<<<<<<< Updated upstream
   () => route.query,
   () => completeGithubAuth()
+=======
+  () => route.query.gh_access_token,
+  (newToken, oldToken) => {
+    if (newToken && newToken !== oldToken) {
+      completeGithubAuth();
+    }
+  },
+  {
+    immediate: true
+  }
+>>>>>>> Stashed changes
 );
 
 // Reactive vars

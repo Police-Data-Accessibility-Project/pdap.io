@@ -170,26 +170,41 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
   });
 
 watch(
+<<<<<<< Updated upstream
   () => route.query,
   () => completeGithubAuth()
+=======
+  () => route.query.gh_access_token,
+  (newToken, oldToken) => {
+    if (newToken && newToken !== oldToken) {
+      completeGithubAuth();
+    }
+  },
+  {
+    immediate: true
+  }
+>>>>>>> Stashed changes
 );
 
 // Reactive vars
 const error = ref(undefined);
 // Handlers
 async function authGithub() {
-  const githubAccessToken = route.query.gh_access_token;
-  if (!githubAccessToken) return null;
-
-  if (auth.isAuthenticated())
+  if (auth.isAuthenticated()) {
     return router.push(auth.redirectTo ?? { path: '/profile' });
+  }
 
   try {
-    const tokens = await signInWithGithub(githubAccessToken);
+    const githubAccessToken = route.query.gh_access_token;
 
-    if (tokens) {
-      return router.push(auth.redirectTo ?? { path: '/profile' });
+    if (githubAccessToken) {
+      const tokens = await signInWithGithub(githubAccessToken);
+
+      if (tokens) {
+        return router.push(auth.redirectTo ?? { path: '/profile' });
+      }
     }
+    return null;
   } catch (error) {
     if (error.response.data.message.includes('already exists')) {
       auth.setRedirectTo({ path: '/profile' });
