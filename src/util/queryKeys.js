@@ -5,6 +5,8 @@ export const DATA_REQUEST = 'data_request';
 export const DATA_SOURCE = 'data_source';
 export const GITHUB_AUTH = 'github_auth';
 export const PROFILE = 'profile';
+export const TYPEAHEAD_LOCATIONS = 'typeahead_locations';
+export const TYPEAHEAD_AGENCIES = 'typeahead_agencies';
 
 /**
  * Creates a predicate function to check if a query key includes a partial string.

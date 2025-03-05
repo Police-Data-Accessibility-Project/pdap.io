@@ -19,23 +19,29 @@ Please raise a PR against the `dev` branch (unless otherwise specified), only af
 
 ## Some things to know
 
-The client app is a Vue 3 SPA, styled with Tailwind. We currently use Pinia for state management, although we have plans to migrate to Tanstack for better caching.
+The client app is a Vue 3 SPA, styled with Tailwind. Caching and data fetching are handled with Tanstack. Client state is handled with Pinia.
 
 Feel free to use either the options or composition API, but composition seems to be winning out in this codebase. It's also easier to work with many of the modern Vue libraries, which are built for the composition API first.
 
 ### State management
+We use a two-pronged strategy for state management.
 
-We use `pinia` for global state management. Check out [the docs](https://pinia.vuejs.org/).
+API-related state is handled using [Tanstack Vue Query](https://tanstack.com/query/latest/docs/framework/vue/overview)
+- Tanstack automatically caches responses based on query keys passed to `useQuery`
+- We have set up some nice invalidation logic on calls of mutation functions returned by `useMutation`
+- The net effect of this is that our async data fetching is extremely efficient.
+- If you are adding any functionality related to async data, use the tanstack hooks and ensure
 
-Some implementation details specific to the PDAP application
+Any client-only state is tracked using [Pinia](https://pinia.vuejs.org/) stores.
+- See the [stores](./src/stores/) directory for more details and examples.
+- _Do not_ use Pinia for API-related state.
 
-- Pinia is for storing state. Async fetching is defined separately. While you _can_ define async actions in pinia stores, we have made the decision to decouple the fetching logic from the state management.
-- Many of the stores are set up for caching certain responses. It's a bit hacky and overly simple (no invalidation, etc). We'll move this to Tanstack shortly. But for now, if caching is needed, follow the pattern in [search](./src/stores/search.js).
 
 ### Code organization
+Currently code is organized by kind
 
 - [async fetching logic](./src/api) in the `src/api` directory.
-- [client-side data stores and caching](./src/stores) in the `src/stores` directory.
+- [client-side data stores](./src/stores) in the `src/stores` directory.
 - [UI components](./src/components) in the `src/components` directory.
 - [routes](./src/pages) in the `src/pages` directory.
 - [utilities](./src/util) in the `src/util` directory.

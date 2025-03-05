@@ -32,7 +32,6 @@
         name="change-password"
         :error="error?.message ?? passwordMatchError"
         :schema="VALIDATION_SCHEMA"
-        @error="(output) => console.debug(output)"
         @change="onChange"
         @submit="updatePassword"
         @input="onInput">
@@ -200,7 +199,6 @@ function handleValidatePasswordMatch(formValues) {
 }
 
 async function onSubmit(formValues) {
-  console.debug('submit', { formValues });
   const isPasswordValid = passwordRef.value.isPasswordValid();
 
   if (!isPasswordValid) {
