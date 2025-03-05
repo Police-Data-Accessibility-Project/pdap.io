@@ -169,10 +169,7 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
     }
   });
 
-watch(
-  () => route.query,
-  () => completeGithubAuth()
-);
+watch(() => route.query, completeGithubAuth());
 
 // Reactive vars
 const error = ref(undefined);
