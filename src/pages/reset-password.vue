@@ -1,5 +1,7 @@
 <template>
-  <main class="pdap-flex-container" :class="{ 'mx-auto max-w-2xl': !success }">
+  <main
+    class="pdap-flex-container"
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
     <h1>Change your password</h1>
     <p v-if="!hasValidatedToken" class="flex flex-col items-start sm:gap-4">
       Loading...
@@ -27,10 +29,10 @@
       data-test="reset-password-form"
       class="flex flex-col gap-2"
       name="reset-password"
-      :error="error"
+      :error="error?.message ?? passwordMatchError"
       :schema="VALIDATION_SCHEMA_CHANGE_PASSWORD"
       @change="onChange"
-      @submit="onSubmitChangePassword"
+      @submit="changePassword"
       @input="onResetInput">
       <InputPassword
         v-for="input of FORM_INPUTS_CHANGE_PASSWORD"
@@ -39,7 +41,7 @@
 
       <PasswordValidationChecker ref="passwordRef" />
 
-      <Button class="max-w-full" :is-loading="loading" type="submit">
+      <Button class="max-w-full" :is-loading="isLoading" type="submit">
         Change password
       </Button>
     </FormV2>
@@ -51,9 +53,11 @@ import { Button, FormV2, InputPassword } from 'pdap-design-system';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { useUserStore } from '@/stores/user';
 import parseJwt from '@/util/parseJwt';
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { resetPassword, signInWithEmail } from '@/api/auth';
+import { useMutation } from '@tanstack/vue-query';
+import { toast } from 'vue3-toastify';
 
 // Constants
 const FORM_INPUTS_CHANGE_PASSWORD = [
@@ -110,20 +114,30 @@ const token = route.query.token;
 // Stores
 const user = useUserStore();
 
-// Reactive vars
-const passwordRef = ref();
-const error = ref(undefined);
-const isExpiredToken = ref(false);
-const hasValidatedToken = ref(false);
-const loading = ref(false);
-const success = ref(false);
-
-// Effects
-// Clear error on success
-watchEffect(() => {
-  if (success.value) error.value = undefined;
+const {
+  error,
+  isSuccess,
+  isLoading,
+  mutate: changePassword
+} = useMutation({
+  mutationFn: async (formValues) => onSubmitChangePassword(formValues),
+  onError: (err) => {
+    if (err.message === 'The submitted token is invalid') {
+      isExpiredToken.value = true;
+    }
+  },
+  onSuccess: () => {
+    toast.success('Password updated successfully');
+  }
 });
 
+// Reactive vars
+const passwordRef = ref();
+const isExpiredToken = ref(false);
+const hasValidatedToken = ref(false);
+const passwordMatchError = ref(false);
+
+// Effects
 // Functions
 // Lifecycle methods
 onMounted(validateToken);
@@ -147,7 +161,7 @@ async function validateToken() {
 function onChange(formValues) {
   passwordRef.value?.updatePasswordValidation(formValues.password);
 
-  if (error.value) {
+  if (passwordMatchError.value) {
     handleValidatePasswordMatch(formValues);
   }
 }
@@ -160,12 +174,12 @@ function onResetInput(e) {
 
 function handleValidatePasswordMatch(formValues) {
   if (formValues.password !== formValues.confirmPassword) {
-    if (!error.value) {
-      error.value = 'Passwords do not match, please try again.';
+    if (!passwordMatchError.value) {
+      passwordMatchError.value = 'Passwords do not match, please try again.';
     }
     return false;
   } else {
-    error.value = undefined;
+    passwordMatchError.value = undefined;
     return true;
   }
 }
@@ -174,27 +188,17 @@ async function onSubmitChangePassword(formValues) {
   const isPasswordValid = passwordRef.value?.isPasswordValid();
 
   if (!isPasswordValid) {
-    error.value = 'Password is not valid';
+    passwordMatchError.value = 'Password is not valid';
   } else {
-    if (error.value) error.value = undefined;
+    if (passwordMatchError.value) passwordMatchError.value = undefined;
   }
 
   if (!handleValidatePasswordMatch(formValues) || !isPasswordValid) return;
 
-  try {
-    loading.value = true;
-    const { password } = formValues;
-    await resetPassword(password, token);
-    await signInWithEmail(parseJwt(token).sub.email, password);
+  const { password } = formValues;
+  await resetPassword(password, token);
+  await signInWithEmail(parseJwt(token).sub.email, password);
 
-    router.push({ path: 'profile' });
-  } catch (err) {
-    if (err.message === 'The submitted token is invalid') {
-      isExpiredToken.value = true;
-    }
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
+  router.push({ path: 'profile' });
 }
 </script>

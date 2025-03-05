@@ -1,111 +1,9 @@
 <template>
   <main
     class="grid grid-cols-1 grid-rows-[auto_1fr] xl:grid-cols-[1fr_340px] gap-4 max-w-[1800px] mx-auto">
-    <!-- Search results -->
-    <section class="w-full h-full">
-      <div
-        class="grid grid-cols-1 md:grid-cols-[1fr,auto] md:grid-rows-[repeat(3,35px)]">
-        <h1 class="text-3xl mb-4">
-          Data
-          {{
-            searchData?.params &&
-            !isLoading &&
-            'about ' + getFullLocationText(searchData.params)
-          }}
-        </h1>
-
-        <!-- Follow -->
-        <div
-          v-if="!isFollowed && getIsV2FeatureEnabled('ENHANCED_SEARCH')"
-          class="flex flex-col md:items-end md:row-start-1 md:row-span-2 md:col-start-2 md:col-span-1">
-          <Button
-            :disabled="!isAuthenticated()"
-            class="sm:block max-h-12"
-            intent="primary"
-            @click="
-              async () => {
-                await follow();
-              }
-            ">
-            <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserPlus" />
-            Follow
-          </Button>
-          <p v-if="!isAuthenticated()" class="text-med text-neutral-500">
-            <RouterLink
-              to="/sign-in"
-              @click="() => setRedirectTo(previousRoute)">
-              Sign in
-            </RouterLink>
-            to follow this location
-          </p>
-        </div>
-        <div v-else class="flex flex-col md:items-end md:max-w-80">
-          <p
-            v-if="isAuthenticated()"
-            class="text-med text-neutral-500 max-w-full md:text-right">
-            <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserCheck" />
-            Following this location
-            <br />
-            See
-            <RouterLink to="/profile">your profile</RouterLink>
-            for more.
-          </p>
-        </div>
-
-        <!-- Nav -->
-        <nav
-          v-if="!error"
-          class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
-          <span
-            class="font-semibold text-neutral-600 dark:text-neutral-300 border-2 border-transparent px-0 py-2">
-            Geographic level:
-          </span>
-          <RouterLink
-            v-for="locale in ALL_LOCATION_TYPES"
-            :key="`${locale} anchor`"
-            :class="{
-              'text-goldneutral-500 pointer-events-none cursor-auto':
-                !searchData?.results?.[locale]?.count
-            }"
-            class="capitalize border-2 border-transparent p-2"
-            :to="{ ...route, hash: `#${locale}` }"
-            replace
-            @click="
-              () =>
-                // If route hash already includes locale, handle scroll manually
-                route.hash.includes(locale) && searchResultsRef.handleScrollTo()
-            ">
-            {{ getAnchorLinkText(locale) }}
-            <span v-if="searchData?.results?.[locale]?.count">
-              ({{ searchData?.results[locale].count }})
-            </span>
-          </RouterLink>
-        </nav>
-      </div>
-
-      <Suspense>
-        <template #default>
-          <SearchResults
-            v-if="!error && searchData?.results"
-            ref="searchResultsRef"
-            :results="searchData?.results"
-            :is-loading="isLoading" />
-        </template>
-        <template #fallback>
-          <LoadingSpinner />
-        </template>
-      </Suspense>
-      <div v-if="getIsV2FeatureEnabled('SHOW_REQUESTS')">
-        <h2 v-if="searchData" class="like-h4">
-          Data requested about {{ getFullLocationText(searchData.params) }}
-        </h2>
-        <Requests :requests="requestData" :error="!!requestsError" />
-      </div>
-    </section>
-
-    <!-- Aside for handling filtering and saved searches -->
+    <!-- Search form -->
     <aside
-      class="w-full row-start-1 row-end-2 xl:col-start-2 xl:col-end-3 relative">
+      class="w-full row-start-0 row-end-1 xl:col-start-2 xl:col-end-3 relative">
       <Button
         class="mb-2 w-full xl:hidden"
         intent="primary"
@@ -118,8 +16,8 @@
           <div class="@container">
             <SearchForm
               :placeholder="
-                searchData
-                  ? getFullLocationText(searchData.params)
+                searchData?.location
+                  ? getFullLocationText(searchData.location)
                   : 'Enter a place'
               "
               button-copy="Update search"
@@ -128,109 +26,121 @@
         </div>
       </transition>
     </aside>
+
+    <!-- Search results -->
+    <section class="w-full h-full">
+      <div
+        class="grid grid-cols-1 md:grid-cols-[1fr,auto] md:grid-rows-[repeat(3,35px)]">
+        <h1 class="text-3xl mb-4">
+          Data
+          {{
+            searchData?.location &&
+            !pendingSearch &&
+            'about ' + getFullLocationText(searchData.location)
+          }}
+        </h1>
+
+        <!-- Follow -->
+        <div
+          v-if="
+            !isFollowedPending &&
+            !isFollowedError &&
+            getIsV2FeatureEnabled('ENHANCED_SEARCH')
+          "
+          :class="{
+            'loading-shimmer': isFollowedFetching
+          }">
+          <div
+            v-if="!isFollowed"
+            class="flex flex-col md:items-end md:row-start-1 md:row-span-2 md:col-start-2 md:col-span-1">
+            <Button
+              :disabled="!auth.isAuthenticated()"
+              class="sm:block max-h-12"
+              intent="primary"
+              @click="
+                () => {
+                  followMutation.mutate();
+                }
+              ">
+              <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserPlus" />
+              Follow
+            </Button>
+            <p v-if="!auth.isAuthenticated()" class="text-med text-neutral-500">
+              <RouterLink to="/sign-in">Sign in</RouterLink>
+              to follow this location
+            </p>
+          </div>
+          <div v-else class="flex flex-col md:items-end md:max-w-80">
+            <p
+              v-if="auth.isAuthenticated()"
+              class="text-med text-neutral-500 max-w-full md:text-right">
+              <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserCheck" />
+              Following this location
+              <br />
+              See
+              <RouterLink to="/profile">your profile</RouterLink>
+              for more.
+            </p>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <nav
+          v-if="!errorSearch && searchDataCombined"
+          class="flex gap-2 mb-4 [&>*]:text-[.72rem] [&>*]:xs:text-med [&>*]:sm:text-lg md:col-start-1 md:col-span-1 md:row-start-2 md:row-span-2 justify-baseline mt-2">
+          <span
+            class="font-semibold text-neutral-600 dark:text-neutral-300 border-2 border-transparent px-0 py-2">
+            Geographic level:
+          </span>
+          <RouterLink
+            v-for="locale in ALL_LOCATION_TYPES"
+            :key="`${locale} anchor`"
+            :class="{
+              'text-goldneutral-500 pointer-events-none cursor-auto':
+                !searchDataCombined?.[locale]?.count
+            }"
+            class="capitalize border-2 border-transparent p-2"
+            :to="{ ...route, hash: `#${locale}` }"
+            replace
+            @click="
+              () =>
+                // If route hash already includes locale, handle scroll manually
+                route.hash.includes(locale) && searchResultsRef.handleScrollTo()
+            ">
+            {{ getAnchorLinkText(locale) }}
+            <span v-if="searchDataCombined?.[locale]?.count">
+              ({{ searchDataCombined?.[locale].count }})
+            </span>
+          </RouterLink>
+        </nav>
+      </div>
+
+      <Suspense>
+        <template #default>
+          <SearchResults
+            ref="searchResultsRef"
+            :results="searchDataCombined"
+            :is-loading="pendingSearch || fetchingSearch" />
+        </template>
+        <template #fallback>
+          <LoadingSpinner />
+        </template>
+      </Suspense>
+      <div
+        v-if="getIsV2FeatureEnabled('SHOW_REQUESTS') && searchData?.location">
+        <h2 v-if="searchData" class="like-h4">
+          Data requested about {{ getFullLocationText(searchData.location) }}
+        </h2>
+        <Requests
+          :class="{
+            'loading-shimmer': dataRequestsFetching || dataRequestsPending
+          }"
+          :requests="requestData"
+          :error="!!dataRequestsError" />
+      </div>
+    </section>
   </main>
 </template>
-
-<script>
-// Data loader
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useSearchStore } from '@/stores/search';
-// import { NavigationResult } from 'unplugin-vue-router/runtime';
-import { onMounted, onUnmounted, onUpdated, reactive, ref, watch } from 'vue';
-import { ALL_LOCATION_TYPES } from '@/util/constants';
-import {
-  groupResultsByAgency,
-  normalizeLocaleForHash,
-  getAnchorLinkText,
-  getAllIdsSearched
-} from './_util';
-import {
-  getFullLocationText,
-  getMostNarrowSearchLocationWithResults,
-  getMinimalLocationText
-} from '@/util/locationFormatters';
-import { DataLoaderErrorPassThrough } from '@/util/errors';
-const searchStore = useSearchStore();
-import { search, getFollowedSearch, followSearch } from '@/api/search';
-import { getLocationDataRequests } from '@/api/locations';
-import { mapSearchParamsToLocation } from '@/util/locationFormatters';
-
-const previousRoute = ref();
-const isPreviousRouteFollowed = ref(false);
-
-// TODO: split loaders out into separate files
-export const useSearchData = defineBasicLoader(
-  '/search/results',
-  async (route) => {
-    try {
-      const searchLocation = mapSearchParamsToLocation(route.query);
-      const searched = getMostNarrowSearchLocationWithResults(searchLocation);
-      const response = await search(route.query);
-
-      return {
-        results: groupResultsByAgency(response.data),
-        response: response.data,
-        searched,
-        params: searchLocation,
-        hash: normalizeLocaleForHash(searched, response.data)
-      };
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  }
-);
-
-export const useFollowedData = defineBasicLoader(
-  '/search/results',
-  async (route) => {
-    try {
-      const params = route.query;
-      const isFollowed = await getFollowedSearch(params.location_id);
-      previousRoute.value = route;
-      isPreviousRouteFollowed.value = isFollowed;
-      return isFollowed;
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  },
-  {
-    lazy: true
-  }
-);
-
-export const useRequestsData = defineBasicLoader(
-  '/search/results',
-  async (route) => {
-    try {
-      const requests = await getLocationDataRequests(route.query.location_id);
-
-      return requests.data.data;
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  },
-  {
-    lazy: true
-  }
-);
-
-// function isOnlyHashChanged(currentRoute, previousRoute) {
-// 	// If we don't have a previous route to compare against, return false
-// 	if (!previousRoute) return false;
-
-// 	// Check if queries are equal
-// 	const areQueriesEqual = _isEqual(currentRoute.query, previousRoute.query);
-
-// 	// Check if paths are equal
-// 	const arePathsEqual = currentRoute.path === previousRoute.path;
-
-// 	// Check if only the hash is different
-// 	const hasHashChanged = currentRoute.hash !== previousRoute.hash;
-
-// 	// Return true if everything is the same except the hash
-// 	return areQueriesEqual && arePathsEqual && hasHashChanged;
-// }
-</script>
 
 <script setup>
 import { Button } from 'pdap-design-system';
@@ -243,11 +153,46 @@ import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute, useRouter } from 'vue-router';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
+// import _isUndefined from 'lodash/isUndefined';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
+import {
+  getSearchResults,
+  getIsFollowed,
+  getLocationRequests
+} from './_data-fetchers';
+import { searchFederal, followSearch } from '@/api/search';
+import { useSearchStore } from '@/stores/search';
+import {
+  onMounted,
+  onUnmounted,
+  onUpdated,
+  reactive,
+  ref,
+  watch,
+  computed
+} from 'vue';
+import { ALL_LOCATION_TYPES } from '@/util/constants';
+import {
+  normalizeLocaleForHash,
+  getAnchorLinkText,
+  getAllIdsSearched,
+  groupResultsByAgency
+} from './_util';
+import {
+  getFullLocationText,
+  getMinimalLocationText
+} from '@/util/locationFormatters';
+import {
+  SEARCH,
+  SEARCH_FOLLOWED,
+  DATA_REQUEST,
+  SEARCH_FEDERAL,
+  PROFILE
+} from '@/util/queryKeys';
 
-const { isAuthenticated, setRedirectTo } = useAuthStore();
-const { data: searchData, isLoading, error } = useSearchData();
-const { data: isFollowed, reload: reloadFollowed } = useFollowedData();
-const { data: requestData, error: requestsError } = useRequestsData();
+const searchStore = useSearchStore();
+
+const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 const searchResultsRef = ref();
@@ -255,11 +200,139 @@ const isSearchShown = ref(false);
 const dims = reactive({ width: window.innerWidth, height: window.innerHeight });
 const hasDisplayedErrorByRouteParams = ref(new Map());
 
+const queryClient = useQueryClient();
+
+const reactiveQuery = computed(() => ({
+  location_id: route.query.location_id,
+  record_categories: route.query.record_categories
+}));
+
+const queryKeySearch = computed(() => [SEARCH, reactiveQuery.value]);
+const queryKeyFollowed = computed(() => [SEARCH_FOLLOWED, reactiveQuery.value]);
+const queryKeyRequests = computed(() => [DATA_REQUEST, reactiveQuery.value]);
+
+const {
+  isLoading: isSearchPending,
+  isFetching: isSearchFetching,
+  // isError,
+  data: searchData,
+  error: searchError
+} = useQuery({
+  queryKey: queryKeySearch,
+  queryFn: () => getSearchResults(route),
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  onError: (error) => {
+    if (error) {
+      toast.error(
+        `Error fetching search results for ${getMinimalLocationText(searchData?.value?.location)}. Please try again!`,
+        {
+          autoClose: false,
+          onClose() {
+            isSearchShown.value = true;
+          }
+        }
+      );
+
+      hasDisplayedErrorByRouteParams.value.set(
+        JSON.stringify(searchData?.value?.location),
+        true
+      );
+    }
+  }
+});
+
+const {
+  isLoading: isFedSearchPending,
+  isFetching: isFedSearchFetching,
+  // isError,
+  data: fedSearchData,
+  error: fedSearchError
+} = useQuery({
+  queryKey: [SEARCH_FEDERAL],
+  queryFn: () => searchFederal(),
+  staleTime: 15 * 60 * 1000 // 15 minutes
+});
+
+const {
+  isLoading: isFollowedPending,
+  isFetching: isFollowedFetching,
+  data: isFollowed,
+  isError: isFollowedError
+} = useQuery({
+  queryKey: queryKeyFollowed,
+  queryFn: () => getIsFollowed(route),
+  staleTime: 5 * 60 * 1000 // 5 minutes
+});
+
+const {
+  isLoading: dataRequestsPending,
+  isFetching: dataRequestsFetching,
+  // isError,
+  data: requestData,
+  error: dataRequestsError
+} = useQuery({
+  queryKey: queryKeyRequests,
+  queryFn: () => getLocationRequests(route),
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  onSuccess: (data) => {
+    if (data?.length) {
+      searchStore.setMostRecentRequestIds(data.map((req) => req.id));
+    }
+  }
+});
+
+const followMutation = useMutation({
+  mutationFn: async () => {
+    await followSearch(route.query.location_id);
+    toast.success(
+      `Search followed for ${getMinimalLocationText(searchData?.value?.location)}.`
+    );
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH_FOLLOWED]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
+  },
+  onError: () => {
+    toast.error(
+      `Error following search for ${getMinimalLocationText(searchData?.value?.location)}. Please try again.`
+    );
+  }
+});
+
+const pendingSearch = computed(
+  () => isSearchPending.value || isFedSearchPending.value
+);
+const fetchingSearch = computed(
+  () => isSearchFetching.value || isFedSearchFetching.value
+);
+const errorSearch = computed(() => searchError.value || fedSearchError.value);
+
+const searchDataCombined = computed(() => {
+  if (!searchData.value || !fedSearchData.value) return;
+
+  const copy = JSON.parse(JSON.stringify(searchData.value.response));
+
+  copy.count = copy.count + (fedSearchData.value.data?.count || 0);
+  copy.data.federal = JSON.parse(
+    JSON.stringify(fedSearchData.value.data || {})
+  );
+
+  return groupResultsByAgency(copy);
+});
+
+watch(searchDataCombined, (newValue) => {
+  searchStore.setMostRecentSearchIds(getAllIdsSearched(newValue));
+});
+
 watch(
   () => route,
   (newRoute) => {
     if (newRoute.hash && !route.hash) {
-      const hash = `#${normalizeLocaleForHash(searchData.searched, searchData.response)}`;
+      const hash = `#${normalizeLocaleForHash(searchData.value.searched, searchData.value.response)}`;
       router.replace({ ...route, hash });
     }
   },
@@ -270,9 +343,9 @@ watch(
 onMounted(() => {
   if (window.innerWidth > 1280) isSearchShown.value = true;
 
-  if (searchData?.value) {
+  if (searchDataCombined?.value) {
     searchStore.setMostRecentSearchIds(
-      getAllIdsSearched(searchData?.value?.results)
+      getAllIdsSearched(searchDataCombined.value)
     );
   }
 
@@ -284,9 +357,9 @@ onMounted(() => {
 });
 
 onUpdated(async () => {
-  if (error.value) {
+  if (searchError.value) {
     toast.error(
-      `Error fetching search results for ${getMinimalLocationText(searchData?.value?.params)}. Please try again!`,
+      `Error fetching search results for ${getMinimalLocationText(searchData?.value?.location)}. Please try again!`,
       {
         autoClose: false,
         onClose() {
@@ -295,14 +368,14 @@ onUpdated(async () => {
       }
     );
     hasDisplayedErrorByRouteParams.value.set(
-      JSON.stringify(searchData?.value?.params),
+      JSON.stringify(searchData?.value?.location),
       true
     );
   }
 
-  if (searchData?.value)
+  if (searchDataCombined.value)
     searchStore.setMostRecentSearchIds(
-      getAllIdsSearched(searchData?.value?.results)
+      getAllIdsSearched(searchDataCombined.value)
     );
 
   if (requestData?.value) {
@@ -314,21 +387,6 @@ onUnmounted(() => {
   hasDisplayedErrorByRouteParams.value.clear();
   window.removeEventListener('resize', onWindowWidthSetIsSearchShown);
 });
-
-// Utilities and handlers
-async function follow() {
-  try {
-    await followSearch(route.query.location_id);
-    await reloadFollowed();
-    toast.success(
-      `Search followed for ${getMinimalLocationText(searchData?.value?.params)}.`
-    );
-  } catch (error) {
-    toast.error(
-      `Error following search for ${getMinimalLocationText(searchData?.value?.params)}. Please try again.`
-    );
-  }
-}
 
 function onWindowWidthSetIsSearchShown() {
   if (window.innerWidth === dims.width) {

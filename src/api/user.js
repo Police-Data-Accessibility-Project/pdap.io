@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ENDPOINTS } from './constants';
 import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
+import { signInWithEmail } from './auth';
 
 const USER_BASE = `${import.meta.env.VITE_API_URL}/user`;
 const HEADERS = {
@@ -13,7 +14,7 @@ export async function changePassword(oldPassword, newPassword) {
   const user = useUserStore();
 
   await axios.post(
-    `${USER_BASE}/${user.id}/${ENDPOINTS.USER.ID.UPDATE_PASSWORD}`,
+    `${USER_BASE}/${ENDPOINTS.USER.UPDATE_PASSWORD}`,
     { old_password: oldPassword, new_password: newPassword },
     {
       headers: {
@@ -23,7 +24,7 @@ export async function changePassword(oldPassword, newPassword) {
     }
   );
 
-  return await auth.signInWithEmail(user.email, newPassword);
+  return await signInWithEmail(user.email, newPassword);
 }
 
 export async function getUser() {
