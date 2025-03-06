@@ -1,7 +1,9 @@
 <template>
-  <main class="pdap-flex-container" :class="{ 'mx-auto max-w-2xl': !success }">
+  <main
+    class="pdap-flex-container"
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
     <h1>Request a link to reset your password</h1>
-    <template v-if="success">
+    <template v-if="isSuccess">
       <p data-test="success-subheading">
         We sent you an email with a link to reset your password. Please follow
         the link in the email to proceed
@@ -17,7 +19,7 @@
         name="reset-password"
         :error="error"
         :schema="VALIDATION_SCHEMA_REQUEST_PASSWORD"
-        @submit="onSubmitRequestReset">
+        @submit="requestReset">
         <InputText
           id="email"
           autocomplete="email"
@@ -25,7 +27,7 @@
           name="email"
           label="Email"
           placeholder="Your email address" />
-        <Button class="max-w-full" :is-loading="loading" type="submit">
+        <Button class="max-w-full" :is-loading="isLoading" type="submit">
           Request password reset
         </Button>
       </FormV2>
@@ -38,6 +40,8 @@ import { Button, FormV2, InputText } from 'pdap-design-system';
 import { useUserStore } from '@/stores/user';
 import { ref, onMounted } from 'vue';
 import { requestPasswordReset } from '@/api/auth';
+import { useMutation } from '@tanstack/vue-query';
+import { toast } from 'vue3-toastify';
 
 // Constants
 const VALIDATION_SCHEMA_REQUEST_PASSWORD = [
@@ -58,28 +62,29 @@ const VALIDATION_SCHEMA_REQUEST_PASSWORD = [
 // Stores
 const user = useUserStore();
 
+const {
+  error,
+  isSuccess,
+  isLoading,
+  mutate: requestReset
+} = useMutation({
+  mutationFn: async (formValues) => {
+    const { email } = formValues;
+    await requestPasswordReset(email);
+  },
+  onSuccess: () => {
+    toast.success('Password updated successfully');
+  },
+  onError: (err) => {
+    toast.error(err.message ?? 'Something went wrong. Please try again.');
+  }
+});
+
 // Reactive vars
 const formRefRequest = ref();
-const error = ref(undefined);
-const loading = ref(false);
-const success = ref(false);
 
 // Lifecycle hooks
 onMounted(() => {
   formRefRequest.value?.setValues({ email: user.email });
 });
-
-// Functions
-async function onSubmitRequestReset(formValues) {
-  try {
-    loading.value = true;
-    const { email } = formValues;
-    await requestPasswordReset(email);
-    success.value = true;
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
-}
 </script>

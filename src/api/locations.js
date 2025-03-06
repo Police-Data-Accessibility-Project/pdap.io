@@ -11,12 +11,9 @@ const HEADERS_BASIC = {
 };
 
 export async function getLocation(id) {
-  return await axios.get(
-    `${LOCATIONS_BASE}/${id}/${ENDPOINTS.USER.ID.UPDATE_PASSWORD}`,
-    {
-      headers: HEADERS_BASIC
-    }
-  );
+  return await axios.get(`${LOCATIONS_BASE}/${id}`, {
+    headers: HEADERS_BASIC
+  });
 }
 
 export async function getLocationDataRequests(id) {

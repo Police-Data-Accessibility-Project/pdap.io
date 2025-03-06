@@ -4,13 +4,21 @@
 
     <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
     <div
-      v-if="githubLoading"
+      v-if="
+        !isGithubAuthError &&
+        (githubAuthIsLoading || route.query.gh_access_token)
+      "
       class="flex items-center justify-center h-full w-full">
-      <Spinner :show="githubLoading" text="Logging in" />
+      <Spinner
+        :show="
+          !isGithubAuthError &&
+          (githubAuthIsLoading || route.query.gh_access_token)
+        "
+        text="Logging in" />
     </div>
 
     <template v-else>
-      <template v-if="githubAuthError">
+      <template v-if="isGithubAuthError">
         <p class="error">
           There was an error logging you in with Github. Please try again
         </p>
@@ -41,7 +49,7 @@
         name="login"
         :error="error"
         :schema="VALIDATION_SCHEMA"
-        @submit="onSubmit">
+        @submit="completePasswordAuth">
         <InputText
           id="email"
           autocomplete="email"
@@ -61,7 +69,8 @@
 
         <Button
           class="max-w-full mt-4"
-          :is-loading="loading"
+          :disabled="passwordAuthIsLoading"
+          :is-loading="passwordAuthIsLoading"
           type="submit"
           data-test="submit-button">
           Sign in
@@ -87,38 +96,6 @@
   </main>
 </template>
 
-<script>
-// Data loader - navigation guard and GH auth handling
-// TODO (when GH auth is settled): abstract this into repeatable func. It's duplicated on `/sign-in` and `/sign-up`
-import { NavigationResult } from 'unplugin-vue-router/data-loaders';
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useAuthStore } from '@/stores/auth';
-import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
-
-const auth = useAuthStore();
-
-export const useGithubAuth = defineBasicLoader('/sign-in', async (route) => {
-  if (auth.isAuthenticated())
-    throw new NavigationResult(auth.redirectTo ?? { path: '/profile' });
-
-  try {
-    const githubAccessToken = route.query.gh_access_token;
-
-    if (githubAccessToken) {
-      const tokens = await signInWithGithub(githubAccessToken);
-
-      if (tokens)
-        return new NavigationResult(auth.redirectTo ?? { path: '/profile' });
-    }
-  } catch (error) {
-    if (error.response.data.message.includes('already exists')) {
-      auth.setRedirectTo({ path: '/profile' });
-      return { userExists: true };
-    } else throw error;
-  }
-});
-</script>
-
 <script setup>
 // Imports
 import { signInWithEmail } from '@/api/auth';
@@ -131,9 +108,14 @@ import {
 } from 'pdap-design-system';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch } from 'vue';
+import { useMutation } from '@tanstack/vue-query';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
 
+const auth = useAuthStore();
+const route = useRoute();
 const router = useRouter();
 
 // Constants
@@ -164,39 +146,76 @@ const VALIDATION_SCHEMA = [
   }
 ];
 
-// Store
 const {
+  isError: isGithubAuthError,
   data: githubAuthData,
-  error: githubAuthError,
-  isLoading: githubLoading
-} = useGithubAuth();
+  mutate: completeGithubAuth,
+  isLoading: githubAuthIsLoading
+} = useMutation({
+  mutationFn: authGithub,
+  // onError: (error) => {},
+  onSuccess: (data) => {
+    if (!data || data?.userExists) return;
+    router.replace(auth.redirectTo ?? { path: '/profile' });
+  }
+});
+
+const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
+  useMutation({
+    mutationFn: (formValues) => authPassword(formValues),
+    // onError: (error) => {},
+    onSuccess: () => {
+      router.replace(auth.redirectTo ?? '/profile');
+    }
+  });
+
+watch(
+  () => route.query.gh_access_token,
+  (newToken, oldToken) => {
+    if (newToken && newToken !== oldToken) {
+      completeGithubAuth();
+    }
+  },
+  {
+    immediate: true
+  }
+);
 
 // Reactive vars
 const error = ref(undefined);
-const loading = ref(false);
-
 // Handlers
+async function authGithub() {
+  if (auth.isAuthenticated()) {
+    return router.push(auth.redirectTo ?? { path: '/profile' });
+  }
+
+  try {
+    const githubAccessToken = route.query.gh_access_token;
+
+    if (githubAccessToken) {
+      const tokens = await signInWithGithub(githubAccessToken);
+
+      if (tokens) {
+        return router.push(auth.redirectTo ?? { path: '/profile' });
+      }
+    }
+    return null;
+  } catch (error) {
+    if (error.response.data.message.includes('already exists')) {
+      auth.setRedirectTo({ path: '/profile' });
+      return { userExists: true };
+    } else throw error;
+  }
+}
 /**
  * Logs user in
  */
-async function onSubmit(formValues) {
-  try {
-    loading.value = true;
-    const { email, password } = formValues;
+async function authPassword(formValues) {
+  const { email, password } = formValues;
 
-    await signInWithEmail(email, password);
+  await signInWithEmail(email, password);
 
-    error.value = undefined;
-    router.push(auth.redirectTo ?? '/profile');
-  } catch (err) {
-    console.error(err);
-    error.value =
-      err.response?.status > 400 && err.response?.status < 500
-        ? err.response?.data.message
-        : 'Something went wrong, please try again.';
-  } finally {
-    loading.value = false;
-  }
+  error.value = undefined;
 }
 </script>
 

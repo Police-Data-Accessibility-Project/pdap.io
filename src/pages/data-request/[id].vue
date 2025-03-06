@@ -9,18 +9,19 @@
 
     <transition mode="out-in" :name="navIs">
       <div
-        v-if="isLoading"
+        v-if="dataRequestsPending"
         class="flex items-center justify-center h-[80vh] w-full flex-col relative">
         <Spinner
-          :show="isLoading"
+          :show="dataRequestsPending"
           :size="64"
           text="Fetching data source results..." />
       </div>
 
       <div
         v-else
+        :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
-        <template v-if="!isLoading && error">
+        <template v-if="!dataRequestsPending && error">
           <h1>An error occurred loading the data request</h1>
           <p>Please refresh the page and try again.</p>
         </template>
@@ -81,48 +82,41 @@
   </main>
 </template>
 
-<script>
-// Data loader
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useDataRequestsStore } from '@/stores/data-requests';
-import { DataLoaderErrorPassThrough } from '@/util/errors';
-import { getDataRequest } from '@/api/data-requests';
-
-const dataRequestsStore = useDataRequestsStore();
-
-export const useDataRequestData = defineBasicLoader(
-  '/request/:id',
-  async (route) => {
-    const dataSourceId = route.params.id;
-
-    try {
-      const results = await getDataRequest(dataSourceId);
-      // Then set current route to prev before returning data
-      dataRequestsStore.setPreviousDataRequestRoute(route);
-      return results.data.data;
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  }
-);
-</script>
-
 <script setup>
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
 import PrevNextNav from './_components/Nav.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { getDataRequest } from '@/api/data-requests';
 import { useSearchStore } from '@/stores/search';
 import { getMinimalLocationText } from '@/util/locationFormatters';
 import { REQUEST_URGENCY } from './_constants';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
+import { useQuery } from '@tanstack/vue-query';
+import { DATA_REQUEST } from '@/util/queryKeys';
 
 const route = useRoute();
 const router = useRouter();
 const searchStore = useSearchStore();
-const { data: dataRequest, isLoading, error } = useDataRequestData();
+const reactiveParams = computed(() => ({
+  id: route.params.id
+}));
+const queryKey = computed(() => [DATA_REQUEST, reactiveParams.value.id]);
+
+const {
+  isLoading: dataRequestsPending,
+  data: dataRequest,
+  error
+} = useQuery({
+  queryKey,
+  queryFn: async () => {
+    const response = await getDataRequest(route.params.id);
+    return response.data.data;
+  },
+  staleTime: 5 * 60 * 1000 // 5 minutes,
+});
 
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first

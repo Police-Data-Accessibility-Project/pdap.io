@@ -397,15 +397,15 @@
       <div
         class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
         <Button
-          :disabled="requestPending"
-          :is-loading="requestPending"
+          :disabled="createDataSourceMutation.isLoading"
+          :is-loading="createDataSourceMutation.isLoading"
           class="min-w-52"
           intent="primary"
           type="submit">
           Submit data source
         </Button>
         <Button
-          :disabled="requestPending"
+          :disabled="createDataSourceMutation.isLoading"
           intent="secondary"
           type="button"
           @click="clear">
@@ -444,11 +444,12 @@ import unpluralize from '@/util/unpluralize';
 import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import _startCase from 'lodash/startCase';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, computed } from 'vue';
 import { createDataSource } from '@/api/data-sources';
 import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
-
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -740,6 +741,37 @@ const typeaheadError = ref();
 const formError = ref();
 const requestPending = ref(false);
 
+const queryClient = useQueryClient();
+const createDataSourceMutation = useMutation({
+  mutationFn: async (formValues) => {
+    if (formError.value) {
+      formError.value = '';
+    }
+    await createDataSource(formValues);
+
+    window.scrollTo(0, 0);
+    advancedPropertiesExpanded.value = false;
+    const message = `${formValues.entry_data[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
+    toast.success(message, { autoClose: false });
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: [DATA_SOURCE]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH]
+    });
+    selectedAgencies.value = [];
+  },
+  onError: (error) => {
+    if (error) {
+      console.error(error);
+      formError.value = 'Something went wrong, please try again.';
+      formRef.value.setValues({ ...formRef.value.values });
+    }
+  }
+});
+
 function formatDate(date) {
   const offset = date.getTimezoneOffset();
   date = new Date(date.getTime() - offset * 60 * 1000);
@@ -800,22 +832,42 @@ function formatData(values) {
   return values;
 }
 
-// TODO: This functionality is duplicated everywhere we're using typeahead.
-const fetchTypeaheadResults = _debounce(
-  async (e) => {
-    try {
-      if (e.target.value.length > 1) {
-        const suggestions = await getTypeaheadAgencies(e);
+const queryKey = computed(() => [
+  TYPEAHEAD_AGENCIES,
+  typeaheadRef.value?.value.toLowerCase()
+]);
 
-        items.value = suggestions.length ? suggestions : undefined;
-      } else {
-        items.value = [];
-      }
-    } catch (err) {
-      console.error(err);
+const typeaheadMutation = useMutation({
+  mutationFn: async (searchValue) => {
+    if (!searchValue || searchValue.length <= 1) {
+      return queryClient.getQueryData(queryKey.value) || [];
     }
+    const response = await getTypeaheadAgencies(searchValue);
+    return response.length ? response : undefined;
   },
-  350,
+  onSuccess: (data) => {
+    items.value = data;
+    // Update the query cache with the new data
+    queryClient.setQueryData(queryKey, data, {
+      staleTime: 5 * 60 * 1000
+    });
+  }
+});
+
+const fetchTypeaheadResults = _debounce(
+  async () => {
+    const searchValue = typeaheadRef.value?.value;
+    // Check cache
+    const cached = queryClient.getQueryData(queryKey);
+    if (cached) {
+      items.value = cached;
+      return;
+    }
+
+    // Otherwise refresh data
+    typeaheadMutation.mutate(searchValue);
+  },
+  200,
   { leading: true, trailing: true }
 );
 
@@ -873,35 +925,9 @@ async function submit(values) {
 
   formRef.value.setValues({ ...values });
 
-  try {
-    if (formError.value) {
-      formError.value = '';
-    }
-    await createDataSource(requestBody);
-
-    window.scrollTo(0, 0);
-    advancedPropertiesExpanded.value = false;
-    const message = `${values[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
-    toast.success(message, { autoClose: false });
-  } catch (error) {
-    if (error) {
-      console.error(error);
-      formError.value = 'Something went wrong, please try again.';
-      formRef.value.setValues({ ...values });
-      var isError = !!error;
-    }
-  } finally {
-    if (!isError) {
-      selectedAgencies.value = [];
-    }
-    requestPending.value = false;
-  }
+  createDataSourceMutation.mutate(requestBody);
 }
 </script>
-
-<style>
-@tailwind utilities;
-</style>
 
 <style scoped>
 h4 {

@@ -47,9 +47,7 @@ export const ENDPOINTS = {
   USER: {
     DATA_REQUESTS: 'data-requests',
     RECENT_SEARCHES: 'recent-searches',
-    ID: {
-      UPDATE_PASSWORD: 'update-password'
-    }
+    UPDATE_PASSWORD: 'update-password'
   },
   METRICS: {
     METRICS: 'metrics'

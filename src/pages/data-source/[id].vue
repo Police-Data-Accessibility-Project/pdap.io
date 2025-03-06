@@ -20,6 +20,7 @@
 
       <div
         v-else
+        :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
         <template v-if="!isLoading && error">
           <h1>An error occurred loading the data source</h1>
@@ -170,34 +171,6 @@
   </main>
 </template>
 
-<script>
-// Data loader
-import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
-import { useRoute, useRouter } from 'vue-router';
-import { useSwipe } from '@vueuse/core';
-import { ref } from 'vue';
-import { useDataSourceStore } from '@/stores/data-source';
-import { DataLoaderErrorPassThrough } from '@/util/errors';
-import { getDataSource } from '@/api/data-sources';
-const dataSourceStore = useDataSourceStore();
-
-export const useDataSourceData = defineBasicLoader(
-  '/data-source/:id',
-  async (route) => {
-    const dataSourceId = route.params.id;
-
-    try {
-      const results = await getDataSource(dataSourceId);
-      // Then set current route to prev before returning data
-      dataSourceStore.setPreviousDataSourceRoute(route);
-      return results.data.data;
-    } catch (error) {
-      throw new DataLoaderErrorPassThrough(error);
-    }
-  }
-);
-</script>
-
 <script setup>
 import { Button, RecordTypeIcon, Spinner } from 'pdap-design-system';
 import PrevNextNav from './_components/Nav.vue';
@@ -205,14 +178,42 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { useSearchStore } from '@/stores/search';
 import { DATA_SOURCE_UI_SHAPE } from './_util';
+import { getDataSource } from '@/api/data-sources';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
 import { isDescendantOf } from '@/util/DOM';
-import { computed, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import { useRoute, useRouter } from 'vue-router';
+import { useSwipe } from '@vueuse/core';
+import { DATA_SOURCE } from '@/util/queryKeys';
 
 const route = useRoute();
 const router = useRouter();
 const searchStore = useSearchStore();
-const { data: dataSource, isLoading, error } = useDataSourceData();
+
+const reactiveParams = computed(() => ({
+  id: route.params.id
+}));
+const queryKey = computed(() => [DATA_SOURCE, reactiveParams.value.id]);
+
+const {
+  isLoading: dataSourcePending,
+  isFetching: dataSourceFetching,
+  data: sourceData,
+  error
+} = useQuery({
+  queryKey,
+  queryFn: () => getDataSource(route.params.id),
+  staleTime: 5 * 60 * 1000 // 5 minutes,
+});
+
+const dataSource = computed(() => {
+  return sourceData.value.data.data;
+});
+
+const isLoading = computed(
+  () => dataSourcePending.value || dataSourceFetching.value
+);
 
 const currentIdIndex = computed(() =>
   // Route params are strings, but the ids are stored as numbers, so cast first

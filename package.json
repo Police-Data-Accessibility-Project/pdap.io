@@ -20,6 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@tanstack/vue-query": "^5.66.4",
     "@vueuse/core": "^11.2.0",
     "axios": "^1.6.0",
     "dotenv": "^16.4.7",
