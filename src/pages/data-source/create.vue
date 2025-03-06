@@ -454,7 +454,7 @@ const INPUT_NAMES = {
   url: 'source_url',
   readMeUrl: 'readme_url',
   agencies: 'agencies',
-  name: 'submitted_name',
+  name: 'name',
   description: 'description',
   contact: 'submitter_contact_info',
 
