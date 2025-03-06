@@ -198,7 +198,7 @@
                 v-bind="{
                   [RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY[categoryTitle]]: true
                 }">
-                <h6 class="text-sm col-span-2">{{ categoryTitle }}</h6>
+                <h5 class="text-lg col-span-2">{{ categoryTitle }}</h5>
 
                 <InputRadio
                   v-for="detail of recordTypes"

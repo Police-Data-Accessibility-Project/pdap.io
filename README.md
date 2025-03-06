@@ -10,7 +10,7 @@ The web application for all things PDAP.
 ```shell
 # API
 VITE_API_KEY=key_from_pdap_staff
-VITE_API_URL=https://data-sources-v2.pdap.dev/api # Or 'https://data-sources-v2.pdap.dev/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
+VITE_API_URL=https://data-sources.pdap.dev/api # Or 'https://data-sources.pdap.io/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
 
 # V2 feature flags - these are **temporary**. They should be set to "enabled" for development.
 VITE_V2_FEATURE_ENHANCED_SEARCH=enabled

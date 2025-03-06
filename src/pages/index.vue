@@ -113,12 +113,11 @@
         <p>
           All of our programs exist to help people answer questions with data.
           <strong>If you are starting a data project, we can help.</strong>
-          <Button
-            class="mt-2"
-            intent="primary"
-            onclick="window.open('https://airtable.com/app473MWXVJVaD7Es/shrbFfWk6fjzGnNsk', '_blank')">
+          <router-link
+            class="pdap-button-primary mt-4"
+            :to="'/data-request/create'">
             Open a Data Request
-          </Button>
+          </router-link>
         </p>
       </div>
     </section>
@@ -149,12 +148,19 @@
         Some public records are already online, waiting to be indexed and used.
         Adding them to our database makes them more accessible to everyone.
       </p>
-      <Button
-        class="mt-2"
-        intent="primary"
-        onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
-        Help find & label Data Sources
-      </Button>
+      <div class="flex-row">
+        <a
+          class="mt-2 pdap-button-primary"
+          href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
+          target="blank">
+          Help find & label Data Sources
+        </a>
+        <router-link
+          class="pdap-button-secondary mt-2 ml-2"
+          :to="'/data-source/create'">
+          Submit a source you found
+        </router-link>
+      </div>
       <h2 class="pt-8">
         <FontAwesomeIcon :icon="faPeopleCarryBox" class="text-brand-wine-300" />
         Collaborate on data projects
@@ -169,23 +175,25 @@
         To see open requests for a particular area, search for a location above.
       </p>
       -->
-      <h3 class="mt-2">Open data requests</h3>
-      <ul v-if="requestsLoaded">
-        <li v-for="request in recentRequests" :key="request.id">
-          <strong>{{ request.title }}</strong>
-          Location: {{ request.locationDisplayName }}
-          <router-link :to="request.route">
-            Details
-            <FontAwesomeIcon :icon="faExternalLink" />
-          </router-link>
-        </li>
-      </ul>
-      <Button
-        class="mt-2"
-        intent="primary"
-        onclick="window.open('https://docs.pdap.io')">
+      <div v-if="requestsLoaded">
+        <h3 class="mt-2">Open data requests</h3>
+        <ul>
+          <li v-for="request in recentRequests" :key="request.id">
+            <strong>{{ request.title }}</strong>
+            Location: {{ request.locationDisplayName }}
+            <router-link :to="request.route">
+              Details
+              <FontAwesomeIcon :icon="faExternalLink" />
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <a
+        class="pdap-button-primary mt-2"
+        href="https://docs.pdap.io"
+        target="blank">
         Volunteer for data requests
-      </Button>
+      </a>
       <h2 class="pt-4 col-span-full">
         <FontAwesomeIcon
           :icon="faCodePullRequest"
@@ -212,13 +220,12 @@
             </a>
           </p>
         </div>
-
-        <Button
-          class="mt-2 col-span-full"
-          intent="primary"
-          onclick="window.open('https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ', '_blank')">
+        <a
+          class="pdap-button-primary mt-2 col-span-full"
+          href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1"
+          target="blank">
           View more Good First Issues
-        </Button>
+        </a>
       </div>
     </section>
     <section
@@ -402,7 +409,6 @@
 </template>
 
 <script setup>
-import { Button } from 'pdap-design-system';
 import { ref, computed } from 'vue';
 import SearchForm from '@/components/SearchForm.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
