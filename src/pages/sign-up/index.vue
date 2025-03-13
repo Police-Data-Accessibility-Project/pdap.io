@@ -1,6 +1,6 @@
 <template>
   <main class="pdap-flex-container mx-auto max-w-2xl">
-    <template v-if="!auth.userId">
+    <template v-if="!auth.userId && getIsV2FeatureEnabled('SIGNUP')">
       <h1>Sign Up</h1>
 
       <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
@@ -79,7 +79,7 @@
             class="pdap-button-secondary flex-1 max-w-full"
             data-test="toggle-button"
             to="/sign-in">
-            Log in
+            Sign in
           </RouterLink>
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
@@ -90,7 +90,25 @@
         </div>
       </template>
     </template>
+    <template v-else-if="!auth.userId && !getIsV2FeatureEnabled('SIGNUP')">
+      <h1>We're in a controlled beta.</h1>
+      <p>
+        ...but we'd love to have you! If you'd like to create an account, email
+        <a href="mailto:contact@pdap.io">contact@pdap.io</a>
+        .
+      </p>
+      <div
+        class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full">
+        <p class="w-full max-w-[unset]">Already have an account?</p>
 
+        <RouterLink
+          class="pdap-button-primary flex-1"
+          data-test="toggle-button"
+          to="/sign-in">
+          Sign in
+        </RouterLink>
+      </div>
+    </template>
     <RouterView v-else />
   </main>
 </template>
@@ -112,6 +130,7 @@ import { useRoute, RouterView, useRouter } from 'vue-router';
 import { useMutation } from '@tanstack/vue-query';
 import { useAuthStore } from '@/stores/auth';
 import { signInWithGithub, signUpWithEmail, beginOAuthLogin } from '@/api/auth';
+import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const auth = useAuthStore();
 const route = useRoute();

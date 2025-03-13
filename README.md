@@ -17,6 +17,7 @@ VITE_V2_FEATURE_ENHANCED_SEARCH=enabled
 VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
 VITE_V2_FEATURE_SHOW_REQUESTS=enabled
+VITE_V2_FEATURE_SIGNUP=enabled
 ```
 
 _Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you need a different value, by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`

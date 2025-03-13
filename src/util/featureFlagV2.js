@@ -1,7 +1,7 @@
 /**
  * Gets enabled / disabled status for features.
  *
- * @param {'ENHANCED_SEARCH' | 'AUTHENTICATE' | 'CREATE_RECORDS' | 'SHOW_REQUESTS'} featureName Name of V2 feature to check
+ * @param {'ENHANCED_SEARCH' | 'AUTHENTICATE' | 'CREATE_RECORDS' | 'SHOW_REQUESTS' | 'SIGNUP'} featureName Name of V2 feature to check
  * @returns {boolean} Whether the feature is enabled or not
  */
 export function getIsV2FeatureEnabled(featureName) {
