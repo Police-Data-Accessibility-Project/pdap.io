@@ -750,7 +750,6 @@ const createDataSourceMutation = useMutation({
     await createDataSource(formValues);
 
     window.scrollTo(0, 0);
-    advancedPropertiesExpanded.value = false;
     const message = `${formValues.entry_data[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
     toast.success(message, { autoClose: false });
   },
@@ -762,6 +761,7 @@ const createDataSourceMutation = useMutation({
       queryKey: [SEARCH]
     });
     selectedAgencies.value = [];
+    requestPending.value = false;
   },
   onError: (error) => {
     if (error) {
