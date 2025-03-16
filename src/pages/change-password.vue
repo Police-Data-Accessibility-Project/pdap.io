@@ -7,42 +7,33 @@
 </route>
 
 <template>
-  <main class="pdap-flex-container" :class="{ 'mx-auto max-w-2xl': !success }">
-    <template v-if="success">
-      <h1>Success</h1>
-      <p>Your password has been successfully updated</p>
-    </template>
+  <main
+    class="pdap-flex-container"
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    <h1>Change your password</h1>
 
-    <template v-else>
-      <h1>Change your password</h1>
-      <!-- TODO: make this copy conditional based on whether or not user signed up via GH -->
+    <!-- GH auth user - no password to change -->
+    <template v-if="profileData?.external_accounts.github">
       <p>
         You signed up with a Github account linked to the email address you
-        provided.
+        provided. No password is necessary to access your account.
       </p>
       <p>
-        Sign in with Github, or create a password to sign in with this email
-        address.
+        {{ error?.message ?? passwordMatchError }}
       </p>
-      <!-- END TODO -->
+    </template>
 
-      <Button
-        class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
-        intent="tertiary"
-        @click="() => beginOAuthLogin('/profile')">
-        <FontAwesomeIcon :icon="faGithub" />
-        Sign in with Github
-      </Button>
-
+    <!-- Otherwise, allow change PW -->
+    <template v-else>
       <FormV2
         id="change-password"
         class="flex flex-col gap-2"
         data-test="change-password-form"
         name="change-password"
-        :error="error"
+        :error="error?.message ?? passwordMatchError"
         :schema="VALIDATION_SCHEMA"
         @change="onChange"
-        @submit="onSubmit"
+        @submit="updatePassword"
         @input="onInput">
         <InputPassword
           v-for="input of INPUTS"
@@ -51,7 +42,11 @@
 
         <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
-        <Button class="max-w-full" :is-loading="loading" type="submit">
+        <Button
+          class="max-w-full"
+          :disabled="isLoading"
+          :is-loading="isLoading"
+          type="submit">
           Change password
         </Button>
       </FormV2>
@@ -61,13 +56,15 @@
 
 <script setup>
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { useUserStore } from '@/stores/user';
+import { useMutation, useQuery } from '@tanstack/vue-query';
+import { toast } from 'vue3-toastify';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { ref } from 'vue';
-import { changePassword } from '@/api/user';
-import { beginOAuthLogin, signInWithEmail } from '@/api/auth';
+import { changePassword, getUser } from '@/api/user';
+import { useRouter } from 'vue-router';
+import { PROFILE } from '@/util/queryKeys';
+
+const router = useRouter();
 
 // Constants
 const INPUTS = [
@@ -75,7 +72,7 @@ const INPUTS = [
     autocomplete: 'password',
     'data-test': 'password',
     id: 'current-password',
-    name: 'current-password',
+    name: 'currentPassword',
     label: 'Current password',
     type: 'password',
     placeholder: 'Your existing password'
@@ -133,15 +130,42 @@ const VALIDATION_SCHEMA = [
     }
   }
 ];
+const {
+  data: profileData
+  // error: profileError,
+  // isLoading: profileLoading,
+  // refetch: refetchProfile
+} = useQuery({
+  queryKey: [PROFILE],
+  queryFn: async () => {
+    const response = await getUser();
+    return response.data.data;
+  },
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  onError: (err) => {
+    console.error(err);
+  }
+});
 
-// Stores
-const user = useUserStore();
+const {
+  error,
+  isSuccess,
+  isLoading,
+  mutate: updatePassword
+} = useMutation({
+  mutationFn: async (formValues) => onSubmit(formValues),
+  onSuccess: () => {
+    toast.success('Password updated successfully', {
+      onClose: () => {
+        router.push({ path: '/profile' });
+      }
+    });
+  }
+});
 
 // Reactive vars
 const passwordRef = ref();
-const error = ref(undefined);
-const loading = ref(false);
-const success = ref(false);
+const passwordMatchError = ref();
 
 // Functions
 // Handlers
@@ -151,7 +175,7 @@ const success = ref(false);
 function onChange(formValues) {
   passwordRef.value.updatePasswordValidation(formValues.password);
 
-  if (error.value) {
+  if (passwordMatchError.value) {
     handleValidatePasswordMatch(formValues);
   }
 }
@@ -164,12 +188,12 @@ function onInput(e) {
 
 function handleValidatePasswordMatch(formValues) {
   if (formValues.password !== formValues.confirmPassword) {
-    if (!error.value) {
-      error.value = 'Passwords do not match, please try again.';
+    if (!passwordMatchError.value) {
+      passwordMatchError.value = 'Passwords do not match, please try again.';
     }
     return false;
   } else {
-    error.value = undefined;
+    passwordMatchError.value = undefined;
     return true;
   }
 }
@@ -178,24 +202,13 @@ async function onSubmit(formValues) {
   const isPasswordValid = passwordRef.value.isPasswordValid();
 
   if (!isPasswordValid) {
-    error.value = 'Password is not valid';
-  } else {
-    if (error.value) error.value = undefined;
+    throw new Error('Password is not valid');
   }
 
   if (!handleValidatePasswordMatch(formValues) || !isPasswordValid) return;
 
-  try {
-    loading.value = true;
-    const { password, currentPassword } = formValues;
-    await signInWithEmail(user.email, currentPassword);
-    await changePassword(currentPassword, password);
-
-    success.value = true;
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
+  const { password, currentPassword } = formValues;
+  await changePassword(currentPassword, password);
+  return;
 }
 </script>

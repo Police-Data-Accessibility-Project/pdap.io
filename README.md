@@ -10,13 +10,14 @@ The web application for all things PDAP.
 ```shell
 # API
 VITE_API_KEY=key_from_pdap_staff
-VITE_API_URL=https://data-sources-v2.pdap.dev/api # Or 'https://data-sources-v2.pdap.dev/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
+VITE_API_URL=https://data-sources.pdap.dev/api # Or 'https://data-sources.pdap.io/api' for the prod DB, or 'http://localhost:5000' if you're working with the API locally.
 
 # V2 feature flags - these are **temporary**. They should be set to "enabled" for development.
 VITE_V2_FEATURE_ENHANCED_SEARCH=enabled
 VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
 VITE_V2_FEATURE_SHOW_REQUESTS=enabled
+VITE_V2_FEATURE_SIGNUP=enabled
 ```
 
 _Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you need a different value, by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`
@@ -41,6 +42,7 @@ npm i && npm run dev
 | `test:ci`      | Runs unit tests quietly                                                           |
 | `test:changed` | Runs unit tests on changed files only                                             |
 | `coverage`     | Runs unit tests and outputs coverage report                                       |
+
 
 
 ### Contributing

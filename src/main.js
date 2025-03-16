@@ -1,26 +1,31 @@
-import './main.css';
 import { createApp } from 'vue';
+
 import { createPinia } from 'pinia';
 import piniaPersistState from 'pinia-plugin-persistedstate';
-import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders';
 import Vue3Toastify from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { VueQueryPlugin } from '@tanstack/vue-query';
+
 import App from './App.vue';
 import router from './router';
+import './main.css';
+import 'vue3-toastify/dist/index.css';
 import 'pdap-design-system/styles';
-import { DataLoaderErrorPassThrough } from '@/util/errors';
 
-// TODO: make router available in store?
-// pinia.use(({ store }) => {
-// 	store.router = markRaw(router);
-// });
-
+/* Plugins, etc. -- order matters */
 const app = createApp(App);
+
+/* Pinia - client state*/
 const pinia = createPinia();
 pinia.use(piniaPersistState);
 app.use(pinia);
-app.use(DataLoaderPlugin, { router, errors: [DataLoaderErrorPassThrough] });
+
+/* Tanstack - API state */
+app.use(VueQueryPlugin);
+
+/* Router */
 app.use(router);
+
+/* Toaster */
 app.use(Vue3Toastify, {
   autoClose: 5000,
   containerClassName: 'pdap-toast-container',
@@ -31,4 +36,5 @@ app.use(Vue3Toastify, {
   theme: 'auto'
 });
 
+/* And away we go */
 app.mount('#app');
