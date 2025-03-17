@@ -28,10 +28,10 @@
               <p>
                 {{ profileData?.email }}
               </p>
+              <Button @click="signOutWithRedirect">Sign out</Button>
             </div>
             <h3 class="like-h4">Password</h3>
             <div class="h-12">
-              <Button @click="signOutWithRedirect">Sign out</Button>
               <router-link
                 class="pdap-button-secondary"
                 :to="'/request-reset-password'">
