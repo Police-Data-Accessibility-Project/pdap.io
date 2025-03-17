@@ -29,6 +29,15 @@
                 {{ profileData?.email }}
               </p>
             </div>
+            <h3 class="like-h4">Password</h3>
+            <div class="h-12">
+              <Button @click="signOutWithRedirect">Sign out</Button>
+              <router-link
+                class="pdap-button-secondary"
+                :to="'/request-reset-password'">
+                Reset your password
+              </router-link>
+            </div>
           </section>
 
           <!-- Github info -->
@@ -103,10 +112,6 @@
               </li>
             </ul>
           </section>
-
-          <div>
-            <Button @click="signOutWithRedirect">Sign out</Button>
-          </div>
         </div>
 
         <h2>My stuff</h2>
