@@ -7,7 +7,7 @@ export const ENDPOINTS = {
     LINK_TO_GITHUB: 'link-to-github',
     LOGIN: 'login',
     REFRESH_SESSION: 'refresh-session',
-    REQUEST_RESET_PASSWORD: 'reset-reset-password',
+    REQUEST_RESET_PASSWORD: 'request-reset-password',
     RESEND_VALIDATION_EMAIL: 'resend-validation-email',
     RESET_PASSWORD: 'reset-password',
     RESET_TOKEN_VALIDATION: 'reset-token-validation',
