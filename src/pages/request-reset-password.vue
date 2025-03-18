@@ -73,7 +73,7 @@ const {
     await requestPasswordReset(email);
   },
   onSuccess: () => {
-    toast.success('Password updated successfully');
+    toast.success('Password reset request received');
   },
   onError: (err) => {
     toast.error(err.message ?? 'Something went wrong. Please try again.');

@@ -41,7 +41,10 @@
 
       <PasswordValidationChecker ref="passwordRef" />
 
-      <Button class="max-w-full" :is-loading="isLoading" type="submit">
+      <Button
+        class="max-w-full"
+        :is-loading="isLoading || status === 'pending'"
+        type="submit">
         Change password
       </Button>
     </FormV2>
@@ -118,6 +121,7 @@ const {
   error,
   isSuccess,
   isLoading,
+  status,
   mutate: changePassword
 } = useMutation({
   mutationFn: async (formValues) => onSubmitChangePassword(formValues),
@@ -144,14 +148,18 @@ onMounted(validateToken);
 
 // Handlers
 async function validateToken() {
-  if (!token) return;
+  if (!token) {
+    router.replace({ path: '/request-reset-password' });
+    return;
+  }
 
   const decoded = parseJwt(token);
 
+  user.setEmail(decoded.sub.user_email);
   if (decoded.exp < Date.now() / 1000) {
     isExpiredToken.value = true;
-    user.setEmail(decoded.sub.email);
   }
+
   hasValidatedToken.value = true;
 }
 // Handlers
@@ -197,7 +205,7 @@ async function onSubmitChangePassword(formValues) {
 
   const { password } = formValues;
   await resetPassword(password, token);
-  await signInWithEmail(parseJwt(token).sub.email, password);
+  await signInWithEmail(parseJwt(token).sub.user_email, password);
 
   router.push({ path: 'profile' });
 }
