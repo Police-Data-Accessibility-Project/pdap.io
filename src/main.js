@@ -12,16 +12,15 @@ import './main.css';
 import 'vue3-toastify/dist/index.css';
 import 'pdap-design-system/styles';
 
-async function enableMocking() {
-  if (import.meta.env.MODE === 'development') {
-    console.log('Running in development mode');
+async function optionallyEnableMocking() {
+  if (import.meta.env.VITE_MSW_ENABLED) {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
 }
 
 // Ensure MSW starts before mounting the app
-enableMocking().then(() => {
+optionallyEnableMocking().then(() => {
   /* Plugins, etc. -- order matters */
   const app = createApp(App);
 

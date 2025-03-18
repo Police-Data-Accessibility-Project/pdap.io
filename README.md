@@ -18,6 +18,10 @@ VITE_V2_FEATURE_AUTHENTICATE=enabled
 VITE_V2_FEATURE_CREATE_RECORDS=enabled
 VITE_V2_FEATURE_SHOW_REQUESTS=enabled
 VITE_V2_FEATURE_SIGNUP=enabled
+
+# Include the below only if you want to use Mock Service Worker to mock API responses
+# This should not be included in production
+VITE_MSW_ENABLED=true
 ```
 
 _Note: You can also override these vars when starting the dev server if you'd rather not update an env file every time you need a different value, by passing the value to the command line before running the server i.e:_ `VITE_API_URL=localhost:5000 npm run dev`
