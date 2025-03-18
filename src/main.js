@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue';
 
 import { createPinia } from 'pinia';
@@ -11,30 +12,41 @@ import './main.css';
 import 'vue3-toastify/dist/index.css';
 import 'pdap-design-system/styles';
 
-/* Plugins, etc. -- order matters */
-const app = createApp(App);
+async function enableMocking() {
+  if (import.meta.env.MODE === 'development') {
+    console.log('Running in development mode');
+    const { worker } = await import('./mocks/browser');
+    await worker.start();
+  }
+}
 
-/* Pinia - client state*/
-const pinia = createPinia();
-pinia.use(piniaPersistState);
-app.use(pinia);
+// Ensure MSW starts before mounting the app
+enableMocking().then(() => {
+  /* Plugins, etc. -- order matters */
+  const app = createApp(App);
 
-/* Tanstack - API state */
-app.use(VueQueryPlugin);
+  /* Pinia - client state */
+  const pinia = createPinia();
+  pinia.use(piniaPersistState);
+  app.use(pinia);
 
-/* Router */
-app.use(router);
+  /* Tanstack - API state */
+  app.use(VueQueryPlugin);
 
-/* Toaster */
-app.use(Vue3Toastify, {
-  autoClose: 5000,
-  containerClassName: 'pdap-toast-container',
-  toastClassName: 'pdap-toast',
-  style: {
-    opacity: 0.95
-  },
-  theme: 'auto'
+  /* Router */
+  app.use(router);
+
+  /* Toaster */
+  app.use(Vue3Toastify, {
+    autoClose: 5000,
+    containerClassName: 'pdap-toast-container',
+    toastClassName: 'pdap-toast',
+    style: {
+      opacity: 0.95
+    },
+    theme: 'auto'
+  });
+
+  /* And away we go */
+  app.mount('#app');
 });
-
-/* And away we go */
-app.mount('#app');

@@ -5,13 +5,13 @@
     <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
     <div
       v-if="
-        !isGithubAuthError &&
+        !(isGithubAuthError || githubAuthData?.userExists) &&
         (githubAuthIsLoading || route.query.gh_access_token)
       "
       class="flex items-center justify-center h-full w-full">
       <Spinner
         :show="
-          !isGithubAuthError &&
+          !(isGithubAuthError || githubAuthData?.userExists) &&
           (githubAuthIsLoading || route.query.gh_access_token)
         "
         text="Logging in" />
@@ -138,10 +138,6 @@ const VALIDATION_SCHEMA = [
       required: {
         value: true
       }
-      // password: {
-      // 	message: 'Please provide your password',
-      // 	value: true,
-      // },
     }
   }
 ];
