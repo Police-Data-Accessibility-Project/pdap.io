@@ -34,7 +34,7 @@
             <div class="h-12">
               <router-link
                 class="pdap-button-secondary"
-                :to="'/request-reset-password'">
+                :to="'/change-password'">
                 Reset your password
               </router-link>
             </div>
