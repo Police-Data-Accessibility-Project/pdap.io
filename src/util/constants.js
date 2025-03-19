@@ -2,6 +2,8 @@ import { FOOTER_LINK_ICONS } from 'pdap-design-system';
 
 export const ALL_LOCATION_TYPES = ['locality', 'county', 'state', 'federal'];
 
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
 export const NAV_LINKS = [
   {
     path: '/',
@@ -18,6 +20,10 @@ export const NAV_LINKS = [
   {
     href: 'https://docs.pdap.io/',
     text: 'Docs'
+  },
+  {
+    icon: faCircleUser,
+    path: '/profile'
   }
 ];
 
