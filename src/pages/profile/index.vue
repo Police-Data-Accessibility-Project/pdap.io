@@ -225,7 +225,7 @@ import { getFullLocationText } from '@/util/locationFormatters';
 import { deleteFollowedSearch } from '@/api/search';
 import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
-import { computed, watch } from 'vue';
+import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 
 const route = useRoute();
@@ -360,14 +360,12 @@ const recentSearches = computed(() =>
   })
 );
 
-watch(
-  () => route.query,
-  (newQuery) => {
-    if (newQuery.gh_access_token) {
-      completeGithubAuth();
-    }
+onMounted(() => {
+  if (route.query.gh_access_token) {
+    completeGithubAuth();
+    router.replace({ query: { ...route.query, gh_access_token: undefined } });
   }
-);
+});
 
 async function signOutWithRedirect() {
   auth.setRedirectTo(route);
