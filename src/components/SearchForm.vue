@@ -1,65 +1,68 @@
 <template>
-  <div
-    class="col-span-1 flex flex-col gap-4 mt-8 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
-    <Typeahead
-      :id="TYPEAHEAD_ID"
-      ref="typeaheadRef"
-      :format-item-for-display="(item) => item.display_name"
-      :items="items"
-      :placeholder="placeholder ?? 'Enter a place'"
-      @select-item="onSelectRecord"
-      @on-input="fetchTypeaheadResults">
-      <!-- Pass label as slot to typeahead -->
-      <template #label>
-        <h4 class="uppercase">Search location</h4>
-      </template>
+  <div class="px-4 mb-4 border-wineneutral-300 bg-wineneutral-50 border-2">
+    <div
+      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
+      <Typeahead
+        :id="TYPEAHEAD_ID"
+        ref="typeaheadRef"
+        :format-item-for-display="(item) => item.display_name"
+        :items="items"
+        :placeholder="placeholder ?? 'Enter a place'"
+        @select-item="onSelectRecord"
+        @on-input="fetchTypeaheadResults">
+        <!-- Pass label as slot to typeahead -->
+        <template #label>
+          <h4 class="uppercase">Search location</h4>
+        </template>
 
-      <!-- Item to render passed as scoped slot -->
-      <template #item="item">
-        <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
-        <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
-        <span class="locale-type">
-          {{ item.type }}
-        </span>
-        <span class="select">Select</span>
-      </template>
-      <template #not-found>
-        <span>
-          We don't have agencies in the place you're looking for. Is it spelled
-          correctly? If our database is missing something, please reach us at
-          <a href="mailto:contat@pdap.io">contact@pdap.io</a>
-        </span>
-      </template>
-    </Typeahead>
+        <!-- Item to render passed as scoped slot -->
+        <template #item="item">
+          <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
+          <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
+          <span class="locale-type">
+            {{ item.type }}
+          </span>
+          <span class="select">Select</span>
+        </template>
+        <template #not-found>
+          <span>
+            We don't have agencies in the place you're looking for. Is it
+            spelled correctly? If our database is missing something, please
+            reach us at
+            <a href="mailto:contat@pdap.io">contact@pdap.io</a>
+          </span>
+        </template>
+      </Typeahead>
+    </div>
+
+    <h4 class="w-full mt-6 like-h4">Types of data</h4>
+    <FormV2
+      id="pdap-data-sources-search"
+      ref="formRef"
+      class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
+      @change="onChange"
+      @submit="submit">
+      <InputCheckbox
+        v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
+        :id="id"
+        :key="name"
+        :default-checked="defaultChecked"
+        :name="name">
+        <template #label>
+          <RecordTypeIcon :record-type="label" />
+          {{ label }}
+        </template>
+      </InputCheckbox>
+
+      <Button
+        :disabled="isButtonDisabled"
+        intent="primary"
+        type="submit"
+        class="mt-4 max-w-full col-span-full">
+        {{ buttonCopy ?? 'Search' }}
+      </Button>
+    </FormV2>
   </div>
-
-  <h4 class="w-full mt-8 like-h4">Types of data</h4>
-  <FormV2
-    id="pdap-data-sources-search"
-    ref="formRef"
-    class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
-    @change="onChange"
-    @submit="submit">
-    <InputCheckbox
-      v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
-      :id="id"
-      :key="name"
-      :default-checked="defaultChecked"
-      :name="name">
-      <template #label>
-        <RecordTypeIcon :record-type="label" />
-        {{ label }}
-      </template>
-    </InputCheckbox>
-
-    <Button
-      :disabled="isButtonDisabled"
-      intent="primary"
-      type="submit"
-      class="mt-4">
-      {{ buttonCopy ?? 'Search' }}
-    </Button>
-  </FormV2>
 </template>
 
 <script setup>
