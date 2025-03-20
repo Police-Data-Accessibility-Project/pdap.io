@@ -42,7 +42,7 @@
 
           <!-- Github info -->
           <section>
-            <h3 class="like-h4">Github account</h3>
+            <h3 class="like-h4">GitHub account</h3>
             <div
               :class="{
                 'profile-loading h-12': !profileData && profileLoading
@@ -51,7 +51,7 @@
                 v-if="didLinkGithub || profileData?.external_accounts.github">
                 <p>
                   <FontAwesomeIcon :icon="faGithub" />
-                  Your account is linked with Github
+                  Your account is linked with GitHub
                 </p>
               </template>
 
@@ -63,7 +63,7 @@
                   intent="tertiary"
                   @click="async () => await beginOAuthLogin('/profile')">
                   <FontAwesomeIcon :icon="faGithub" />
-                  Link account with Github
+                  Link account with GitHub
                 </Button>
               </template>
             </div>
@@ -146,7 +146,7 @@
               @keydown.stop.enter=""
               @click.stop="">
               <FontAwesomeIcon :icon="faLink" />
-              Github
+              GitHub
             </a>
           </template>
         </ProfileTable>
@@ -279,7 +279,7 @@ const {
   },
   onSuccess: (data) => {
     if (data) {
-      toast.success('Successfully linked Github account');
+      toast.success('Successfully linked GitHub account');
     }
     queryClient.invalidateQueries({ queryKey: [PROFILE] });
   }
