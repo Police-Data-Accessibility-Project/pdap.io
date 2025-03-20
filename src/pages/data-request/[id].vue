@@ -73,7 +73,7 @@
             class="pdap-button-primary mt-2 mb-4"
             _target="blank"
             rel="noreferrer">
-            Help out with this issue on Github
+            Help out with this issue on GitHub
             <FontAwesomeIcon :icon="faLink" />
           </a>
         </template>

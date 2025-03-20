@@ -471,7 +471,7 @@ const { data: metricsData } = useQuery({
   staleTime: 5 * 60 * 1000 // 5 minutes
 });
 
-// Github data
+// GitHub data
 const { data: githubData, isLoading: githubDataLoading } = useQuery({
   queryFn: async () => await getGithubData(),
   queryKey: ['githubData'],
