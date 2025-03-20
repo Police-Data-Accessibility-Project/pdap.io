@@ -94,10 +94,13 @@
                     v-for="agency in dataSource.agencies"
                     :key="agency.county_name?.[0]">
                     {{
-                      typeof agency.county_name === 'string'
-                        ? agency.county_name
-                        : agency.county_name?.join(', ')
-                    }}, {{ agency.state_iso }}
+                      agency.county_name
+                        ? (typeof agency.county_name === 'string'
+                            ? agency.county_name
+                            : agency.county_name?.join(', ')) +
+                          (agency.state_iso ? ', ' : '')
+                        : ''
+                    }}{{ agency.state_iso }}
                   </p>
                 </div>
                 <div>
