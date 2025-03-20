@@ -225,7 +225,7 @@ import { getFullLocationText } from '@/util/locationFormatters';
 import { deleteFollowedSearch } from '@/api/search';
 import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
-import { computed, onMounted} from 'vue';
+import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 
 const route = useRoute();
