@@ -127,12 +127,13 @@
                         <td class="w-1/3">
                           {{
                             agency.county_name
-                        ? (typeof agency.county_name === 'string'
-                              ? agency.county_name
-                              : agency.county_name?.join(', ')) +
-                          (agency.state_iso ? ', ' : '')
-                        : ''
-                          }} {{ agency.state_iso }}
+                              ? (typeof agency.county_name === 'string'
+                                  ? agency.county_name
+                                  : agency.county_name?.join(', ')) +
+                                (agency.state_iso ? ', ' : '')
+                              : ''
+                          }}
+                          {{ agency.state_iso }}
                         </td>
                       </tr>
                     </tbody>
