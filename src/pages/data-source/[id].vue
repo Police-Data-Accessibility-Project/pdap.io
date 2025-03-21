@@ -221,6 +221,7 @@ import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { DATA_SOURCE } from '@/util/queryKeys';
+import { injectDerivedAgencyInfo } from '@/util/dataFormatter';
 
 const route = useRoute();
 const router = useRouter();
@@ -238,7 +239,10 @@ const {
   error
 } = useQuery({
   queryKey,
-  queryFn: () => getDataSource(route.params.id),
+  queryFn: async () => {
+    const rawResult = await getDataSource(route.params.id); // returns { data: { data: ... } }
+    return injectDerivedAgencyInfo(rawResult);
+  },
   staleTime: 5 * 60 * 1000 // 5 minutes,
 });
 

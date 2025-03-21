@@ -11,25 +11,9 @@ const HEADERS_BASIC = {
 };
 
 export async function getDataSource(id) {
-  const result = await axios.get(`${DATA_SOURCES_BASE}/${id}`, {
+  return await axios.get(`${DATA_SOURCES_BASE}/${id}`, {
     headers: HEADERS_BASIC
   });
-  const unique_jurisdictions = [];
-  const unique_agency_type = [];
-
-  result.data.data.agencies.forEach((agency) => {
-    if (!unique_jurisdictions.includes(agency.jurisdiction_type)) {
-      unique_jurisdictions.push(agency.jurisdiction_type);
-    }
-
-    if (!unique_agency_type.includes(agency.agency_type)) {
-      unique_agency_type.push(agency.agency_type);
-    }
-  });
-
-  result.data.data.unique_jurisdictions = unique_jurisdictions;
-  result.data.data.unique_agency_type = unique_agency_type;
-  return result;
 }
 
 export async function createDataSource(data) {
