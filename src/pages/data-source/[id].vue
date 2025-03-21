@@ -43,10 +43,10 @@
                 {{ dataSource.record_type_name }}
               </p>
               <p
-                v-for="agency in dataSource.agencies"
-                :key="agency.jurisdiction_type"
+                v-for="jurisdiction_type in dataSource.unique_jurisdictions"
+                :key="jurisdiction_type"
                 class="pill">
-                Jurisdiction: {{ agency.jurisdiction_type }}
+                Jurisdiction: {{ jurisdiction_type }}
               </p>
               <template v-if="Array.isArray(dataSource.tags)">
                 <p v-for="tag in dataSource.tags" :key="tag" class="pill w-max">
@@ -78,37 +78,42 @@
           <div class="flex-[0_0_100%] flex flex-col w-full">
             <div
               ref="agenciesRef"
-              class="w-full self-start justify-self-start mb-4">
-              <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
-                <div>
-                  <h4 class="m-0">Agency</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.submitted_name">
-                    {{ agency.submitted_name }}
-                  </p>
-                </div>
-                <div>
-                  <h4 class="m-0">County, State</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.county_name?.[0]">
-                    {{
-                      typeof agency.county_name === 'string'
-                        ? agency.county_name
-                        : agency.county_name?.join(', ')
-                    }}, {{ agency.state_iso }}
-                  </p>
-                </div>
-                <div>
-                  <h4 class="m-0">Agency Type</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.agency_type"
-                    class="capitalize">
-                    {{ agency.agency_type }}
-                  </p>
-                </div>
+              class="w-full self-start justify-self-start mb-4 border border-neutral-300 rounded p-2">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr>
+                    <th class="text-left w-1/3"><h4>Agency</h4></th>
+                    <th class="text-left w-1/3"><h4>County, State</h4></th>
+                  </tr>
+                </thead>
+              </table>
+              <div class="max-h-[250px] overflow-y-auto">
+                <table class="w-full border-collapse">
+                  <tbody>
+                    <tr
+                      v-for="agency in dataSource.agencies"
+                      :key="agency.submitted_name"
+                      class="">
+                      <td class="p-2 w-1/3">{{ agency.submitted_name }}</td>
+                      <td class="p-2 w-1/3">
+                        {{
+                          typeof agency.county_name === 'string'
+                            ? agency.county_name
+                            : agency.county_name?.join(', ')
+                        }}, {{ agency.state_iso }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <h4 class="m-0">Agency Type</h4>
+                <p
+                  v-for="agency_type in dataSource.unique_agency_type"
+                  :key="agency_type"
+                  class="capitalize">
+                  {{ agency_type }}
+                </p>
               </div>
             </div>
             <a
