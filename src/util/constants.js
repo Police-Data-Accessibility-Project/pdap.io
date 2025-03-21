@@ -30,7 +30,7 @@ export const NAV_LINKS = [
 export const FOOTER_LINKS = [
   {
     href: 'https://github.com/orgs/Police-Data-Accessibility-Project',
-    text: 'Github',
+    text: 'GitHub',
     icon: FOOTER_LINK_ICONS.GITHUB
   },
   {
