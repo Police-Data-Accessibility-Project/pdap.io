@@ -98,7 +98,9 @@
                   </div>
                   <div>
                     <h4 class="m-0">Agency Type</h4>
-                    <p class="capitalize">{{ dataSource.agencies[0].agency_type }}</p>
+                    <p class="capitalize">
+                      {{ dataSource.agencies[0].agency_type }}
+                    </p>
                   </div>
                 </div>
               </template>
@@ -115,7 +117,7 @@
                   </thead>
                 </table>
                 <div class="max-h-[250px] overflow-y-auto border-b">
-                  <table class="w-full border-collapse ">
+                  <table class="w-full border-collapse">
                     <tbody>
                       <tr
                         v-for="agency in dataSource.agencies"
