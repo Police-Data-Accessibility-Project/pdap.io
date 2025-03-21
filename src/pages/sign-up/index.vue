@@ -13,7 +13,7 @@
       <template v-else>
         <template v-if="isGithubAuthError">
           <p class="error">
-            There was an error logging you in with Github. Please try again
+            There was an error logging you in with GitHub. Please try again
           </p>
         </template>
         <template v-else>
@@ -21,7 +21,7 @@
             <p class="error">
               You already have an account with this email address. Please
               <RouterLink to="/profile">sign in</RouterLink>
-              and link your existing account to Github from your profile.
+              and link your existing account to GitHub from your profile.
             </p>
           </template>
 
@@ -31,7 +31,7 @@
             :disabled="githubAuthData?.userExists"
             @click="async () => await beginOAuthLogin('/sign-up')">
             <FontAwesomeIcon :icon="faGithub" />
-            Sign up with Github
+            Sign up with GitHub
           </Button>
         </template>
 
