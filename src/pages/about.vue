@@ -29,7 +29,7 @@
           rel="noreferrer">
           Eddie&nbsp;Brown,
         </a>
-        is a is a leader with 35+ years of public service and commercial
+        is a leader with 35+ years of public service and commercial
         business experience. He designed and led innovative Department of
         Defense programs for meeting Federal Government technology needs. He
         provides strategy expertise for organizations in every phase of
