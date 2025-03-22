@@ -41,7 +41,7 @@
           @keydown.stop.enter=""
           @click.stop="">
           <FontAwesomeIcon :icon="faLink" />
-          Github
+          GitHub
         </a>
       </div>
     </RouterLink>

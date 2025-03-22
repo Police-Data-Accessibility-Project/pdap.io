@@ -5,13 +5,13 @@
     <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
     <div
       v-if="
-        !isGithubAuthError &&
+        !(isGithubAuthError || githubAuthData?.userExists) &&
         (githubAuthIsLoading || route.query.gh_access_token)
       "
       class="flex items-center justify-center h-full w-full">
       <Spinner
         :show="
-          !isGithubAuthError &&
+          !(isGithubAuthError || githubAuthData?.userExists) &&
           (githubAuthIsLoading || route.query.gh_access_token)
         "
         text="Logging in" />
@@ -20,14 +20,14 @@
     <template v-else>
       <template v-if="isGithubAuthError">
         <p class="error">
-          There was an error logging you in with Github. Please try again
+          There was an error logging you in with GitHub. Please try again
         </p>
       </template>
       <template v-else>
         <template v-if="githubAuthData?.userExists">
           <p class="error">
             You already have an account with this email address. Please sign in
-            and link your existing account to Github from your profile.
+            and link your existing account to GitHub from your profile.
           </p>
         </template>
 
@@ -37,7 +37,7 @@
           :disabled="githubAuthData?.userExists"
           @click="async () => await beginOAuthLogin()">
           <FontAwesomeIcon :icon="faGithub" />
-          Sign in with Github
+          Sign in with GitHub
         </Button>
       </template>
 
@@ -138,10 +138,6 @@ const VALIDATION_SCHEMA = [
       required: {
         value: true
       }
-      // password: {
-      // 	message: 'Please provide your password',
-      // 	value: true,
-      // },
     }
   }
 ];

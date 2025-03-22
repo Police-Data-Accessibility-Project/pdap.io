@@ -15,7 +15,7 @@
     <!-- GH auth user - no password to change -->
     <template v-if="profileData?.external_accounts.github">
       <p>
-        You signed up with a Github account linked to the email address you
+        You signed up with a GitHub account linked to the email address you
         provided. No password is necessary to access your account.
       </p>
       <p>

@@ -28,12 +28,21 @@
               <p>
                 {{ profileData?.email }}
               </p>
+              <Button @click="signOutWithRedirect">Sign out</Button>
+            </div>
+            <h3 class="like-h4">Password</h3>
+            <div class="h-12">
+              <router-link
+                class="pdap-button-secondary"
+                :to="'/change-password'">
+                Reset your password
+              </router-link>
             </div>
           </section>
 
-          <!-- Github info -->
+          <!-- GitHub info -->
           <section>
-            <h3 class="like-h4">Github account</h3>
+            <h3 class="like-h4">GitHub account</h3>
             <div
               :class="{
                 'profile-loading h-12': !profileData && profileLoading
@@ -42,7 +51,7 @@
                 v-if="didLinkGithub || profileData?.external_accounts.github">
                 <p>
                   <FontAwesomeIcon :icon="faGithub" />
-                  Your account is linked with Github
+                  Your account is linked with GitHub
                 </p>
               </template>
 
@@ -54,7 +63,7 @@
                   intent="tertiary"
                   @click="async () => await beginOAuthLogin('/profile')">
                   <FontAwesomeIcon :icon="faGithub" />
-                  Link account with Github
+                  Link account with GitHub
                 </Button>
               </template>
             </div>
@@ -103,10 +112,6 @@
               </li>
             </ul>
           </section>
-
-          <div>
-            <Button @click="signOutWithRedirect">Sign out</Button>
-          </div>
         </div>
 
         <h2>My stuff</h2>
@@ -141,7 +146,7 @@
               @keydown.stop.enter=""
               @click.stop="">
               <FontAwesomeIcon :icon="faLink" />
-              Github
+              GitHub
             </a>
           </template>
         </ProfileTable>
@@ -220,7 +225,7 @@ import { getFullLocationText } from '@/util/locationFormatters';
 import { deleteFollowedSearch } from '@/api/search';
 import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
-import { computed, watch } from 'vue';
+import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 
 const route = useRoute();
@@ -355,14 +360,12 @@ const recentSearches = computed(() =>
   })
 );
 
-watch(
-  () => route.query,
-  (newQuery) => {
-    if (newQuery.gh_access_token) {
-      completeGithubAuth();
-    }
+onMounted(() => {
+  if (route.query.gh_access_token) {
+    completeGithubAuth();
+    router.replace({ query: { ...route.query, gh_access_token: undefined } });
   }
-);
+});
 
 async function signOutWithRedirect() {
   auth.setRedirectTo(route);
