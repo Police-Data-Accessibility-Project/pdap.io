@@ -420,7 +420,6 @@ import {
   faExternalLink,
   faInfoCircle,
   faArrowUpRightDots,
-  faWandMagicSparkles,
   faMagnifyingGlassLocation,
   faPeopleCarryBox,
   faCodePullRequest
