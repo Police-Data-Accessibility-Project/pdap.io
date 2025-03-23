@@ -360,48 +360,47 @@
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
+            class="pt-1.5 pr-3 text-brand-wine-500" />
           Develop a database for tracking sources of police data
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
+            class="pt-1.5 pr-3 text-brand-wine-500" />
           Seed the database with volunteer-documented sources and existing
           collections
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
+            class="pt-1.5 pr-3 text-brand-wine-500" />
           Build an app for searching our database
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
+            class="pt-1.5 pr-3 text-brand-wine-500" />
           Respond to 100+ Data Requests to learn how people use public data, and
           where they get stuck
-        </li>
-        <h3>In testing for early 2025 release</h3>
-        <li class="flex flex-row pt-2">
-          <FontAwesomeIcon
-            :icon="faCircleNotch"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
-          Add accounts & login, and the ability to “follow” any search location
         </li>
         <h3>Up next in 2025</h3>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
-            :icon="faWandMagicSparkles"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
-          Expand our toolset for locating and documenting sources of data
+            :icon="faCircleCheck"
+            class="pt-1.5 pr-3 text-brand-wine-500" />
+          Add accounts & login, and the ability to “follow” any search location
+        </li>
+        <li class="flex flex-row pt-2">
+          <FontAwesomeIcon
+            :icon="faCircleNotch"
+            class="pt-1.5 pr-3 text-brand-wine-100" />
+          Use and refine our toolset for locating and documenting data sources
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faArrowUpRightDots"
-            class="pt-1.5 pr-3 text-brand-wine-300" />
-          Use our tools to locate data and rapidly grow the database
+            class="pt-1.5 pr-3 text-brand-wine-100" />
+          Grow our database, prioritizing locations followed by our users
         </li>
       </ul>
     </section>
@@ -421,7 +420,6 @@ import {
   faExternalLink,
   faInfoCircle,
   faArrowUpRightDots,
-  faWandMagicSparkles,
   faMagnifyingGlassLocation,
   faPeopleCarryBox,
   faCodePullRequest
@@ -471,7 +469,7 @@ const { data: metricsData } = useQuery({
   staleTime: 5 * 60 * 1000 // 5 minutes
 });
 
-// Github data
+// GitHub data
 const { data: githubData, isLoading: githubDataLoading } = useQuery({
   queryFn: async () => await getGithubData(),
   queryKey: ['githubData'],
