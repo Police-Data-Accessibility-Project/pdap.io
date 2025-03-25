@@ -43,10 +43,10 @@
                 {{ dataSource.record_type_name }}
               </p>
               <p
-                v-for="agency in dataSource.agencies"
-                :key="agency.jurisdiction_type"
+                v-for="jurisdiction_type in dataSource.unique_jurisdictions"
+                :key="jurisdiction_type"
                 class="pill">
-                Jurisdiction: {{ agency.jurisdiction_type }}
+                Jurisdiction: {{ jurisdiction_type }}
               </p>
               <template v-if="Array.isArray(dataSource.tags)">
                 <p v-for="tag in dataSource.tags" :key="tag" class="pill w-max">
@@ -79,40 +79,76 @@
             <div
               ref="agenciesRef"
               class="w-full self-start justify-self-start mb-4">
-              <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
-                <div>
-                  <h4 class="m-0">Agency</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.submitted_name">
-                    {{ agency.submitted_name }}
-                  </p>
+              <!-- 👤 Single agency: original layout -->
+              <template v-if="dataSource.agencies.length === 1">
+                <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
+                  <div>
+                    <h4 class="m-0">Agency</h4>
+                    <p>{{ dataSource.agencies[0].submitted_name }}</p>
+                  </div>
+                  <div>
+                    <h4 class="m-0">County, State</h4>
+                    <p>
+                      {{
+                        typeof dataSource.agencies[0].county_name === 'string'
+                          ? dataSource.agencies[0].county_name
+                          : dataSource.agencies[0].county_name?.join(', ')
+                      }}, {{ dataSource.agencies[0].state_iso }}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="m-0">Agency Type</h4>
+                    <p class="capitalize">
+                      {{ dataSource.agencies[0].agency_type }}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 class="m-0">County, State</h4>
-                  <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.county_name?.[0]">
-                    {{
-                      agency.county_name
-                        ? (typeof agency.county_name === 'string'
-                            ? agency.county_name
-                            : agency.county_name?.join(', ')) +
-                          (agency.state_iso ? ', ' : '')
-                        : ''
-                    }}{{ agency.state_iso }}
-                  </p>
+              </template>
+
+              <!-- 📊 Multiple agencies: table layout with scrollable body -->
+
+              <template v-else>
+                <table class="w-full border-collapse border-b">
+                  <thead>
+                    <tr>
+                      <th class="text-left w-1/3"><h4>Agency</h4></th>
+                      <th class="text-left w-1/3"><h4>County, State</h4></th>
+                    </tr>
+                  </thead>
+                </table>
+                <div class="max-h-[250px] overflow-y-auto border-b">
+                  <table class="w-full border-collapse">
+                    <tbody>
+                      <tr
+                        v-for="agency in dataSource.agencies"
+                        :key="agency.submitted_name"
+                        class="">
+                        <td class="w-1/3">{{ agency.submitted_name }}</td>
+                        <td class="w-1/3">
+                          {{
+                            agency.county_name
+                              ? (typeof agency.county_name === 'string'
+                                  ? agency.county_name
+                                  : agency.county_name?.join(', ')) +
+                                (agency.state_iso ? ', ' : '')
+                              : ''
+                          }}
+                          {{ agency.state_iso }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <div>
                   <h4 class="m-0">Agency Type</h4>
                   <p
-                    v-for="agency in dataSource.agencies"
-                    :key="agency.agency_type"
+                    v-for="agency_type in dataSource.unique_agency_type"
+                    :key="agency_type"
                     class="capitalize">
-                    {{ agency.agency_type }}
+                    {{ agency_type }}
                   </p>
                 </div>
-              </div>
+              </template>
             </div>
             <a
               :href="dataSource.source_url"
@@ -189,6 +225,7 @@ import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { DATA_SOURCE } from '@/util/queryKeys';
+import { injectDerivedAgencyInfo } from '@/util/dataFormatter';
 
 const route = useRoute();
 const router = useRouter();
@@ -206,7 +243,10 @@ const {
   error
 } = useQuery({
   queryKey,
-  queryFn: () => getDataSource(route.params.id),
+  queryFn: async () => {
+    const rawResult = await getDataSource(route.params.id); // returns { data: { data: ... } }
+    return injectDerivedAgencyInfo(rawResult);
+  },
   staleTime: 5 * 60 * 1000 // 5 minutes,
 });
 
