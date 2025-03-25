@@ -35,7 +35,12 @@
               <router-link
                 class="pdap-button-secondary"
                 :to="'/change-password'">
-                Reset your password
+                Create a new password
+              </router-link>
+              <router-link
+                class="pdap-button-secondary"
+                :to="'/request-reset-password'">
+                Reset your password via email
               </router-link>
             </div>
           </section>
