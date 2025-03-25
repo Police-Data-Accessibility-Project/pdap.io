@@ -159,7 +159,10 @@ const {
 const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
   useMutation({
     mutationFn: (formValues) => authPassword(formValues),
-    // onError: (error) => {},
+    onError: () => {
+      error.value =
+        'Error logging in. Please ensure your password is correct and try again.';
+    },
     onSuccess: () => {
       router.replace(auth.redirectTo ?? '/profile');
     }
@@ -210,8 +213,6 @@ async function authPassword(formValues) {
   const { email, password } = formValues;
 
   await signInWithEmail(email, password);
-
-  error.value = undefined;
 }
 </script>
 
