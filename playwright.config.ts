@@ -14,7 +14,7 @@ export default defineConfig({
   webServer: process.env.E2E_TESTING_URL && 
     process.env.E2E_TESTING_URL !== 'http://localhost:8888' ? 
     undefined : {
-    command: 'npm run dev',
+    command: 'npm run build && npm run serve',
     url: 'http://localhost:8888',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

@@ -5,10 +5,10 @@ on:
   workflow_dispatch:
     inputs:
       test_url:
-        description: 'URL to run E2E tests against'
+        description: 'Application URL to run E2E tests against (defaults to local, in order to test changes that are present in the PR)'
         required: true
         type: string
-        default: 'https://pdap.dev'
+        default: 'http://localhost:8888'
       api_url:
         description: 'API URL to use (optional)'
         required: false
