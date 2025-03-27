@@ -91,10 +91,10 @@
                     <p>
                       {{
                         dataSource.agencies[0].county_name
-                          ? (typeof dataSource.agencies[0].county_name === 'string'
+                          ? (typeof dataSource.agencies[0].county_name ===
+                            'string'
                               ? dataSource.agencies[0].county_name
-                              : dataSource.agencies[0].county_name.join(', ')
-                          ) +
+                              : dataSource.agencies[0].county_name.join(', ')) +
                             (dataSource.agencies[0].state_iso ? ', ' : '')
                           : ''
                       }}
@@ -397,5 +397,10 @@ hgroup {
 .increment-enter-from,
 .decrement-leave-to {
   transform: translateX(15%);
+}
+
+.decrement-enter-from,
+.increment-leave-to {
+  transform: translateX(-15%);
 }
 </style>
