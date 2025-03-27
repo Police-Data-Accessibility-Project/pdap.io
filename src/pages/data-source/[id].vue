@@ -90,10 +90,15 @@
                     <h4 class="m-0">County, State</h4>
                     <p>
                       {{
-                        typeof dataSource.agencies[0].county_name === 'string'
-                          ? dataSource.agencies[0].county_name
-                          : dataSource.agencies[0].county_name?.join(', ')
-                      }}, {{ dataSource.agencies[0].state_iso }}
+                        dataSource.agencies[0].county_name
+                          ? (typeof dataSource.agencies[0].county_name ===
+                            'string'
+                              ? dataSource.agencies[0].county_name
+                              : dataSource.agencies[0].county_name.join(', ')) +
+                            (dataSource.agencies[0].state_iso ? ', ' : '')
+                          : ''
+                      }}
+                      {{ dataSource.agencies[0].state_iso || '' }}
                     </p>
                   </div>
                   <div>
@@ -220,7 +225,7 @@ import { DATA_SOURCE_UI_SHAPE } from './_util';
 import { getDataSource } from '@/api/data-sources';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
 import { isDescendantOf } from '@/util/DOM';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
@@ -313,22 +318,36 @@ function getPrev() {
   return searchStore.mostRecentSearchIds[previousIdIndex.value];
 }
 
-onMounted(() => {
-  handleShowMoreButton();
-  window.addEventListener('resize', handleShowMoreButton);
-});
+const observer = ref(null);
 
-onUnmounted(() => {
-  window.removeEventListener('resize', handleShowMoreButton);
-});
+watchEffect(() => {
+  if (!descriptionRef.value) return;
 
-function handleShowMoreButton() {
-  if (descriptionRef.value?.offsetHeight < descriptionRef.value?.scrollHeight) {
-    showExpandDescriptionButton.value = true;
-  } else {
-    showExpandDescriptionButton.value = false;
+  const el = descriptionRef.value;
+
+  const checkOverflow = () => {
+    showExpandDescriptionButton.value = el.offsetHeight < el.scrollHeight;
+  };
+
+  observer.value = new ResizeObserver(checkOverflow);
+  observer.value.observe(el);
+
+  // Also run on initial mount
+  checkOverflow();
+});
+watch(
+  () => route.params.id,
+  () => {
+    isDescriptionExpanded.value = false;
   }
-}
+);
+onBeforeUnmount(() => {
+  if (observer.value && descriptionRef.value) {
+    observer.value.unobserve(descriptionRef.value);
+    observer.value.disconnect();
+    observer.value = null;
+  }
+});
 
 function formatResult(record, item) {
   if (record.isDate) return formatDateForSearchResults(item);
