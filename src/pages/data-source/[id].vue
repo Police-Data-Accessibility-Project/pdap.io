@@ -318,7 +318,7 @@ function getPrev() {
   return searchStore.mostRecentSearchIds[previousIdIndex.value];
 }
 
-let observer = null;
+const observer = ref(null);
 
 watchEffect(() => {
   if (!descriptionRef.value) return;
