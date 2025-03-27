@@ -329,7 +329,7 @@ watchEffect(() => {
     showExpandDescriptionButton.value = el.offsetHeight < el.scrollHeight;
   };
 
-  observer = new ResizeObserver(checkOverflow);
+  observer.value = new ResizeObserver(checkOverflow);
   observer.observe(el);
 
   // Also run on initial mount
