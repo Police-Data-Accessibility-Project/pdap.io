@@ -345,6 +345,7 @@ onBeforeUnmount(() => {
   if (observer && descriptionRef.value) {
     observer.unobserve(descriptionRef.value);
     observer.disconnect();
+    observer.value = null;
   }
 });
 
