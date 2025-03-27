@@ -330,7 +330,7 @@ watchEffect(() => {
   };
 
   observer.value = new ResizeObserver(checkOverflow);
-  observer.observe(el);
+  observer.value.observe(el);
 
   // Also run on initial mount
   checkOverflow();
@@ -342,9 +342,9 @@ watch(
   }
 );
 onBeforeUnmount(() => {
-  if (observer && descriptionRef.value) {
-    observer.unobserve(descriptionRef.value);
-    observer.disconnect();
+  if (observer.value && descriptionRef.value) {
+    observer.value.unobserve(descriptionRef.value);
+    observer.value.disconnect();
     observer.value = null;
   }
 });
