@@ -1,0 +1,75 @@
+name: E2E Tests
+on:
+  pull_request:
+    branches: [dev, main, feature/**]
+  workflow_dispatch:
+    inputs:
+      test_url:
+        description: 'Application URL to run E2E tests against (defaults to local, in order to test changes that are present in the PR)'
+        required: true
+        type: string
+        default: 'http://localhost:8888'
+      api_url:
+        description: 'API URL to use (optional)'
+        required: false
+        type: string
+
+jobs:
+  e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      
+      - name: Set API URL and Test Credentials
+        env:
+          E2E_API_KEY_PROD: ${{ secrets.E2E_API_KEY_PROD }}
+          E2E_API_KEY_DEV: ${{ secrets.E2E_API_KEY_DEV }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then\
+            echo "E2E_TESTING_URL=${{ github.event.inputs.test_url }}" >> $GITHUB_ENV
+            
+            # Use provided API URL if it exists, otherwise use conditional logic
+            if [[ -n "${{ github.event.inputs.api_url }}" ]]; then
+              echo "VITE_API_URL=${{ github.event.inputs.api_url }}" >> $GITHUB_ENV
+            elif [[ "${{ github.event.inputs.test_url }}" == *"pdap.io"* ]]; then
+              echo "VITE_API_URL=https://data-sources.pdap.io/api" >> $GITHUB_ENV
+            else
+              echo "VITE_API_URL=https://data-sources.pdap.dev/api" >> $GITHUB_ENV
+            fi
+
+            # Set API key based on test URL
+            if [[ "${{ github.event.inputs.test_url }}" == *"pdap.io"* ]]; then
+              echo "VITE_API_KEY=$E2E_API_KEY_PROD" >> $GITHUB_ENV
+            else
+              echo "VITE_API_KEY=$E2E_API_KEY_DEV" >> $GITHUB_ENV
+            fi
+          else
+            # Default PR behavior
+            if [[ $GITHUB_BASE_REF == "main" ]]; then
+              echo "VITE_API_URL=https://data-sources.pdap.io/api" >> $GITHUB_ENV
+              echo "VITE_API_KEY=$E2E_API_KEY_PROD" >> $GITHUB_ENV
+            else
+              echo "VITE_API_URL=https://data-sources.pdap.dev/api" >> $GITHUB_ENV
+              echo "VITE_API_KEY=$E2E_API_KEY_DEV" >> $GITHUB_ENV
+            fi
+          fi
+      
+      - name: Run Playwright tests
+        run: npx playwright test
+      
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
