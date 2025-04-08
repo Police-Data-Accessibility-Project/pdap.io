@@ -234,7 +234,6 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const queryClient = useQueryClient();
-// const queryReactive = computed(() => route.query);
 
 // Query
 const {
@@ -343,7 +342,7 @@ const recentSearches = computed(() =>
     const catWithOutAll =
       allAt === -1
         ? search.record_categories
-        : search.record_categories.toSpliced(allAt);
+        : search.record_categories.splice(allAt);
     const params = new URLSearchParams({
       location_id: search.location_id,
       ...(catWithOutAll.length
