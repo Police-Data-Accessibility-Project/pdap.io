@@ -415,7 +415,7 @@
 import { ref, computed } from 'vue';
 import { toast } from 'vue3-toastify';
 import SearchForm from '@/components/SearchForm.vue';
-import DataSourceMap from '@/components/map/DataSourceMap.vue';
+import DataSourceMap from '@/components/maps/DataSourceMap.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faBook,

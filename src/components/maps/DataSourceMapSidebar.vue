@@ -85,7 +85,7 @@
     <div class="bottom-action-block">
       <router-link
         to="/data-request/create"
-        class="pdap-secondary-button block w-full text-center">
+        class="pdap-button-secondary block w-full text-center">
         Request missing data
       </router-link>
     </div>
