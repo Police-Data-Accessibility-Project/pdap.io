@@ -8,6 +8,10 @@
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
     <section class="col-span-full">
       <h1>Explore data about police systems</h1>
+      <DataSourceMap
+        class="my-8 hidden md:block"
+        v-bind="{ ...mapData?.data }"
+        @on-follow="(location_id) => followMutation.mutate(location_id)" />
       <SearchForm />
     </section>
     <section class="col-span-full text-lg">
@@ -409,7 +413,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { toast } from 'vue3-toastify';
 import SearchForm from '@/components/SearchForm.vue';
+import DataSourceMap from '@/components/maps/DataSourceMap.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faBook,
@@ -426,13 +432,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { getMetrics } from '@/api/metrics';
 import { getRecentSources } from '@/api/data-sources';
+import { getMapLocations } from '@/api/map';
+import { getLocation } from '@/api/locations';
+import { followSearch } from '@/api/search';
 import {
   getPdapRepositories,
   getPdapPRsMerged,
   getPdapIssues
 } from '@/api/github';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
-import { useQuery } from '@tanstack/vue-query';
+import { getMinimalLocationText } from '@/util/locationFormatters';
+import { SEARCH_FOLLOWED, PROFILE } from '@/util/queryKeys';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+
+const queryClient = useQueryClient();
 
 // Get recent sources
 const { data: recentSources } = useQuery({
@@ -452,6 +465,15 @@ const formattedSources = computed(() =>
 );
 
 // Metrics
+const { data: mapData } = useQuery({
+  queryFn: async () => await getMapLocations(),
+  queryKey: ['mapLocations'],
+  onError: (err) => {
+    console.error('Error fetching map locations:', err);
+  },
+  staleTime: 60 * 60 * 1000 // 1 hour
+});
+
 const { data: metricsData } = useQuery({
   queryFn: async () => {
     const response = await getMetrics();
@@ -477,6 +499,28 @@ const { data: githubData, isLoading: githubDataLoading } = useQuery({
     console.error('Error fetching data:', err);
   },
   staleTime: 5 * 60 * 1000 // 5 minutes,
+});
+
+const followMutation = useMutation({
+  mutationFn: async (location_id) => {
+    await followSearch(location_id);
+    const location = await getLocation(location_id);
+
+    toast.success(
+      `Search followed for ${getMinimalLocationText(location.data)}.`
+    );
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH_FOLLOWED]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
+  },
+  onError: () => {
+    toast.error('Error following search location. Please try again.');
+  }
 });
 
 // TODO: Uncomment the below to close pdap.io/issues/208; blocked by data-sources-app/issues/580

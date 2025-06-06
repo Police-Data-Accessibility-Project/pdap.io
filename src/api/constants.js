@@ -51,5 +51,8 @@ export const ENDPOINTS = {
   },
   METRICS: {
     METRICS: 'metrics'
+  },
+  MAP: {
+    LOCATIONS: 'locations'
   }
 };
