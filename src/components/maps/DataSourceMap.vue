@@ -162,7 +162,7 @@ const layers = computed(() => ({
     status: Object.keys(localitiesByCounty.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 6,
+    minZoom: 3,
     maxZoom: Infinity
   },
   states: {
