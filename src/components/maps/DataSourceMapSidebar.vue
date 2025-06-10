@@ -34,51 +34,52 @@
 
     <!-- 3. Content section -->
     <!-- State level: show counties -->
-    <div
-      v-if="activeLocationType === 'state' && countiesInState.length"
-      class="flex flex-col w-full">
-      <h3 class="px-5">Counties</h3>
-      <button
-        v-for="county in countiesInState.toSorted(
-          (a, b) => b.source_count - a.source_count
-        )"
-        :key="county.fips"
-        class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-wineneutral-100/75 focus:bg-wineneutral-100/75 px-5 py-2"
-        @click="selectLocation('county', county)">
-        <h4 class="location-name">{{ county.name }}</h4>
-        <router-link
-          :to="`/search/results?location_id<>${county.location_id}`"
-          class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
-          @click.stop>
-          {{ county.source_count }} sources
-          <FontAwesomeIcon :icon="faArrowRight" />
-        </router-link>
-      </button>
-    </div>
+    <div>
+      <div
+        v-if="activeLocationType === 'state' && countiesInState.length"
+        class="flex flex-col w-full">
+        <h3 class="px-5">Counties</h3>
+        <button
+          v-for="county in countiesInState.toSorted(
+            (a, b) => b.source_count - a.source_count
+          )"
+          :key="county.fips"
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-wineneutral-100/75 focus:bg-wineneutral-100/75 px-5 py-2"
+          @click="selectLocation('county', county)">
+          <h4 class="location-name">{{ county.name }}</h4>
+          <router-link
+            :to="`/search/results?location_id<>${county.location_id}`"
+            class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
+            @click.stop>
+            {{ county.source_count }} sources
+            <FontAwesomeIcon :icon="faArrowRight" />
+          </router-link>
+        </button>
+      </div>
 
-    <!-- County level: show localities -->
-    <div
-      v-if="activeLocationType === 'county' && localitiesInCounty.length"
-      class="flex flex-col w-full">
-      <h3 class="px-5">Localities</h3>
-      <button
-        v-for="locality in localitiesInCounty.toSorted(
-          (a, b) => b.source_count - a.source_count
-        )"
-        :key="locality.id"
-        class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-neutral-200 focus:bg-neutral-300 px-5 py-2"
-        @click="selectLocation('locality', locality)">
-        <h4 class="location-name">{{ locality.name }}</h4>
-        <router-link
-          :to="`/search/results?location_id=${locality.location_id}`"
-          class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
-          @click.stop>
-          {{ locality.source_count }} sources
-          <FontAwesomeIcon :icon="faArrowRight" />
-        </router-link>
-      </button>
+      <!-- County level: show localities -->
+      <div
+        v-if="activeLocationType === 'county' && localitiesInCounty.length"
+        class="flex flex-col w-full">
+        <h3 class="px-5">Localities</h3>
+        <button
+          v-for="locality in localitiesInCounty.toSorted(
+            (a, b) => b.source_count - a.source_count
+          )"
+          :key="locality.id"
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-neutral-200 focus:bg-neutral-300 px-5 py-2"
+          @click="selectLocation('locality', locality)">
+          <h4 class="location-name">{{ locality.name }}</h4>
+          <router-link
+            :to="`/search/results?location_id=${locality.location_id}`"
+            class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
+            @click.stop>
+            {{ locality.source_count }} sources
+            <FontAwesomeIcon :icon="faArrowRight" />
+          </router-link>
+        </button>
+      </div>
     </div>
-
     <!-- 4. Second action block (pinned to bottom) -->
     <div
       class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center">
