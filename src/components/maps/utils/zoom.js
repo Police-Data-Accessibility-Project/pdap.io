@@ -51,8 +51,6 @@ export function addZoomControls({ svg, resetZoom }) {
     .attr('y', 0)
     .attr('width', 30)
     .attr('height', 30)
-    .attr('fill', 'white')
-    .attr('stroke', '#ccc')
     .attr('rx', 3)
     .attr('cursor', 'pointer')
     .on('click', () => {
@@ -74,8 +72,6 @@ export function addZoomControls({ svg, resetZoom }) {
     .attr('y', 35)
     .attr('width', 30)
     .attr('height', 30)
-    .attr('fill', 'white')
-    .attr('stroke', '#ccc')
     .attr('rx', 3)
     .attr('cursor', 'pointer')
     .on('click', (event) => {
@@ -101,8 +97,6 @@ export function addZoomControls({ svg, resetZoom }) {
     .attr('y', 70)
     .attr('width', 30)
     .attr('height', 30)
-    .attr('fill', 'white')
-    .attr('stroke', '#ccc')
     .attr('rx', 3)
     .attr('cursor', 'pointer')
     .on('click', resetZoom);

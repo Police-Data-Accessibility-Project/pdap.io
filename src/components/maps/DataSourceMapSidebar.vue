@@ -17,7 +17,8 @@
       <router-link
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
         class="pdap-button-secondary mb-2 w-full max-w-full text-center flex items-center gap-2">
-        View {{ activeLocation?.data.source_count }} data sources
+        View {{ activeLocation?.data.source_count }} data
+        {{ pluralize('source', activeLocation?.data.source_count) }}
         <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <Button
@@ -98,6 +99,7 @@
 import { computed } from 'vue';
 import { Button } from 'pdap-design-system';
 import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
+import pluralize from '@/util/pluralize';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 

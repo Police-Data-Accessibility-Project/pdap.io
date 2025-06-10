@@ -1,48 +1,25 @@
 /* TODO: Tailwindify these styles and add to markup */
 .data-source-map-container {
-  position: relative;
-  width: 100%;
-  height: auto;
-  max-width: 1245px;
-  margin-left: auto;
-  margin-right: auto;
+  @apply relative w-full h-auto mx-auto;
 }
 
 #map-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  @apply w-full h-full relative overflow-hidden;
 }
 
 .map-sidebar {
-  @apply bg-neutral-100/70 flex flex-col;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 320px;
-  height: calc(100% - 20px);
-  /* z-index: 12; */
-  padding: 20px;
-  overflow-y: auto;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-  visibility: hidden;
+  transition:
+    opacity,
+    transform 300ms ease-in-out;
+  @apply absolute bg-neutral-200/70  flex-col top-2 right-2 w-[320px] h-[calc(100%-20px)] p-5 overflow-y-auto translate-x-full opacity-0;
 }
 
 .map-sidebar.visible {
-  transform: translateX(0);
-  visibility: visible;
-}
-
-@media (prefers-color-scheme: dark) {
-  .map-sidebar {
-    background-color: rgba(30, 30, 30, 0.95);
-    color: #eee;
-  }
+  @apply translate-x-0 opacity-100;
 }
 
 :deep(.counties-layer path) {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 :deep(.counties-layer path:hover) {
@@ -50,7 +27,7 @@
 }
 
 :deep(.states-layer path) {
-  pointer-events: auto;
+  @apply pointer-events-auto;
 }
 
 :deep(.states-layer path:hover) {
@@ -59,7 +36,7 @@
 
 :deep(.stateBoundaries-layer path),
 :deep(.active-state-border) {
-  pointer-events: none;
+  @apply pointer-events-none;
   stroke-width: calc(0.5px * var(--zoom-inversion, 0.3));
 }
 
@@ -69,14 +46,15 @@
 }
 
 :deep(.zoom-controls) {
-  cursor: pointer;
-  user-select: none;
+  @apply cursor-pointer select-none;
+}
+
+:deep(.zoom-controls rect) {
+  @apply fill-wineneutral-50 stroke-wineneutral-600;
 }
 
 :deep(.zoom-controls text) {
-  pointer-events: none;
-  font-size: 18px;
-  font-weight: bold;
+  @apply fill-wineneutral-800 text-med font-semibold;
 }
 
 :deep(.localities-layer text.locality-marker) {
@@ -89,24 +67,5 @@
 }
 
 :deep(.localities-layer .has-active:not(.active-locality)) {
-  display: none;
-}
-
-:deep(.localities-layer circle) {
-  filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.5));
-}
-
-@media (prefers-color-scheme: dark) {
-  :deep(.counties-layer path:hover) {
-    stroke: rgb(247, 234, 247);
-  }
-
-  :deep(.zoom-controls rect) {
-    fill: #333;
-    stroke: #555;
-  }
-
-  :deep(.zoom-controls text) {
-    fill: #eee;
-  }
+  @apply hidden;
 }
