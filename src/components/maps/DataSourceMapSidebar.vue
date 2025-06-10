@@ -32,6 +32,7 @@
     <div class="content-section">
       <!-- State level: show counties -->
       <div v-if="activeLocationType === 'state' && countiesInState.length">
+        <h3>Counties</h3>
         <div
           v-for="county in countiesInState.toSorted(
             (a, b) => b.source_count - a.source_count
@@ -57,6 +58,7 @@
 
       <!-- County level: show localities -->
       <div v-if="activeLocationType === 'county' && localitiesInCounty.length">
+        <h3>Localities</h3>
         <div
           v-for="locality in localitiesInCounty.toSorted(
             (a, b) => b.source_count - a.source_count
@@ -95,6 +97,7 @@
 <script setup>
 import { computed } from 'vue';
 import { Button } from 'pdap-design-system';
+import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -145,7 +148,7 @@ const headerTitle = computed(() => {
   if (!activeLocation.value) return '';
 
   if (activeLocationType.value === 'state') {
-    return `${activeLocation.value.data.state_iso.toUpperCase()} Counties`;
+    return ABBREVIATIONS_TO_STATES.get(activeLocation.value.data.state_iso);
   } else if (activeLocationType.value === 'county') {
     // Check if Louisiana for Parish vs County
     const isLouisiana = activeLocation.value.data.state_iso === 'LA';
