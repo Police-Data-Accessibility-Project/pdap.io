@@ -17,7 +17,7 @@
       <router-link
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
         class="pdap-button-secondary mb-2 w-full max-w-full text-center flex items-center gap-2">
-        View all data sources
+        View {{ activeLocation?.data.source_count }} data sources
         <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <Button

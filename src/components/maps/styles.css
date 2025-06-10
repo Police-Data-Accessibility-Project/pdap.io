@@ -46,8 +46,6 @@
 }
 
 :deep(.counties-layer path:hover) {
-  /* stroke: rgb(42, 36, 41); */
-  /* stroke-width: 0.5; */
   filter: brightness(105%);
 }
 
@@ -56,20 +54,18 @@
 }
 
 :deep(.states-layer path:hover) {
-  /* stroke: #000; */
-  /* stroke-width: 0.5; */
   filter: brightness(105%);
 }
 
 :deep(.stateBoundaries-layer path),
 :deep(.active-state-border) {
   pointer-events: none;
-  stroke-width: calc(0.35px * var(--zoom-inversion, 0.5));
+  stroke-width: calc(0.5px * var(--zoom-inversion, 0.3));
 }
 
 :deep(.counties-layer path),
 :deep(.active-county-border) {
-  stroke-width: calc(0.3px * var(--zoom-inversion, 0.5));
+  stroke-width: calc(0.35px * var(--zoom-inversion, 0.3));
 }
 
 :deep(.zoom-controls) {
@@ -83,26 +79,13 @@
   font-weight: bold;
 }
 
-:deep(.localities-layer) {
-  position: relative;
-  /* z-index: 999999999999999999999999; */
-}
-:deep(.localities-layer text) {
-  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5));
-}
-
 :deep(.localities-layer text.locality-marker) {
-  font-size: var(--icon-size);
+  @apply fill-brand-gold-500;
+  font-size: var(--icon-size, 0);
 }
 
 :deep(.localities-layer text.locality-marker.no-sources) {
-  opacity: 0.3;
-}
-
-:deep(.localities-layer .active-locality text) {
-  /* filter: brightness(115%); */
-  /* transform: scale(1.2); */
-  fill: rgba(255, 255, 255, 1);
+  @apply fill-brand-gold-400/50;
 }
 
 :deep(.localities-layer .has-active:not(.active-locality)) {
@@ -125,13 +108,5 @@
 
   :deep(.zoom-controls text) {
     fill: #eee;
-  }
-
-  :deep(.localities-layer text) {
-    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.8));
-  }
-
-  :deep(.localities-layer circle) {
-    filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.8));
   }
 }
