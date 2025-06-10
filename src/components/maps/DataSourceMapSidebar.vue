@@ -81,7 +81,7 @@
 
     <!-- 4. Second action block (pinned to bottom) -->
     <div
-      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-2 bg-wineneutral-100 flex items-center justify-center">
+      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center">
       <router-link
         to="/data-request/create"
         class="pdap-button-secondary block w-full text-center">
