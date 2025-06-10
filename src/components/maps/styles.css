@@ -1,4 +1,4 @@
-/* TODO: Tailwindify these styles and add to markup */
+/* TODO: add to markup directly where possible */
 .data-source-map-container {
   @apply relative w-full h-auto mx-auto;
 }
@@ -11,7 +11,7 @@
   transition:
     opacity,
     transform 300ms ease-in-out;
-  @apply absolute bg-neutral-200/70  flex-col top-2 right-2 w-[320px] h-[calc(100%-20px)] p-5 overflow-y-auto translate-x-full opacity-0;
+  @apply absolute bg-neutral-200/70 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto translate-x-full opacity-0;
 }
 
 .map-sidebar.visible {
