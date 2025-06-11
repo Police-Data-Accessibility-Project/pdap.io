@@ -11,8 +11,6 @@ export function renderLocalityMarkers(container, deps) {
     projection,
     tooltip,
     handleLocalityClick,
-    LAT_CORRECTION,
-    LNG_CORRECTION,
     activeLocationStack,
     localitiesByCounty
   } = deps;
@@ -55,15 +53,16 @@ export function renderLocalityMarkers(container, deps) {
             locality.coordinates.lat &&
             locality.coordinates.lng
           ) {
-            const correctedLat = locality.coordinates.lat + LAT_CORRECTION;
-            const correctedLng = locality.coordinates.lng + LNG_CORRECTION;
+            const {
+              coordinates: { lng, lat }
+            } = locality;
 
             return {
               type: 'Feature',
               properties: locality,
               geometry: {
                 type: 'Point',
-                coordinates: [correctedLng, correctedLat]
+                coordinates: [lng, lat]
               }
             };
           }
