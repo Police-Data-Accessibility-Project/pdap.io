@@ -44,69 +44,92 @@ export function addZoomControls({ svg, resetZoom }) {
     .attr('class', 'zoom-controls')
     .attr('transform', `translate(20, 20)`);
 
-  // Zoom in button
-  controls
+  // Create zoom in button group
+  const zoomInGroup = controls.append('g').attr('class', 'zoom-in-control');
+
+  // Zoom in button background
+  zoomInGroup
     .append('rect')
     .attr('x', 0)
     .attr('y', 0)
     .attr('width', 30)
     .attr('height', 30)
     .attr('rx', 3)
-    .attr('cursor', 'pointer')
-    .on('click', () => {
-      const zoom = svg.__zoom__ || d3.zoom();
-      svg.transition().call(zoom.scaleBy, 1.5);
-    });
+    .attr('cursor', 'pointer');
 
-  controls
+  // Zoom in button text
+  zoomInGroup
     .append('text')
     .attr('x', 15)
     .attr('y', 20)
     .attr('text-anchor', 'middle')
     .text('+');
 
-  // Zoom out button
-  controls
+  // Add click handler to the group
+  zoomInGroup.on('click', (event) => {
+    event.stopPropagation();
+    const zoom = svg.__zoom__ || d3.zoom();
+    svg.transition().duration(300).call(zoom.scaleBy, 1.5);
+  });
+
+  // Create zoom out button group
+  const zoomOutGroup = controls.append('g').attr('class', 'zoom-out-control');
+
+  // Zoom out button background
+  zoomOutGroup
     .append('rect')
     .attr('x', 0)
     .attr('y', 35)
     .attr('width', 30)
     .attr('height', 30)
     .attr('rx', 3)
-    .attr('cursor', 'pointer')
-    .on('click', (event) => {
-      event.stopPropagation();
-      const zoom = svg.__zoom__ || d3.zoom();
-      svg.transition().call(zoom.scaleBy, 0.75);
-    })
-    .on('dblclick', (event) => {
-      event.stopPropagation();
-    });
+    .attr('cursor', 'pointer');
 
-  controls
+  // Zoom out button text
+  zoomOutGroup
     .append('text')
     .attr('x', 15)
     .attr('y', 55)
     .attr('text-anchor', 'middle')
     .text('-');
 
-  // Reset button
-  controls
+  // Add click handler to the group
+  zoomOutGroup
+    .on('click', (event) => {
+      event.stopPropagation();
+      const zoom = svg.__zoom__ || d3.zoom();
+      svg.transition().duration(300).call(zoom.scaleBy, 0.75);
+    })
+    .on('dblclick', (event) => {
+      event.stopPropagation();
+    });
+
+  // Create reset button group
+  const resetGroup = controls.append('g').attr('class', 'reset-control');
+
+  // Reset button background
+  resetGroup
     .append('rect')
     .attr('x', 0)
     .attr('y', 70)
     .attr('width', 30)
     .attr('height', 30)
     .attr('rx', 3)
-    .attr('cursor', 'pointer')
-    .on('click', resetZoom);
+    .attr('cursor', 'pointer');
 
-  controls
+  // Reset button text
+  resetGroup
     .append('text')
     .attr('x', 15)
     .attr('y', 90)
     .attr('text-anchor', 'middle')
     .text('↺');
+
+  // Add click handler to the group
+  resetGroup.on('click', (event) => {
+    event.stopPropagation();
+    resetZoom();
+  });
 }
 
 /**
