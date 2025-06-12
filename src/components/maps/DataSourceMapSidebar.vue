@@ -1,10 +1,13 @@
 <template>
   <div class="map-sidebar" :class="{ visible: locations.length > 0 }">
     <!-- 1. Header with back button and title -->
-    <div class="flex items-start content-between w-full">
-      <button class="back-button" @click="handleBackClick">
+    <div class="flex items-start content-between w-full p-5">
+      <Button
+        class="p-2 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-neutral-400 dark:hover:bg-neutral-400/90 dark:focus:bg-neutral-400/90"
+        intent="tertiary"
+        @click="handleBackClick">
         <FontAwesomeIcon :icon="faChevronLeft" />
-      </button>
+      </Button>
       <h3 class="text-lg font-bold mb-0 mt-0 text-right w-full">
         {{ headerTitle }}
       </h3>
@@ -13,11 +16,12 @@
     <hr class="my-4 border-neutral-500/50" />
 
     <!-- 2. First action block -->
-    <div class="action-block mb-6">
+    <div class="action-block mb-6 px-5">
       <router-link
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
         class="pdap-button-secondary mb-2 w-full max-w-full text-center flex items-center gap-2">
-        View all data sources
+        View {{ activeLocation?.data.source_count }} data
+        {{ pluralize('source', activeLocation?.data.source_count) }}
         <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <Button
@@ -29,60 +33,56 @@
     </div>
 
     <!-- 3. Content section -->
-    <div class="content-section">
-      <!-- State level: show counties -->
-      <div v-if="activeLocationType === 'state' && countiesInState.length">
-        <div
+    <!-- State level: show counties -->
+    <div>
+      <div
+        v-if="activeLocationType === 'state' && countiesInState.length"
+        class="flex flex-col w-full">
+        <h3 class="px-5">Counties</h3>
+        <button
           v-for="county in countiesInState.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
           :key="county.fips"
-          class="location-item">
-          <button
-            class="location-button"
-            @click="selectLocation('county', county)">
-            <div class="location-name">{{ county.name }}</div>
-            <div class="flex justify-between w-full">
-              <router-link
-                :to="`/search/results?location_id<>${county.location_id}`"
-                class="source-count"
-                @click.stop>
-                {{ county.source_count }} sources
-                <FontAwesomeIcon :icon="faArrowRight" />
-              </router-link>
-            </div>
-          </button>
-        </div>
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-wineneutral-100/75 focus:bg-wineneutral-100/75 px-5 py-2"
+          @click="selectLocation('county', county)">
+          <h4 class="location-name">{{ county.name }}</h4>
+          <router-link
+            :to="`/search/results?location_id<>${county.location_id}`"
+            class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
+            @click.stop>
+            {{ county.source_count }} sources
+            <FontAwesomeIcon :icon="faArrowRight" />
+          </router-link>
+        </button>
       </div>
 
       <!-- County level: show localities -->
-      <div v-if="activeLocationType === 'county' && localitiesInCounty.length">
-        <div
+      <div
+        v-if="activeLocationType === 'county' && localitiesInCounty.length"
+        class="flex flex-col w-full">
+        <h3 class="px-5">Localities</h3>
+        <button
           v-for="locality in localitiesInCounty.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
           :key="locality.id"
-          class="location-item">
-          <button
-            class="location-button"
-            @click="selectLocation('locality', locality)">
-            <div class="location-name">{{ locality.name }}</div>
-            <div class="flex justify-between w-full">
-              <router-link
-                :to="`/search/results?location_id=${locality.location_id}`"
-                class="source-count"
-                @click.stop>
-                {{ locality.source_count }} sources
-                <FontAwesomeIcon :icon="faArrowRight" />
-              </router-link>
-            </div>
-          </button>
-        </div>
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-2 hover:bg-neutral-200 focus:bg-neutral-300 px-5 py-2"
+          @click="selectLocation('locality', locality)">
+          <h4 class="location-name">{{ locality.name }}</h4>
+          <router-link
+            :to="`/search/results?location_id=${locality.location_id}`"
+            class="flex justify-between items-center w-full text-sm text-wineneutral-800 hover:text-wineneutral-950"
+            @click.stop>
+            {{ locality.source_count }} sources
+            <FontAwesomeIcon :icon="faArrowRight" />
+          </router-link>
+        </button>
       </div>
     </div>
-
     <!-- 4. Second action block (pinned to bottom) -->
-    <div class="bottom-action-block">
+    <div
+      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center">
       <router-link
         to="/data-request/create"
         class="pdap-button-secondary block w-full text-center">
@@ -95,6 +95,8 @@
 <script setup>
 import { computed } from 'vue';
 import { Button } from 'pdap-design-system';
+import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
+import pluralize from '@/util/pluralize';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -145,7 +147,7 @@ const headerTitle = computed(() => {
   if (!activeLocation.value) return '';
 
   if (activeLocationType.value === 'state') {
-    return `${activeLocation.value.data.state_iso.toUpperCase()} Counties`;
+    return ABBREVIATIONS_TO_STATES.get(activeLocation.value.data.state_iso);
   } else if (activeLocationType.value === 'county') {
     // Check if Louisiana for Parish vs County
     const isLouisiana = activeLocation.value.data.state_iso === 'LA';
@@ -272,83 +274,3 @@ function handleBackClick() {
   }
 }
 </script>
-
-<style scoped>
-.back-button {
-  margin-right: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.action-block {
-  margin-bottom: 1.5rem;
-}
-
-.content-section {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 1rem;
-}
-
-.location-item {
-  padding: 0.25rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.location-button {
-  width: 100%;
-  text-align: left;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s;
-}
-
-.location-button:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.location-name {
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.source-count {
-  font-size: 0.875rem;
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.bottom-action-block {
-  bottom: 0;
-  position: relative;
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-@media (prefers-color-scheme: dark) {
-  .back-button {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .sidebar-header,
-  .bottom-action-block {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .location-item {
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .location-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .source-count {
-    color: #aaa;
-  }
-}
-</style>
