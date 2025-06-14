@@ -14,7 +14,7 @@
         </h3>
         <p class="text-lg italic mb-0">
           {{ activeLocation?.data.source_count }}
-          {{ pluralize('source', activeLocation?.data.source_count) }}
+          {{ pluralize('Data Source', activeLocation?.data.source_count) }}
         </p>
       </div>
     </div>
@@ -22,7 +22,8 @@
       <router-link
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
         class="pdap-button-secondary mb-2 w-full max-w-full text-center gap-2">
-        View all Sources <FontAwesomeIcon :icon="faArrowRight" />
+        View all
+        <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <Button
         variant="primary"
@@ -53,7 +54,10 @@
             :to="`/search/results?location_id<>${county.location_id}`"
             class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
             @click.stop>
-            {{ county.source_count }} sources
+            <span>
+              <strong>{{ county.source_count }}</strong>
+              Data Sources
+            </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
         </button>
@@ -76,7 +80,10 @@
             :to="`/search/results?location_id=${locality.location_id}`"
             class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
             @click.stop>
-            {{ locality.source_count }} sources
+            <span>
+              <strong>{{ locality.source_count }}</strong>
+              Data Sources
+            </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
         </button>
