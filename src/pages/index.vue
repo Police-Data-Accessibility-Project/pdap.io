@@ -274,7 +274,7 @@
         <h1>How our data is used</h1>
         <p>
           Our goal is to make independent research, journalism, and analysis possible by 
-          providing a starting point for any investigation.
+          helping people find the data they need to start any investigation.
         </p>
       </div>
       <div class="col-span-full pdap-grid-container grid-cols-2 text-lg">
