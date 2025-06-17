@@ -273,22 +273,21 @@
       <div class="col-span-full">
         <h1>How our data is used</h1>
         <p>
-          Our goal is to make independent research, journalism, and analysis possible by 
-          helping people find the data they need to start any investigation.
+          Our goal is to make independent research, journalism, and analysis
+          possible by helping people find the data they need to start any
+          investigation.
         </p>
       </div>
       <div class="col-span-full pdap-grid-container grid-cols-2 text-lg">
-        <h2 class="my-0 col-span-full">
-          Types of investigative projects
-        </h2>
+        <h2 class="my-0 col-span-full">Types of investigative projects</h2>
         <div>
           <h3>
             <FontAwesomeIcon :icon="faEyeLowVision" />
             Transparency & Oversight
           </h3>
           <p>
-            Misconduct, use of force, complaints, and disciplinary records are some examples 
-            of tools for public oversight and incident reporting.
+            Misconduct, use of force, complaints, and disciplinary records are
+            some examples of tools for public oversight and incident reporting.
           </p>
         </div>
         <div>
@@ -297,8 +296,9 @@
             Operational Analysis
           </h3>
           <p>
-            Understanding the effectiveness of emergency response strategies requires
-            records about dispatch, calls for service, crime, budgets, staffing, and more.
+            Understanding the effectiveness of emergency response strategies
+            requires records about dispatch, calls for service, crime, budgets,
+            staffing, and more.
           </p>
         </div>
         <div>
@@ -307,8 +307,9 @@
             Studying Policy & Reform
           </h3>
           <p>
-            When a new emergency response strategy is developed, comparable records from 
-            different jurisdictions may be required to understand policy changes and their effects.
+            When a new emergency response strategy is developed, comparable
+            records from different jurisdictions may be required to understand
+            policy changes and their effects.
           </p>
         </div>
         <div>
@@ -317,16 +318,15 @@
             Performance & Outcome Analysis
           </h3>
           <p>
-            The outcomes of policing carry through to incarceration and prosecution.
-            A variety of consistent records over a longer time period are required to understand 
-            things like demographic disparities and recidivism.
+            The outcomes of policing carry through to incarceration and
+            prosecution. A variety of consistent records over a longer time
+            period are required to understand things like demographic
+            disparities and recidivism.
           </p>
         </div>
       </div>
       <div class="col-span-full">
-        <h2 class="my-0">
-          Examples
-        </h2>
+        <h2 class="my-0">Examples</h2>
       </div>
       <h3 class="col-span-full my-0">
         <FontAwesomeIcon :icon="faBook" class="text-brand-wine-300" />
@@ -456,9 +456,11 @@
             :icon="faArrowUpRightDots"
             class="pt-1.5 pr-3 text-brand-wine-100" />
           <span>
-            Grow our database, prioritizing locations followed by our users. 
-            To participate, <a href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
-            sign up for data labeling here!</a>
+            Grow our database, prioritizing locations followed by our users. To
+            participate,
+            <a href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+              sign up for data labeling here!
+            </a>
           </span>
         </li>
       </ul>
