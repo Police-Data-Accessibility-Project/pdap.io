@@ -120,7 +120,9 @@
           evaluate local police systems and other crisis response programs.
         </p>
         <p>
-          All of our programs exist to help people answer questions with data.
+          All of our programs exist to help people answer questions big and
+          small about one of our most impactful local systems. Accessible data
+          is the first step.
           <strong>If you are starting a data project, we can help.</strong>
           <router-link
             class="pdap-button-primary mt-4"
