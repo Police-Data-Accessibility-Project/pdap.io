@@ -1,5 +1,5 @@
 <template>
-  <div class="data-source-map-container">
+  <div class="relative w-full h-auto">
     <div id="map-container" ref="mapContainer" />
     <!-- <span class="loading"></span> -->
     <Spinner

@@ -1,7 +1,4 @@
 /* TODO: add to markup directly where possible */
-.data-source-map-container {
-  @apply relative w-full h-auto;
-}
 
 #map-container {
   @apply w-full h-full relative overflow-hidden;
