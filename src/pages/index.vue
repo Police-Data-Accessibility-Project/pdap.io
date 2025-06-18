@@ -7,23 +7,28 @@
 <template>
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
     <section class="col-span-full">
-      <h1>Explore data about police systems</h1>
-      <DataSourceMap
-        class="my-8 block"
-        v-bind="{ ...mapData?.data }"
-        @on-follow="(location_id) => followMutation.mutate(location_id)" />
+      <h1>Find data about police systems</h1>
       <SearchForm />
+      <div class="hidden md:block">
+        <h2>Explore the map</h2>
+        <DataSourceMap
+          class="mb-6"
+          v-bind="{ ...mapData?.data }"
+          @on-follow="(location_id) => followMutation.mutate(location_id)" />
+      </div>
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
       <p>
-        We find and organize Data Sources (
+        Each
         <a
-          href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source">
-          <i class="fa fa-question-circle" />
+          href="https://docs.pdap.io/about/terms-and-definitions/what-is-a-data-source">
+          "Data Source"
         </a>
-        ), places on the internet where public records may be found. Each one
-        describes one of the ~20,000 agencies we have indexed.
+        is a place on the internet where public records can be found about a
+        police system. Our database is community-maintained, with help from our
+        open-source apps. To help locate sources,
+        <a href="https://docs.pdap.io/">start with the docs!</a>
       </p>
       <p v-if="metricsData">
         Our database contains
@@ -115,7 +120,9 @@
           evaluate local police systems and other crisis response programs.
         </p>
         <p>
-          All of our programs exist to help people answer questions with data.
+          All of our programs exist to help people answer questions big and
+          small about one of our most impactful local systems. Accessible data
+          is the first step.
           <strong>If you are starting a data project, we can help.</strong>
           <router-link
             class="pdap-button-primary mt-4"
@@ -279,7 +286,7 @@
         </p>
       </div>
       <div class="col-span-full pdap-grid-container grid-cols-2 text-lg">
-        <h2 class="my-0 col-span-full">Types of investigative projects</h2>
+        <h2 class="my-0 col-span-full">Data for investigative projects</h2>
         <div>
           <h3>
             <FontAwesomeIcon :icon="faEyeLowVision" />
