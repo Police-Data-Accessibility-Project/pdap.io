@@ -9,11 +9,13 @@
     <section class="col-span-full">
       <h1>Find data about police systems</h1>
       <SearchForm />
-      <h2>Explore the map</h2>
-      <DataSourceMap
-        class="my-8 hidden md:block"
-        v-bind="{ ...mapData?.data }"
-        @on-follow="(location_id) => followMutation.mutate(location_id)" />
+      <div class="hidden md:block">
+        <h2>Explore the map</h2>
+        <DataSourceMap
+          class="mb-6"
+          v-bind="{ ...mapData?.data }"
+          @on-follow="(location_id) => followMutation.mutate(location_id)" />
+        </div>
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
