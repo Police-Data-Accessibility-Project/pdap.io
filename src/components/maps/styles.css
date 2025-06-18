@@ -9,13 +9,16 @@
 
 .map-sidebar {
   transition:
-    opacity,
-    transform 300ms ease-in-out;
-  @apply absolute bg-neutral-300/85 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto translate-x-full opacity-0 grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto];
+    opacity 150ms ease-in,
+    display 0ms 150ms;
+  @apply absolute bg-neutral-100/90 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto opacity-0 grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] pointer-events-none;
 }
 
 .map-sidebar.visible {
-  @apply translate-x-0 opacity-100;
+   transition:
+    opacity 500ms ease-out, 
+    display 0ms;
+  @apply opacity-100 pointer-events-auto;
 }
 
 :deep(.counties-layer path) {
