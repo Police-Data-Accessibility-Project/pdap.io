@@ -15,7 +15,7 @@
           class="mb-6"
           v-bind="{ ...mapData?.data }"
           @on-follow="(location_id) => followMutation.mutate(location_id)" />
-        </div>
+      </div>
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
