@@ -9,7 +9,7 @@
     <section class="col-span-full">
       <div
         class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300">
-        <strong>June 2025 Announcement:</strong>
+        <strong>Announcement:</strong>
         We are open for public signups!
         <router-link :to="'/sign-up'">Create a free account here.</router-link>
       </div>
