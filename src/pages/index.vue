@@ -7,6 +7,14 @@
 <template>
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
     <section class="col-span-full">
+      <div
+        class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300">
+        <strong>June 2025 Announcement:</strong>
+        We are open for public signups!
+        <router-link :to="'/sign-up'">Create a free account here.</router-link>
+      </div>
+    </section>
+    <section class="col-span-full">
       <h1>Find data about police systems</h1>
       <SearchForm />
       <div class="hidden md:block">
@@ -124,12 +132,17 @@
           small about one of our most impactful local systems. Accessible data
           is the first step.
           <strong>If you are starting a data project, we can help.</strong>
-          <router-link
-            class="pdap-button-primary mt-4"
-            :to="'/data-request/create'">
-            Open a Data Request
-          </router-link>
         </p>
+        <router-link
+          class="pdap-button-primary mt-4"
+          :to="'/data-request/create'">
+          Open a Data Request
+        </router-link>
+        <router-link
+          class="pdap-button-secondary sm:ml-4 mt-4"
+          :to="'/sign-up'">
+          Sign up for an account
+        </router-link>
       </div>
     </section>
     <section
