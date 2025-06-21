@@ -363,7 +363,7 @@
         <p>
           We requested data from the City of Pittsburgh and
           <a
-            href="https://data-sources.pdap.io/search/traffic%20stops/pittsburgh">
+            href="https://pdap.io/data-source/198">
             shared it in our database.
           </a>
         </p>
