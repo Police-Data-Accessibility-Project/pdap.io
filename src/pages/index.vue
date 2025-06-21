@@ -362,8 +362,7 @@
       <div class="text-lg">
         <p>
           We requested data from the City of Pittsburgh and
-          <a
-            href="https://pdap.io/data-source/198">
+          <a href="https://pdap.io/data-source/198">
             shared it in our database.
           </a>
         </p>
