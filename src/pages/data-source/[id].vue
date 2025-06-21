@@ -367,12 +367,12 @@ hgroup {
 }
 
 .description {
-  @apply block max-w-full leading-6 max-h-full overflow-hidden;
+  @apply block max-w-full leading-6 max-h-full overflow-hidden md:text-xl;
   transition: max-height 0.3s ease;
 }
 
 .description.truncate-2 {
-  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)] md:text-xl;
+  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)];
 }
 
 .pdap-button-tertiary {
