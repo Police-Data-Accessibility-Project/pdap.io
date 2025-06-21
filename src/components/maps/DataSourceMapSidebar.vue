@@ -51,7 +51,7 @@
           @click="selectLocation('county', county)">
           <h4 class="capitalize tracking-normal mb-0">{{ county.name }}</h4>
           <router-link
-            :to="`/search/results?location_id<>${county.location_id}`"
+            :to="`/search/results?location_id=${county.location_id}`"
             class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
             @click.stop>
             <span>
