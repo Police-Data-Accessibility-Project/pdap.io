@@ -372,7 +372,7 @@ hgroup {
 }
 
 .description.truncate-2 {
-  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)];
+  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)] md:max-h-[calc(2*1.25rem+5px)];
 }
 
 .pdap-button-tertiary {
