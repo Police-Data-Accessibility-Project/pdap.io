@@ -35,7 +35,7 @@
         </a>
         is a place on the internet where public records can be found about a
         police system. Our database is community-maintained, with help from our
-        open-source apps. To help locate sources,
+        open-source apps. To help add to the database,
         <a href="https://docs.pdap.io/">start with the docs!</a>
       </p>
       <p v-if="metricsData">
@@ -160,7 +160,7 @@
           <a href="https://docs.pdap.io">docs.pdap.io</a>
           is the starting point
         </strong>
-        for using our tools to do things with data.
+        for using our tools to volunteer and use data.
       </p>
       <h2>
         <FontAwesomeIcon
@@ -214,7 +214,7 @@
       </div>
       <a
         class="pdap-button-primary mt-2"
-        href="https://docs.pdap.io"
+        href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
         target="blank">
         Volunteer for data requests
       </a>
