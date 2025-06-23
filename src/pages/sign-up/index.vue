@@ -1,6 +1,6 @@
 <template>
   <main class="pdap-flex-container mx-auto max-w-2xl">
-    <template v-if="!auth.userId && canAccessBeta">
+    <template v-if="!auth.userId">
       <h1>Sign Up</h1>
 
       <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
@@ -90,7 +90,7 @@
         </div>
       </template>
     </template>
-    <template v-else-if="!auth.userId && !canAccessBeta">
+    <template v-else-if="!auth.userId">
       <h1>We're in a controlled beta.</h1>
       <p>
         ...but we'd love to have you! If you'd like to create an account, email
@@ -125,7 +125,7 @@ import {
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, RouterView, useRouter } from 'vue-router';
 import { useMutation } from '@tanstack/vue-query';
 import { useAuthStore } from '@/stores/auth';
@@ -135,13 +135,6 @@ const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 // Constants
-
-// temporary beta access url param checker
-const canAccessBeta = ref(false);
-onMounted(() => {
-  const route = useRoute();
-  canAccessBeta.value = route.query.beta === 'true';
-});
 const PASSWORD_INPUTS = [
   {
     autocomplete: 'new-password',
