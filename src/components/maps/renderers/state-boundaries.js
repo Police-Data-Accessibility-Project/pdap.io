@@ -6,24 +6,24 @@
  * @param {Object} deps - Master dependencies object
  */
 export function renderStateBoundariesLayer(container, deps) {
-	const { layers, path, currentTheme, STATUSES } = deps;
+  const { layers, path, currentTheme, STATUSES } = deps;
 
-	// Always create the layer, but control visibility with CSS
-	const boundariesLayer = container
-		.append('g')
-		.attr('class', 'layer stateBoundaries-layer')
-		.style(
-			'display',
-			layers.stateBoundaries.status === STATUSES.IDLE ? 'block' : 'none',
-		);
+  // Always create the layer, but control visibility with CSS
+  const boundariesLayer = container
+    .append('g')
+    .attr('class', 'layer stateBoundaries-layer')
+    .style(
+      'display',
+      layers.stateBoundaries.status === STATUSES.IDLE ? 'block' : 'none'
+    );
 
-	// Draw state boundaries with no fill, just strokes
-	boundariesLayer
-		.selectAll('path')
-		.data(layers.stateBoundaries.data.features)
-		.enter()
-		.append('path')
-		.attr('fill', 'none')
-		.attr('stroke', currentTheme.theme.map.stateBorderColor)
-		.attr('d', path);
+  // Draw state boundaries with no fill, just strokes
+  boundariesLayer
+    .selectAll('path')
+    .data(layers.stateBoundaries.data.features)
+    .enter()
+    .append('path')
+    .attr('fill', 'none')
+    .attr('stroke', currentTheme.theme.map.stateBorderColor)
+    .attr('d', path);
 }
