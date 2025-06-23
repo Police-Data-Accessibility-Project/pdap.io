@@ -90,25 +90,6 @@
         </div>
       </template>
     </template>
-    <template v-else-if="!auth.userId">
-      <h1>We're in a controlled beta.</h1>
-      <p>
-        ...but we'd love to have you! If you'd like to create an account, email
-        <a href="mailto:contact@pdap.io">contact@pdap.io</a>
-        .
-      </p>
-      <div
-        class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full">
-        <p class="w-full max-w-[unset]">Already have an account?</p>
-
-        <RouterLink
-          class="pdap-button-primary flex-1"
-          data-test="toggle-button"
-          to="/sign-in">
-          Sign in
-        </RouterLink>
-      </div>
-    </template>
     <RouterView v-else />
   </main>
 </template>
