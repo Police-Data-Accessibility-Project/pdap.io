@@ -219,7 +219,14 @@ const {
   error: searchError
 } = useQuery({
   queryKey: queryKeySearch,
-  queryFn: () => getSearchResults(route),
+  queryFn: async () => {
+    const results = await getSearchResults(route);
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
+
+    return results;
+  },
   staleTime: 5 * 60 * 1000, // 5 minutes
   onError: (error) => {
     if (error) {

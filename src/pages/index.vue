@@ -7,19 +7,36 @@
 <template>
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
     <section class="col-span-full">
-      <h1>Explore data about police systems</h1>
+      <div
+        class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300">
+        <strong>Announcement:</strong>
+        We are open for public signups!
+        <router-link :to="'/sign-up'">Create a free account here.</router-link>
+      </div>
+    </section>
+    <section class="col-span-full">
+      <h1>Find data about police systems</h1>
       <SearchForm />
+      <div class="hidden md:block">
+        <h2>Explore the map</h2>
+        <DataSourceMap
+          class="mb-6"
+          v-bind="{ ...mapData?.data }"
+          @on-follow="(location_id) => followMutation.mutate(location_id)" />
+      </div>
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
       <p>
-        We document Data Sources (
+        Each
         <a
-          href="https://docs.pdap.io/activities/terms-and-definitions/what-is-a-data-source">
-          <i class="fa fa-question-circle" />
+          href="https://docs.pdap.io/about/terms-and-definitions/what-is-a-data-source">
+          "Data Source"
         </a>
-        ), places on the internet where public records can be found. Each one
-        describes one of the ~20,000 agencies we have indexed.
+        is a place on the internet where public records can be found about a
+        police system. Our database is community-maintained, with help from our
+        open-source apps. To help add to the database,
+        <a href="https://docs.pdap.io/">start with the docs!</a>
       </p>
       <p v-if="metricsData">
         Our database contains
@@ -111,14 +128,21 @@
           evaluate local police systems and other crisis response programs.
         </p>
         <p>
-          All of our programs exist to help people answer questions with data.
+          All of our programs exist to help people answer questions big and
+          small about one of our most impactful local systems. Accessible data
+          is the first step.
           <strong>If you are starting a data project, we can help.</strong>
-          <router-link
-            class="pdap-button-primary mt-4"
-            :to="'/data-request/create'">
-            Open a Data Request
-          </router-link>
         </p>
+        <router-link
+          class="pdap-button-primary mt-4"
+          :to="'/data-request/create'">
+          Open a Data Request
+        </router-link>
+        <router-link
+          class="pdap-button-secondary sm:ml-4 mt-4"
+          :to="'/sign-up'">
+          Sign up for an account
+        </router-link>
       </div>
     </section>
     <section
@@ -136,7 +160,7 @@
           <a href="https://docs.pdap.io">docs.pdap.io</a>
           is the starting point
         </strong>
-        for using our tools to do things with data.
+        for using our tools to volunteer and use data.
       </p>
       <h2>
         <FontAwesomeIcon
@@ -153,7 +177,7 @@
           class="mt-2 pdap-button-primary"
           href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
           target="blank">
-          Help find & label Data Sources
+          Help add Data Sources to our database
         </a>
         <router-link
           class="pdap-button-secondary mt-2 ml-2"
@@ -190,7 +214,7 @@
       </div>
       <a
         class="pdap-button-primary mt-2"
-        href="https://docs.pdap.io"
+        href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
         target="blank">
         Volunteer for data requests
       </a>
@@ -208,7 +232,7 @@
       <div
         v-if="!githubDataLoading && githubData?.goodFirstIssues.length"
         class="grid grid-cols-3 mt-6 gap-4 text-lg">
-        <h3 class="col-span-3">Open good first issues</h3>
+        <h3 class="col-span-3">Good first issues</h3>
         <div
           v-for="(issue, index) in githubData.goodFirstIssues"
           :key="index"
@@ -267,16 +291,67 @@
     <section
       class="col-span-full pdap-grid-container grid-cols-2 pt-6 mt-8 border-t-[3px] border-wineneutral-100">
       <div class="col-span-full">
-        <h1>Examples of our work</h1>
+        <h1>How our data is used</h1>
         <p>
-          Access to data and collaborators helps people answer questions.
-          Ultimately, our goal is to make new research possible.
+          Our goal is to make independent research, journalism, and analysis
+          possible by helping people find the data they need to start any
+          investigation.
         </p>
       </div>
-      <h2 class="col-span-full my-0">
+      <div class="col-span-full pdap-grid-container grid-cols-2 text-lg">
+        <h2 class="my-0 col-span-full">Data for investigative projects</h2>
+        <div>
+          <h3>
+            <FontAwesomeIcon :icon="faEyeLowVision" />
+            Transparency & Oversight
+          </h3>
+          <p>
+            Misconduct, use of force, complaints, and disciplinary records are
+            some examples of tools for public oversight and incident reporting.
+          </p>
+        </div>
+        <div>
+          <h3>
+            <FontAwesomeIcon :icon="faMicroscope" />
+            Operational Analysis
+          </h3>
+          <p>
+            Understanding the effectiveness of emergency response strategies
+            requires records about dispatch, calls for service, crime, budgets,
+            staffing, and more.
+          </p>
+        </div>
+        <div>
+          <h3>
+            <FontAwesomeIcon :icon="faMagnifyingGlassChart" />
+            Studying Policy & Reform
+          </h3>
+          <p>
+            When a new emergency response strategy is developed, comparable
+            records from different jurisdictions may be required to understand
+            policy changes and their effects.
+          </p>
+        </div>
+        <div>
+          <h3>
+            <FontAwesomeIcon :icon="faScaleBalanced" />
+            Performance & Outcome Analysis
+          </h3>
+          <p>
+            The outcomes of policing carry through to incarceration and
+            prosecution. A variety of consistent records over a longer time
+            period are required to understand things like demographic
+            disparities and recidivism.
+          </p>
+        </div>
+      </div>
+      <div class="col-span-full">
+        <h2 class="my-0">Examples</h2>
+      </div>
+      <h3 class="col-span-full my-0">
         <FontAwesomeIcon :icon="faBook" class="text-brand-wine-300" />
         Sharing access to Traffic Stop data
-      </h2>
+      </h3>
       <div class="text-lg">
         <p>Several researchers in Pittsburgh were asking:</p>
         <p class="border-l-2 border-brand-wine/20 pl-4 my-5 italic">
@@ -287,8 +362,7 @@
       <div class="text-lg">
         <p>
           We requested data from the City of Pittsburgh and
-          <a
-            href="https://data-sources.pdap.io/search/traffic%20stops/pittsburgh">
+          <a href="https://pdap.io/data-source/198">
             shared it in our database.
           </a>
         </p>
@@ -301,10 +375,10 @@
           , among other research.
         </p>
       </div>
-      <h2 class="col-span-full my-0">
+      <h3 class="col-span-full my-0">
         <FontAwesomeIcon :icon="faPhone" class="text-brand-wine-300" />
         Preserving Calls for Service data in Oakland CA
-      </h2>
+      </h3>
       <div class="text-lg">
         <p class="mb-4">A journalist in Oakland, CA asked:</p>
         <p class="border-l-2 border-brand-wine/20 pl-4 italic">
@@ -392,15 +466,21 @@
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
-            :icon="faCircleNotch"
-            class="pt-1.5 pr-3 text-brand-wine-100" />
+            :icon="faCircleCheck"
+            class="pt-1.5 pr-3 text-brand-wine-500" />
           Use and refine our toolset for locating and documenting data sources
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faArrowUpRightDots"
             class="pt-1.5 pr-3 text-brand-wine-100" />
-          Grow our database, prioritizing locations followed by our users
+          <span>
+            Grow our database, prioritizing locations followed by our users. To
+            participate,
+            <a href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+              sign up for data labeling here!
+            </a>
+          </span>
         </li>
       </ul>
     </section>
@@ -409,30 +489,42 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { toast } from 'vue3-toastify';
 import SearchForm from '@/components/SearchForm.vue';
+import DataSourceMap from '@/components/maps/DataSourceMap.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faBook,
   faPhone,
   faRoute,
-  faCircleNotch,
   faCircleCheck,
   faExternalLink,
   faInfoCircle,
   faArrowUpRightDots,
   faMagnifyingGlassLocation,
   faPeopleCarryBox,
-  faCodePullRequest
+  faCodePullRequest,
+  faEyeLowVision,
+  faScaleBalanced,
+  faMagnifyingGlassChart,
+  faMicroscope
 } from '@fortawesome/free-solid-svg-icons';
 import { getMetrics } from '@/api/metrics';
 import { getRecentSources } from '@/api/data-sources';
+import { getMapLocations } from '@/api/map';
+import { getLocation } from '@/api/locations';
+import { followSearch } from '@/api/search';
 import {
   getPdapRepositories,
   getPdapPRsMerged,
   getPdapIssues
 } from '@/api/github';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
-import { useQuery } from '@tanstack/vue-query';
+import { getMinimalLocationText } from '@/util/locationFormatters';
+import { SEARCH_FOLLOWED, PROFILE } from '@/util/queryKeys';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+
+const queryClient = useQueryClient();
 
 // Get recent sources
 const { data: recentSources } = useQuery({
@@ -452,6 +544,15 @@ const formattedSources = computed(() =>
 );
 
 // Metrics
+const { data: mapData } = useQuery({
+  queryFn: async () => await getMapLocations(),
+  queryKey: ['mapLocations'],
+  onError: (err) => {
+    console.error('Error fetching map locations:', err);
+  },
+  staleTime: 60 * 60 * 1000 // 1 hour
+});
+
 const { data: metricsData } = useQuery({
   queryFn: async () => {
     const response = await getMetrics();
@@ -477,6 +578,28 @@ const { data: githubData, isLoading: githubDataLoading } = useQuery({
     console.error('Error fetching data:', err);
   },
   staleTime: 5 * 60 * 1000 // 5 minutes,
+});
+
+const followMutation = useMutation({
+  mutationFn: async (location_id) => {
+    await followSearch(location_id);
+    const location = await getLocation(location_id);
+
+    toast.success(
+      `Search followed for ${getMinimalLocationText(location.data)}.`
+    );
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH_FOLLOWED]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
+  },
+  onError: () => {
+    toast.error('Error following search location. Please try again.');
+  }
 });
 
 // TODO: Uncomment the below to close pdap.io/issues/208; blocked by data-sources-app/issues/580
