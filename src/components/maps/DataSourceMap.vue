@@ -51,8 +51,9 @@ import {
 import { updateDynamicLayers } from './utils/overlay';
 // import { createOverlayDeps } from './utils/createOverlayDeps';
 
-import countiesGeoJSON from './geoJSON/counties.json';
-import statesGeoJSON from './geoJSON/states.json';
+import * as topojson from 'topojson-client';
+import countiesJSON from './topoJSON/counties.json';
+import statesJSON from './topoJSON/states.json';
 
 const STATUSES = {
   LOADING: 'loading',
@@ -146,9 +147,22 @@ const localitiesByCounty = computed(() => {
   return map;
 });
 
+// Convert TopoJSON to GeoJSON
+const countiesGeoJSON = computed(() => {
+  // Get the first object key which should be the counties layer
+  const objectName = Object.keys(countiesJSON.objects)[0];
+  return topojson.feature(countiesJSON, countiesJSON.objects[objectName]);
+});
+
+const statesGeoJSON = computed(() => {
+  // Get the first object key which should be the states layer
+  const objectName = Object.keys(statesJSON.objects)[0];
+  return topojson.feature(statesJSON, statesJSON.objects[objectName]);
+});
+
 const layers = computed(() => ({
   counties: {
-    data: countiesGeoJSON,
+    data: countiesGeoJSON.value,
     status: Object.keys(countyDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
@@ -163,7 +177,7 @@ const layers = computed(() => ({
     maxZoom: Infinity
   },
   states: {
-    data: statesGeoJSON,
+    data: statesGeoJSON.value,
     status: Object.keys(stateDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
@@ -171,7 +185,7 @@ const layers = computed(() => ({
     maxZoom: 3
   },
   stateBoundaries: {
-    data: statesGeoJSON,
+    data: statesGeoJSON.value,
     status: Object.keys(stateDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
@@ -179,13 +193,13 @@ const layers = computed(() => ({
     maxZoom: Infinity
   },
   countyOverlay: {
-    data: countiesGeoJSON,
+    data: countiesGeoJSON.value,
     status: STATUSES.HIDDEN,
     minZoom: 3,
     maxZoom: Infinity
   },
   stateOverlay: {
-    data: statesGeoJSON,
+    data: statesGeoJSON.value,
     status: STATUSES.HIDDEN,
     minZoom: 0,
     maxZoom: Infinity
@@ -536,7 +550,7 @@ function handleZoomToLocation(location) {
   } else if (location.type === 'state') {
     // Find the state in the GeoJSON
     const stateName = location.data.name;
-    const stateFeature = statesGeoJSON.features.find(
+    const stateFeature = statesGeoJSON.value.features.find(
       (f) => f.properties.NAME === stateName
     );
 
@@ -546,7 +560,7 @@ function handleZoomToLocation(location) {
   } else if (location.type === 'county') {
     // Find the county in the GeoJSON
     const countyFips = location.fips;
-    const countyFeature = countiesGeoJSON.features.find((f) => {
+    const countyFeature = countiesGeoJSON.value.features.find((f) => {
       const fips = f.properties.STATE + f.properties.COUNTY;
       return fips === countyFips;
     });
