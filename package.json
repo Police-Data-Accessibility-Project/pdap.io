@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "NODE_ENV=production NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "build": "NODE_ENV=production NODE_OPTIONS=--max-old-space-size=12288 vite build",
     "serve": "vite preview --port 8888",
     "lint": "eslint src --ext .vue .",
     "lint:fix": "npm run lint -- --fix",
@@ -32,6 +32,7 @@
     "pdap-design-system": "^3.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "topojson-client": "^3.1.0",
     "vue": "^3.4.19",
     "vue-router": "^4.4.3",
     "vue3-toastify": "^0.2.5"
@@ -53,6 +54,9 @@
     "prettier-eslint": "^16.3.0",
     "tailwindcss": "^3.3.6",
     "terser": "^5.37.0",
+    "topojson-client": "^3.1.0",
+    "topojson-server": "^3.0.1",
+    "topojson-simplify": "^3.0.3",
     "unplugin-vue-router": "^0.10.2",
     "vite": "^4.5.1",
     "vite-svg-loader": "^5.1.0",
