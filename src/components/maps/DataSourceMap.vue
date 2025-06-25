@@ -241,15 +241,14 @@ onMounted(() => {
 watch(
   () => activeLocationAggregated.value,
   (locAgg, prevLocAgg) => {
-    console.debug({ locAgg, prevLocAgg });
     const priority = ['state', 'county', 'locality'];
     if (!locAgg.locations.value.length) return;
     if (!locAgg?.loc_id && prevLocAgg?.loc_id && !locAgg?.stack.length) return;
-    const activeLocation = locAgg.stack[locAgg.stack.length - 1];
+    const activeLocation = locAgg?.stack[locAgg?.stack.length - 1];
     if (locAgg?.loc_id === prevLocAgg?.loc_id && activeLocation) return;
 
     if (activeLocation?.data?.location_id === locAgg.loc_id) return;
-    const oldActiveLocation = prevLocAgg.stack[prevLocAgg.stack.length - 1];
+    const oldActiveLocation = prevLocAgg?.stack[prevLocAgg?.stack.length - 1];
 
     if (
       priority.indexOf(activeLocation?.type) <
