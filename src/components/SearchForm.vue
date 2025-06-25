@@ -73,7 +73,7 @@ import {
   RecordTypeIcon
 } from 'pdap-design-system';
 import Typeahead from '@/components/TypeaheadInput.vue';
-import { computed, onMounted, onUpdated, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
