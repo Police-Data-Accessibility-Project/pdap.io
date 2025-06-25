@@ -17,7 +17,6 @@
       </router-view>
     </ErrorBoundary>
     <Footer
-      class="z-50"
       :logo-image-src="acronym"
       :fundraising-data="{ raised: 0, goal: 0 }" />
   </AuthWrapper>
