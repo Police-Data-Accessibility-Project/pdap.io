@@ -5,7 +5,7 @@
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
       :size="100"
-      class="h-full w-full absolute left-0 top-0 z-50 bg-goldneutral-500/70 dark:bg-wineneutral-500/70" />
+      class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70" />
     <!-- Sidebar that appears when a location is selected -->
     <MapSidebar
       :locations="activeLocationStack"
