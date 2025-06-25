@@ -1,5 +1,7 @@
 <template>
-  <div class="map-sidebar" :class="{ visible: locations.length > 0 }">
+  <div
+    class="map-sidebar"
+    :class="{ visible: locations.length > 0 || activeLocation }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-start content-between w-full p-4">
       <Button
@@ -25,12 +27,44 @@
         View all
         <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
-      <Button
-        variant="primary"
-        class="w-full max-w-full"
-        @click="$emit('on-follow', activeLocation?.data?.location_id)">
-        Follow for updates
-      </Button>
+      <!-- Follow -->
+      <div
+        v-if="
+          !isFollowedPending &&
+          !isFollowedError &&
+          getIsV2FeatureEnabled('ENHANCED_SEARCH')
+        "
+        :class="{
+          'loading-shimmer': isFollowedFetching
+        }">
+        <div
+          v-if="!isFollowed"
+          class="flex flex-col md:items-end md:row-start-1 md:row-span-2 md:col-start-2 md:col-span-1">
+          <Button
+            v-if="auth.isAuthenticated()"
+            variant="primary"
+            class="w-full max-w-full"
+            @click="$emit('on-follow', activeLocation?.data?.location_id)">
+            Follow for updates
+          </Button>
+          <p v-if="!auth.isAuthenticated()" class="text-med text-neutral-500">
+            <RouterLink to="/sign-in">Sign in</RouterLink>
+            to follow this location
+          </p>
+        </div>
+        <div v-else class="flex flex-col md:items-end md:max-w-80">
+          <p
+            v-if="auth.isAuthenticated()"
+            class="text-med text-neutral-500 max-w-full md:text-right">
+            <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserCheck" />
+            Following this location
+            <br />
+            See
+            <RouterLink to="/profile">your profile</RouterLink>
+            for more.
+          </p>
+        </div>
+      </div>
     </div>
 
     <hr class="mb-4 border-neutral-500/50" />
@@ -54,9 +88,9 @@
             :to="`/search/results?location_id=${county.location_id}`"
             class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
             @click.stop>
-            <span>
-              <strong>{{ county.source_count }}</strong>
-              Data Sources
+            <span v-show="county">
+              <strong>{{ county?.source_count }}</strong>
+              {{ pluralize('Data Source', county?.source_count ?? 0) }}
             </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
@@ -82,7 +116,7 @@
             @click.stop>
             <span>
               <strong>{{ locality.source_count }}</strong>
-              Data Sources
+              {{ pluralize('Data Source', locality.source_count) }}
             </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
@@ -103,12 +137,20 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { Button } from 'pdap-design-system';
 import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import pluralize from '@/util/pluralize';
+import { getFollowedSearch } from '@/api/search';
+import { useAuthStore } from '@/stores/auth';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { useQuery } from '@tanstack/vue-query';
+import { SEARCH_FOLLOWED } from '@/util/queryKeys';
+import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
+const route = useRoute();
+const auth = useAuthStore();
 const props = defineProps({
   locations: {
     type: Array,
@@ -135,8 +177,20 @@ const props = defineProps({
 const emit = defineEmits([
   'on-follow',
   'update-active-location',
-  'zoom-to-location'
+  'zoom-to-location',
+  'on-reset-zoom'
 ]);
+
+const {
+  isLoading: isFollowedPending,
+  isFetching: isFollowedFetching,
+  data: isFollowed,
+  isError: isFollowedError
+} = useQuery({
+  queryKey: [SEARCH_FOLLOWED],
+  queryFn: async () => !!(await getFollowedSearch(route.query.location_id)),
+  staleTime: 5 * 60 * 1000 // 5 minutes
+});
 
 // Get the active location (last item in the stack)
 const activeLocation = computed(() => {
@@ -156,7 +210,19 @@ const headerTitle = computed(() => {
   if (!activeLocation.value) return '';
 
   if (activeLocationType.value === 'state') {
-    return ABBREVIATIONS_TO_STATES.get(activeLocation.value.data.state_iso);
+    // Special case for Maine which might have issues
+    if (
+      activeLocation.value.data.state_iso === 'ME' ||
+      (activeLocation.value.name &&
+        activeLocation.value.name.toLowerCase() === 'maine')
+    ) {
+      return 'Maine';
+    }
+
+    const stateName = ABBREVIATIONS_TO_STATES.get(
+      activeLocation.value.data.state_iso
+    );
+    return stateName || activeLocation.value.data.name || 'Unknown State';
   } else if (activeLocationType.value === 'county') {
     // Check if Louisiana for Parish vs County
     const isLouisiana = activeLocation.value.data.state_iso === 'LA';
@@ -246,8 +312,8 @@ function handleBackClick() {
   if (activeLocationType.value === 'state') {
     // Reset map and clear location stack
     emit('update-active-location', []);
-    // Reset zoom
-    emit('zoom-to-location', { type: 'reset' });
+    // // Reset zoom
+    emit('on-reset-zoom');
   } else if (activeLocationType.value === 'county') {
     const county = activeLocation.value;
     const state = props.states.find(

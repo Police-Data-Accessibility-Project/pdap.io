@@ -207,49 +207,50 @@ export function handleOverlaysOnZoom({
     const COUNTY_THRESHOLD = 5.25;
     const STATE_THRESHOLD = 1.25;
 
-    // County overlay
     if (
       layers.countyOverlay.status === STATUSES.IDLE &&
       event.transform.k < COUNTY_THRESHOLD
     ) {
       layers.countyOverlay.status = STATUSES.HIDDEN;
 
+      const activeLocation =
+        activeLocationStack[activeLocationStack.length - 1];
       if (
-        ['fips', 'county_fips'].some(
-          (s) =>
-            s in (activeLocationStack[activeLocationStack.length - 1] ?? {})
-        )
+        activeLocation &&
+        ['fips', 'county_fips'].some((s) => s in activeLocation)
       ) {
         const stateIndex = activeLocationStack.findLastIndex(
           (loc) => loc.type === 'state'
         );
-        const inferredState = props.states.find(
-          (state) =>
-            state.state_iso ===
-            activeLocationStack[activeLocationStack.length - 1].data.state_iso
-        );
 
-        activeLocationStack = activeLocationStack
-          .slice(0, stateIndex + 1)
-          .concat([
-            {
-              type: 'state',
-              name: inferredState.name,
-              data: inferredState
-            }
-          ]);
+        if (stateIndex >= 0) {
+          activeLocationStack = activeLocationStack.slice(0, stateIndex + 1);
+        } else {
+          const inferredState = props.states.find(
+            (state) => state.state_iso === activeLocation.data.state_iso
+          );
+
+          if (inferredState) {
+            activeLocationStack = [
+              {
+                type: 'state',
+                name: inferredState.name,
+                data: inferredState
+              }
+            ];
+          }
+        }
       }
 
-      // Remove overlay layers from DOM
+      // Remove county overlay from DOM
       svg.select('.countyOverlay-layer').remove();
     }
 
-    // State overlay
+    // State overlay - when zooming out completely
     if (
       layers.stateOverlay.status === STATUSES.IDLE &&
       event.transform.k < STATE_THRESHOLD
     ) {
-      // Update visibility
       layers.stateOverlay.status = STATUSES.HIDDEN;
       layers.countyOverlay.status = STATUSES.HIDDEN;
 
@@ -257,8 +258,11 @@ export function handleOverlaysOnZoom({
       svg.select('.stateOverlay-layer').remove();
       svg.select('.countyOverlay-layer').remove();
 
-      // Clear the active location stack since we're zooming out
-      activeLocationStack = [];
+      // Clear the active location stack since we're zooming out completely
+      // But only if we're actually below the threshold
+      if (event.transform.k < STATE_THRESHOLD) {
+        activeLocationStack = [];
+      }
     }
   }
 

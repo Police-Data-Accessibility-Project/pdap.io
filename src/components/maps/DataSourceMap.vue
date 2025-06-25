@@ -14,12 +14,14 @@
       :states="props.states"
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
+      @on-reset-zoom="() => mapDeps.resetZoom()"
       @zoom-to-location="handleZoomToLocation" />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
 import { Spinner } from 'pdap-design-system';
@@ -49,7 +51,6 @@ import {
   resetZoom
 } from './utils/interaction';
 import { updateDynamicLayers } from './utils/overlay';
-// import { createOverlayDeps } from './utils/createOverlayDeps';
 
 import * as topojson from 'topojson-client';
 import countiesJSON from './topoJSON/counties.json';
@@ -89,6 +90,10 @@ const props = defineProps({
 // Define emits
 const emit = defineEmits(['on-follow', 'on-select-location']);
 
+// Get route for query parameters
+const route = useRoute();
+const router = useRouter();
+
 // Reactive state
 const mapContainer = ref(null);
 const width = ref(960);
@@ -112,7 +117,7 @@ const countyDataMap = computed(() => {
   if (props.counties && props.counties.length > 0) {
     props.counties.forEach((county) => {
       if (county.fips) {
-        map[county.fips] = county.source_count;
+        map[county.fips] = county?.source_count ?? 0;
       }
     });
   }
@@ -145,6 +150,20 @@ const localitiesByCounty = computed(() => {
     });
   }
   return map;
+});
+
+const locations = computed(() => [
+  ...(props.states ?? []),
+  ...(props.counties ?? []),
+  ...(props.localities ?? [])
+]);
+
+const activeLocationAggregated = computed(() => {
+  return {
+    stack: activeLocationStack.value,
+    loc_id: route.query.location_id,
+    locations
+  };
 });
 
 // Convert TopoJSON to GeoJSON
@@ -219,6 +238,30 @@ onMounted(() => {
   });
 });
 
+watch(
+  () => activeLocationAggregated.value,
+  (locAgg, prevLocAgg) => {
+    const priority = ['state', 'county', 'locality'];
+    if (!locAgg.locations.value.length) return;
+    if (!locAgg?.loc_id && prevLocAgg?.loc_id && !locAgg?.stack.length) return;
+    const activeLocation = locAgg?.stack[locAgg?.stack.length - 1];
+    if (locAgg?.loc_id === prevLocAgg?.loc_id && activeLocation) return;
+
+    if (activeLocation?.data?.location_id === locAgg.loc_id) return;
+    const oldActiveLocation = prevLocAgg?.stack[prevLocAgg?.stack.length - 1];
+
+    if (
+      priority.indexOf(activeLocation?.type) <
+      priority.indexOf(oldActiveLocation?.type)
+    ) {
+      return;
+    }
+
+    updateOnParamChange(locAgg.loc_id, locAgg.stack);
+  },
+  { immediate: true, deep: true }
+);
+
 // Watch for changes in counties data
 watch(
   () => props.states,
@@ -231,21 +274,34 @@ watch(
 );
 watch(
   () => activeLocationStack.value,
-  () => {
-    emit(
-      'on-select-location',
-      activeLocationStack.value[activeLocationStack.value.length - 1]
-    );
+  (newStack) => {
+    if (newStack.length > 0) {
+      const activeLocation = newStack[newStack.length - 1];
+      if (activeLocation) emit('on-select-location', activeLocation);
+      // updateOnParamChange(route.query.location_id, newStack);
+    }
+  },
+  { deep: true }
+);
+
+function updateOnParamChange(loc_id, stack) {
+  if (!loc_id || !stack) return;
+
+  const activeLoc = stack[stack.length - 1];
+  const activeLocID = activeLoc?.data?.location_id;
+  if (activeLocID === loc_id) return;
+
+  setTimeout(() => {
+    if (svg.value && loc_id) zoomToLocationById(loc_id);
+
     updateDynamicLayers({
       renderStateOverlay,
       renderCountyOverlay,
       renderLocalityMarkers,
       deps: mapDeps.value
     });
-  },
-  { deep: true }
-);
-
+  }, 250);
+}
 // Initialize the map
 function initMap() {
   const container = mapContainer.value;
@@ -300,8 +356,22 @@ function initMap() {
     MIN_ZOOM,
     MAX_ZOOM,
     onZoom: (event) => {
+      const url = new URL(window.location.href);
+
+      // Check if we're zooming out below a threshold
+      if (
+        event.transform.k < currentZoom.value &&
+        event.transform.k < 1.125 &&
+        route.query.location_id
+      ) {
+        // We're zooming out (current zoom < previous zoom) and below threshold
+        // Clear location_id from URL directly using window.history
+        url.searchParams.delete('location_id');
+        window.history.replaceState({}, '', url);
+      }
+
       // Update overlay visibility before overwriting current zoom
-      activeLocationStack.value = handleOverlaysOnZoom({
+      const newStack = handleOverlaysOnZoom({
         event,
         currentZoom: currentZoom.value,
         layers: layers.value,
@@ -310,6 +380,14 @@ function initMap() {
         svg: svg.value,
         STATUSES
       });
+
+      if (
+        !newStack.length &&
+        activeLocationStack.value.length &&
+        route.query.location_id
+      )
+        router.replace({ query: {} });
+      activeLocationStack.value = newStack;
 
       // Store current zoom transform
       zoomTransform.value = event.transform;
@@ -342,22 +420,6 @@ function initMap() {
 // Create a computed property for the master dependencies object
 // This will be passed to all render functions and handlers
 const mapDeps = computed(() => {
-  // Helper function to create overlay deps without circular reference
-  const getOverlayDeps = () => ({
-    container: svg.value.select('.map-container'),
-    svg: svg.value,
-    activeLocationStack: activeLocationStack.value,
-    layers: layers.value,
-    path: path.value,
-    width: width.value,
-    height: height.value,
-    props,
-    currentTheme: currentTheme.value,
-    localitiesByCounty: localitiesByCounty.value,
-    projection: projection.value,
-    STATUSES
-  });
-
   return {
     // Core map properties
     container: svg.value.select('.map-container'),
@@ -403,7 +465,7 @@ const mapDeps = computed(() => {
         width: width.value,
         height: height.value,
         props,
-        activeLocationStack: [...activeLocationStack.value],
+        activeLocationStack: activeLocationStack.value,
         layers: layers.value,
         svg: svg.value,
         updateDynamicLayers: () =>
@@ -411,7 +473,7 @@ const mapDeps = computed(() => {
             renderStateOverlay,
             renderCountyOverlay,
             renderLocalityMarkers,
-            deps: getOverlayDeps()
+            deps: mapDeps.value
           })
       });
     },
@@ -425,7 +487,7 @@ const mapDeps = computed(() => {
         width: width.value,
         height: height.value,
         props,
-        activeLocationStack: [...activeLocationStack.value],
+        activeLocationStack: activeLocationStack.value,
         layers: layers.value,
         svg: svg.value,
         updateDynamicLayers: () =>
@@ -433,7 +495,7 @@ const mapDeps = computed(() => {
             renderStateOverlay,
             renderCountyOverlay,
             renderLocalityMarkers,
-            deps: getOverlayDeps()
+            deps: mapDeps.value
           })
       });
     },
@@ -446,19 +508,35 @@ const mapDeps = computed(() => {
         projection: projection.value,
         width: width.value,
         height: height.value,
-        activeLocationStack: [...activeLocationStack.value],
+        activeLocationStack: activeLocationStack.value,
         updateDynamicLayers: () =>
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
             renderLocalityMarkers,
-            deps: getOverlayDeps()
+            deps: mapDeps.value
           }),
         svg: svg.value
       });
     },
 
     resetZoom: () => {
+      // Clear the location_id from URL
+      if (route.query.location_id) {
+        const query = { ...route.query };
+        delete query.location_id;
+
+        // Store current scroll position
+        const scrollPosition = window.pageYOffset;
+
+        // Update URL without the location_id
+        router.replace({
+          query,
+          // Preserve scroll position
+          state: { fromMap: true, scrollPosition }
+        });
+      }
+
       activeLocationStack.value = resetZoom({
         activeLocationStack: [...activeLocationStack.value],
         layers: layers.value,
@@ -473,7 +551,7 @@ const mapDeps = computed(() => {
         renderStateOverlay,
         renderCountyOverlay,
         renderLocalityMarkers,
-        deps: getOverlayDeps()
+        deps: mapDeps.value
       });
     }
   };
@@ -543,16 +621,19 @@ function updateActiveLocationStack(newStack) {
 
 // Handle zoom to location from sidebar
 function handleZoomToLocation(location) {
-  if (location.type === 'reset') {
-    // Reset zoom
-    const zoom = svg.value.__zoom__ || d3.zoom();
-    svg.value.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-  } else if (location.type === 'state') {
+  if (location.type === 'state') {
     // Find the state in the GeoJSON
     const stateName = location.data.name;
-    const stateFeature = statesGeoJSON.value.features.find(
-      (f) => f.properties.NAME === stateName
+    let stateFeature = statesGeoJSON.value.features.find(
+      (f) => f.properties.NAME.toLowerCase() === stateName.toLowerCase()
     );
+
+    // If not found, try partial match
+    if (!stateFeature) {
+      stateFeature = statesGeoJSON.value.features.find((f) =>
+        f.properties.NAME.toLowerCase().includes(stateName.toLowerCase())
+      );
+    }
 
     if (stateFeature) {
       zoomToFeature(stateFeature, 0.9);
@@ -600,6 +681,62 @@ function zoomToFeature(feature, scaleFactor) {
       zoom.transform,
       d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
     );
+}
+
+function zoomToLocationById(locationId) {
+  if (!locationId || !svg.value) return;
+
+  if (locations.value.length) {
+    const location = locations.value.find((s) => {
+      return s.location_id == locationId;
+    });
+
+    if (!location) return;
+
+    // Determine location type
+    const locationType =
+      'fips' in location
+        ? 'county'
+        : 'county_fips' in location
+          ? 'locality'
+          : 'state';
+
+    const newLocation = {
+      type: locationType,
+      data: location,
+      name: location.name,
+      fips: location.fips // Include fips for county
+    };
+
+    // Clear the stack and add the new location
+    activeLocationStack.value = [newLocation];
+
+    // Use setTimeout to ensure the DOM is ready
+    setTimeout(() => {
+      // If locality, zoom to county
+      if (locationType === 'locality' && location.county_fips) {
+        const county = props.counties.find(
+          (c) => c.fips === location.county_fips
+        );
+
+        if (county) {
+          // Create location objects for both county and locality
+          const countyLocation = {
+            type: 'county',
+            data: county,
+            name: county.name,
+            fips: county.fips
+          };
+          // Zoom to the county
+          handleZoomToLocation(countyLocation);
+          return;
+        }
+      }
+
+      // Otherwize zoom to location
+      handleZoomToLocation(newLocation);
+    }, 50);
+  }
 }
 
 // Clean up when component is unmounted

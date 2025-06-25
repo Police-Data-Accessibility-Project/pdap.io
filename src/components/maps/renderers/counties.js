@@ -74,7 +74,7 @@ export function renderCountiesLayer(container, deps) {
               ${county.name}, ${county.state_iso}
             </div>
             <div style="font-weight:bold; font-size:13px;">
-              Sources: ${county.source_count}
+              Sources: ${county?.source_count ?? 0}
             </div>
           `
           )
