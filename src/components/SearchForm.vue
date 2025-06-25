@@ -73,7 +73,7 @@ import {
   RecordTypeIcon
 } from 'pdap-design-system';
 import Typeahead from '@/components/TypeaheadInput.vue';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, onUpdated, ref, watch } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
@@ -255,14 +255,16 @@ watch(
 watch(
   () => route.query.location_id,
   (newLocationId) => {
-    if (typeaheadRef.value && !newLocationId) {
-      // Clear the typeahead when location_id is removed
-      typeaheadRef.value.clearInput();
-      selectedRecord.value = null;
-      initiallySearchedRecord.value = null;
-    }
+    setTimeout(() => {
+      if (typeaheadRef.value && !newLocationId) {
+        // Clear the typeahead when location_id is removed
+        typeaheadRef.value.clearInput();
+        selectedRecord.value = null;
+        initiallySearchedRecord.value = null;
+      }
 
-    updateFromLocationId(newLocationId);
+      updateFromLocationId(newLocationId);
+    }, 100);
   },
   {
     immediate: true
