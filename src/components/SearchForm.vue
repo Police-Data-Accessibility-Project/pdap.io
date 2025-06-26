@@ -5,7 +5,9 @@
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
-        :format-item-for-display="(item) => item.display_name"
+        :format-item-for-display="
+          (item) => item?.display_name ?? item?.name ?? ''
+        "
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
         @select-item="onSelectRecord"
