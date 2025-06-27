@@ -63,6 +63,9 @@
     "vitest": "^3.2.4",
     "vue-eslint-parser": "^9.0.0"
   },
+  "engines": {
+    "node": "20.19.0"
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
