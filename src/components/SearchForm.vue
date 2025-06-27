@@ -5,6 +5,7 @@
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
+        :data-test="TestIds.search_typeahead"
         :format-item-for-display="
           (item) => item?.display_name ?? item?.name ?? ''
         "
@@ -60,6 +61,7 @@
         :disabled="isButtonDisabled"
         intent="primary"
         type="submit"
+        :data-test="TestIds.search_submit"
         class="mt-4 max-w-full col-span-full">
         {{ buttonCopy ?? 'Search' }}
       </Button>
@@ -83,6 +85,7 @@ import { getTypeaheadLocations } from '@/api/typeahead';
 import { getLocation } from '@/api/locations';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { TestIds } from '../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();
