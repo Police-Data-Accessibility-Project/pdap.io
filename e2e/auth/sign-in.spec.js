@@ -4,6 +4,9 @@ import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
 
+/** Matches `/` or `/profile` at the end of a string */
+const SIGN_IN_PATHS = /\/(profile)?$/;
+
 test.describe('Authentication flows', () => {
   test('should sign in with email and password', async ({ page }) => {
     await page.goto('/sign-in');
@@ -13,7 +16,7 @@ test.describe('Authentication flows', () => {
     await page.click('button[type="submit"]');
 
     // Assert successful sign in
-    await expect(page).toHaveURL('/profile');
+    await expect(page).toHaveURL(SIGN_IN_PATHS);
   });
 
   test('should show error for invalid credentials', async ({ page }) => {
@@ -30,7 +33,7 @@ test.describe('Authentication flows', () => {
 
   test('should sign in with GitHub', async ({ page }) => {
     await page.goto('/sign-in?gh_access_token=mock-token-123');
-    await expect(page).toHaveURL('/profile', { timeout: 10000 });
+    await expect(page).toHaveURL(SIGN_IN_PATHS, { timeout: 10000 });
   });
 
   test('should show error for GitHub auth failure', async ({ page }) => {

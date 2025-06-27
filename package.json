@@ -8,6 +8,7 @@
     "serve": "vite preview --port 8888",
     "lint": "eslint src --ext .vue .",
     "lint:fix": "npm run lint -- --fix",
+    "postinstall": "npx playwright install && npx update-browserslist-db@latest",
     "test": "vitest --dom --run",
     "test:ci": "npm run test -- --silent",
     "test:e2e": "playwright test",
