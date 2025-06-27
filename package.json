@@ -8,7 +8,6 @@
     "serve": "vite preview --port 8888",
     "lint": "eslint src --ext .vue .",
     "lint:fix": "npm run lint -- --fix",
-    "postinstall": "npx playwright install && npx update-browserslist-db@latest",
     "test": "vitest --dom --run",
     "test:ci": "npm run test -- --silent",
     "test:e2e": "playwright test",
@@ -18,7 +17,8 @@
     "test:e2e:install": "playwright install --with-deps",
     "test:e2e:codegen": "playwright codegen",
     "test:changed": "npm run test -- --dom --changed",
-    "coverage": "npm run test -- --coverage"
+    "coverage": "npm run test -- --coverage",
+    "update-deps": "npx playwright install && npx update-browserslist-db@latest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
