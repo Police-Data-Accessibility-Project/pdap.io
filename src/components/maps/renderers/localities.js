@@ -128,7 +128,7 @@ export function renderLocalityMarkers(container, deps) {
       const locality = d.properties;
       // Show tooltip with locality information
       tooltip
-        .style('opacity', 0.9)
+        ?.style('opacity', 0.9)
         .html(
           `
           <div style="font-weight:bold; font-size:14px; margin-bottom:5px;">
@@ -147,6 +147,6 @@ export function renderLocalityMarkers(container, deps) {
     })
     .on('mouseout', function () {
       // Hide tooltip
-      tooltip.style('opacity', 0);
+      tooltip?.style('opacity', 0);
     });
 }

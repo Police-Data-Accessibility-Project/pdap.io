@@ -219,6 +219,7 @@ defineExpose({
   boldMatchText,
   clearInput,
   focusInput,
+  selectItem,
   get value() {
     return input.value;
   }

@@ -60,17 +60,16 @@ export function renderStateOverlay(container, deps) {
     .attr('fill', 'white');
 
   // Add the state shape to the mask in black (black = invisible area)
-  mask
-    .append('path')
-    .attr(
-      'd',
-      path(
-        layers.stateOverlay.data.features.find(
-          (d) => d.properties.NAME === activeState.name
-        )
-      )
-    )
-    .attr('fill', 'black');
+  // Find the state feature by name with case-insensitive comparison
+  const stateFeature = layers.stateOverlay.data.features.find(
+    (d) => d.properties.NAME.toLowerCase() === activeState.name.toLowerCase()
+  );
+
+  if (stateFeature) {
+    mask.append('path').attr('d', path(stateFeature)).attr('fill', 'black');
+  } else {
+    console.warn(`Could not find state feature for: ${activeState.name}`);
+  }
 
   // Add a semi-transparent background that covers everything EXCEPT the active state
   overlayLayer
@@ -84,20 +83,19 @@ export function renderStateOverlay(container, deps) {
     .attr('pointer-events', 'none'); // Allow clicks to pass through
 
   // Add a stroke around the active state
-  overlayLayer
-    .selectAll('path.active-state-border')
-    .data([
-      layers.stateOverlay.data.features.find(
-        (d) => d.properties.NAME === activeState.name
-      )
-    ])
-    .enter()
-    .append('path')
-    .attr('class', 'active-state-border')
-    .attr('fill', 'none') // No fill, just stroke
-    .attr('stroke', currentTheme.theme.map.stateBorderColor)
-    .attr('d', path)
-    .attr('pointer-events', 'none'); // Allow clicks to pass through
+  // Use the same state feature for the border
+  if (stateFeature) {
+    overlayLayer
+      .selectAll('path.active-state-border')
+      .data([stateFeature])
+      .enter()
+      .append('path')
+      .attr('class', 'active-state-border')
+      .attr('fill', 'none') // No fill, just stroke
+      .attr('stroke', currentTheme.theme.map.stateBorderColor)
+      .attr('d', path)
+      .attr('pointer-events', 'none'); // Allow clicks to pass through
+  }
 
   console.log('State overlay layer rendered, active state:', activeState.name);
 }

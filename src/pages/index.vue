@@ -22,7 +22,18 @@
         <DataSourceMap
           class="mb-6"
           v-bind="{ ...mapData?.data }"
-          @on-follow="(location_id) => followMutation.mutate(location_id)" />
+          @on-follow="(location_id) => followMutation.mutate(location_id)"
+          @on-select-location="
+            ({ data: { location_id } }) => {
+              // Update the URL without scrolling
+              if (route.query.location_id != location_id) {
+                router.replace({
+                  query: { ...route.query, location_id },
+                  state: { fromMap: true, scrollPosition: pageYOffset }
+                });
+              }
+            }
+          " />
       </div>
     </section>
     <section class="col-span-full text-lg">
@@ -523,8 +534,13 @@ import { formatDateForSearchResults } from '@/util/dateFormatters';
 import { getMinimalLocationText } from '@/util/locationFormatters';
 import { SEARCH_FOLLOWED, PROFILE } from '@/util/queryKeys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useRoute, useRouter } from 'vue-router';
 
 const queryClient = useQueryClient();
+const route = useRoute();
+const router = useRouter();
+
+const pageYOffset = computed(() => window.pageYOffset);
 
 // Get recent sources
 const { data: recentSources } = useQuery({

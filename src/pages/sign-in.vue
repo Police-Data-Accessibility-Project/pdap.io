@@ -198,7 +198,7 @@ async function authGithub() {
     return null;
   } catch (error) {
     if (error.response.data.message.includes('already exists')) {
-      auth.setRedirectTo({ path: '/profile' });
+      auth.setRedirectTo(auth.redirectTo ?? { path: '/profile' });
       return { userExists: true };
     } else throw error;
   }

@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import VueRouter from "unplugin-vue-router/vite";
 import path from "path";
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -71,7 +72,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
+        "@": fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
     

@@ -33,15 +33,20 @@ export function handleStateClick({
 
   // Add state to the active location stack
   const stateName = d.properties.NAME;
-  const state = props.states.find((s) => s.name === stateName);
+
+  // Find the state in our data
+  const state = props.states.find(
+    (s) => s.name.toLowerCase() === stateName.toLowerCase()
+  );
+
   if (state) {
-    // Create a new array to ensure reactivity
-    const newStack = [...activeLocationStack];
-    newStack.push({
+    // Create a new state location object
+    const stateLocation = {
       type: 'state',
       name: stateName,
       data: state
-    });
+    };
+    const newStack = [stateLocation];
 
     // Replace the entire stack with the new one
     activeLocationStack.splice(0, activeLocationStack.length, ...newStack);
@@ -55,9 +60,7 @@ export function handleStateClick({
 
   // Get the stored zoom behavior
   const zoom = svg.__zoom__ || d3.zoom();
-
   // Calculate offset for sidebar
-  // Use a larger offset (150px) to make the shift more noticeable
   const sidebarOffset = activeLocationStack.length > 0 ? 150 : 0;
   const translate = [
     width / 2 - scale * x - sidebarOffset,

@@ -2,7 +2,7 @@ import { STATES_TO_ABBREVIATIONS } from './constants';
 
 export function getFullLocationText(location) {
   if (Object.hasOwn(location, 'display_name')) {
-    return location.display_name;
+    return location?.display_name;
   }
 
   const searched = getMostNarrowSearchLocationWithResults(location);
@@ -14,7 +14,7 @@ export function getFullLocationText(location) {
     case 'state':
       return location.state_name;
     default:
-      return location.display_name ?? '';
+      return location?.display_name ?? '';
   }
 }
 
@@ -24,7 +24,7 @@ export function getLocationCityState(location) {
   const locality = location.locality_name;
   const stateAbbr = STATES_TO_ABBREVIATIONS.get(location.state_name);
   const state = location.state_name;
-  const displayName = location.display_name;
+  const displayName = location?.display_name;
 
   if (searched === 'locality') {
     if (locality && !state && !stateAbbr) return locality;
@@ -36,7 +36,7 @@ export function getLocationCityState(location) {
 }
 
 export function getMinimalLocationText(location) {
-  return getLocationCityState(location) || location.display_name;
+  return getLocationCityState(location) || location?.display_name;
 }
 
 export function getMostNarrowSearchLocationWithResults(location) {
