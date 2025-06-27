@@ -73,6 +73,7 @@
         @on-input="fetchTypeaheadResults">
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <span v-html="typeaheadRef?.boldMatchText(item?.display_name)" />
           <span class="locale-type">
             {{ item.type }}

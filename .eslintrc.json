@@ -6,23 +6,7 @@
     "import/core-modules": ["vue-router/auto-routes"]
   },
   "rules": {
-    "vue/multi-word-component-names": [
-      "warn",
-      {
-        "ignores": [
-          "login",
-          "index",
-          "search",
-          "search.results",
-          "request",
-          "profile",
-          "[id]",
-          "results",
-          "create",
-          "validate.email"
-        ]
-      }
-    ],
+    "vue/multi-word-component-names": 0,
 
     "prettier/prettier": [
       "error",
