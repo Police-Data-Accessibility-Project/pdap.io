@@ -48,12 +48,33 @@ export default defineConfig(({ mode }) => {
           html5_comments: false,
         },
       },
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vue-vendor': ['vue', 'vue-router', 'pinia'],
+          'fontawesome': [
+            '@fortawesome/fontawesome-svg-core',
+            '@fortawesome/free-brands-svg-icons',
+            '@fortawesome/free-regular-svg-icons',
+            '@fortawesome/free-solid-svg-icons',
+            '@fortawesome/vue-fontawesome'
+          ],
+          'd3': ['d3', 'd3-scale', 'd3-scale-chromatic']
+        }
+      }
     },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    
     server: {
       port: 8888,
     },

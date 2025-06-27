@@ -5,7 +5,9 @@
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
-        :format-item-for-display="(item) => item.display_name"
+        :format-item-for-display="
+          (item) => item?.display_name ?? item?.name ?? ''
+        "
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
         @select-item="onSelectRecord"
@@ -73,14 +75,16 @@ import {
   RecordTypeIcon
 } from 'pdap-design-system';
 import Typeahead from '@/components/TypeaheadInput.vue';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { getLocation } from '@/api/locations';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
+const route = useRoute();
 const router = useRouter();
 
 const { buttonCopy } = defineProps({
@@ -89,7 +93,6 @@ const { buttonCopy } = defineProps({
 });
 
 const emit = defineEmits(['searched']);
-const { query: params } = useRoute();
 
 /* constants */
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
@@ -98,8 +101,8 @@ const CHECKBOXES = [
     id: 'all-data-types',
     get defaultChecked() {
       return (
-        params.record_categories?.includes(this.label) ||
-        !params.record_categories?.length
+        route.query.record_categories?.includes(this.label) ||
+        !route.query.record_categories?.length
       );
     },
     name: 'all-data-types',
@@ -108,7 +111,7 @@ const CHECKBOXES = [
   {
     id: 'interactions',
     get defaultChecked() {
-      return params.record_categories?.includes(this.label);
+      return route.query.record_categories?.includes(this.label);
     },
     name: 'police-and-public-interactions',
     label: 'Police & public interactions'
@@ -116,7 +119,7 @@ const CHECKBOXES = [
   {
     id: 'info-officers',
     get defaultChecked() {
-      return params.record_categories?.includes(this.label);
+      return route.query.record_categories?.includes(this.label);
     },
     name: 'info-about-officers',
     label: 'Info about officers'
@@ -124,7 +127,7 @@ const CHECKBOXES = [
   {
     id: 'info-agencies',
     get defaultChecked() {
-      return params.record_categories?.includes(this.label);
+      return route.query.record_categories?.includes(this.label);
     },
     name: 'info-about-agencies',
     label: 'Info about agencies'
@@ -132,7 +135,7 @@ const CHECKBOXES = [
   {
     id: 'agency-published-resources',
     get defaultChecked() {
-      return params.record_categories?.includes(this.label);
+      return route.query.record_categories?.includes(this.label);
     },
     name: 'agency-published-resources',
     label: 'Agency-published resources'
@@ -140,7 +143,7 @@ const CHECKBOXES = [
   {
     id: 'jails-and-courts',
     get defaultChecked() {
-      return params.record_categories?.includes(this.label);
+      return route.query.record_categories?.includes(this.label);
     },
     name: 'jails-and-courts',
     label: 'Jails & Courts'
@@ -153,7 +156,6 @@ const formRef = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
 const hasUpdatedCategories = ref(false);
-
 const isButtonDisabled = computed(() => {
   if (!selectedRecord.value && !initiallySearchedRecord.value) return true;
 
@@ -162,9 +164,13 @@ const isButtonDisabled = computed(() => {
     initiallySearchedRecord.value
   );
 
-  // If there is a selected record, the button should be enabled
-  if (selectedRecord.value && !selectedRecordEqualsInitiallySearched)
-    return false;
+  const isSelectedAndDifferent =
+    selectedRecord.value && !selectedRecordEqualsInitiallySearched;
+  const isSelectedAndSameAndHomePage =
+    selectedRecord.value &&
+    selectedRecordEqualsInitiallySearched &&
+    route.path === '/';
+  if (isSelectedAndDifferent || isSelectedAndSameAndHomePage) return false;
 
   if (
     selectedRecordEqualsInitiallySearched &&
@@ -176,15 +182,32 @@ const isButtonDisabled = computed(() => {
   return false;
 });
 const queryClient = useQueryClient();
-const queryKey = computed(() => [
+const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
+const queryKeyLocation = computed(() => [LOCATION, route.query.location_id]);
+
+const { data: locationData, refetch } = useQuery({
+  queryFn: async () => {
+    const id = route.query.location_id;
+    if (!id) return null;
+
+    const l = await getLocation(id);
+    return l?.data;
+  },
+  queryKey: queryKeyLocation,
+  enabled: !!route.query.location_id,
+  staleTime: 60 * 60 * 1000, // 1 hour
+  onError: (err) => {
+    console.error('Error fetching location:', err);
+  }
+});
 
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {
     if (!searchValue || searchValue.length <= 1) {
-      return queryClient.getQueryData(queryKey.value) || [];
+      return queryClient.getQueryData(queryKeyTypeahead.value) || [];
     }
     const response = await getTypeaheadLocations(searchValue);
     return response.length ? response : undefined;
@@ -192,7 +215,7 @@ const typeaheadMutation = useMutation({
   onSuccess: (data) => {
     items.value = data;
     // Update the query cache with the new data
-    queryClient.setQueryData(queryKey, data, {
+    queryClient.setQueryData(queryKeyTypeahead, data, {
       staleTime: 5 * 60 * 1000
     });
   }
@@ -202,7 +225,7 @@ const fetchTypeaheadResults = _debounce(
   async () => {
     const searchValue = typeaheadRef.value?.value;
     // Check cache
-    const cached = queryClient.getQueryData(queryKey);
+    const cached = queryClient.getQueryData(queryKeyTypeahead);
     if (cached) {
       items.value = cached;
       return;
@@ -215,17 +238,60 @@ const fetchTypeaheadResults = _debounce(
   { leading: true, trailing: true }
 );
 
-onMounted(() => {
-  // Set up selected state based on params
-  if (params.location_id) {
-    selectedRecord.value = params;
-    initiallySearchedRecord.value = params;
-  }
+watch(
+  locationData,
+  (data) => {
+    // Set the state first
+    items.value = [];
+    selectedRecord.value = data;
+    initiallySearchedRecord.value = data;
 
+    // Force the typeahead to update in the next tick
+    if (typeaheadRef.value) {
+      typeaheadRef.value.selectItem(data);
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => route.query.location_id,
+  (newLocationId) => {
+    if (typeaheadRef.value && !newLocationId) {
+      // Clear the typeahead when location_id is removed
+      typeaheadRef.value.clearInput();
+      selectedRecord.value = null;
+      initiallySearchedRecord.value = null;
+    }
+
+    updateFromLocationId(newLocationId);
+  },
+  {
+    immediate: true
+  }
+);
+
+// Function to update typeahead from location ID
+async function updateFromLocationId(id) {
+  if (!id) return;
+
+  // Check if we already have this location in cache
+  const cachedData = queryClient.getQueryData([LOCATION, id]);
+
+  if (cachedData && typeaheadRef.value) {
+    // If we have cached data, use it directly without refetching
+    selectedRecord.value = cachedData;
+    typeaheadRef.value.selectItem(cachedData);
+  } else {
+    refetch(id);
+  }
+}
+
+onMounted(() => {
   // Sync values state with default checked state.
   const defaultChecked = {};
   CHECKBOXES.forEach(({ name, label }) => {
-    if (params.record_categories?.includes(label)) {
+    if (route.query.record_categories?.includes(label)) {
       defaultChecked[name] = true;
     }
   });
@@ -297,6 +363,13 @@ function onChange(values, event) {
 function onSelectRecord(item) {
   selectedRecord.value = item;
   items.value = [];
+  if (item?.location_id)
+    router.replace({
+      query: {
+        ...route.query,
+        location_id: item?.location_id ?? route.query.location_id
+      }
+    });
 }
 </script>
 

@@ -1,0 +1,67 @@
+/* TODO: add to markup directly where possible */
+
+#map-container {
+  @apply w-full h-full relative overflow-hidden;
+}
+
+.map-sidebar {
+  transition: opacity 150ms ease-in;
+  @apply absolute bg-neutral-100/90 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto opacity-0 grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] pointer-events-none;
+}
+
+.map-sidebar.visible {
+  transition: opacity 300ms ease-out;
+  @apply opacity-100 pointer-events-auto;
+}
+
+:deep(.counties-layer path) {
+  @apply cursor-pointer;
+}
+
+:deep(.counties-layer path:hover) {
+  filter: brightness(105%);
+}
+
+:deep(.states-layer path) {
+  @apply pointer-events-auto;
+}
+
+:deep(.states-layer path:hover) {
+  filter: brightness(105%);
+}
+
+:deep(.stateBoundaries-layer path),
+:deep(.active-state-border) {
+  @apply pointer-events-none;
+  stroke-width: calc(0.5px * var(--zoom-inversion, 0.3));
+}
+
+:deep(.counties-layer path),
+:deep(.active-county-border) {
+  stroke-width: calc(0.35px * var(--zoom-inversion, 0.3));
+}
+
+:deep(.zoom-controls) {
+  @apply cursor-pointer select-none;
+}
+
+:deep(.zoom-controls rect) {
+  @apply fill-wineneutral-50 stroke-wineneutral-600;
+}
+
+:deep(.zoom-controls text) {
+  @apply fill-wineneutral-800 text-med font-semibold;
+}
+
+:deep(.localities-layer text.locality-marker) {
+  @apply fill-brand-gold-500;
+  font-size: var(--icon-size, 0);
+}
+
+:deep(.localities-layer text.locality-marker.no-sources) {
+  @apply fill-brand-gold-400/50;
+}
+
+:deep(.localities-layer .has-active:not(.active-locality)) {
+  @apply hidden;
+}
