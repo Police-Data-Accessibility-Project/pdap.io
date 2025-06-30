@@ -36,7 +36,9 @@
         <template v-else>
           <!-- Heading and related material -->
           <hgroup>
-            <h1 :data-test="TestIds.data_source_title">{{ dataSource.name }}</h1>
+            <h1 :data-test="TestIds.data_source_title">
+              {{ dataSource.name }}
+            </h1>
             <div class="flex gap-2 items-center">
               <p v-if="dataSource.record_type_name" class="pill w-max">
                 <RecordTypeIcon :record-type="dataSource.record_type_name" />

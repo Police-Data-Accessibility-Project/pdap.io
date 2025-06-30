@@ -1,6 +1,9 @@
 <template>
   <div class="relative w-full h-auto">
-    <div id="map-container" ref="mapContainer" :data-test="TestIds.data_source_map" />
+    <div
+      id="map-container"
+      ref="mapContainer"
+      :data-test="TestIds.data_source_map" />
     <!-- <span class="loading"></span> -->
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
