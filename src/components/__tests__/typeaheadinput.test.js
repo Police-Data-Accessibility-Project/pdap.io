@@ -49,11 +49,11 @@ const mountComponent = (props = {}) => {
 };
 
 // Function to get the input element
-const getInput = (wrapper) => wrapper.find('[data-test="typeahead-input"]');
+const getInput = (wrapper) => wrapper.find(`[data-test="typeahead-input"]`);
 
 // Function to get the list items
 const getListItems = (wrapper) =>
-  wrapper.findAll('[data-test="typeahead-list-item"]');
+  wrapper.findAll(`[data-test="typeahead-list-item"]`);
 
 // Function to set input value and wait for update
 const setInputValue = async (input, value) => {
