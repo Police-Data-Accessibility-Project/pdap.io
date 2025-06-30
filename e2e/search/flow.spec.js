@@ -19,9 +19,7 @@ test.describe('Search Flow', () => {
       `[data-test="${TestIds.search_typeahead}"] input`,
       'Pittsburgh'
     );
-    await page.waitForSelector(`[data-test="${TestIds.typeahead_list_item}"]`, {
-      timeout: 15000
-    });
+    await page.locator(`[data-test="${TestIds.typeahead_list_item}"]`).first().waitFor({ state: 'visible' });
     await page.click(
       `[data-test="${TestIds.typeahead_list_item}"]:first-child`
     );
@@ -39,6 +37,8 @@ test.describe('Search Flow', () => {
 
     // Should be on data source page
     await expect(page).toHaveURL(/\/data-source\/\d+/);
+    await page.waitForLoadState('networkidle');
+    await page.locator('h1').waitFor({ state: 'visible' });
     await expect(page.locator('h1')).toBeVisible();
   });
 });

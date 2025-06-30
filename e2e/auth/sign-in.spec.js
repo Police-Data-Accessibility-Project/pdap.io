@@ -24,6 +24,7 @@ test.describe('Authentication flows', () => {
     await page.click(`[data-test="${TestIds.submit_button}"]`);
 
     // Assert successful sign in
+    await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(SIGN_IN_PATHS);
   });
 
