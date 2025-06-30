@@ -19,7 +19,7 @@
       :id="id"
       ref="inputRef"
       v-model="input"
-      :data-test="TestIds.typeahead_input"
+      :data-test="TestIds.search_typeahead"
       class="pdap-typeahead-input"
       type="text"
       :placeholder="placeholder"

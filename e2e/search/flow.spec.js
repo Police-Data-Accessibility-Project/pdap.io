@@ -34,9 +34,7 @@ test.describe('Search Flow', () => {
     await expect(page.locator('h1')).toContainText('Data');
 
     // Click on first data source
-    await page.waitForSelector(`[data-test="${TestIds.data_source_link}"]`, {
-      timeout: 10000
-    });
+    await page.waitForSelector(`[data-test="${TestIds.data_source_link}"]`);
     await page.click(`[data-test="${TestIds.data_source_link}"]`);
 
     // Should be on data source page

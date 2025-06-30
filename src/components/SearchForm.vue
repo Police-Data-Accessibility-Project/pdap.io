@@ -42,6 +42,7 @@
     <FormV2
       id="pdap-data-sources-search"
       ref="formRef"
+      :data-test="TestIds.search_form"
       class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
       @change="onChange"
       @submit="submit">
