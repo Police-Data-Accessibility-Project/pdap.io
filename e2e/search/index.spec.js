@@ -20,7 +20,9 @@ test.describe('Search Page (Home)', () => {
 
     // Map should be visible on desktop
     await page.setViewportSize({ width: 1200, height: 800 });
-    await page.locator(`[data-test="${TestIds.data_source_map}"]`).waitFor({ state: 'visible' });
+    await page
+      .locator(`[data-test="${TestIds.data_source_map}"]`)
+      .waitFor({ state: 'visible' });
     await expect(
       page.locator(`[data-test="${TestIds.data_source_map}"]`)
     ).toBeVisible();
@@ -39,7 +41,10 @@ test.describe('Search Page (Home)', () => {
       `input[data-test="${TestIds.search_typeahead}"]`,
       'New York'
     );
-    await page.locator(`[data-test="${TestIds.typeahead_list_item}"]`).first().waitFor({ state: 'visible' });
+    await page
+      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .first()
+      .waitFor({ state: 'visible' });
     await page.click(
       `[data-test="${TestIds.typeahead_list_item}"]:first-child`
     );

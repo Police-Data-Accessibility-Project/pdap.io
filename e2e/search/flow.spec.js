@@ -19,7 +19,10 @@ test.describe('Search Flow', () => {
       `[data-test="${TestIds.search_typeahead}"] input`,
       'Pittsburgh'
     );
-    await page.locator(`[data-test="${TestIds.typeahead_list_item}"]`).first().waitFor({ state: 'visible' });
+    await page
+      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .first()
+      .waitFor({ state: 'visible' });
     await page.click(
       `[data-test="${TestIds.typeahead_list_item}"]:first-child`
     );

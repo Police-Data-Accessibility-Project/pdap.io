@@ -25,7 +25,9 @@ test.describe('Search Results Page', () => {
 
     // Should show data source results
     await page.waitForLoadState('networkidle');
-    const dataSourceCount = await page.locator(`[data-test="${TestIds.data_source_link}"]`).count();
+    const dataSourceCount = await page
+      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .count();
     if (dataSourceCount > 0) {
       await expect(
         page.locator(`[data-test="${TestIds.data_source_link}"]`).first()
@@ -101,7 +103,9 @@ test.describe('Search Results Page', () => {
     // Should display results filtered by record category
     await expect(page.locator('h1')).toContainText('Data');
     await page.waitForLoadState('networkidle');
-    const resultCount = await page.locator(`[data-test="${TestIds.data_source_link}"]`).count();
+    const resultCount = await page
+      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .count();
     if (resultCount === 0) {
       console.log('No data sources found for this category');
     }
@@ -132,7 +136,9 @@ test.describe('Search Results Page', () => {
     await page.goto('/search/results?location_id=6593');
 
     await page.waitForLoadState('networkidle');
-    const dataSourceCount = await page.locator(`[data-test="${TestIds.data_source_link}"]`).count();
+    const dataSourceCount = await page
+      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }

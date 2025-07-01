@@ -59,23 +59,26 @@ test.describe('Data Source Page', () => {
   });
 
   test('should handle multiple agencies correctly', async ({ page }) => {
-    // This would test a data source with multiple agencies
     await page.goto('/data-source/4');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
 
-    // Check if it's a multi-agency data source
-    // TODO: WTF IS THIS???? WE DON'T USE TABLES!!!
-    // const agencyTable = page.locator('table');
-    // if (await agencyTable.isVisible()) {
-    //   // Should show table headers
-    //   await expect(page.locator('th:has-text("Agency")')).toBeVisible();
-    //   await expect(page.locator('th:has-text("County, State")')).toBeVisible();
-
-    //   // Should show scrollable table body
-    //   await expect(page.locator('tbody tr')).toHaveCount({ min: 1 });
-    // }
+    // Check if agency information is displayed
+    const agencyInfoCount = await page
+      .locator(`[data-test="${TestIds.agency_info}"]`)
+      .count();
+    if (agencyInfoCount > 0) {
+      await expect(
+        page.locator(`[data-test="${TestIds.agency_info}"]`)
+      ).toBeVisible();
+      await expect(
+        page.locator(`[data-test="${TestIds.county_state}"]`)
+      ).toBeVisible();
+      await expect(
+        page.locator(`[data-test="${TestIds.agency_type}"]`)
+      ).toBeVisible();
+    }
   });
 
   test('should show prev/next navigation when coming from search results', async ({
@@ -84,8 +87,10 @@ test.describe('Data Source Page', () => {
     // First go to search results to establish context
     await page.goto('/search/results?location_id=6593');
     await page.waitForLoadState('networkidle');
-    
-    const dataSourceCount = await page.locator(`[data-test="${TestIds.data_source_link}"]`).count();
+
+    const dataSourceCount = await page
+      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }
@@ -120,12 +125,14 @@ test.describe('Data Source Page', () => {
     // Go through search results first
     await page.goto('/search/results?location_id=6593');
     await page.waitForLoadState('networkidle');
-    
-    const dataSourceCount = await page.locator(`[data-test="${TestIds.data_source_link}"]`).count();
+
+    const dataSourceCount = await page
+      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }
-    
+
     await page.click(`[data-test="${TestIds.data_source_link}"]`);
 
     await expect(page).toHaveURL(/\/data-source\/\d+/);
@@ -182,7 +189,9 @@ test.describe('Data Source Page', () => {
     await page.waitForLoadState('networkidle');
 
     // Should show not found message
-    await page.locator('h1:has-text("Data source not found")').waitFor({ state: 'visible' });
+    await page
+      .locator('h1:has-text("Data source not found")')
+      .waitFor({ state: 'visible' });
     await expect(
       page.locator('h1:has-text("Data source not found")')
     ).toBeVisible();
