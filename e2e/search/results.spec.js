@@ -46,13 +46,9 @@ test.describe('Search Results Page', () => {
     );
     await searchInput.click();
     await searchInput.clear();
-    await searchInput.type('Chicago', { delay: 100 });
+    await searchInput.fill('Chicago', { delay: 100 });
 
-    // Wait for typeahead dropdown to appear
-    await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
-      .first()
-      .waitFor({ state: 'visible' });
+    await page.waitForLoadState('networkidle');
     await page
       .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
       .first()
@@ -65,6 +61,7 @@ test.describe('Search Results Page', () => {
     await page.click(`[data-test="${TestIds.search_submit}"]`);
 
     // URL should update with new location
+    await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/search\/results\?location_id=\d+/);
   });
 
