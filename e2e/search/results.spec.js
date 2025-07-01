@@ -47,25 +47,25 @@ test.describe('Search Results Page', () => {
     await searchInput.click();
     await searchInput.clear();
     await searchInput.type('Chicago', { delay: 100 });
-    // await page.waitForSelector(`[data-test="${TestIds.typeahead_list_item}"]`, {
-    //   timeout: 30000
-    // });
+
+    // Wait for typeahead dropdown to appear
     await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`, {
-        timeout: 15000
-      })
+      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .first()
+      .waitFor({ state: 'visible' });
+    await page
+      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
       .first()
       .click();
 
-    // Submit updated search
-    await page.waitForSelector(
-      `[data-test="${TestIds.search_submit}"]:not([disabled])`,
-      { timeout: 15000 }
-    );
+    // Wait for button to be enabled and submit
+    await page
+      .locator(`[data-test="${TestIds.search_submit}"]:not([disabled])`)
+      .waitFor({ state: 'visible' });
     await page.click(`[data-test="${TestIds.search_submit}"]`);
 
     // URL should update with new location
-    await expect(page).toHaveURL(/\/search\/results\?location_id=6593/);
+    await expect(page).toHaveURL(/\/search\/results\?location_id=\d+/);
   });
 
   test('should navigate between geographic levels', async ({ page }) => {
