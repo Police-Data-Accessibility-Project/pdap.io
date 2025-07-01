@@ -18,7 +18,7 @@
     "test:e2e:codegen": "playwright codegen",
     "test:changed": "npm run test -- --dom --changed",
     "coverage": "npm run test -- --coverage",
-    "update-deps": "npx playwright install && npx update-browserslist-db@latest"
+    "update-dev-deps": "npx playwright install && npx update-browserslist-db@latest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
