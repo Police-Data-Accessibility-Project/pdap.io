@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken';
 import { ENDPOINTS } from '../../../src/api/constants';
 import { OAUTH_BASE_URL as OAUTH_BASE } from '../../fixtures/constants';
 
-// const OAUTH_BASE = 'https://data-sources.pdap.dev/api' + '/oauth';
-
 const createTestTokens = () => {
   const secret = 'test-secret';
 
@@ -48,7 +46,7 @@ export const authHandlers = [
 
   // Handler for signing in with GitHub
   http.post(
-    'https://data-sources.pdap.dev/api/oauth/login-with-github',
+    `${OAUTH_BASE}/${ENDPOINTS.OAUTH.LOGIN_WITH_GITHUB}`,
     async ({ request }) => {
       const body = await request.json();
 
