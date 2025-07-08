@@ -38,5 +38,24 @@ export const TestIds = {
   next_button: 'next-button',
   agency_info: 'agency-info',
   agency_type: 'agency-type',
-  county_state: 'county-state'
+  county_state: 'county-state',
+
+  // Profile Page
+  profile_error_retry: 'profile-error-retry',
+  profile_basic_info_heading: 'profile-basic-info-heading',
+  profile_my_stuff_heading: 'profile-my-stuff-heading',
+  profile_email: 'profile-email',
+  profile_signout: 'profile-signout',
+  profile_reset_password: 'profile-reset-password',
+  profile_github_linked: 'profile-github-linked',
+  profile_github_link: 'profile-github-link',
+  profile_api_key_regenerate: 'profile-api-key-regenerate',
+  profile_api_key_display: 'profile-api-key-display',
+  profile_api_key_copy: 'profile-api-key-copy',
+  profile_api_key_dismiss: 'profile-api-key-dismiss',
+  profile_permissions: 'profile-permissions',
+  profile_requests_table: 'profile-requests-table',
+  profile_followed_searches_table: 'profile-followed-searches-table',
+  profile_recent_searches_table: 'profile-recent-searches-table',
+  profile_unfollow_button: 'profile-unfollow-button'
 };

@@ -11,6 +11,7 @@
           v-if="onDismiss"
           class="h-max p-0 hover:brightness-95 max-w-max py-1 px-2"
           intent="tertiary"
+          :data-test="TestIds.profile_api_key_dismiss"
           @click="onDismiss">
           <FontAwesomeIcon :icon="faClose" />
         </Button>
@@ -19,6 +20,7 @@
         <Button
           class="h-max p-0 hover:brightness-95 text-left max-w-full rounded"
           intent="tertiary"
+          :data-test="TestIds.profile_api_key_copy"
           @click="copyToClipboard">
           <code
             class="flex justify-between items-center w-full p-2 bg-neutral-200 border border-neutral-500 rounded font-mono text-sm overflow-x-auto shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
@@ -61,6 +63,7 @@ import {
   faClose
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'pdap-design-system';
+import { TestIds } from '../../../../e2e/fixtures/test-ids';
 
 const props = defineProps({
   apiKey: {
