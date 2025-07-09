@@ -34,10 +34,6 @@ jobs:
         env:
           E2E_API_KEY_PROD: ${{ secrets.E2E_API_KEY_PROD }}
           E2E_API_KEY_DEV: ${{ secrets.E2E_API_KEY_DEV }}
-          E2E_PASSWORD_AUTH_EMAIL_PROD: ${{ secrets.E2E_PASSWORD_AUTH_EMAIL_PROD }}
-          E2E_PASSWORD_AUTH_PASSWORD_PROD: ${{ secrets.E2E_PASSWORD_AUTH_PASSWORD_PROD }}
-          E2E_PASSWORD_AUTH_EMAIL_TEST: ${{ secrets.E2E_PASSWORD_AUTH_EMAIL_TEST }}
-          E2E_PASSWORD_AUTH_PASSWORD_TEST: ${{ secrets.E2E_PASSWORD_AUTH_PASSWORD_TEST }}
           
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then\
@@ -69,6 +65,11 @@ jobs:
           fi
       
       - name: Run Playwright tests
+        env:
+          E2E_PASSWORD_AUTH_EMAIL_PROD: ${{ secrets.E2E_PASSWORD_AUTH_EMAIL_PROD }}
+          E2E_PASSWORD_AUTH_PASSWORD_PROD: ${{ secrets.E2E_PASSWORD_AUTH_PASSWORD_PROD }}
+          E2E_PASSWORD_AUTH_EMAIL_TEST: ${{ secrets.E2E_PASSWORD_AUTH_EMAIL_TEST }}
+          E2E_PASSWORD_AUTH_PASSWORD_TEST: ${{ secrets.E2E_PASSWORD_AUTH_PASSWORD_TEST }}
         run: npx playwright test
       
       - uses: actions/upload-artifact@v4
