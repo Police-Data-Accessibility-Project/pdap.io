@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { TestIds } from '../fixtures/test-ids';
-import { TEST_USERS } from '../fixtures/users';
+import { TEST_IDS } from '../fixtures/test-ids';
+import { PASSWORD_AUTH } from '../fixtures/users';
 import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
@@ -10,8 +10,8 @@ test.describe('Profile Page', () => {
     // Sign in before each test
     // TODO: figure out how to abstract this.
     await page.goto('/sign-in');
-    await page.fill('[name="email"]', TEST_USERS.PASSWORD_AUTH.email);
-    await page.fill('[name="password"]', TEST_USERS.PASSWORD_AUTH.password);
+    await page.fill('[name="email"]', PASSWORD_AUTH.email);
+    await page.fill('[name="password"]', PASSWORD_AUTH.password);
     await page.click('button[type="submit"]');
     await page.waitForLoadState('networkidle');
   });
@@ -22,16 +22,16 @@ test.describe('Profile Page', () => {
 
     await expect(page.locator('h1')).toContainText('Profile');
     await expect(
-      page.locator(`[data-test="${TestIds.profile_basic_info_heading}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_basic_info_heading}"]`)
     ).toContainText('Basic information');
     await expect(
-      page.locator(`[data-test="${TestIds.profile_email}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_email}"]`)
     ).toBeVisible();
     await expect(
-      page.locator(`[data-test="${TestIds.profile_signout}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_signout}"]`)
     ).toBeVisible();
     await expect(
-      page.locator(`[data-test="${TestIds.profile_reset_password}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_reset_password}"]`)
     ).toBeVisible();
   });
 
@@ -40,7 +40,7 @@ test.describe('Profile Page', () => {
     await page.waitForLoadState('networkidle');
 
     const githubLinkButton = page.locator(
-      `[data-test="${TestIds.profile_github_link}"]`
+      `[data-test="${TEST_IDS.profile_github_link}"]`
     );
     if (await githubLinkButton.isVisible()) {
       await expect(githubLinkButton).toContainText('Link account with GitHub');
@@ -52,7 +52,7 @@ test.describe('Profile Page', () => {
     await page.waitForLoadState('networkidle');
 
     const linkedStatus = page.locator(
-      `[data-test="${TestIds.profile_github_linked}"]`
+      `[data-test="${TEST_IDS.profile_github_linked}"]`
     );
     if (await linkedStatus.isVisible()) {
       await expect(linkedStatus).toContainText(
@@ -65,20 +65,20 @@ test.describe('Profile Page', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TestIds.profile_api_key_regenerate}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_api_key_regenerate}"]`);
     await expect(
-      page.locator(`[data-test="${TestIds.profile_api_key_display}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_api_key_display}"]`)
     ).toBeVisible();
     await expect(
-      page.locator(`[data-test="${TestIds.profile_api_key_copy}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_api_key_copy}"]`)
     ).toBeVisible();
     await expect(
-      page.locator(`[data-test="${TestIds.profile_api_key_dismiss}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_api_key_dismiss}"]`)
     ).toBeVisible();
 
-    await page.click(`[data-test="${TestIds.profile_api_key_dismiss}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_api_key_dismiss}"]`);
     await expect(
-      page.locator(`[data-test="${TestIds.profile_api_key_display}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_api_key_display}"]`)
     ).not.toBeVisible();
   });
 
@@ -87,17 +87,17 @@ test.describe('Profile Page', () => {
     await page.waitForLoadState('networkidle');
 
     await expect(
-      page.locator(`[data-test="${TestIds.profile_my_stuff_heading}"]`)
+      page.locator(`[data-test="${TEST_IDS.profile_my_stuff_heading}"]`)
     ).toContainText('My stuff');
     // TODO: how to merge mock data in the profile response for the sake of testing?
     // await expect(
-    //   page.locator(`[data-test="${TestIds.profile_requests_table}"]`)
+    //   page.locator(`[data-test="${TEST_IDS.profile_requests_table}"]`)
     // ).toBeVisible();
     // await expect(
-    //   page.locator(`[data-test="${TestIds.profile_followed_searches_table}"]`)
+    //   page.locator(`[data-test="${TEST_IDS.profile_followed_searches_table}"]`)
     // ).toBeVisible();
     // await expect(
-    //   page.locator(`[data-test="${TestIds.profile_recent_searches_table}"]`)
+    //   page.locator(`[data-test="${TEST_IDS.profile_recent_searches_table}"]`)
     // ).toBeVisible();
   });
 
@@ -106,7 +106,7 @@ test.describe('Profile Page', () => {
     await page.waitForLoadState('networkidle');
 
     const unfollowButton = page
-      .locator(`[data-test="${TestIds.profile_unfollow_button}"]`)
+      .locator(`[data-test="${TEST_IDS.profile_unfollow_button}"]`)
       .first();
     if (await unfollowButton.isVisible()) {
       await unfollowButton.click();
@@ -118,7 +118,7 @@ test.describe('Profile Page', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TestIds.profile_reset_password}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_reset_password}"]`);
     await expect(page).toHaveURL('/change-password');
   });
 
@@ -126,7 +126,7 @@ test.describe('Profile Page', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TestIds.profile_signout}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_signout}"]`);
     await expect(page).toHaveURL('/sign-in');
   });
 });

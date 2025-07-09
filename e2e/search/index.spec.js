@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { TestIds } from '../fixtures/test-ids';
+import { TEST_IDS } from '../fixtures/test-ids';
 import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
@@ -10,21 +10,21 @@ test.describe('Search Page (Home)', () => {
 
     // Search form should be visible
     await expect(
-      page.locator(`input[data-test="${TestIds.search_typeahead}"]`)
+      page.locator(`input[data-test="${TEST_IDS.search_typeahead}"]`)
     ).toBeVisible({
       timeout: 15000
     });
     await expect(
-      page.locator(`[data-test="${TestIds.search_submit}"]`)
+      page.locator(`[data-test="${TEST_IDS.search_submit}"]`)
     ).toBeVisible();
 
     // Map should be visible on desktop
     await page.setViewportSize({ width: 1200, height: 800 });
     await page
-      .locator(`[data-test="${TestIds.data_source_map}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_map}"]`)
       .waitFor({ state: 'visible' });
     await expect(
-      page.locator(`[data-test="${TestIds.data_source_map}"]`)
+      page.locator(`[data-test="${TEST_IDS.data_source_map}"]`)
     ).toBeVisible();
 
     // Recent sources section should be visible
@@ -38,19 +38,19 @@ test.describe('Search Page (Home)', () => {
 
     // Fill search input
     await page.fill(
-      `input[data-test="${TestIds.search_typeahead}"]`,
+      `input[data-test="${TEST_IDS.search_typeahead}"]`,
       'New York'
     );
     await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .locator(`[data-test="${TEST_IDS.typeahead_list_item}"]`)
       .first()
       .waitFor({ state: 'visible' });
     await page.click(
-      `[data-test="${TestIds.typeahead_list_item}"]:first-child`
+      `[data-test="${TEST_IDS.typeahead_list_item}"]:first-child`
     );
 
     // Submit search
-    await page.click(`[data-test="${TestIds.search_submit}"]`);
+    await page.click(`[data-test="${TEST_IDS.search_submit}"]`);
 
     // Should navigate to search results
     await expect(page).toHaveURL(/\/search\/results/);

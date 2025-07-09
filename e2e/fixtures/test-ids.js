@@ -1,4 +1,4 @@
-export const TestIds = {
+export const TEST_IDS = {
   // Sign In
   email_input: 'signin-email',
   password_input: 'signin-password',
@@ -57,5 +57,14 @@ export const TestIds = {
   profile_requests_table: 'profile-requests-table',
   profile_followed_searches_table: 'profile-followed-searches-table',
   profile_recent_searches_table: 'profile-recent-searches-table',
-  profile_unfollow_button: 'profile-unfollow-button'
+  profile_unfollow_button: 'profile-unfollow-button',
+
+  // Data Source Create Page
+  data_source_create_form: 'data-source-create-form',
+  data_source_create_url_input: 'data-source-create-url-input',
+  data_source_create_name_input: 'data-source-create-name-input',
+  data_source_create_description_input: 'data-source-create-description-input',
+  data_source_create_submit: 'data-source-create-submit',
+  data_source_create_clear: 'data-source-create-clear',
+  data_source_create_advanced: 'data-source-create-advanced'
 };
