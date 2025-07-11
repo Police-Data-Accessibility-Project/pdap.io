@@ -19,13 +19,13 @@
 
     <template v-else>
       <template v-if="isGithubAuthError">
-        <p class="error" :data-test="TestIds.error_message">
+        <p class="error" :data-test="TEST_IDS.error_message">
           There was an error logging you in with GitHub. Please try again
         </p>
       </template>
       <template v-else>
         <template v-if="githubAuthData?.userExists">
-          <p class="error" :data-test="TestIds.error_message">
+          <p class="error" :data-test="TEST_IDS.error_message">
             You already have an account with this email address. Please sign in
             and link your existing account to GitHub from your profile.
           </p>
@@ -34,7 +34,7 @@
         <Button
           class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
           intent="tertiary"
-          :data-test="TestIds.github_signin_button"
+          :data-test="TEST_IDS.github_signin_button"
           :disabled="githubAuthData?.userExists"
           @click="async () => await beginOAuthLogin()">
           <FontAwesomeIcon :icon="faGithub" />
@@ -54,7 +54,7 @@
         <InputText
           id="email"
           autocomplete="email"
-          :data-test="TestIds.email_input"
+          :data-test="TEST_IDS.email_input"
           name="email"
           label="Email"
           type="text"
@@ -62,7 +62,7 @@
         <InputPassword
           id="password"
           autocomplete="password"
-          :data-test="TestIds.password_input"
+          :data-test="TEST_IDS.password_input"
           name="password"
           label="Password"
           type="password"
@@ -73,7 +73,7 @@
           :disabled="passwordAuthIsLoading"
           :is-loading="passwordAuthIsLoading"
           type="submit"
-          :data-test="TestIds.submit_button">
+          :data-test="TEST_IDS.submit_button">
           Sign in
         </Button>
       </FormV2>
@@ -112,7 +112,7 @@ import { useMutation } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
-import { TestIds } from '../../e2e/fixtures/test-ids';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 const auth = useAuthStore();
 const route = useRoute();

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { TestIds } from '../fixtures/test-ids';
+import { TEST_IDS } from '../fixtures/test-ids';
 import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
@@ -26,11 +26,11 @@ test.describe('Search Results Page', () => {
     // Should show data source results
     await page.waitForLoadState('networkidle');
     const dataSourceCount = await page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .count();
     if (dataSourceCount > 0) {
       await expect(
-        page.locator(`[data-test="${TestIds.data_source_link}"]`).first()
+        page.locator(`[data-test="${TEST_IDS.data_source_link}"]`).first()
       ).toBeVisible();
     }
   });
@@ -43,9 +43,9 @@ test.describe('Search Results Page', () => {
     await page.goto('/search/results?location_id=6593');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TestIds.search_toggle}"]`);
+    await page.click(`[data-test="${TEST_IDS.search_toggle}"]`);
     const searchInput = page.locator(
-      `input[data-test="${TestIds.search_typeahead}"]`
+      `input[data-test="${TEST_IDS.search_typeahead}"]`
     );
     await searchInput.click();
     await searchInput.clear();
@@ -53,19 +53,19 @@ test.describe('Search Results Page', () => {
 
     // Wait for typeahead dropdown to appear
     await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .locator(`[data-test="${TEST_IDS.typeahead_list_item}"]`)
       .first()
       .waitFor({ state: 'visible' });
     await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .locator(`[data-test="${TEST_IDS.typeahead_list_item}"]`)
       .first()
       .click();
 
     // Wait for button to be enabled and submit
     await page
-      .locator(`[data-test="${TestIds.search_submit}"]:not([disabled])`)
+      .locator(`[data-test="${TEST_IDS.search_submit}"]:not([disabled])`)
       .waitFor({ state: 'visible' });
-    await page.click(`[data-test="${TestIds.search_submit}"]`);
+    await page.click(`[data-test="${TEST_IDS.search_submit}"]`);
 
     // URL should update with new location
     await expect(page).toHaveURL(/\/search\/results\?location_id=\d+/);
@@ -114,7 +114,7 @@ test.describe('Search Results Page', () => {
     await expect(page.locator('h1')).toContainText('Data');
     await page.waitForLoadState('networkidle');
     const resultCount = await page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .count();
     if (resultCount === 0) {
       console.log('No data sources found for this category');
@@ -132,13 +132,13 @@ test.describe('Search Results Page', () => {
     // Click to show search
     await searchToggle.click();
     await expect(
-      page.locator(`input[data-test="${TestIds.search_typeahead}"]`)
+      page.locator(`input[data-test="${TEST_IDS.search_typeahead}"]`)
     ).toBeVisible();
 
     // Click to hide search
     await page.click('button:has-text("Hide search")');
     await expect(
-      page.locator(`input[data-test="${TestIds.search_typeahead}"]`)
+      page.locator(`input[data-test="${TEST_IDS.search_typeahead}"]`)
     ).not.toBeVisible();
   });
 
@@ -147,14 +147,14 @@ test.describe('Search Results Page', () => {
 
     await page.waitForLoadState('networkidle');
     const dataSourceCount = await page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }
 
     const firstDataSource = page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .first();
 
     // Should show data source name

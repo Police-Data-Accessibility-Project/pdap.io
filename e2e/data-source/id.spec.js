@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { TestIds } from '../fixtures/test-ids';
+import { TEST_IDS } from '../fixtures/test-ids';
 import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
@@ -66,17 +66,17 @@ test.describe('Data Source Page', () => {
 
     // Check if agency information is displayed
     const agencyInfoCount = await page
-      .locator(`[data-test="${TestIds.agency_info}"]`)
+      .locator(`[data-test="${TEST_IDS.agency_info}"]`)
       .count();
     if (agencyInfoCount > 0) {
       await expect(
-        page.locator(`[data-test="${TestIds.agency_info}"]`)
+        page.locator(`[data-test="${TEST_IDS.agency_info}"]`)
       ).toBeVisible();
       await expect(
-        page.locator(`[data-test="${TestIds.county_state}"]`)
+        page.locator(`[data-test="${TEST_IDS.county_state}"]`)
       ).toBeVisible();
       await expect(
-        page.locator(`[data-test="${TestIds.agency_type}"]`)
+        page.locator(`[data-test="${TEST_IDS.agency_type}"]`)
       ).toBeVisible();
     }
   });
@@ -89,14 +89,14 @@ test.describe('Data Source Page', () => {
     await page.waitForLoadState('networkidle');
 
     const dataSourceCount = await page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }
 
     // Click on a data source
-    await page.click(`[data-test="${TestIds.data_source_link}"]`);
+    await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
     // Should be on data source page
     await expect(page).toHaveURL(/\/data-source\/\d+/);
@@ -127,13 +127,13 @@ test.describe('Data Source Page', () => {
     await page.waitForLoadState('networkidle');
 
     const dataSourceCount = await page
-      .locator(`[data-test="${TestIds.data_source_link}"]`)
+      .locator(`[data-test="${TEST_IDS.data_source_link}"]`)
       .count();
     if (dataSourceCount === 0) {
       return; // Skip test if no data sources available
     }
 
-    await page.click(`[data-test="${TestIds.data_source_link}"]`);
+    await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
     await expect(page).toHaveURL(/\/data-source\/\d+/);
 

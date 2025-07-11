@@ -39,7 +39,7 @@
                 v-for="source in results[locale].sourcesByAgency[agency]"
                 :key="source.agency_name"
                 :to="`/data-source/${source.id}`"
-                :data-test="TestIds.data_source_link"
+                :data-test="TEST_IDS.data_source_link"
                 class="agency-row group">
                 <!-- Source name and record type -->
                 <div :class="getClassNameFromHeadingType(HEADING_TITLES[0])">
@@ -97,7 +97,7 @@ import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
 import { useRoute } from 'vue-router';
 import { ref, watchEffect } from 'vue';
-import { TestIds } from '../../../../e2e/fixtures/test-ids';
+import { TEST_IDS } from '../../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 

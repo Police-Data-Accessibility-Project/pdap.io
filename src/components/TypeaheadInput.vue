@@ -2,7 +2,7 @@
 <template>
   <div
     :id="wrapperId"
-    :data-test="TestIds.typeahead_wrapper"
+    :data-test="TEST_IDS.typeahead_wrapper"
     class="pdap-typeahead"
     :class="{ 'pdap-typeahead-expanded': isListOpen }">
     <label v-if="$slots.label" class="col-span-2" :for="id">
@@ -19,7 +19,7 @@
       :id="id"
       ref="inputRef"
       v-model="input"
-      :data-test="TestIds.search_typeahead"
+      :data-test="TEST_IDS.search_typeahead"
       class="pdap-typeahead-input"
       type="text"
       :placeholder="placeholder"
@@ -31,13 +31,13 @@
       @keydown.down.prevent="onArrowDown" />
     <ul
       v-if="itemsToDisplay?.length && inputRef?.value"
-      :data-test="TestIds.typeahead_list"
+      :data-test="TEST_IDS.typeahead_list"
       class="pdap-typeahead-list">
       <li
         v-for="(item, index) in itemsToDisplay"
         :key="index"
         class="pdap-typeahead-list-item"
-        :data-test="TestIds.typeahead_list_item"
+        :data-test="TEST_IDS.typeahead_list_item"
         role="button"
         tabindex="0"
         @click="selectItem(item)"
@@ -51,7 +51,7 @@
     <ul
       v-else-if="typeof itemsToDisplay === 'undefined' && input.length > 1"
       class="pdap-typeahead-list"
-      :data-test="TestIds.typeahead_list_not_found">
+      :data-test="TEST_IDS.typeahead_list_not_found">
       <li class="max-w-[unset]">
         <slot
           v-if="$slots['not-found']"
@@ -75,7 +75,7 @@ import {
   watch,
   onBeforeUpdate
 } from 'vue';
-import { TestIds } from '../../e2e/fixtures/test-ids';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 /* Props and emits */
 const props = defineProps({

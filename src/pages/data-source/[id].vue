@@ -36,7 +36,7 @@
         <template v-else>
           <!-- Heading and related material -->
           <hgroup>
-            <h1 :data-test="TestIds.data_source_title">
+            <h1 :data-test="TEST_IDS.data_source_title">
               {{ dataSource.name }}
             </h1>
             <div class="flex gap-2 items-center">
@@ -61,7 +61,7 @@
               <h4>Description</h4>
               <p
                 ref="descriptionRef"
-                :data-test="TestIds.data_source_description"
+                :data-test="TEST_IDS.data_source_description"
                 class="description"
                 :class="{
                   'truncate-2': !isDescriptionExpanded
@@ -85,11 +85,11 @@
               <!-- 👤 Single agency: original layout -->
               <template v-if="dataSource.agencies.length === 1">
                 <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
-                  <div :data-test="TestIds.agency_info">
+                  <div :data-test="TEST_IDS.agency_info">
                     <h4 class="m-0">Agency</h4>
                     <p>{{ dataSource.agencies[0].submitted_name }}</p>
                   </div>
-                  <div :data-test="TestIds.county_state">
+                  <div :data-test="TEST_IDS.county_state">
                     <h4 class="m-0">County, State</h4>
                     <p>
                       {{
@@ -104,7 +104,7 @@
                       {{ dataSource.agencies[0].state_iso || '' }}
                     </p>
                   </div>
-                  <div :data-test="TestIds.agency_type">
+                  <div :data-test="TEST_IDS.agency_type">
                     <h4 class="m-0">Agency Type</h4>
                     <p class="capitalize">
                       {{ dataSource.agencies[0].agency_type }}
@@ -160,7 +160,7 @@
             </div>
             <a
               :href="dataSource.source_url"
-              :data-test="TestIds.data_source_url"
+              :data-test="TEST_IDS.data_source_url"
               class="pdap-button-primary py-3 px-4 h-max mr-4"
               target="_blank"
               rel="noreferrer">
@@ -235,7 +235,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { DATA_SOURCE } from '@/util/queryKeys';
 import { injectDerivedAgencyInfo } from '@/util/dataFormatter';
-import { TestIds } from '../../../e2e/fixtures/test-ids';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();

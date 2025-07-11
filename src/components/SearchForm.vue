@@ -5,7 +5,7 @@
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
-        :data-test="TestIds.search_typeahead"
+        :data-test="TEST_IDS.search_typeahead"
         :format-item-for-display="
           (item) => item?.display_name ?? item?.name ?? ''
         "
@@ -42,7 +42,7 @@
     <FormV2
       id="pdap-data-sources-search"
       ref="formRef"
-      :data-test="TestIds.search_form"
+      :data-test="TEST_IDS.search_form"
       class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
       @change="onChange"
       @submit="submit">
@@ -62,7 +62,7 @@
         :disabled="isButtonDisabled"
         intent="primary"
         type="submit"
-        :data-test="TestIds.search_submit"
+        :data-test="TEST_IDS.search_submit"
         class="mt-4 max-w-full col-span-full">
         {{ buttonCopy ?? 'Search' }}
       </Button>
@@ -86,7 +86,7 @@ import { getTypeaheadLocations } from '@/api/typeahead';
 import { getLocation } from '@/api/locations';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
-import { TestIds } from '../../e2e/fixtures/test-ids';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();

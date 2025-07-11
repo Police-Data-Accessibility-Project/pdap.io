@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { TestIds } from '../fixtures/test-ids';
+import { TEST_IDS } from '../fixtures/test-ids';
 import { test } from '../fixtures/base';
 
 import '../msw-setup.js';
@@ -13,30 +13,30 @@ test.describe('Search Flow', () => {
 
     // Search for a location
     await page.waitForSelector(
-      `[data-test="${TestIds.search_typeahead}"] input`
+      `[data-test="${TEST_IDS.search_typeahead}"] input`
     );
     await page.fill(
-      `[data-test="${TestIds.search_typeahead}"] input`,
+      `[data-test="${TEST_IDS.search_typeahead}"] input`,
       'Pittsburgh'
     );
     await page
-      .locator(`[data-test="${TestIds.typeahead_list_item}"]`)
+      .locator(`[data-test="${TEST_IDS.typeahead_list_item}"]`)
       .first()
       .waitFor({ state: 'visible' });
     await page.click(
-      `[data-test="${TestIds.typeahead_list_item}"]:first-child`
+      `[data-test="${TEST_IDS.typeahead_list_item}"]:first-child`
     );
 
     // Submit search
-    await page.click(`[data-test="${TestIds.search_submit}"]`);
+    await page.click(`[data-test="${TEST_IDS.search_submit}"]`);
 
     // Should be on search results page
     await expect(page).toHaveURL(/\/search\/results/);
     await expect(page.locator('h1')).toContainText('Data');
 
     // Click on first data source
-    await page.waitForSelector(`[data-test="${TestIds.data_source_link}"]`);
-    await page.click(`[data-test="${TestIds.data_source_link}"]`);
+    await page.waitForSelector(`[data-test="${TEST_IDS.data_source_link}"]`);
+    await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
     // Should be on data source page
     await expect(page).toHaveURL(/\/data-source\/\d+/);
