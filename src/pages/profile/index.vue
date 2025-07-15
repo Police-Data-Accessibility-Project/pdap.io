@@ -116,6 +116,11 @@
 
         <!-- Followed searches -->
         <h3 class="like-h4">Followed searches</h3>
+        <div v-if="profileData && (!profileData.followed_searches?.data || profileData.followed_searches.data.length === 0)">
+          <p>
+            <strong>No followed searches yet.</strong> Make a search from the homepage and click "follow" to see it here.
+          </p>
+        </div>
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
