@@ -18,25 +18,23 @@
 
       <template v-else>
         <h2>Basic information</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
-            <div
-              :class="{
-                'profile-loading': !profileData && profileLoading
-              }">
-              <h3 class="like-h4">Email</h3>
-              <p>
-                {{ profileData?.email }}
-              </p>
-              <Button @click="signOutWithRedirect">Sign out</Button>
-            </div>
-            <div>
-              <h3 class="like-h4">Password</h3>
-              <router-link
-                class="pdap-button-secondary"
-                :to="'/change-password'">
-                Reset your password
-              </router-link>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            :class="{
+              'profile-loading': !profileData && profileLoading
+            }">
+            <h3 class="like-h4">Email</h3>
+            <p>
+              {{ profileData?.email }}
+            </p>
+            <Button @click="signOutWithRedirect">Sign out</Button>
+          </div>
+          <div>
+            <h3 class="like-h4">Password</h3>
+            <router-link class="pdap-button-secondary" :to="'/change-password'">
+              Reset your password
+            </router-link>
+          </div>
 
           <!-- GitHub info -->
           <section>
@@ -119,7 +117,12 @@
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
-        <div v-if="profileData && (!profileData.followed_searches?.data || profileData.followed_searches.data.length === 0)">
+        <div
+          v-if="
+            profileData &&
+            (!profileData.followed_searches?.data ||
+              profileData.followed_searches.data.length === 0)
+          ">
           <p class="text-lg">
             Make a search from the homepage and click "follow" to see it here.
           </p>
@@ -149,10 +152,13 @@
         <!-- Recent searches -->
         <h3 class="like-h4">Recent searches</h3>
         <div v-if="!profileData && profileLoading" class="h-20" />
-        <div v-if="profileData && (!profileData.recent_searches?.data || profileData.recent_searches.data.length === 0)">
-          <p class="text-lg">
-            Make a search from the homepage to see it here.
-          </p>
+        <div
+          v-if="
+            profileData &&
+            (!profileData.recent_searches?.data ||
+              profileData.recent_searches.data.length === 0)
+          ">
+          <p class="text-lg">Make a search from the homepage to see it here.</p>
         </div>
         <ProfileTable v-else :items="recentSearches">
           <template #left="{ item }">
@@ -180,9 +186,15 @@
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
-          <div v-if="profileData && (!profileData.data_requests?.data || profileData.data_requests.data.length === 0)">
+        <div
+          v-if="
+            profileData &&
+            (!profileData.data_requests?.data ||
+              profileData.data_requests.data.length === 0)
+          ">
           <p class="text-lg">
-            To open a Data Request, <RouterLink to="/data-request/create">start here.</RouterLink>
+            To open a Data Request,
+            <RouterLink to="/data-request/create">start here.</RouterLink>
           </p>
         </div>
         <ProfileTable v-else :items="requests">
