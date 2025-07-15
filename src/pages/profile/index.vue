@@ -18,34 +18,32 @@
 
       <template v-else>
         <h2>Basic information</h2>
-        <div class="flex flex-col gap-6">
-          <section>
-            <h3 class="like-h4">Email</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
             <div
               :class="{
-                'profile-loading h-12': !profileData && profileLoading
+                'profile-loading': !profileData && profileLoading
               }">
+              <h3 class="like-h4">Email</h3>
               <p>
                 {{ profileData?.email }}
               </p>
               <Button @click="signOutWithRedirect">Sign out</Button>
             </div>
-            <h3 class="like-h4">Password</h3>
-            <div class="h-12">
+            <div>
+              <h3 class="like-h4">Password</h3>
               <router-link
                 class="pdap-button-secondary"
                 :to="'/change-password'">
                 Reset your password
               </router-link>
             </div>
-          </section>
 
           <!-- GitHub info -->
           <section>
             <h3 class="like-h4">GitHub account</h3>
             <div
               :class="{
-                'profile-loading h-12': !profileData && profileLoading
+                'profile-loading': !profileData && profileLoading
               }">
               <template
                 v-if="didLinkGithub || profileData?.external_accounts.github">
