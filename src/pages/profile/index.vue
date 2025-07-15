@@ -116,14 +116,14 @@
 
         <!-- Followed searches -->
         <h3 class="like-h4">Followed searches</h3>
-        <div v-if="profileData && (!profileData.followed_searches?.data || profileData.followed_searches.data.length === 0)">
-          <p>
-            <strong>No followed searches yet.</strong> Make a search from the homepage and click "follow" to see it here.
-          </p>
-        </div>
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
+        <div v-if="profileData && (!profileData.followed_searches?.data || profileData.followed_searches.data.length === 0)">
+          <p class="text-lg">
+            Make a search from the homepage and click "follow" to see it here.
+          </p>
+        </div>
         <ProfileTable v-else :items="followedSearches">
           <template #left="{ item }">
             <p class="flex items-center justify-start">
@@ -149,6 +149,11 @@
         <!-- Recent searches -->
         <h3 class="like-h4">Recent searches</h3>
         <div v-if="!profileData && profileLoading" class="h-20" />
+        <div v-if="profileData && (!profileData.recent_searches?.data || profileData.recent_searches.data.length === 0)">
+          <p class="text-lg">
+            Make a search from the homepage to see it here.
+          </p>
+        </div>
         <ProfileTable v-else :items="recentSearches">
           <template #left="{ item }">
             <div class="max-1/3">
@@ -175,6 +180,11 @@
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
+          <div v-if="profileData && (!profileData.data_requests?.data || profileData.data_requests.data.length === 0)">
+          <p class="text-lg">
+            To open a Data Request, <RouterLink to="/data-request/create">start here.</RouterLink>
+          </p>
+        </div>
         <ProfileTable v-else :items="requests">
           <template #left="{ item }">
             <p>
