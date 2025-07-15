@@ -116,41 +116,6 @@
 
         <h2>My stuff</h2>
 
-        <!-- Requests -->
-        <h3 class="like-h4">My requests</h3>
-        <div
-          v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
-        <ProfileTable v-else :items="requests">
-          <template #left="{ item }">
-            <p>
-              {{ item.title }}
-            </p>
-          </template>
-          <template #center="{ item }">
-            <p
-              v-for="(location, i) of item.locations"
-              :key="'profile-request' + getFullLocationText(location)">
-              {{
-                getFullLocationText(location) +
-                (i === item.locations.length - 1 ? '' : ', ')
-              }}
-            </p>
-          </template>
-          <template #right="{ item }">
-            <a
-              v-if="item.github_issue_url"
-              :href="item.github_issue_url"
-              target="_blank"
-              rel="noopener noreferrer"
-              @keydown.stop.enter=""
-              @click.stop="">
-              <FontAwesomeIcon :icon="faLink" />
-              GitHub
-            </a>
-          </template>
-        </ProfileTable>
-
         <!-- Followed searches -->
         <h3 class="like-h4">Followed searches</h3>
         <div
@@ -200,6 +165,40 @@
           </template>
           <template #right>
             <span />
+          </template>
+        </ProfileTable>
+        <!-- Requests -->
+        <h3 class="like-h4">My requests</h3>
+        <div
+          v-if="!profileData && profileLoading"
+          class="profile-loading h-20" />
+        <ProfileTable v-else :items="requests">
+          <template #left="{ item }">
+            <p>
+              {{ item.title }}
+            </p>
+          </template>
+          <template #center="{ item }">
+            <p
+              v-for="(location, i) of item.locations"
+              :key="'profile-request' + getFullLocationText(location)">
+              {{
+                getFullLocationText(location) +
+                (i === item.locations.length - 1 ? '' : ', ')
+              }}
+            </p>
+          </template>
+          <template #right="{ item }">
+            <a
+              v-if="item.github_issue_url"
+              :href="item.github_issue_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              @keydown.stop.enter=""
+              @click.stop="">
+              <FontAwesomeIcon :icon="faLink" />
+              GitHub
+            </a>
           </template>
         </ProfileTable>
       </template>
