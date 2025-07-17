@@ -66,5 +66,13 @@ export const TEST_IDS = {
   data_source_create_description_input: 'data-source-create-description-input',
   data_source_create_submit: 'data-source-create-submit',
   data_source_create_clear: 'data-source-create-clear',
-  data_source_create_advanced: 'data-source-create-advanced'
+  data_source_create_advanced: 'data-source-create-advanced',
+
+  // Data Request Pages
+  data_request_link: 'data-request-link',
+  data_request_create_form: 'data-request-create-form',
+  data_request_create_title_input: 'data-request-create-title-input',
+  data_request_create_location_input: 'data-request-create-location-input',
+  data_request_create_submit: 'data-request-create-submit',
+  data_request_create_clear: 'data-request-create-clear'
 };

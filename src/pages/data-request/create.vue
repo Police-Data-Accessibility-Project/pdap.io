@@ -17,13 +17,15 @@
       class="grid md:grid-cols-2 gap-x-4 gap-y-2 [&>.pdap-form-error-message]:md:col-span-2"
       name="new-request"
       :schema="SCHEMA"
+      data-test="data-request-create-form"
       @error="error"
       @submit="submit">
       <InputText
         :id="'input-' + INPUT_NAMES.title"
         class="md:col-span-2"
         :name="INPUT_NAMES.title"
-        placeholder="Briefly describe the general purpose or topic.">
+        placeholder="Briefly describe the general purpose or topic."
+        data-test="data-request-create-title-input">
         <template #label>
           <h4>Request title</h4>
         </template>
@@ -60,6 +62,7 @@
         :placeholder="
           selectedLocations.length ? 'Enter another place' : 'Enter a place'
         "
+        data-test="data-request-create-location-input"
         @select-item="
           (item) => {
             if (item) {
@@ -143,13 +146,15 @@
           :is-loading="createRequestMutation.isLoading"
           class="min-w-52"
           intent="primary"
-          type="submit">
+          type="submit"
+          data-test="data-request-create-submit">
           Submit request
         </Button>
         <Button
           :disabled="createRequestMutation.isLoading"
           intent="secondary"
           type="button"
+          data-test="data-request-create-clear"
           @click="clear">
           Clear
         </Button>
