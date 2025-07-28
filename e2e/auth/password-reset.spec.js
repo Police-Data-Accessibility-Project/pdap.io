@@ -1,0 +1,60 @@
+const { expect } = require('@playwright/test');
+const { test } = require('../fixtures/base');
+const { MailgunHelper } = require('../helpers/mailgun');
+const { TEST_IDS } = require('../fixtures/test-ids');
+require('../msw-setup.js');
+
+// Test email for password reset
+const TEST_EMAIL = process.env.E2E_PW_RESET_EMAIL;
+
+test.describe('Password reset flow', () => {
+  let mailgun;
+
+  test.beforeAll(async () => {
+    mailgun = new MailgunHelper();
+  });
+
+  test('should complete password reset flow', async ({ page }) => {
+    // Step 1: Go to request password reset page
+    await page.goto('/request-reset-password');
+    await page.waitForLoadState('networkidle');
+
+    // Step 2: Fill out reset request form
+    await page.fill('input[name="email"]', TEST_EMAIL);
+
+    // Step 3: Submit form
+    await page.click('button[type="submit"]');
+
+    // Step 4: Verify we're on the success page
+    // await expect(page.locator('h1')).toContainText(
+    //   'Request a link to reset your password'
+    // );
+    await expect(
+      page.locator(`[data-test="${TEST_IDS.success_subheading}"]`)
+    ).toContainText('We sent you an email with a link to reset your password');
+
+    // Step 5: Wait for and retrieve password reset email
+    console.log('Waiting for password reset email...');
+    const email = await mailgun.getLatestEmailFor(TEST_EMAIL);
+
+    // Step 6: Extract reset URL from email
+    const resetUrl = mailgun.extractPasswordResetUrl(
+      email.body.html || email.body.text
+    );
+    console.log(`Reset URL: ${resetUrl}`);
+
+    // Step 7: Navigate to reset URL
+    await page.goto(resetUrl);
+    await page.waitForLoadState('networkidle');
+
+    // Step 8: Fill out new password form
+    await page.fill('input[name="password"]', 'NewPassword123!');
+    await page.fill('input[name="confirmPassword"]', 'NewPassword123!');
+
+    // Step 9: Submit new password
+    await page.click('button[type="submit"]');
+
+    // Step 10: Verify password was reset successfully
+    await expect(page).toHaveURL(/\/profile/);
+  });
+});
