@@ -2,7 +2,7 @@
   <main
     class="pdap-flex-container"
     :class="{ 'mx-auto max-w-2xl': !isSuccess }">
-    <h1>Request a link to reset your password</h1>
+    <h1 data-test="reset-heading">Request a link to reset your password</h1>
     <template v-if="isSuccess">
       <p data-test="success-subheading">
         We sent you an email with a link to reset your password. Please follow

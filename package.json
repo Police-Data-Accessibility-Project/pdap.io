@@ -59,6 +59,7 @@
     "jest-serializer-vue-tjw": "^3.20.0",
     "jsonwebtoken": "^9.0.2",
     "msw": "^2.7.3",
+    "node-fetch": "^2.7.0",
     "playwright-msw": "^3.0.1",
     "postcss": "^8.4.32",
     "prettier": "^3.4.2",
@@ -84,7 +85,7 @@
     "not ie 11"
   ],
   "optionalDependencies": {
-    "win-node-env": "^0.6.1",
-    "@rollup/rollup-linux-x64-gnu": "^4.0.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
+    "win-node-env": "^0.6.1"
   }
 }

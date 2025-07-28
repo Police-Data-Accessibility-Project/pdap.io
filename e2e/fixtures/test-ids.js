@@ -74,5 +74,13 @@ export const TEST_IDS = {
   data_request_create_title_input: 'data-request-create-title-input',
   data_request_create_location_input: 'data-request-create-location-input',
   data_request_create_submit: 'data-request-create-submit',
-  data_request_create_clear: 'data-request-create-clear'
+  data_request_create_clear: 'data-request-create-clear',
+  
+  // Sign-up Pages
+  signup_success_heading: 'signup-success-heading',
+  success_subheading: 'success-subheading',
+  
+  // Password Reset Pages
+  reset_heading: 'reset-heading',
+  reset_subheading: 'reset-subheading'
 };
