@@ -1,7 +1,7 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/base');
-const { MailgunHelper } = require('../helpers/mailgun');
 const { TEST_IDS } = require('../fixtures/test-ids');
+const { MailgunHelper } = require('../helpers/mailgun');
 require('../msw-setup.js');
 
 // Test email for password reset
@@ -20,10 +20,10 @@ test.describe('Password reset flow', () => {
     await page.waitForLoadState('networkidle');
 
     // Step 2: Fill out reset request form
-    await page.fill('input[name="email"]', TEST_EMAIL);
+    await page.fill(`input[data-test="${TEST_IDS.email_input}"]`, TEST_EMAIL);
 
     // Step 3: Submit form
-    await page.click('button[type="submit"]');
+    await page.click(`[data-test="${TEST_IDS.form_submit}"]`);
 
     // Step 4: Verify we're on the success page
     // await expect(page.locator('h1')).toContainText(
@@ -48,11 +48,17 @@ test.describe('Password reset flow', () => {
     await page.waitForLoadState('networkidle');
 
     // Step 8: Fill out new password form
-    await page.fill('input[name="password"]', 'NewPassword123!');
-    await page.fill('input[name="confirmPassword"]', 'NewPassword123!');
+    await page.fill(
+      `input[data-test="${TEST_IDS.password_input}"]`,
+      'NewPassword123!'
+    );
+    await page.fill(
+      `input[data-test="${TEST_IDS.confirm_password_input}"]`,
+      'NewPassword123!'
+    );
 
     // Step 9: Submit new password
-    await page.click('button[type="submit"]');
+    await page.click(`[data-test="${TEST_IDS.form_submit}"]`);
 
     // Step 10: Verify password was reset successfully
     await expect(page).toHaveURL(/\/profile/);

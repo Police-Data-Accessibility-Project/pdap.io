@@ -13,7 +13,6 @@ test.describe('Authentication flows', () => {
     await page.goto('/sign-in');
 
     await page.fill(
-      // TODO: in design-system, add a prop to forward test IDs to the input and REMOVE from the top-level div. Currently being added in both places.
       `input[data-test="${TEST_IDS.email_input}"]`,
       PASSWORD_AUTH.email
     );

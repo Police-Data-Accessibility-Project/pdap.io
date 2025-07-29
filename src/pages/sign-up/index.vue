@@ -39,7 +39,7 @@
         <FormV2
           id="login"
           class="flex flex-col gap-2"
-          data-test="login-form"
+          :data-test="TEST_IDS.sign_up_form"
           name="login"
           :error="error"
           :schema="VALIDATION_SCHEMA"
@@ -49,7 +49,7 @@
           <InputText
             id="email"
             autocomplete="email"
-            data-test="email"
+            :data-test="TEST_IDS.email_input"
             name="email"
             label="Email"
             type="text"
@@ -67,7 +67,7 @@
             :disabled="passwordAuthIsLoading"
             :is-loading="passwordAuthIsLoading"
             type="submit"
-            data-test="submit-button">
+            :data-test="TEST_IDS.sign_up_submit">
             Create Account
           </Button>
         </FormV2>
@@ -77,7 +77,7 @@
 
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
-            data-test="toggle-button"
+            :data-test="TEST_IDS.sign_in_link"
             to="/sign-in">
             Sign in
           </RouterLink>
@@ -111,6 +111,7 @@ import { useRoute, RouterView, useRouter } from 'vue-router';
 import { useMutation } from '@tanstack/vue-query';
 import { useAuthStore } from '@/stores/auth';
 import { signInWithGithub, signUpWithEmail, beginOAuthLogin } from '@/api/auth';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const auth = useAuthStore();
 const route = useRoute();
@@ -119,7 +120,7 @@ const router = useRouter();
 const PASSWORD_INPUTS = [
   {
     autocomplete: 'new-password',
-    'data-test': 'password',
+    'data-test': TEST_IDS.password_input,
     id: 'password',
     name: 'password',
     label: 'Password',
@@ -127,7 +128,7 @@ const PASSWORD_INPUTS = [
   },
   {
     autocomplete: 'new-password',
-    'data-test': 'confirm-password',
+    'data-test': TEST_IDS.confirm_password_input,
     id: 'confirmPassword',
     name: 'confirmPassword',
     label: 'Confirm Password',

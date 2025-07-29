@@ -19,10 +19,10 @@ test.describe('Profile Page', () => {
   test('should display user profile information', async ({ page }) => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
-    
+
     // Wait for either profile or sign-in page to load
     await page.waitForSelector('h1', { state: 'visible' });
-    
+
     // If redirected to sign-in, the auth failed - skip test
     const heading = await page.locator('h1').textContent();
     if (heading?.includes('Sign In')) {
@@ -74,7 +74,9 @@ test.describe('Profile Page', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TEST_IDS.profile_api_key_regenerate}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_api_key_regenerate}"]`, {
+      timeout: 30000
+    });
     await expect(
       page.locator(`[data-test="${TEST_IDS.profile_api_key_display}"]`)
     ).toBeVisible();
@@ -94,7 +96,7 @@ test.describe('Profile Page', () => {
   test('should display user tables', async ({ page }) => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
-    
+
     // Check if authenticated
     const heading = await page.locator('h1').textContent();
     if (heading?.includes('Sign In')) {
@@ -132,7 +134,7 @@ test.describe('Profile Page', () => {
   test('should navigate to change password', async ({ page }) => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
-    
+
     // Check if authenticated
     const heading = await page.locator('h1').textContent();
     if (heading?.includes('Sign In')) {

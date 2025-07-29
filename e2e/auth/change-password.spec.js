@@ -1,6 +1,7 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/base');
 const { PASSWORD_AUTH } = require('../fixtures/users');
+const { TEST_IDS } = require('../fixtures/test-ids');
 require('../msw-setup.js');
 
 test.describe('Change password flow', () => {
@@ -9,9 +10,15 @@ test.describe('Change password flow', () => {
     await page.goto('/sign-in');
     await page.waitForLoadState('networkidle');
 
-    await page.fill('input[name="email"]', PASSWORD_AUTH.email);
-    await page.fill('input[name="password"]', PASSWORD_AUTH.password);
-    await page.click('button[type="submit"]');
+    await page.fill(
+      `input[data-test="${TEST_IDS.email_input}"]`,
+      PASSWORD_AUTH.email
+    );
+    await page.fill(
+      `input[data-test="${TEST_IDS.password_input}"]`,
+      PASSWORD_AUTH.password
+    );
+    await page.click(`[data-test="${TEST_IDS.sign_in_submit}"]`);
 
     // Wait for successful sign in
     await page.waitForLoadState('networkidle');
@@ -22,12 +29,21 @@ test.describe('Change password flow', () => {
     await page.waitForLoadState('networkidle');
 
     // Step 3: Fill out change password form
-    await page.fill('input[name="currentPassword"]', PASSWORD_AUTH.password);
-    await page.fill('input[name="password"]', PASSWORD_AUTH.password); // Same password
-    await page.fill('input[name="confirmPassword"]', PASSWORD_AUTH.password);
+    await page.fill(
+      `input[data-test="${TEST_IDS.current_password_input}"]`,
+      PASSWORD_AUTH.password
+    );
+    await page.fill(
+      `input[data-test="${TEST_IDS.new_password_input}"]`,
+      PASSWORD_AUTH.password
+    ); // Same password
+    await page.fill(
+      `input[data-test="${TEST_IDS.confirm_password_input}"]`,
+      PASSWORD_AUTH.password
+    );
 
     // Step 4: Submit form
-    await page.click('button[type="submit"]');
+    await page.click(`[data-test="${TEST_IDS.change_password_submit}"]`);
 
     // Step 5: Verify success (should redirect to profile or show success message)
     await page.waitForLoadState('networkidle');

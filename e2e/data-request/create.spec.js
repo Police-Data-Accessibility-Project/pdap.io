@@ -9,9 +9,15 @@ test.describe('Data Request Create Page', () => {
   test.beforeEach(async ({ page }) => {
     // Sign in before each test
     await page.goto('/sign-in');
-    await page.fill('[name="email"]', PASSWORD_AUTH.email);
-    await page.fill('[name="password"]', PASSWORD_AUTH.password);
-    await page.click('button[type="submit"]');
+    await page.fill(
+      `input[data-test="${TEST_IDS.email_input}"]`,
+      PASSWORD_AUTH.email
+    );
+    await page.fill(
+      `input[data-test="${TEST_IDS.password_input}"]`,
+      PASSWORD_AUTH.password
+    );
+    await page.click(`[data-test="${TEST_IDS.sign_in_submit}"]`);
     await page.waitForLoadState('networkidle');
   });
 
@@ -38,7 +44,7 @@ test.describe('Data Request Create Page', () => {
     await page.waitForLoadState('networkidle');
 
     await page.click(`[data-test="${TEST_IDS.data_request_create_submit}"]`);
-    await expect(page.locator('.pdap-form-error-message')).toBeVisible();
+    await expect(page.locator('.pdap-form-error-message')).toBeVisible(); // Not using Test_Ids because of design-system
   });
 
   test('should fill and submit complete form', async ({ page }) => {
