@@ -1,11 +1,11 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/base');
 const { MailgunHelper } = require('../helpers/mailgun');
-const { TEST_IDS } = require('../fixtures/test-ids');
+const { SIGNUP_EMAIL } = require('e2e/fixtures/users');
 require('../msw-setup.js');
 
 // Base email from ENV
-const BASE_EMAIL = process.env.E2E_SIGNUP_EMAIL;
+const BASE_EMAIL = SIGNUP_EMAIL;
 
 test.describe('Sign-up verification flow', () => {
   let mailgun;

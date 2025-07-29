@@ -2,10 +2,11 @@ const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/base');
 const { TEST_IDS } = require('../fixtures/test-ids');
 const { MailgunHelper } = require('../helpers/mailgun');
+const { TEST_RESET_EMAIL } = require('e2e/fixtures/users');
 require('../msw-setup.js');
 
 // Test email for password reset
-const TEST_EMAIL = process.env.E2E_PW_RESET_EMAIL;
+const TEST_EMAIL = TEST_RESET_EMAIL;
 
 test.describe('Password reset flow', () => {
   let mailgun;
