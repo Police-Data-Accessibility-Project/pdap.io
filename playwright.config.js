@@ -10,6 +10,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? '100%' : '50%',
   reporter: 'html',
+  testIgnore: process.env.E2E_TESTING_ENV === 'production' ? '**/sign-up.spec.js' : undefined, // exclude sign-up test from prod for now until we can decide on a strategy for cleaning up users created by the test
   use: {
     baseURL: process.env.E2E_TESTING_URL ?? 'http://localhost:8888',
     trace: 'on-first-retry'
