@@ -46,7 +46,7 @@
       <FormV2
         id="login"
         class="flex flex-col gap-2"
-        data-test="login-form"
+        :data-test="TEST_IDS.sign_in_form"
         name="login"
         :error="error"
         :schema="VALIDATION_SCHEMA"
@@ -73,7 +73,7 @@
           :disabled="passwordAuthIsLoading"
           :is-loading="passwordAuthIsLoading"
           type="submit"
-          :data-test="TEST_IDS.submit_button">
+          :data-test="TEST_IDS.sign_in_submit">
           Sign in
         </Button>
       </FormV2>
@@ -82,11 +82,13 @@
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
           intent="secondary"
+          :data-test="TEST_IDS.sign_up_link"
           to="/sign-up">
           Create Account
         </RouterLink>
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
+          :data-test="TEST_IDS.forgot_password_link"
           to="/request-reset-password">
           Reset Password
         </RouterLink>

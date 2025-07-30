@@ -12,3 +12,13 @@ export const PASSWORD_AUTH = {
       ? process.env.E2E_PASSWORD_AUTH_PASSWORD_PROD
       : process.env.E2E_PASSWORD_AUTH_PASSWORD_TEST
 };
+
+export const TEST_RESET_EMAIL =
+  process.env.E2E_TESTING_ENV === 'production'
+    ? process.env.E2E_PW_RESET_EMAIL_PROD
+    : process.env.E2E_PW_RESET_EMAIL_TEST;
+
+export const SIGNUP_EMAIL =
+  process.env.E2E_TESTING_ENV === 'production'
+    ? process.env.E2E_SIGNUP_EMAIL_PROD
+    : process.env.E2E_SIGNUP_EMAIL_TEST;

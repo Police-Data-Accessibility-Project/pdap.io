@@ -3,6 +3,19 @@ export const TEST_IDS = {
   email_input: 'signin-email',
   password_input: 'signin-password',
   submit_button: 'signin-submit-button',
+  sign_in_submit: 'signin-submit-button',
+  sign_in_form: 'signin-form',
+  sign_up_link: 'signup-link',
+  forgot_password_link: 'forgot-password-link',
+
+  // Sign Up
+  sign_up_form: 'signup-form',
+  sign_up_submit: 'signup-submit-button',
+  sign_in_link: 'signin-link',
+  confirm_password_input: 'signup-confirm-password',
+
+  // Navigation
+  user_menu: 'user-menu',
   github_signin_button: 'signin-github-signin-button',
   error_message: 'signin-error-message',
 
@@ -75,12 +88,36 @@ export const TEST_IDS = {
   data_request_create_location_input: 'data-request-create-location-input',
   data_request_create_submit: 'data-request-create-submit',
   data_request_create_clear: 'data-request-create-clear',
-  
+
   // Sign-up Pages
   signup_success_heading: 'signup-success-heading',
   success_subheading: 'success-subheading',
-  
+
   // Password Reset Pages
   reset_heading: 'reset-heading',
-  reset_subheading: 'reset-subheading'
+  reset_subheading: 'reset-subheading',
+
+  // Change Password Page
+  change_password_form: 'change-password-form',
+  current_password_input: 'current-password-input',
+  new_password_input: 'new-password-input',
+  change_password_submit: 'change-password-submit',
+
+  // General Form Elements
+  form_error_message: 'pdap-form-error-message',
+  spinner: 'spinner',
+  form_submit: 'form-submit',
+
+  // Additional missing IDs
+  email_input_reset: 'email-input-reset',
+  password_reset_submit: 'password-reset-submit',
+
+  // Validation
+  token_expired: 'token-expired',
+  re_request_link: 're-request-link',
+
+  // Additional form inputs
+  coverage_range_input: 'coverage-range-input',
+  submission_notes_input: 'submission-notes-input',
+  data_requirements_input: 'data-requirements-input'
 };

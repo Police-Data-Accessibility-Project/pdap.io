@@ -76,23 +76,11 @@ class MailgunHelper {
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
-          console.log(`Found ${data.items.length} total log items`);
-
-          // Log all recipients to debug
-          const allRecipients = data.items
-            .map((item) => item.recipient)
-            .filter(Boolean);
-          console.log('All recipients found:', [...new Set(allRecipients)]);
-
           // Find delivered messages to our recipient
           const deliveredLogs = data.items.filter(
             (item) =>
               (item.event === 'delivered' || item.event === 'accepted') &&
               item.recipient === recipient
-          );
-
-          console.log(
-            `Found ${deliveredLogs.length} delivered logs for ${recipient}`
           );
 
           if (deliveredLogs.length > 0) {
@@ -132,10 +120,6 @@ class MailgunHelper {
             }
           }
         }
-
-        console.log(
-          `Email not found for ${recipient}, retrying... (${i + 1}/${retryCount})`
-        );
         await new Promise((resolve) => setTimeout(resolve, retryDelay));
       } catch (error) {
         console.error('Error fetching email:', error);
