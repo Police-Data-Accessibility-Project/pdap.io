@@ -149,7 +149,9 @@ test.describe('Profile Page', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
 
-    await page.click(`[data-test="${TEST_IDS.profile_signout}"]`);
+    await page.click(`[data-test="${TEST_IDS.profile_signout}"]`, {
+      timeout: 30000
+    });
     await expect(page).toHaveURL('/sign-in');
   });
 });
