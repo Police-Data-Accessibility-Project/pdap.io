@@ -468,7 +468,7 @@
           Respond to 100+ Data Requests to learn how people use public data, and
           where they get stuck
         </li>
-        <h3>Up next in 2025</h3>
+        <h3>2025</h3>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"

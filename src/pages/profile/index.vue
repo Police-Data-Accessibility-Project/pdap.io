@@ -25,39 +25,37 @@
         <h2 :data-test="TEST_IDS.profile_basic_info_heading">
           Basic information
         </h2>
-        <div class="flex flex-col gap-6">
-          <section>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            :class="{
+              'profile-loading': !profileData && profileLoading
+            }">
             <h3 class="like-h4">Email</h3>
-            <div
-              :class="{
-                'profile-loading h-12': !profileData && profileLoading
-              }">
-              <p :data-test="TEST_IDS.profile_email">
-                {{ profileData?.email }}
-              </p>
-              <Button
-                :data-test="TEST_IDS.profile_signout"
-                @click="signOutWithRedirect">
-                Sign out
-              </Button>
-            </div>
+            <p :data-test="TEST_IDS.profile_email">
+              {{ profileData?.email }}
+            </p>
+            <Button
+              :data-test="TEST_IDS.profile_signout"
+              @click="signOutWithRedirect">
+              Sign out
+            </Button>
+          </div>
+          <div>
             <h3 class="like-h4">Password</h3>
-            <div class="h-12">
-              <router-link
-                class="pdap-button-secondary"
-                :data-test="TEST_IDS.profile_reset_password"
-                :to="'/change-password'">
-                Reset your password
-              </router-link>
-            </div>
-          </section>
+            <router-link
+              class="pdap-button-secondary"
+              :to="'/change-password'"
+              :data-test="TEST_IDS.profile_reset_password">
+              Reset your password
+            </router-link>
+          </div>
 
           <!-- GitHub info -->
           <section>
             <h3 class="like-h4">GitHub account</h3>
             <div
               :class="{
-                'profile-loading h-12': !profileData && profileLoading
+                'profile-loading': !profileData && profileLoading
               }">
               <template
                 v-if="didLinkGithub || profileData?.external_accounts.github">
@@ -130,49 +128,21 @@
 
         <h2 :data-test="TEST_IDS.profile_my_stuff_heading">My stuff</h2>
 
-        <!-- Requests -->
-        <h3 class="like-h4">My requests</h3>
-        <div
-          v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
-        <ProfileTable
-          v-else
-          :items="requests"
-          :data-test="TEST_IDS.profile_requests_table">
-          <template #left="{ item }">
-            <p>
-              {{ item.title }}
-            </p>
-          </template>
-          <template #center="{ item }">
-            <p
-              v-for="(location, i) of item.locations"
-              :key="'profile-request' + getFullLocationText(location)">
-              {{
-                getFullLocationText(location) +
-                (i === item.locations.length - 1 ? '' : ', ')
-              }}
-            </p>
-          </template>
-          <template #right="{ item }">
-            <a
-              v-if="item.github_issue_url"
-              :href="item.github_issue_url"
-              target="_blank"
-              rel="noopener noreferrer"
-              @keydown.stop.enter=""
-              @click.stop="">
-              <FontAwesomeIcon :icon="faLink" />
-              GitHub
-            </a>
-          </template>
-        </ProfileTable>
-
         <!-- Followed searches -->
         <h3 class="like-h4">Followed searches</h3>
         <div
           v-if="!profileData && profileLoading"
           class="profile-loading h-20" />
+        <div
+          v-if="
+            profileData &&
+            (!profileData.followed_searches?.data ||
+              profileData.followed_searches.data.length === 0)
+          ">
+          <p class="text-lg">
+            Make a search from the homepage and click "follow" to see it here.
+          </p>
+        </div>
         <ProfileTable
           v-else
           :items="followedSearches"
@@ -202,10 +172,15 @@
         <!-- Recent searches -->
         <h3 class="like-h4">Recent searches</h3>
         <div v-if="!profileData && profileLoading" class="h-20" />
-        <ProfileTable
-          v-else
-          :items="recentSearches"
-          :data-test="TEST_IDS.profile_recent_searches_table">
+        <div
+          v-if="
+            profileData &&
+            (!profileData.recent_searches?.data ||
+              profileData.recent_searches.data.length === 0)
+          ">
+          <p class="text-lg">Make a search from the homepage to see it here.</p>
+        </div>
+        <ProfileTable v-else :items="recentSearches">
           <template #left="{ item }">
             <div class="max-1/3">
               <p
@@ -224,6 +199,51 @@
           </template>
           <template #right>
             <span />
+          </template>
+        </ProfileTable>
+        <!-- Requests -->
+        <h3 class="like-h4">My requests</h3>
+        <div
+          v-if="!profileData && profileLoading"
+          class="profile-loading h-20" />
+        <div
+          v-if="
+            profileData &&
+            (!profileData.data_requests?.data ||
+              profileData.data_requests.data.length === 0)
+          ">
+          <p class="text-lg">
+            To open a Data Request,
+            <RouterLink to="/data-request/create">start here.</RouterLink>
+          </p>
+        </div>
+        <ProfileTable v-else :items="requests">
+          <template #left="{ item }">
+            <p>
+              {{ item.title }}
+            </p>
+          </template>
+          <template #center="{ item }">
+            <p
+              v-for="(location, i) of item.locations"
+              :key="'profile-request' + getFullLocationText(location)">
+              {{
+                getFullLocationText(location) +
+                (i === item.locations.length - 1 ? '' : ', ')
+              }}
+            </p>
+          </template>
+          <template #right="{ item }">
+            <a
+              v-if="item.github_issue_url"
+              :href="item.github_issue_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              @keydown.stop.enter=""
+              @click.stop="">
+              <FontAwesomeIcon :icon="faLink" />
+              GitHub
+            </a>
           </template>
         </ProfileTable>
       </template>
