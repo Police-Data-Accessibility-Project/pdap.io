@@ -22,9 +22,6 @@ class MailgunHelper {
    * @returns {Promise<Object>} - Email data
    */
   async getLatestEmailFor(recipient, retryCount = 10, retryDelay = 2000) {
-    // Record the time when we start looking for emails
-    const searchStartTime = new Date();
-    
     for (let i = 0; i < retryCount; i++) {
       try {
         // Format dates exactly as in the example
