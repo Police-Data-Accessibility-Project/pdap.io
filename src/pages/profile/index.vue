@@ -13,25 +13,39 @@
     <ErrorBoundary>
       <div v-if="profileError">
         <p>There was an error fetching your profile.</p>
-        <Button intent="primary" @click="refetchProfile">Try again</Button>
+        <Button
+          intent="primary"
+          :data-test="TEST_IDS.profile_error_retry"
+          @click="refetchProfile">
+          Try again
+        </Button>
       </div>
 
       <template v-else>
-        <h2>Basic information</h2>
+        <h2 :data-test="TEST_IDS.profile_basic_info_heading">
+          Basic information
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div
             :class="{
               'profile-loading': !profileData && profileLoading
             }">
             <h3 class="like-h4">Email</h3>
-            <p>
+            <p :data-test="TEST_IDS.profile_email">
               {{ profileData?.email }}
             </p>
-            <Button @click="signOutWithRedirect">Sign out</Button>
+            <Button
+              :data-test="TEST_IDS.profile_signout"
+              @click="signOutWithRedirect">
+              Sign out
+            </Button>
           </div>
           <div>
             <h3 class="like-h4">Password</h3>
-            <router-link class="pdap-button-secondary" :to="'/change-password'">
+            <router-link
+              class="pdap-button-secondary"
+              :to="'/change-password'"
+              :data-test="TEST_IDS.profile_reset_password">
               Reset your password
             </router-link>
           </div>
@@ -45,7 +59,7 @@
               }">
               <template
                 v-if="didLinkGithub || profileData?.external_accounts.github">
-                <p>
+                <p :data-test="TEST_IDS.profile_github_linked">
                   <FontAwesomeIcon :icon="faGithub" />
                   Your account is linked with GitHub
                 </p>
@@ -57,6 +71,7 @@
                   :is-loading="githubAuthIsLoading"
                   :disabled="githubAuthIsLoading"
                   intent="tertiary"
+                  :data-test="TEST_IDS.profile_github_link"
                   @click="async () => await beginOAuthLogin('/profile')">
                   <FontAwesomeIcon :icon="faGithub" />
                   Link account with GitHub
@@ -79,13 +94,14 @@
                 :is-loading="apiKeyIsLoading"
                 :disabled="apiKeyIsLoading"
                 type="button"
+                :data-test="TEST_IDS.profile_api_key_regenerate"
                 @click="recreateAPIKey">
                 Regenerate API Key
               </Button>
             </div>
 
             <transition name="dropdown" appear>
-              <div v-if="apiKey">
+              <div v-if="apiKey" :data-test="TEST_IDS.profile_api_key_display">
                 <ProfileAPIKey
                   :api-key="apiKey"
                   :on-dismiss="
@@ -100,7 +116,7 @@
           <!-- Permissions -->
           <section v-if="profileData?.permissions.length">
             <h3 class="like-h4">Permissions</h3>
-            <ul>
+            <ul :data-test="TEST_IDS.profile_permissions">
               <li
                 v-for="permission of profileData.permissions"
                 :key="permission">
@@ -110,7 +126,7 @@
           </section>
         </div>
 
-        <h2>My stuff</h2>
+        <h2 :data-test="TEST_IDS.profile_my_stuff_heading">My stuff</h2>
 
         <!-- Followed searches -->
         <h3 class="like-h4">Followed searches</h3>
@@ -127,7 +143,10 @@
             Make a search from the homepage and click "follow" to see it here.
           </p>
         </div>
-        <ProfileTable v-else :items="followedSearches">
+        <ProfileTable
+          v-else
+          :items="followedSearches"
+          :data-test="TEST_IDS.profile_followed_searches_table">
           <template #left="{ item }">
             <p class="flex items-center justify-start">
               {{ getFullLocationText(item) }}
@@ -141,6 +160,7 @@
               type="button"
               :disabled="unFollowIsLoading"
               :is-loading="unFollowIsLoading"
+              :data-test="TEST_IDS.profile_unfollow_button"
               @keydown.stop.prevent.enter="() => unFollow(item)"
               @click.stop.prevent="() => unFollow(item)">
               <FontAwesomeIcon :icon="faCircleXmark" />
@@ -251,6 +271,7 @@ import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
 import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();

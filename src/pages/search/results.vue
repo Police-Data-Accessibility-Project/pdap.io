@@ -6,6 +6,7 @@
       class="w-full row-start-0 row-end-1 xl:col-start-2 xl:col-end-3 relative">
       <Button
         class="mb-2 w-full xl:hidden"
+        :data-test="TEST_IDS.search_toggle"
         intent="primary"
         @click="isSearchShown = !isSearchShown">
         {{ isSearchShown ? 'Hide search' : 'Show search' }}
@@ -189,6 +190,7 @@ import {
   SEARCH_FEDERAL,
   PROFILE
 } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const searchStore = useSearchStore();
 

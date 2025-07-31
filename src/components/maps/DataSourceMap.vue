@@ -1,6 +1,9 @@
 <template>
   <div class="relative w-full h-auto">
-    <div id="map-container" ref="mapContainer" />
+    <div
+      id="map-container"
+      ref="mapContainer"
+      :data-test="TEST_IDS.data_source_map" />
     <!-- <span class="loading"></span> -->
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
@@ -26,6 +29,7 @@ import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
 import { Spinner } from 'pdap-design-system';
 import MapSidebar from './DataSourceMapSidebar.vue';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 import { FILL_COLORS, handleTheme } from './utils/theme';
 import {

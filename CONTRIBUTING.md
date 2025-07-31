@@ -13,7 +13,8 @@ If you have questions as you're working, you can reach out to PDAP staff on [Dis
 Please raise a PR against the `dev` branch (unless otherwise specified), only after you have done the following:
 
 - Verified that your changes resolve the problem or enhancement described in the issue.
-- Ensured that all existing unit and e2e tests pass. Or, if your changes make some part of the affected tests obsolete, please update the tests accordingly.
+- Ensured that all existing unit and E2E tests pass. Or, if your changes make some part of the affected tests obsolete, please update the tests accordingly.
+- Updated E2E tests if your changes affect user-facing functionality.
 - Ensured that the linter runs without errors.
 - Thoroughly completed the PR request template
 
@@ -61,9 +62,56 @@ There are two exceptions to the routing rules that are both defined by our confi
 
 Currently, there are unit tests for the `src/util` and `src/component` directories, with relatively paltry coverage. The goal is to increase the level of coverage without being obsessive about it. Chasing 100% coverage has quickly diminishing returns. We want to cover core functionality, but let's not muck around too much with edge cases.
 
-#### E2E testing
+## End-to-End Testing
 
-E2e testing ~~is~~ will be done using playwright.
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Tests are located in the `e2e/` directory.
+
+### Setup
+
+1. Install Playwright browsers:
+   ```shell
+   npx playwright install
+   ```
+
+2. Set up environment variables for testing:
+```shell
+  # Test credentials (get from PDAP staff)
+  E2E_PASSWORD_AUTH_EMAIL_TEST=email@example.com
+  E2E_PASSWORD_AUTH_PASSWORD_TEST=pw
+  E2E_PW_RESET_EMAIL_TEST=email@example.com
+  E2E_SIGNUP_EMAIL_TEST=email@example.com
+  
+  # Mailgun for email testing
+  MAILGUN_KEY=key
+  MAILGUN_DOMAIN=domain
+```
+
+### Running Tests
+
+```shell
+# Run all E2E tests
+npm run test:e2e
+
+# Run with UI mode for debugging
+npm run test:e2e:ui
+
+# Run specific test file
+npx playwright test e2e/auth/sign-in.spec.js
+```
+
+### Writing Tests
+
+1. Use the `TEST_IDS` object from `e2e/fixtures/test-ids.js` for element selectors
+2. Import test users from `e2e/fixtures/users.js`
+3. Follow the existing test patterns for consistency
+4. Add new test IDs to both the fixture and corresponding page components
+5. Always add new tests if routes are being updated.
+
+### CI/CD
+
+E2E tests run automatically on:
+- Pull requests (against dev environment for prs to dev or feature/** branches, against prod on prs to main)
+- Hourly monitoring (production health checks)
 
 <!-- ### Resources
 
