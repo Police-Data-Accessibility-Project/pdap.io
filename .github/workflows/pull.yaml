@@ -66,7 +66,7 @@ jobs:
         with:
           timezoneLinux: "America/New_York"
       - name: Run tests
-        run: npm run test:ci
+        run: npm run test:unit:ci
 
   build:
     name: Build

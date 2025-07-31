@@ -19,6 +19,10 @@
 - Adds this
 - Removes that
 
+## Testing
+
+- [ ] End-to-end tests are up to date with these changes
+
 ## Acceptance Criteria
 
 <!-- What are the steps to test the changes? -->

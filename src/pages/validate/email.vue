@@ -67,7 +67,7 @@ onMounted(async () => {
     await validateEmail(token);
     router.replace({ path: '/profile' });
   } catch (err) {
-    error.value = err.message;
+    error.value = err?.message;
   }
 });
 
@@ -100,7 +100,7 @@ async function requestResendValidationEmail() {
     await resendValidationEmail();
     toast.success('A new email has been sent to ' + user.email);
   } catch (err) {
-    error.value = err.message;
+    error.value = err?.message;
     toast.error(
       h('p', [
         `There was an error sending the email to ${user.email ? user.email : 'your email address'}. Try again or contact `,

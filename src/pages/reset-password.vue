@@ -8,11 +8,11 @@
     </p>
     <p
       v-else-if="hasValidatedToken && isExpiredToken"
-      data-test="token-expired"
+      :data-test="TEST_IDS.token_expired"
       class="flex flex-col items-start sm:gap-4">
       Sorry, that token has expired.
       <RouterLink
-        data-test="re-request-link"
+        :data-test="TEST_IDS.re_request_link"
         to="/request-reset-password"
         @click="
           isExpiredToken = false;
@@ -43,6 +43,7 @@
 
       <Button
         class="max-w-full"
+        :data-test="TEST_IDS.form_submit"
         :is-loading="isLoading || status === 'pending'"
         type="submit">
         Change password
@@ -61,12 +62,13 @@ import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { resetPassword, signInWithEmail } from '@/api/auth';
 import { useMutation } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 // Constants
 const FORM_INPUTS_CHANGE_PASSWORD = [
   {
     autocomplete: 'password',
-    'data-test': 'password',
+    'data-test': TEST_IDS.password_input,
     id: 'password',
     name: 'password',
     label: 'Password',
@@ -74,7 +76,7 @@ const FORM_INPUTS_CHANGE_PASSWORD = [
   },
   {
     autocomplete: 'password',
-    'data-test': 'confirm-password',
+    'data-test': TEST_IDS.confirm_password_input,
     id: 'confirmPassword',
     name: 'confirmPassword',
     label: 'Confirm Password',

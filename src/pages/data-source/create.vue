@@ -21,12 +21,14 @@
       class="flex flex-col gap-2"
       name="new-request"
       :schema="SCHEMA"
+      :data-test="TEST_IDS.data_source_create_form"
       @submit="submit">
       <InputText
         :id="'input-' + INPUT_NAMES.url"
         class="md:col-span-2"
         :name="INPUT_NAMES.url"
         placeholder="A link where these records can be found or are referenced."
+        :data-test="TEST_IDS.data_source_create_url_input"
         @input="checkDuplicates">
         <template #label>
           <h4>
@@ -401,7 +403,8 @@
           :is-loading="createDataSourceMutation.isLoading"
           class="min-w-52"
           intent="primary"
-          type="submit">
+          type="submit"
+          :data-test="TEST_IDS.data_source_create_submit">
           Submit data source
         </Button>
         <Button
@@ -450,6 +453,7 @@ import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
