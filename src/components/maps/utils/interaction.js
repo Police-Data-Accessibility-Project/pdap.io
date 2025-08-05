@@ -60,8 +60,8 @@ export function handleStateClick({
 
   // Get the stored zoom behavior
   const zoom = svg.__zoom__ || d3.zoom();
-  // Calculate offset for sidebar
-  const sidebarOffset = activeLocationStack.length > 0 ? 150 : 0;
+  // Calculate offset for sidebar - we know we'll have a state in the stack
+  const sidebarOffset = 150;
   const translate = [
     width / 2 - scale * x - sidebarOffset,
     height / 2 - scale * y

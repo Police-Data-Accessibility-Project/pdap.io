@@ -712,8 +712,7 @@ function zoomToLocationById(locationId) {
       fips: location.fips // Include fips for county
     };
 
-    // Clear the stack and add the new location
-    activeLocationStack.value = [newLocation];
+    const stack = [];
 
     // Use setTimeout to ensure the DOM is ready
     setTimeout(() => {
