@@ -1,10 +1,9 @@
 <template>
-  <div
-    class="map-sidebar"
-    :class="{ visible: locations.length > 0 || activeLocation }">
+  <div class="map-sidebar" :class="{ visible: true }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-start content-between w-full p-4">
       <Button
+        v-if="activeLocation"
         class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-neutral-400 dark:hover:bg-neutral-400/90 dark:focus:bg-neutral-400/90"
         intent="tertiary"
         @click="handleBackClick">
@@ -14,9 +13,13 @@
         <h3 class="mb-0 mt-0 w-full">
           {{ headerTitle }}
         </h3>
-        <p class="text-lg italic mb-0">
+        <p v-if="activeLocation" class="text-lg italic mb-0">
           {{ activeLocation?.data.source_count }}
           {{ pluralize('Data Source', activeLocation?.data.source_count) }}
+        </p>
+        <p v-else class="text-lg italic mb-0">
+          {{ federalSourceCount }}
+          {{ pluralize('Data Source', federalSourceCount) }}
         </p>
       </div>
     </div>
@@ -32,6 +35,7 @@
         v-if="
           !isFollowedPending &&
           !isFollowedError &&
+          activeLocation &&
           getIsV2FeatureEnabled('ENHANCED_SEARCH')
         "
         :class="{
@@ -122,10 +126,33 @@
           </router-link>
         </button>
       </div>
+
+      <!-- Federal level: show agencies and sources -->
+      <div
+        v-if="!activeLocation && Object.keys(federalSourcesByAgency).length"
+        class="flex flex-col w-full">
+        <div
+          v-for="(sources, agency) in federalSourcesByAgency"
+          :key="agency"
+          class="mb-4">
+          <button
+            class="w-full text-left px-4 py-2 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75">
+            <h4 class="font-medium text-wineneutral-700 mb-2">{{ agency }}</h4>
+          </button>
+          <ul class="px-4 space-y-1">
+            <li
+              v-for="source in sources"
+              :key="source.id"
+              class="text-sm text-wineneutral-800">
+              {{ source.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <!-- 3. Second action block (pinned to bottom) -->
     <div
-      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center">
+      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center h-auto">
       <router-link
         to="/data-request/create"
         class="pdap-button-secondary block w-full text-center">
@@ -171,6 +198,11 @@ const props = defineProps({
     type: Array,
     required: false,
     default: () => []
+  },
+  federal: {
+    type: Array,
+    required: false,
+    default: () => []
   }
 });
 
@@ -207,7 +239,7 @@ const activeLocationType = computed(() => {
 
 // Generate header title based on active location
 const headerTitle = computed(() => {
-  if (!activeLocation.value) return '';
+  if (!activeLocation.value) return 'Federal Data Sources';
 
   if (activeLocationType.value === 'state') {
     // Special case for Maine which might have issues
@@ -252,6 +284,33 @@ const localitiesInCounty = computed(() => {
       locality.county_fips === activeLocation.value.fips &&
       locality.state_iso === activeLocation.value.data.state_iso
   );
+});
+
+// Group federal sources by agency
+const federalSourcesByAgency = computed(() => {
+  if (!props.federal || !props.federal.length) return {};
+
+  const grouped = {};
+  props.federal.forEach((source) => {
+    const agency = source.agency_name || 'Unknown Agency';
+    if (!grouped[agency]) {
+      grouped[agency] = [];
+    }
+    grouped[agency].push(source);
+  });
+
+  // Sort agencies alphabetically
+  return Object.keys(grouped)
+    .sort()
+    .reduce((sorted, key) => {
+      sorted[key] = grouped[key];
+      return sorted;
+    }, {});
+});
+
+// Calculate total federal source count
+const federalSourceCount = computed(() => {
+  return props.federal ? props.federal.length : 0;
 });
 
 // Handle selecting a location from the list
@@ -335,6 +394,10 @@ function handleBackClick() {
     const countyIndex = props.locations.findIndex(
       (loc) => loc.type === 'county'
     );
+    console.debug('locality back button pressed', {
+      countyIndex,
+      locationStack: props.locations
+    });
     if (countyIndex >= 0) {
       // Create a new stack with just the county
       const county = props.locations[countyIndex];
