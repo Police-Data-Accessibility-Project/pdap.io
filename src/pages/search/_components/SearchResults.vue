@@ -96,7 +96,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
 import { useRoute } from 'vue-router';
-import { ref, watchEffect } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import { TEST_IDS } from '../../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
@@ -109,23 +109,37 @@ const HEADING_TITLES = [
   'actions'
 ];
 
-const { results, isLoading } = defineProps({
+const props = defineProps({
   results: Object,
   isLoading: Boolean
 });
 
+const results = computed(() => props.results);
+const isLoading = computed(() => props.isLoading);
+
 const containerRef = ref();
+
 // Handle scroll to on route hash change
 function handleScrollTo() {
-  if (route.hash) {
-    const scrollToTop = document.getElementById(
-      'scroll-to-' + route.hash.replace('#', '')
-    )?.offsetTop;
+  if (!route.hash || !results.value || isLoading.value || !containerRef.value)
+    return;
 
-    containerRef.value?.scrollTo({ top: scrollToTop, behavior: 'smooth' });
-  }
+  nextTick(() => {
+    const targetId = 'scroll-to-' + route.hash.replace('#', '');
+    const element = document.getElementById(targetId);
+
+    if (element) {
+      const scrollToTop = element.offsetTop;
+      containerRef.value.scrollTo({ top: scrollToTop, behavior: 'smooth' });
+    }
+  });
 }
-watchEffect(handleScrollTo);
+
+watch(
+  () => [results.value, isLoading.value, route.hash, containerRef.value],
+  handleScrollTo,
+  { immediate: true }
+);
 
 // TODO: try to handle this with IntersectionObserver instead (i.e. set hash when div intersects, so hash remains up-to-date)
 defineExpose({

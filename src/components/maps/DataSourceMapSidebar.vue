@@ -89,7 +89,7 @@
             <h4 class="capitalize tracking-normal mb-0">{{ county.name }}</h4>
             |
             <router-link
-              :to="`/search/results?location_id=${county.location_id}`"
+              :to="`/search/results?location_id=${county.location_id}#county`"
               class="flex gap-2 items-center px-2 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-auto"
               @click.stop>
               <span v-show="county">
@@ -123,7 +123,7 @@
           class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
           <h4 class="capitalize tracking-normal mb-0">{{ locality.name }}</h4>
           <router-link
-            :to="`/search/results?location_id=${locality.location_id}`"
+            :to="`/search/results?location_id=${locality.location_id}#locality`"
             class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
             @click.stop>
             <span v-show="locality">
