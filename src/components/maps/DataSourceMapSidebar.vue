@@ -1,5 +1,7 @@
 <template>
-  <div class="map-sidebar" :class="{ visible: true }">
+  <div
+    class="map-sidebar"
+    :class="{ visible: activeLocation || federal.length }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-start content-between w-full p-4">
       <Button
@@ -13,21 +15,18 @@
         <h3 class="mb-0 mt-0 w-full">
           {{ headerTitle }}
         </h3>
-        <p v-if="activeLocation" class="text-lg italic mb-0">
-          {{ activeLocation?.data.source_count }}
-          {{ pluralize('Data Source', activeLocation?.data.source_count) }}
-        </p>
-        <p v-else class="text-lg italic mb-0">
-          {{ federalSourceCount }}
-          {{ pluralize('Data Source', federalSourceCount) }}
-        </p>
       </div>
     </div>
     <div class="action-block mb-6 px-4">
       <router-link
+        v-if="activeLocation"
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
-        class="pdap-button-secondary mb-2 w-full max-w-full text-center gap-2">
-        View all
+        class="pdap-button-primary mb-2 w-full max-w-full text-center gap-2">
+        View
+        {{
+          activeLocation ? activeLocation.data.source_count : federalSourceCount
+        }}
+        {{ pluralize('Data Source', activeLocation?.data.source_count) }}
         <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <!-- Follow -->
@@ -80,25 +79,35 @@
         v-if="activeLocationType === 'state' && countiesInState.length"
         class="flex flex-col w-full">
         <h3 class="px-4 font-medium text-wineneutral-700">Counties</h3>
-        <button
+        <div
           v-for="county in countiesInState.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
           :key="county.fips"
-          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 px-4 py-1"
-          @click="selectLocation('county', county)">
-          <h4 class="capitalize tracking-normal mb-0">{{ county.name }}</h4>
-          <router-link
-            :to="`/search/results?location_id=${county.location_id}`"
-            class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
-            @click.stop>
-            <span v-show="county">
-              <strong>{{ county?.source_count }}</strong>
-              {{ pluralize('Data Source', county?.source_count ?? 0) }}
-            </span>
-            <FontAwesomeIcon :icon="faArrowRight" />
-          </router-link>
-        </button>
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
+          <span class="inline-flex items-center gap-2 flex-wrap">
+            <h4 class="capitalize tracking-normal mb-0">{{ county.name }}</h4>
+            |
+            <router-link
+              :to="`/search/results?location_id=${county.location_id}`"
+              class="flex gap-2 items-center px-2 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-auto"
+              @click.stop>
+              <span v-show="county">
+                View {{ county?.source_count }}
+                {{ pluralize('Data Source', county?.source_count ?? 0) }}
+              </span>
+              <FontAwesomeIcon :icon="faArrowRight" />
+            </router-link>
+          </span>
+          <button
+            class="w-full max-w-full flex items-center gap-4 mb-0 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 px-2 py-1"
+            @click="selectLocation('county', county)">
+            Explore localities
+            <FontAwesomeIcon :icon="faMagnifyingGlass" />
+          </button>
+
+          <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
+        </div>
       </div>
 
       <!-- County level: show localities -->
@@ -106,25 +115,25 @@
         v-if="activeLocationType === 'county' && localitiesInCounty.length"
         class="flex flex-col w-full">
         <h3 class="px-4 font-medium text-wineneutral-700">Localities</h3>
-        <button
+        <div
           v-for="locality in localitiesInCounty.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
-          :key="locality.id"
-          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 px-4 py-2"
-          @click="selectLocation('locality', locality)">
+          :key="locality.location_id"
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
           <h4 class="capitalize tracking-normal mb-0">{{ locality.name }}</h4>
           <router-link
             :to="`/search/results?location_id=${locality.location_id}`"
-            class="flex justify-between items-center w-full text-med text-wineneutral-800 hover:text-wineneutral-950"
+            class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
             @click.stop>
-            <span>
-              <strong>{{ locality.source_count }}</strong>
-              {{ pluralize('Data Source', locality.source_count) }}
+            <span v-show="locality">
+              View {{ locality?.source_count }}
+              {{ pluralize('Data Source', locality?.source_count ?? 0) }}
             </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
-        </button>
+          <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
+        </div>
       </div>
 
       <!-- Federal level: show agencies and sources -->
@@ -135,21 +144,42 @@
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
           class="mb-4">
-          <button
-            class="w-full text-left px-4 py-2 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75">
-            <h4 class="font-medium text-wineneutral-700 mb-2">{{ agency }}</h4>
-          </button>
+          <h3 class="font-medium text-wineneutral-700 mb-2 px-4">
+            {{ agency }}
+          </h3>
           <ul class="px-4 space-y-1">
             <li
               v-for="source in sources"
               :key="source.id"
               class="text-sm text-wineneutral-800">
-              {{ source.name }}
+              <h4 class="font-medium capitalize tracking-normal mb-0">
+                {{ source.data_source_name }}
+              </h4>
+              <span>
+                <router-link
+                  v-show="source.source_url"
+                  :href="source.source_url"
+                  class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
+                  @click.stop>
+                  <span>View details</span>
+                  <FontAwesomeIcon :icon="faCircleInfo" />
+                </router-link>
+                <span v-show="source.url && source.id">|</span>
+                <router-link
+                  v-show="source.id"
+                  :to="`/data-sources/${source.id}`"
+                  class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
+                  @click.stop>
+                  Details
+                  <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+                </router-link>
+              </span>
             </li>
           </ul>
         </div>
       </div>
     </div>
+
     <!-- 3. Second action block (pinned to bottom) -->
     <div
       class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center h-auto">
@@ -171,7 +201,13 @@ import pluralize from '@/util/pluralize';
 import { getFollowedSearch } from '@/api/search';
 import { useAuthStore } from '@/stores/auth';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowRight,
+  faChevronLeft,
+  faMagnifyingGlass,
+  faArrowUpRightFromSquare,
+  faCircleInfo
+} from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/vue-query';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';

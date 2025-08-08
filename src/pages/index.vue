@@ -21,7 +21,10 @@
         <h2>Explore the map</h2>
         <DataSourceMap
           class="mb-6"
-          v-bind="{ ...mapData?.data }"
+          v-bind="{
+            ...mapData?.data.locations,
+            federal: mapData?.data.sources
+          }"
           @on-follow="(location_id) => followMutation.mutate(location_id)"
           @on-select-location="
             ({ data: { location_id } }) => {
