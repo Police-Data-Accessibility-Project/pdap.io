@@ -3,7 +3,7 @@
     class="map-sidebar"
     :class="{ visible: activeLocation || federal.length }">
     <!-- 1. Header with back button, title, top-level actions -->
-    <div class="flex items-start content-between w-full p-4">
+    <div class="flex items-center content-between w-full p-4">
       <Button
         v-if="activeLocation"
         class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-neutral-400 dark:hover:bg-neutral-400/90 dark:focus:bg-neutral-400/90"
@@ -20,7 +20,7 @@
     <div class="action-block mb-6 px-4">
       <router-link
         v-if="activeLocation"
-        :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}`"
+        :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}#${activeLocationType}`"
         class="pdap-button-primary mb-2 w-full max-w-full text-center gap-2">
         View
         {{
@@ -150,28 +150,30 @@
           <ul class="px-4 space-y-1">
             <li
               v-for="source in sources"
-              :key="source.id"
+              :key="source.source_id"
               class="text-sm text-wineneutral-800">
               <h4 class="font-medium capitalize tracking-normal mb-0">
                 {{ source.data_source_name }}
               </h4>
-              <span>
-                <router-link
-                  v-show="source.source_url"
+              <span class="flex gap-2">
+                <a
+                  v-if="source.source_url"
                   :href="source.source_url"
-                  class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
+                  class="flex gap-2 items-center flex-grow flex-shrink-0 px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-[max-content]"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   @click.stop>
-                  <span>View details</span>
-                  <FontAwesomeIcon :icon="faCircleInfo" />
-                </router-link>
-                <span v-show="source.url && source.id">|</span>
+                  <span>Visit source</span>
+                  <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+                </a>
+                <span v-if="source.source_id">|</span>
                 <router-link
-                  v-show="source.id"
-                  :to="`/data-sources/${source.id}`"
+                  v-if="source.source_id && source.source_id.toString().trim()"
+                  :to="`/data-source/${source.source_id}`"
                   class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
                   @click.stop>
                   Details
-                  <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+                  <FontAwesomeIcon :icon="faCircleInfo" />
                 </router-link>
               </span>
             </li>
@@ -324,10 +326,23 @@ const localitiesInCounty = computed(() => {
 
 // Group federal sources by agency
 const federalSourcesByAgency = computed(() => {
-  if (!props.federal || !props.federal.length) return {};
+  console.log(
+    'federalSourcesByAgency computed - props.federal:',
+    props.federal
+  );
+  if (!props.federal || !props.federal.length) {
+    console.log('No federal data available');
+    return {};
+  }
 
   const grouped = {};
   props.federal.forEach((source) => {
+    // Skip sources with missing required properties
+    if (!source || !source.source_id || !source.data_source_name) {
+      console.warn('Skipping federal source with missing properties:', source);
+      return;
+    }
+
     const agency = source.agency_name || 'Unknown Agency';
     if (!grouped[agency]) {
       grouped[agency] = [];
