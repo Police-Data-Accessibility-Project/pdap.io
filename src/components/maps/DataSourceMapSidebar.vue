@@ -348,11 +348,18 @@ const federalSourcesByAgency = computed(() => {
 
   // Sort agencies alphabetically
   return Object.keys(grouped)
-    .sort()
-    .reduce((sorted, key) => {
-      sorted[key] = grouped[key];
-      return sorted;
-    }, {});
+  .sort((a, b) => {
+    // Put "United States Aggregated" first
+    if (a === "United States Aggregated") return -1;
+    if (b === "United States Aggregated") return 1;
+    
+    // Then sort everything else alphabetically
+    return a.localeCompare(b);
+  })
+  .reduce((sorted, key) => {
+    sorted[key] = grouped[key];
+    return sorted;
+  }, {});
 });
 
 // Calculate total federal source count
