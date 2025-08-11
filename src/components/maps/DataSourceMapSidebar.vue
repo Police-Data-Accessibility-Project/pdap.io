@@ -50,10 +50,6 @@
             @click="$emit('on-follow', activeLocation?.data?.location_id)">
             Follow for updates
           </Button>
-          <p v-if="!auth.isAuthenticated()" class="text-med text-neutral-500">
-            <RouterLink to="/sign-in">Sign in</RouterLink>
-            to follow this location
-          </p>
         </div>
         <div v-else class="flex flex-col md:items-end md:max-w-80">
           <p
