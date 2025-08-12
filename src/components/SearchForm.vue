@@ -372,7 +372,8 @@ function onSelectRecord(item) {
       query: {
         ...route.query,
         location_id: item?.location_id ?? route.query.location_id
-      }
+      },
+      hash: route.hash
     });
 }
 </script>
