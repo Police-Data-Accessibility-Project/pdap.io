@@ -44,8 +44,6 @@ router.beforeEach(async (to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const auth = useAuthStore();
 
-  if (to.meta.auth) auth.$patch({ redirectTo: to });
-
   // Special cases: redirecting to log in for routes that are partially public but have sub-components that require auth
   if (
     to.path === '/sign-in' &&
@@ -53,6 +51,8 @@ router.beforeEach(async (to, from, next) => {
   ) {
     auth.$patch({ redirectTo: from });
   }
+
+  if (to.meta.auth) auth.$patch({ redirectTo: to });
 
   if (to.path === '/sign-in') {
     next();
