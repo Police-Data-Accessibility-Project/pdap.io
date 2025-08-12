@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth';
 import { routes, handleHotUpdate } from 'vue-router/auto-routes';
 import { refreshMetaTagsByRoute } from '@/util/routeHelpers.js';
+import _isEqual from 'lodash/isEqual';
 /**
  * Special cases: redirecting to log in for routes that are partially public but have sub-components that require auth.
  *
@@ -38,25 +39,18 @@ if (import.meta.hot && !import.meta.test) {
 }
 
 router.beforeEach(async (to, from, next) => {
+  if (_isEqual(to, from)) {
+    next();
+    return;
+  }
   // Update meta tags per route
   refreshMetaTagsByRoute(to);
 
   // redirect to login page if not logged in and trying to access a restricted page
   const auth = useAuthStore();
 
-  // Special cases: redirecting to log in for routes that are partially public but have sub-components that require auth
-  if (
-    to.path === '/sign-in' &&
-    NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS.has(from.path)
-  ) {
-    auth.$patch({ redirectTo: from });
-  }
-
-  if (to.meta.auth) auth.$patch({ redirectTo: to });
-
-  if (to.path === '/sign-in') {
-    next();
-  }
+  if (to.meta.auth || NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS.has(to.path))
+    auth.$patch({ redirectTo: to });
 
   if (to.meta?.auth && !auth.isAuthenticated()) {
     next({ path: '/sign-in' });
