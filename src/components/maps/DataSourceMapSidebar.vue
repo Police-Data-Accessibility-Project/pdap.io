@@ -83,27 +83,25 @@
           )"
           :key="county.fips"
           class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
-          <span class="inline-flex items-center gap-2 flex-wrap">
-            <h4 class="capitalize tracking-normal mb-0">{{ county.name }}</h4>
-            |
+          <h4 class="grow capitalize text-med font-bold tracking-normal mb-0">{{ county.name }}</h4>
+          <span class="flex items-center gap-2 flex-wrap mt-1 mb-3">
+            <button
+            class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200"
+            @click="selectLocation('county', county)">
+              <FontAwesomeIcon :icon="faMagnifyingGlass" />
+              Explore localities
+            </button>
             <router-link
               :to="`/search/results?location_id=${county.location_id}#county`"
-              class="flex gap-2 items-center px-2 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-auto"
+              class="flex gap-2 items-center px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-brand-gold-100 w-auto"
               @click.stop>
               <span v-show="county">
-                View {{ county?.source_count }}
-                {{ pluralize('Data Source', county?.source_count ?? 0) }}
+                {{ county?.source_count }}
+                {{ pluralize('Source', county?.source_count ?? 0) }}
               </span>
               <FontAwesomeIcon :icon="faArrowRight" />
             </router-link>
-          </span>
-          <button
-            class="w-full max-w-full flex items-center gap-4 mb-0 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 px-2 py-1"
-            @click="selectLocation('county', county)">
-            Explore localities
-            <FontAwesomeIcon :icon="faMagnifyingGlass" />
-          </button>
-
+        </span>
           <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
         </div>
       </div>
@@ -119,10 +117,10 @@
           )"
           :key="locality.location_id"
           class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
-          <h4 class="capitalize tracking-normal mb-0">{{ locality.name }}</h4>
+          <h4 class="capitalize tracking-normal mb-0 text-med">{{ locality.name }}</h4>
           <router-link
             :to="`/search/results?location_id=${locality.location_id}#locality`"
-            class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
+            class="flex gap-2 items-center px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm text-goldneutral-950 bg-brand-gold-100"
             @click.stop>
             <span v-show="locality">
               View {{ locality?.source_count }}
@@ -157,7 +155,7 @@
                 <a
                   v-if="source.source_url"
                   :href="source.source_url"
-                  class="flex gap-2 items-center flex-initial px-1 py-0.5 text-goldneutral-950 rounded-sm bg-brand-gold-100"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100"
                   target="_blank"
                   rel="noopener noreferrer"
                   @click.stop>
@@ -167,7 +165,7 @@
                 <router-link
                   v-if="source.source_id && source.source_id.toString().trim()"
                   :to="`/data-source/${source.source_id}`"
-                  class="flex gap-2 items-center flex-initial px-1 py-0.5 text-goldneutral-950 rounded-sm bg-goldneutral-100"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100"
                   @click.stop>
                   Details
                   <FontAwesomeIcon :icon="faCircleInfo" />
