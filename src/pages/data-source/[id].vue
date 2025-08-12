@@ -22,16 +22,21 @@
         v-else
         :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
-        <template v-if="!isLoading && error">
+        <template v-if="(!error && !dataSource) || error?.status === 404">
+          <h1>Data source not found</h1>
+          <p class="w-full max-w-full">
+            We don't have a record of that source.
+          </p>
+          <router-link to="/" class="pdap-button-primary inline-block">
+            Click here to return to search
+          </router-link>
+        </template>
+
+        <template v-else-if="error">
           <h1>An error occurred loading the data source</h1>
           <p>Please refresh the page and try again.</p>
         </template>
 
-        <!-- TODO: not found UI - do we want to send the user to search or something? -->
-        <template v-else-if="!error && !dataSource">
-          <h1>Data source not found</h1>
-          <p>We don't have a record of that source.</p>
-        </template>
         <!-- For each section, render details -->
         <template v-else>
           <!-- Heading and related material -->
@@ -257,11 +262,12 @@ const {
     const rawResult = await getDataSource(route.params.id); // returns { data: { data: ... } }
     return injectDerivedAgencyInfo(rawResult);
   },
-  staleTime: 5 * 60 * 1000 // 5 minutes,
+  staleTime: 5 * 60 * 1000, // 5 minutes,
+  retry: 2
 });
 
 const dataSource = computed(() => {
-  return sourceData.value.data.data;
+  return sourceData.value?.data.data;
 });
 
 const isLoading = computed(
