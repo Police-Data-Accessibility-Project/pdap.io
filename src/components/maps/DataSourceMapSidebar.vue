@@ -15,9 +15,12 @@
         <h3 class="mb-0 mt-0 w-full">
           {{ headerTitle }}
         </h3>
+        <p v-show="!activeLocation" class="text-med pt-2">
+          Sources "aggregated" about multiple local agencies, or about federal-level agencies. Select a state to find local sources.
+        </p>
       </div>
     </div>
-    <div class="action-block mb-6 px-4">
+    <div class="action-block mb-2 px-4">
       <router-link
         v-if="activeLocation"
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}#${activeLocationType}`"
@@ -27,7 +30,6 @@
           activeLocation ? activeLocation.data.source_count : federalSourceCount
         }}
         {{ pluralize('Data Source', activeLocation?.data.source_count) }}
-        <FontAwesomeIcon :icon="faArrowRight" />
       </router-link>
       <!-- Follow -->
       <div
@@ -140,33 +142,32 @@
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
           class="mb-4">
-          <h3 class="font-medium text-wineneutral-700 mb-2 px-4">
+          <h3 class="capitalize tracking-normal text-brand-wine-800 mb-2 px-4">
             {{ agency }}
           </h3>
           <ul class="px-4 space-y-1">
             <li
               v-for="source in sources"
               :key="source.source_id"
-              class="text-sm text-wineneutral-800">
-              <h4 class="font-medium capitalize tracking-normal mb-0">
+              class="text-sm text-wineneutral-800 mb-2">
+              <h4 class="font-medium text-med text-wineneutral-900 capitalize tracking-normal mb-1">
                 {{ source.data_source_name }}
               </h4>
               <span class="flex gap-2">
                 <a
                   v-if="source.source_url"
                   :href="source.source_url"
-                  class="flex gap-2 items-center flex-grow flex-shrink-0 px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-[max-content]"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 text-goldneutral-950 rounded-sm bg-brand-gold-100"
                   target="_blank"
                   rel="noopener noreferrer"
                   @click.stop>
-                  <span>Visit source</span>
+                  <span>Visit</span>
                   <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
                 </a>
-                <span v-if="source.source_id">|</span>
                 <router-link
                   v-if="source.source_id && source.source_id.toString().trim()"
                   :to="`/data-source/${source.source_id}`"
-                  class="flex gap-2 items-center px-0 py-1 text-wineneutral-800 hover:text-wineneutral-950 hover:bg-goldneutral-200/75 focus:bg-goldneutral-200/75 w-full"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 text-goldneutral-950 rounded-sm bg-goldneutral-100"
                   @click.stop>
                   Details
                   <FontAwesomeIcon :icon="faCircleInfo" />
