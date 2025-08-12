@@ -16,7 +16,8 @@
           {{ headerTitle }}
         </h3>
         <p v-show="!activeLocation" class="text-med pt-2">
-          Sources "aggregated" about multiple local agencies, or about federal-level agencies. Select a state to find local sources.
+          Sources "aggregated" about multiple local agencies, or about
+          federal-level agencies. Select a state to find local sources.
         </p>
       </div>
     </div>
@@ -83,11 +84,13 @@
           )"
           :key="county.fips"
           class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
-          <h4 class="grow capitalize text-med font-bold tracking-normal mb-0">{{ county.name }}</h4>
+          <h4 class="grow capitalize text-med font-bold tracking-normal mb-0">
+            {{ county.name }}
+          </h4>
           <span class="flex items-center gap-2 flex-wrap mt-1 mb-3">
             <button
-            class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200"
-            @click="selectLocation('county', county)">
+              class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200"
+              @click="selectLocation('county', county)">
               <FontAwesomeIcon :icon="faMagnifyingGlass" />
               Explore localities
             </button>
@@ -101,7 +104,7 @@
               </span>
               <FontAwesomeIcon :icon="faArrowRight" />
             </router-link>
-        </span>
+          </span>
           <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
         </div>
       </div>
@@ -117,7 +120,9 @@
           )"
           :key="locality.location_id"
           class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
-          <h4 class="capitalize tracking-normal mb-0 text-med">{{ locality.name }}</h4>
+          <h4 class="capitalize tracking-normal mb-0 text-med">
+            {{ locality.name }}
+          </h4>
           <router-link
             :to="`/search/results?location_id=${locality.location_id}#locality`"
             class="flex gap-2 items-center px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm text-goldneutral-950 bg-brand-gold-100"
@@ -148,7 +153,8 @@
               v-for="source in sources"
               :key="source.source_id"
               class="text-sm text-wineneutral-800 mb-2">
-              <h4 class="font-medium text-med text-wineneutral-900 capitalize tracking-normal mb-1">
+              <h4
+                class="font-medium text-med text-wineneutral-900 capitalize tracking-normal mb-1">
                 {{ source.data_source_name }}
               </h4>
               <span class="flex gap-2">
@@ -347,18 +353,18 @@ const federalSourcesByAgency = computed(() => {
 
   // Sort agencies alphabetically
   return Object.keys(grouped)
-  .sort((a, b) => {
-    // Put "United States Aggregated" first
-    if (a === "United States Aggregated") return -1;
-    if (b === "United States Aggregated") return 1;
-    
-    // Then sort everything else alphabetically
-    return a.localeCompare(b);
-  })
-  .reduce((sorted, key) => {
-    sorted[key] = grouped[key];
-    return sorted;
-  }, {});
+    .sort((a, b) => {
+      // Put "United States Aggregated" first
+      if (a === 'United States Aggregated') return -1;
+      if (b === 'United States Aggregated') return 1;
+
+      // Then sort everything else alphabetically
+      return a.localeCompare(b);
+    })
+    .reduce((sorted, key) => {
+      sorted[key] = grouped[key];
+      return sorted;
+    }, {});
 });
 
 // Calculate total federal source count
