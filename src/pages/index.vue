@@ -15,8 +15,6 @@
       </div>
     </section>
     <section class="col-span-full">
-      <h1>Find data about police systems</h1>
-      <SearchForm />
       <div class="hidden md:block">
         <h2>Explore the map</h2>
         <DataSourceMap
@@ -38,6 +36,8 @@
             }
           " />
       </div>
+      <h1>Find data about police systems</h1>
+      <SearchForm />
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
