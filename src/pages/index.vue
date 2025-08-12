@@ -16,7 +16,7 @@
     </section>
     <section class="col-span-full">
       <div class="hidden md:block">
-        <h2>Explore the map</h2>
+        <h1>Explore data about police systems</h1>
         <DataSourceMap
           class="mb-6"
           v-bind="{
@@ -36,7 +36,7 @@
             }
           " />
       </div>
-      <h1>Find data about police systems</h1>
+      <h2>Search for something specific</h2>
       <SearchForm />
     </section>
     <section class="col-span-full text-lg">
