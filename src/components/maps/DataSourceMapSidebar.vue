@@ -15,9 +15,9 @@
         <h3 class="mb-0 mt-0 w-full">
           {{ headerTitle }}
         </h3>
-        <p v-show="!activeLocation" class="text-med pt-2">
-          Sources "aggregated" about multiple local agencies, or about
-          federal-level agencies. Select a state to find local sources.
+        <p v-show="!activeLocation" class="text-med pt-2 mb-0">
+          Aggregated sources cover multiple local agencies, others cover
+          federal-level agencies. Search or select a state to find local sources.
         </p>
       </div>
     </div>
@@ -145,16 +145,16 @@
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
           class="mb-4">
-          <h3 class="capitalize tracking-normal text-brand-wine-800 mb-2 px-4">
+          <h3 class="capitalize tracking-normal text-brand-wine-400 mb-2 px-4">
             {{ agency }}
           </h3>
-          <ul class="px-4 space-y-1">
+          <ul class="px-4 space-y-4">
             <li
               v-for="source in sources"
               :key="source.source_id"
-              class="text-sm text-wineneutral-800 mb-2">
+              class="text-sm mb-2">
               <h4
-                class="font-medium text-med text-wineneutral-900 capitalize tracking-normal mb-1">
+                class="font-medium text-med text-wineneutral-950 capitalize tracking-normal mb-1">
                 {{ source.data_source_name }}
               </h4>
               <span class="flex gap-2">
