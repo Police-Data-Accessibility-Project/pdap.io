@@ -1,12 +1,8 @@
 /* TODO: add to markup directly where possible */
 
-#map-container {
-  @apply w-full h-full relative overflow-hidden;
-}
-
 .map-sidebar {
   transition: opacity 150ms ease-in;
-  @apply absolute bg-wineneutral-50 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto opacity-0 grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] pointer-events-none;
+  @apply opacity-0 pointer-events-none;
 }
 
 .map-sidebar.visible {

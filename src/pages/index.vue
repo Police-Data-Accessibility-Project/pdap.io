@@ -16,9 +16,11 @@
     </section>
     <section class="col-span-full">
       <h1>Explore data about police systems</h1>
-      <div class="hidden md:block">
+    </section>
+    <section class="px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
+      <div class="block">
         <DataSourceMap
-          class="mb-6"
+          class="mb-6 w-full"
           v-bind="{
             ...(mapData?.data.locations ?? {}),
             federal: mapData?.data.sources ?? []
@@ -36,6 +38,8 @@
             }
           " />
       </div>
+    </section>
+    <section class="col-span-full">
       <h2 class="hidden md:block">Search for something specific</h2>
       <SearchForm />
     </section>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="map-sidebar"
+    class="map-sidebar absolute bg-wineneutral-50 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto];"
     :class="{ visible: activeLocation || federal.length }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-center content-between w-full p-4">
@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <hr class="mb-4 border-neutral-500/50" />
+    <hr class="mb-4 border-wineneutral-400" />
 
     <!-- 2. Content section -->
     <!-- State level: show counties -->
@@ -105,7 +105,7 @@
               <FontAwesomeIcon :icon="faArrowRight" />
             </router-link>
           </span>
-          <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
+          <hr class="border-solid border-wineneutral-400 w-full" />
         </div>
       </div>
 
@@ -133,7 +133,7 @@
             </span>
             <FontAwesomeIcon :icon="faArrowRight" />
           </router-link>
-          <hr class="border-solid border-neutral-500 border-[.5px] w-full" />
+          <hr class="border-solid border-wineneutral-400 w-full" />
         </div>
       </div>
 

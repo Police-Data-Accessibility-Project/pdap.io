@@ -1,8 +1,9 @@
 <template>
-  <div class="relative w-full h-auto">
+  <div class="relative h-auto">
     <div
       id="map-container"
       ref="mapContainer"
+      class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full overflow-hidden"
       :data-test="TEST_IDS.data_source_map" />
     <!-- <span class="loading"></span> -->
     <Spinner
