@@ -1,6 +1,6 @@
 <template>
   <div
-    class="map-sidebar absolute bg-wineneutral-50 top-2 right-2 w-[320px] h-[calc(100%-20px)] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto];"
+    class="map-sidebar relative bg-wineneutral-50 w-full h-auto max-h-[80vh] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] mt-4 lg:mt-0 lg:absolute lg:top-2 lg:right-2 lg:w-[320px] lg:h-[calc(100%-20px)] lg:max-h-none"
     :class="{ visible: activeLocation || federal.length }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-center content-between w-full p-4">
@@ -145,7 +145,7 @@
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
           class="mb-4">
-          <h3 class="capitalize tracking-normal text-brand-wine-400 mb-2 px-4">
+          <h3 class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4">
             {{ agency }}
           </h3>
           <ul class="px-4 space-y-4">
@@ -154,7 +154,7 @@
               :key="source.source_id"
               class="text-sm mb-2">
               <h4
-                class="font-medium text-med text-wineneutral-950 capitalize tracking-normal mb-1">
+                class="font-semibold text-lg text-wineneutral-950 capitalize tracking-normal mb-1">
                 {{ source.data_source_name }}
               </h4>
               <span class="flex gap-2">
@@ -185,10 +185,10 @@
 
     <!-- 3. Second action block (pinned to bottom) -->
     <div
-      class="border-t-wineneutral-500 sticky bottom-0 left-0 w-full p-4 bg-wineneutral-100 flex items-center justify-center h-auto">
+      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 flex h-auto">
       <router-link
         to="/data-request/create"
-        class="pdap-button-secondary block w-full text-center">
+        class="pdap-button-secondary bg-white block w-full text-center">
         Request missing data
       </router-link>
     </div>
