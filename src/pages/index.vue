@@ -17,7 +17,8 @@
     <section class="col-span-full">
       <h1>Explore data about police systems</h1>
     </section>
-    <section class="px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
+    <section
+      class="px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
       <div class="block">
         <DataSourceMap
           class="mb-6 w-full"

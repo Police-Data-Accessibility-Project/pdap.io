@@ -17,7 +17,8 @@
         </h3>
         <p v-show="!activeLocation" class="text-med pt-2 mb-0">
           Aggregated sources cover multiple local agencies, others cover
-          federal-level agencies. Search or select a state to find local sources.
+          federal-level agencies. Search or select a state to find local
+          sources.
         </p>
       </div>
     </div>
@@ -98,8 +99,8 @@
               :to="`/search/results?location_id=${county.location_id}#county`"
               :class="[
                 'flex gap-2 items-center px-1 py-0.5 text-goldneutral-900 rounded-sm text-sm w-auto',
-                county?.source_count > 0 
-                  ? 'bg-brand-gold-100' 
+                county?.source_count > 0
+                  ? 'bg-brand-gold-100'
                   : 'bg-goldneutral-100'
               ]"
               @click.stop>
@@ -132,8 +133,8 @@
             :to="`/search/results?location_id=${locality.location_id}#locality`"
             :class="[
               'flex gap-2 items-center text-goldneutral-900 px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm',
-              locality?.source_count > 0 
-                ? 'bg-brand-gold-100' 
+              locality?.source_count > 0
+                ? 'bg-brand-gold-100'
                 : 'bg-goldneutral-100'
             ]"
             @click.stop>
@@ -155,7 +156,8 @@
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
           class="mb-4">
-          <h3 class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4">
+          <h3
+            class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4">
             {{ agency }}
           </h3>
           <ul class="px-4 space-y-4">
