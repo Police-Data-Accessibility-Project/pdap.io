@@ -1,6 +1,6 @@
 <template>
   <div
-    class="map-sidebar relative bg-wineneutral-50 w-full h-auto max-h-[80vh] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] mt-4 lg:mt-0 lg:absolute lg:top-2 lg:right-2 lg:w-[320px] lg:h-[calc(100%-20px)] lg:max-h-none"
+    class="map-sidebar relative bg-wineneutral-50 w-full h-auto max-h-[80vh] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] mt-4 lg:mt-0 lg:absolute lg:top-0 lg:right-0 lg:w-[320px] lg:h-[calc(100%)] lg:max-h-none"
     :class="{ visible: activeLocation || federal.length }">
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-center content-between w-full p-4">
