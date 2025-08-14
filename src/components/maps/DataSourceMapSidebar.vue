@@ -135,7 +135,7 @@
               'flex gap-2 items-center px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm',
               locality?.source_count > 0
                 ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
-                  : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
+                : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
             ]"
             @click.stop>
             <span v-show="locality">
