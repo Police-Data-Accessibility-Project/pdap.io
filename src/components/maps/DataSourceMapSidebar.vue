@@ -96,7 +96,12 @@
             </button>
             <router-link
               :to="`/search/results?location_id=${county.location_id}#county`"
-              class="flex gap-2 items-center px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-brand-gold-100 w-auto"
+              :class="[
+                'flex gap-2 items-center px-1 py-0.5 text-goldneutral-900 rounded-sm text-sm w-auto',
+                county?.source_count > 0 
+                  ? 'bg-brand-gold-100' 
+                  : 'bg-goldneutral-100'
+              ]"
               @click.stop>
               <span v-show="county">
                 {{ county?.source_count }}
@@ -125,7 +130,12 @@
           </h4>
           <router-link
             :to="`/search/results?location_id=${locality.location_id}#locality`"
-            class="flex gap-2 items-center px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm text-goldneutral-950 bg-brand-gold-100"
+            :class="[
+              'flex gap-2 items-center text-goldneutral-900 px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm',
+              locality?.source_count > 0 
+                ? 'bg-brand-gold-100' 
+                : 'bg-goldneutral-100'
+            ]"
             @click.stop>
             <span v-show="locality">
               View {{ locality?.source_count }}
