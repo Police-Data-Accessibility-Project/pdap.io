@@ -152,7 +152,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faUserPlus, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 // import _isUndefined from 'lodash/isUndefined';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
@@ -174,7 +174,7 @@ import {
 } from 'vue';
 import { ALL_LOCATION_TYPES } from '@/util/constants';
 import {
-  normalizeLocaleForHash,
+  // normalizeLocaleForHash,
   getAnchorLinkText,
   getAllIdsSearched,
   groupResultsByAgency
@@ -196,7 +196,7 @@ const searchStore = useSearchStore();
 
 const auth = useAuthStore();
 const route = useRoute();
-const router = useRouter();
+// const router = useRouter();
 const searchResultsRef = ref();
 const isSearchShown = ref(false);
 const dims = reactive({ width: window.innerWidth, height: window.innerHeight });
@@ -337,6 +337,7 @@ watch(searchDataCombined, (newValue) => {
   searchStore.setMostRecentSearchIds(getAllIdsSearched(newValue));
 });
 
+/* 
 watch(
   () => route,
   (newRoute) => {
@@ -347,6 +348,7 @@ watch(
   },
   { immediate: true, deep: true }
 );
+*/
 
 // lifecycle methods
 onMounted(() => {

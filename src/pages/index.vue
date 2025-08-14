@@ -15,13 +15,17 @@
       </div>
     </section>
     <section class="col-span-full">
-      <h1>Find data about police systems</h1>
-      <SearchForm />
-      <div class="hidden md:block">
-        <h2>Explore the map</h2>
+      <h1>Explore data about police systems</h1>
+    </section>
+    <section
+      class="px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
+      <div class="block">
         <DataSourceMap
-          class="mb-6"
-          v-bind="{ ...mapData?.data }"
+          class="mb-6 w-full"
+          v-bind="{
+            ...(mapData?.data.locations ?? {}),
+            federal: mapData?.data.sources ?? []
+          }"
           @on-follow="(location_id) => followMutation.mutate(location_id)"
           @on-select-location="
             ({ data: { location_id } }) => {
@@ -35,6 +39,10 @@
             }
           " />
       </div>
+    </section>
+    <section class="col-span-full">
+      <h2 class="hidden md:block">Search for something specific</h2>
+      <SearchForm />
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>

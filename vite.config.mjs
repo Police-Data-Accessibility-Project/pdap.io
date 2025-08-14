@@ -44,14 +44,15 @@ export default defineConfig(({ mode }) => {
     ],
     build: {
       minify: "terser",
+      sourcemap: !!env.PDAP_DEBUG, // Enable source maps for debugging
       terserOptions: {
         parse: {
           html5_comments: false,
         },
       },
       compress: {
-        drop_console: true,
-        drop_debugger: true
+        drop_console: !env.PDAP_DEBUG, // Keep console logs for debugging
+        drop_debugger: !env.PDAP_DEBUG // Keep debugger statements for debugging
       }
     },
     chunkSizeWarningLimit: 1000,

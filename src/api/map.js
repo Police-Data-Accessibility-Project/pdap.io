@@ -12,7 +12,7 @@ const HEADERS_BASIC = {
 };
 
 export async function getMapLocations() {
-  return await axios.get(`${MAP_BASE}/${ENDPOINTS.MAP.LOCATIONS}`, {
+  return await axios.get(`${MAP_BASE}/${ENDPOINTS.MAP.DATA}`, {
     headers: HEADERS_BASIC
   });
 }

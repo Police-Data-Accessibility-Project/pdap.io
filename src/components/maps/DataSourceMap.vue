@@ -1,8 +1,9 @@
 <template>
-  <div class="relative w-full h-auto">
+  <div class="relative h-auto flex flex-col lg:block">
     <div
       id="map-container"
       ref="mapContainer"
+      class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full max-h-[80vh] lg:max-h-none overflow-hidden"
       :data-test="TEST_IDS.data_source_map" />
     <!-- <span class="loading"></span> -->
     <Spinner
@@ -15,6 +16,7 @@
       :counties="props.counties"
       :localities="props.localities"
       :states="props.states"
+      :federal="props.federal"
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
       @on-reset-zoom="() => mapDeps.resetZoom()"
@@ -85,6 +87,11 @@ const props = defineProps({
     default: undefined
   },
   states: {
+    type: Array,
+    required: false,
+    default: undefined
+  },
+  federal: {
     type: Array,
     required: false,
     default: undefined
@@ -712,8 +719,56 @@ function zoomToLocationById(locationId) {
       fips: location.fips // Include fips for county
     };
 
-    // Clear the stack and add the new location
-    activeLocationStack.value = [newLocation];
+    // Build proper location hierarchy
+    const stack = [];
+
+    if (locationType === 'locality' && location.county_fips) {
+      // Find the county and state for this locality
+      const county = props.counties.find(
+        (c) => c.fips === location.county_fips
+      );
+
+      if (county) {
+        // Find the state for this county
+        const state = props.states.find(
+          (s) => s.state_iso === county.state_iso
+        );
+
+        if (state) {
+          stack.push({
+            type: 'state',
+            data: state,
+            name: state.name
+          });
+        }
+
+        stack.push({
+          type: 'county',
+          data: county,
+          name: county.name,
+          fips: county.fips
+        });
+      }
+    } else if (locationType === 'county') {
+      // Find the state for this county
+      const state = props.states.find(
+        (s) => s.state_iso === location.state_iso
+      );
+
+      if (state) {
+        stack.push({
+          type: 'state',
+          data: state,
+          name: state.name
+        });
+      }
+    }
+
+    // Add the target location
+    stack.push(newLocation);
+
+    // Set the complete stack
+    activeLocationStack.value = stack;
 
     // Use setTimeout to ensure the DOM is ready
     setTimeout(() => {
@@ -737,7 +792,7 @@ function zoomToLocationById(locationId) {
         }
       }
 
-      // Otherwize zoom to location
+      // Otherwise zoom to location
       handleZoomToLocation(newLocation);
     }, 50);
   }
