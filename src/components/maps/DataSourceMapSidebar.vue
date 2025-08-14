@@ -6,7 +6,7 @@
     <div class="flex items-center content-between w-full p-4">
       <Button
         v-if="activeLocation"
-        class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-neutral-400 dark:hover:bg-neutral-400/90 dark:focus:bg-neutral-400/90"
+        class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-goldneutral-400 dark:hover:bg-goldneutral-400/90 dark:focus:bg-goldneutral-400/90"
         intent="tertiary"
         @click="handleBackClick">
         <FontAwesomeIcon :icon="faChevronLeft" />
@@ -58,7 +58,7 @@
         <div v-else class="flex flex-col md:items-end md:max-w-80">
           <p
             v-if="auth.isAuthenticated()"
-            class="text-med text-neutral-500 max-w-full md:text-right">
+            class="text-med text-wineneutral-500 max-w-full md:text-right">
             <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserCheck" />
             Following this location
             <br />
@@ -90,7 +90,7 @@
           </h4>
           <span class="flex items-center gap-2 flex-wrap mt-1 mb-3">
             <button
-              class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200"
+              class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200 dark:text-goldneutral-950 dark:bg-goldneutral-100 dark:hover:bg-goldneutral-200 dark:focus:bg-goldneutral-200"
               @click="selectLocation('county', county)">
               <FontAwesomeIcon :icon="faMagnifyingGlass" />
               Explore localities
@@ -98,10 +98,10 @@
             <router-link
               :to="`/search/results?location_id=${county.location_id}#county`"
               :class="[
-                'flex gap-2 items-center px-1 py-0.5 text-goldneutral-900 rounded-sm text-sm w-auto',
+                'flex gap-2 items-center px-1 py-0.5 rounded-sm text-sm w-auto',
                 county?.source_count > 0
-                  ? 'bg-brand-gold-100'
-                  : 'bg-goldneutral-100'
+                  ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
+                  : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
               ]"
               @click.stop>
               <span v-show="county">
@@ -132,10 +132,10 @@
           <router-link
             :to="`/search/results?location_id=${locality.location_id}#locality`"
             :class="[
-              'flex gap-2 items-center text-goldneutral-900 px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm',
+              'flex gap-2 items-center px-1 py-0.5 mt-1 mb-2 rounded-sm text-sm',
               locality?.source_count > 0
-                ? 'bg-brand-gold-100'
-                : 'bg-goldneutral-100'
+                ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
+                  : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
             ]"
             @click.stop>
             <span v-show="locality">
@@ -173,7 +173,7 @@
                 <a
                   v-if="source.source_url"
                   :href="source.source_url"
-                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100 dark:text-wineneutral-950 dark:bg-brand-gold-800"
                   target="_blank"
                   rel="noopener noreferrer"
                   @click.stop>
@@ -183,7 +183,7 @@
                 <router-link
                   v-if="source.source_id && source.source_id.toString().trim()"
                   :to="`/data-source/${source.source_id}`"
-                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100"
+                  class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
                   @click.stop>
                   Details
                   <FontAwesomeIcon :icon="faCircleInfo" />
@@ -197,10 +197,10 @@
 
     <!-- 3. Second action block (pinned to bottom) -->
     <div
-      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 flex h-auto">
+      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 flex h-auto">
       <router-link
         to="/data-request/create"
-        class="pdap-button-secondary bg-white block w-full text-center">
+        class="pdap-button-secondary block w-full text-center">
         Request missing data
       </router-link>
     </div>
