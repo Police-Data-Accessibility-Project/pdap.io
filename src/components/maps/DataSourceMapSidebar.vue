@@ -197,7 +197,7 @@
 
     <!-- 3. Second action block (pinned to bottom) -->
     <div
-      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 flex h-auto">
+      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 hidden md:flex h-auto">
       <router-link
         to="/data-request/create"
         class="pdap-button-secondary block w-full text-center">
