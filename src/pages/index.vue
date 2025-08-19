@@ -21,7 +21,7 @@
       class="px-2 md:px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
       <div class="block">
         <DataSourceMap
-          class="mb-6 w-full"
+          class="mb-6 w-full md:border-[1px] md:border-wineneutral-400 px-1 pt-2"
           v-bind="{
             ...(mapData?.data.locations ?? {}),
             federal: mapData?.data.sources ?? []
