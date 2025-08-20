@@ -337,6 +337,17 @@ watch(searchDataCombined, (newValue) => {
   searchStore.setMostRecentSearchIds(getAllIdsSearched(newValue));
 });
 
+// Sync activeLocationId when route.query.location_id changes
+watch(
+  () => route.query.location_id,
+  (newLocationId) => {
+    if (newLocationId !== searchStore.activeLocationId) {
+      searchStore.setActiveLocationId(newLocationId);
+    }
+  },
+  { immediate: true }
+);
+
 /* 
 watch(
   () => route,

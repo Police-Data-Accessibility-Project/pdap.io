@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useSearchStore } from '@/stores/search';
 import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
 import { Spinner } from 'pdap-design-system';
@@ -101,9 +101,7 @@ const props = defineProps({
 // Define emits
 const emit = defineEmits(['on-follow', 'on-select-location']);
 
-// Get route for query parameters
-const route = useRoute();
-const router = useRouter();
+const searchStore = useSearchStore();
 
 // Reactive state
 const mapContainer = ref(null);
@@ -172,7 +170,7 @@ const locations = computed(() => [
 const activeLocationAggregated = computed(() => {
   return {
     stack: activeLocationStack.value,
-    loc_id: route.query.location_id,
+    loc_id: searchStore.activeLocationId,
     locations
   };
 });
@@ -241,6 +239,13 @@ onMounted(() => {
   currentTheme.value = handleTheme();
   initMap();
 
+  // If activeLocationId exists on mount, zoom to it
+  if (searchStore.activeLocationId && svg.value) {
+    setTimeout(() => {
+      zoomToLocationById(searchStore.activeLocationId);
+    }, 250);
+  }
+
   // Listen for changes in color scheme preference
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   mediaQuery.addEventListener('change', () => {
@@ -288,8 +293,16 @@ watch(
   (newStack) => {
     if (newStack.length > 0) {
       const activeLocation = newStack[newStack.length - 1];
-      if (activeLocation) emit('on-select-location', activeLocation);
-      // updateOnParamChange(route.query.location_id, newStack);
+      if (activeLocation) {
+        emit('on-select-location', activeLocation);
+        // Set activeLocationId in store when location stack changes
+        if (activeLocation.data?.location_id) {
+          searchStore.setActiveLocationId(activeLocation.data.location_id);
+        }
+      }
+    } else {
+      // Clear activeLocationId when stack is empty
+      searchStore.setActiveLocationId(null);
     }
   },
   { deep: true }
@@ -377,9 +390,11 @@ function initMap() {
       if (
         event.transform.k < currentZoom.value &&
         event.transform.k < 1.125 &&
-        route.query.location_id
+        searchStore.activeLocationId
       ) {
         // We're zooming out (current zoom < previous zoom) and below threshold
+        // Clear activeLocationId from store
+        searchStore.setActiveLocationId(null);
         // Clear location_id from URL directly using window.history
         url.searchParams.delete('location_id');
         window.history.replaceState({}, '', url);
@@ -396,12 +411,12 @@ function initMap() {
         STATUSES
       });
 
-      if (
-        !newStack.length &&
-        activeLocationStack.value.length &&
-        route.query.location_id
-      )
-        router.replace({ query: {} });
+      // if (
+      //   !newStack.length &&
+      //   activeLocationStack.value.length &&
+      //   searchStore.activeLocationId
+      // )
+      //   router.replace({ query: {} });
       activeLocationStack.value = newStack;
 
       // Store current zoom transform
@@ -536,22 +551,6 @@ const mapDeps = computed(() => {
     },
 
     resetZoom: () => {
-      // Clear the location_id from URL
-      if (route.query.location_id) {
-        const query = { ...route.query };
-        delete query.location_id;
-
-        // Store current scroll position
-        const scrollPosition = window.pageYOffset;
-
-        // Update URL without the location_id
-        router.replace({
-          query,
-          // Preserve scroll position
-          state: { fromMap: true, scrollPosition }
-        });
-      }
-
       activeLocationStack.value = resetZoom({
         activeLocationStack: [...activeLocationStack.value],
         layers: layers.value,

@@ -87,9 +87,11 @@ import { getLocation } from '@/api/locations';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
+import { useSearchStore } from '@/stores/search';
 
 const route = useRoute();
 const router = useRouter();
+const searchStore = useSearchStore();
 
 const { buttonCopy } = defineProps({
   buttonCopy: String,
@@ -174,6 +176,7 @@ const isButtonDisabled = computed(() => {
     selectedRecord.value &&
     selectedRecordEqualsInitiallySearched &&
     route.path === '/';
+
   if (isSelectedAndDifferent || isSelectedAndSameAndHomePage) return false;
 
   if (
@@ -190,18 +193,21 @@ const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
-const queryKeyLocation = computed(() => [LOCATION, route.query.location_id]);
+const queryKeyLocation = computed(() => [
+  LOCATION,
+  searchStore.activeLocationId
+]);
 
 const { data: locationData, refetch } = useQuery({
   queryFn: async () => {
-    const id = route.query.location_id;
+    const id = route.query.location_id ?? searchStore.activeLocationId;
     if (!id) return null;
 
     const l = await getLocation(id);
     return l?.data;
   },
   queryKey: queryKeyLocation,
-  enabled: !!route.query.location_id,
+  enabled: !!searchStore.activeLocationId || !!route.query.location_id,
   staleTime: 60 * 60 * 1000, // 1 hour
   onError: (err) => {
     console.error('Error fetching location:', err);
@@ -247,6 +253,9 @@ watch(
   (data) => {
     // Set the state first
     items.value = [];
+    data = data?.location_id
+      ? data
+      : { ...data, location_id: searchStore.activeLocationId };
     selectedRecord.value = data;
     initiallySearchedRecord.value = data;
 
@@ -259,7 +268,7 @@ watch(
 );
 
 watch(
-  () => route.query.location_id,
+  () => searchStore.activeLocationId,
   (newLocationId) => {
     if (typeaheadRef.value && !newLocationId) {
       // Clear the typeahead when location_id is removed
@@ -317,7 +326,7 @@ function buildParams(values) {
 
   if (!selected) return obj;
 
-  obj.location_id = selected.location_id;
+  obj.location_id = selected.location_id ?? searchStore.activeLocationId;
 
   /* Handle form values from checkboxes */
   // Return obj without setting record_types if 'all-data-types' is true or no checkboxes checked
@@ -367,14 +376,6 @@ function onChange(values, event) {
 function onSelectRecord(item) {
   selectedRecord.value = item;
   items.value = [];
-  if (item?.location_id)
-    router.replace({
-      query: {
-        ...route.query,
-        location_id: item?.location_id ?? route.query.location_id
-      },
-      hash: route.hash
-    });
 }
 </script>
 
