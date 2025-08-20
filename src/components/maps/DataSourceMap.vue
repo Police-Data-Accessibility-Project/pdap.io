@@ -366,6 +366,10 @@ function initMap() {
     svg: svg.value,
     MIN_ZOOM,
     MAX_ZOOM,
+    filter: (event) => {
+      // Disable zoom on scroll/wheel and touch events
+      return !event.type.includes('wheel') && !event.type.includes('touch');
+    },
     onZoom: (event) => {
       const url = new URL(window.location.href);
 
