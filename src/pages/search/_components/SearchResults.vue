@@ -95,11 +95,13 @@ import { ALL_LOCATION_TYPES } from '@/util/constants';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, computed, watch, nextTick } from 'vue';
+import { normalizeLocaleForHash } from '../_util';
 import { TEST_IDS } from '../../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
+const router = useRouter();
 
 // constants
 const HEADING_TITLES = [
@@ -125,7 +127,18 @@ function handleScrollTo() {
     return;
 
   nextTick(() => {
-    const targetId = 'scroll-to-' + route.hash.replace('#', '');
+    const requestedLocale = route.hash.replace('#', '');
+    const normalizedLocale = normalizeLocaleForHash(requestedLocale, {
+      data: results.value
+    });
+
+    if (normalizedLocale && normalizedLocale !== requestedLocale) {
+      // If the requested locale has no results, redirect to the normalized one
+      router.replace({ ...route, hash: `#${normalizedLocale}` });
+      return;
+    }
+
+    const targetId = 'scroll-to-' + requestedLocale;
     const element = document.getElementById(targetId);
 
     if (element) {
