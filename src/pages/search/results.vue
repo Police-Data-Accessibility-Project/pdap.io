@@ -152,7 +152,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faUserPlus, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 // import _isUndefined from 'lodash/isUndefined';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
@@ -174,10 +174,10 @@ import {
 } from 'vue';
 import { ALL_LOCATION_TYPES } from '@/util/constants';
 import {
-  // normalizeLocaleForHash,
   getAnchorLinkText,
   getAllIdsSearched,
-  groupResultsByAgency
+  groupResultsByAgency,
+  getDefaultHashForResults
 } from './_util';
 import {
   getFullLocationText,
@@ -196,7 +196,7 @@ const searchStore = useSearchStore();
 
 const auth = useAuthStore();
 const route = useRoute();
-// const router = useRouter();
+const router = useRouter();
 const searchResultsRef = ref();
 const isSearchShown = ref(false);
 const dims = reactive({ width: window.innerWidth, height: window.innerHeight });
@@ -348,18 +348,19 @@ watch(
   { immediate: true }
 );
 
-/* 
+// Set default hash on initial page load if no hash is present
 watch(
-  () => route,
-  (newRoute) => {
-    if (newRoute.hash && !route.hash) {
-      const hash = `#${normalizeLocaleForHash(searchData.value.searched, searchData.value.response)}`;
-      router.replace({ ...route, hash });
+  () => searchDataCombined.value,
+  (newResults) => {
+    if (newResults && !route.hash) {
+      const defaultHash = getDefaultHashForResults(newResults);
+      if (defaultHash) {
+        router.replace({ ...route, hash: defaultHash });
+      }
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true }
 );
-*/
 
 // lifecycle methods
 onMounted(() => {
