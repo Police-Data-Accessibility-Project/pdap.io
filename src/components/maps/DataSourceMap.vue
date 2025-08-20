@@ -312,9 +312,10 @@ watch(
 watch(
   () => searchStore.activeLocationId,
   (newLocationId) => {
-    const topLocation = activeLocationStack.value[activeLocationStack.value.length - 1];
+    const topLocation =
+      activeLocationStack.value[activeLocationStack.value.length - 1];
     const topLocationId = topLocation?.data?.location_id;
-    
+
     if (newLocationId && newLocationId !== topLocationId) {
       // If activeLocationId doesn't match top of stack, rebuild it
       setTimeout(() => {
