@@ -308,6 +308,23 @@ watch(
   { deep: true }
 );
 
+// Watch for activeLocationId changes to update map stack
+watch(
+  () => searchStore.activeLocationId,
+  (newLocationId) => {
+    const topLocation = activeLocationStack.value[activeLocationStack.value.length - 1];
+    const topLocationId = topLocation?.data?.location_id;
+    
+    if (newLocationId && newLocationId !== topLocationId) {
+      // If activeLocationId doesn't match top of stack, rebuild it
+      setTimeout(() => {
+        zoomToLocationById(newLocationId);
+      }, 100);
+    }
+  },
+  { immediate: true }
+);
+
 function updateOnParamChange(loc_id, stack) {
   if (!loc_id || !stack) return;
 
