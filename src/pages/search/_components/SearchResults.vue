@@ -128,14 +128,16 @@ function handleScrollTo() {
 
   nextTick(() => {
     const requestedLocale = route.hash.replace('#', '');
-    const normalizedLocale = normalizeLocaleForHash(requestedLocale, { data: results.value });
-    
+    const normalizedLocale = normalizeLocaleForHash(requestedLocale, {
+      data: results.value
+    });
+
     if (normalizedLocale && normalizedLocale !== requestedLocale) {
       // If the requested locale has no results, redirect to the normalized one
       router.replace({ ...route, hash: `#${normalizedLocale}` });
       return;
     }
-    
+
     const targetId = 'scroll-to-' + requestedLocale;
     const element = document.getElementById(targetId);
 
