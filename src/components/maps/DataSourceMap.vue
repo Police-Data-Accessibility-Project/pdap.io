@@ -194,14 +194,14 @@ const layers = computed(() => ({
     status: Object.keys(countyDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   localities: {
     status: Object.keys(localitiesByCounty.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   states: {
@@ -210,20 +210,20 @@ const layers = computed(() => ({
       ? STATUSES.IDLE
       : STATUSES.LOADING,
     minZoom: 0,
-    maxZoom: 3
+    maxZoom: 2
   },
   stateBoundaries: {
     data: statesGeoJSON.value,
     status: Object.keys(stateDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   countyOverlay: {
     data: countiesGeoJSON.value,
     status: STATUSES.HIDDEN,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   stateOverlay: {
