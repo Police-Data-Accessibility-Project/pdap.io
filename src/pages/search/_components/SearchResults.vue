@@ -39,6 +39,7 @@
                 v-for="source in results[locale].sourcesByAgency[agency]"
                 :key="source.agency_name"
                 :to="`/data-source/${source.id}`"
+                :data-test="TEST_IDS.data_source_link"
                 class="agency-row group">
                 <!-- Source name and record type -->
                 <div :class="getClassNameFromHeadingType(HEADING_TITLES[0])">
@@ -94,10 +95,13 @@ import { ALL_LOCATION_TYPES } from '@/util/constants';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
-import { useRoute } from 'vue-router';
-import { ref, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch, nextTick } from 'vue';
+import { normalizeLocaleForHash } from '../_util';
+import { TEST_IDS } from '../../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
+const router = useRouter();
 
 // constants
 const HEADING_TITLES = [
@@ -107,23 +111,48 @@ const HEADING_TITLES = [
   'actions'
 ];
 
-const { results, isLoading } = defineProps({
+const props = defineProps({
   results: Object,
   isLoading: Boolean
 });
 
+const results = computed(() => props.results);
+const isLoading = computed(() => props.isLoading);
+
 const containerRef = ref();
+
 // Handle scroll to on route hash change
 function handleScrollTo() {
-  if (route.hash) {
-    const scrollToTop = document.getElementById(
-      'scroll-to-' + route.hash.replace('#', '')
-    )?.offsetTop;
+  if (!route.hash || !results.value || isLoading.value || !containerRef.value)
+    return;
 
-    containerRef.value?.scrollTo({ top: scrollToTop, behavior: 'smooth' });
-  }
+  nextTick(() => {
+    const requestedLocale = route.hash.replace('#', '');
+    const normalizedLocale = normalizeLocaleForHash(requestedLocale, {
+      data: results.value
+    });
+
+    if (normalizedLocale && normalizedLocale !== requestedLocale) {
+      // If the requested locale has no results, redirect to the normalized one
+      router.replace({ ...route, hash: `#${normalizedLocale}` });
+      return;
+    }
+
+    const targetId = 'scroll-to-' + requestedLocale;
+    const element = document.getElementById(targetId);
+
+    if (element) {
+      const scrollToTop = element.offsetTop;
+      containerRef.value.scrollTo({ top: scrollToTop, behavior: 'smooth' });
+    }
+  });
 }
-watchEffect(handleScrollTo);
+
+watch(
+  () => [results.value, isLoading.value, route.hash, containerRef.value],
+  handleScrollTo,
+  { immediate: true }
+);
 
 // TODO: try to handle this with IntersectionObserver instead (i.e. set hash when div intersects, so hash remains up-to-date)
 defineExpose({

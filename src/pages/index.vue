@@ -15,26 +15,27 @@
       </div>
     </section>
     <section class="col-span-full">
-      <h1>Find data about police systems</h1>
-      <SearchForm />
-      <div class="hidden md:block">
-        <h2>Explore the map</h2>
+      <h1>Explore data about police systems</h1>
+    </section>
+    <section
+      class="px-2 md:px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
+      <div class="block">
         <DataSourceMap
-          class="mb-6"
-          v-bind="{ ...mapData?.data }"
+          class="mb-6 w-full md:border-[1px] md:border-wineneutral-400 p-1"
+          v-bind="{
+            ...(mapData?.data.locations ?? {}),
+            federal: mapData?.data.sources ?? []
+          }"
           @on-follow="(location_id) => followMutation.mutate(location_id)"
           @on-select-location="
-            ({ data: { location_id } }) => {
-              // Update the URL without scrolling
-              if (route.query.location_id != location_id) {
-                router.replace({
-                  query: { ...route.query, location_id },
-                  state: { fromMap: true, scrollPosition: pageYOffset }
-                });
-              }
-            }
+            ({ data: { location_id } }) =>
+              search.setActiveLocationId(location_id)
           " />
       </div>
+    </section>
+    <section class="col-span-full">
+      <h2 class="hidden md:block">Search for something specific</h2>
+      <SearchForm />
     </section>
     <section class="col-span-full text-lg">
       <h2>About the data</h2>
@@ -468,7 +469,7 @@
           Respond to 100+ Data Requests to learn how people use public data, and
           where they get stuck
         </li>
-        <h3>Up next in 2025</h3>
+        <h3>2025</h3>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
@@ -534,13 +535,10 @@ import { formatDateForSearchResults } from '@/util/dateFormatters';
 import { getMinimalLocationText } from '@/util/locationFormatters';
 import { SEARCH_FOLLOWED, PROFILE } from '@/util/queryKeys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { useRoute, useRouter } from 'vue-router';
+import { useSearchStore } from '@/stores/search';
 
 const queryClient = useQueryClient();
-const route = useRoute();
-const router = useRouter();
-
-const pageYOffset = computed(() => window.pageYOffset);
+const search = useSearchStore();
 
 // Get recent sources
 const { data: recentSources } = useQuery({

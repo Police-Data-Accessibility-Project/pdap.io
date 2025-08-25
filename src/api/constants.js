@@ -53,6 +53,6 @@ export const ENDPOINTS = {
     METRICS: 'metrics'
   },
   MAP: {
-    LOCATIONS: 'locations'
+    DATA: 'data'
   }
 };

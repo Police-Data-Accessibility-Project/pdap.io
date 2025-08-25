@@ -13,7 +13,8 @@ export function setupZoom({
   MAX_ZOOM,
   onZoom,
   onZoomStart,
-  onZoomEnd
+  onZoomEnd,
+  filter
 }) {
   // Create zoom behavior
   const zoom = d3
@@ -22,6 +23,11 @@ export function setupZoom({
     .on('start', onZoomStart)
     .on('zoom', onZoom)
     .on('end', onZoomEnd);
+
+  // Apply filter if provided
+  if (filter) {
+    zoom.filter(filter);
+  }
 
   // Apply zoom to SVG
   svg.call(zoom);

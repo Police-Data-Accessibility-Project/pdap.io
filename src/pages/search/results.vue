@@ -6,6 +6,7 @@
       class="w-full row-start-0 row-end-1 xl:col-start-2 xl:col-end-3 relative">
       <Button
         class="mb-2 w-full xl:hidden"
+        :data-test="TEST_IDS.search_toggle"
         intent="primary"
         @click="isSearchShown = !isSearchShown">
         {{ isSearchShown ? 'Hide search' : 'Show search' }}
@@ -173,10 +174,10 @@ import {
 } from 'vue';
 import { ALL_LOCATION_TYPES } from '@/util/constants';
 import {
-  normalizeLocaleForHash,
   getAnchorLinkText,
   getAllIdsSearched,
-  groupResultsByAgency
+  groupResultsByAgency,
+  getDefaultHashForResults
 } from './_util';
 import {
   getFullLocationText,
@@ -189,6 +190,7 @@ import {
   SEARCH_FEDERAL,
   PROFILE
 } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const searchStore = useSearchStore();
 
@@ -335,15 +337,29 @@ watch(searchDataCombined, (newValue) => {
   searchStore.setMostRecentSearchIds(getAllIdsSearched(newValue));
 });
 
+// Sync activeLocationId when route.query.location_id changes
 watch(
-  () => route,
-  (newRoute) => {
-    if (newRoute.hash && !route.hash) {
-      const hash = `#${normalizeLocaleForHash(searchData.value.searched, searchData.value.response)}`;
-      router.replace({ ...route, hash });
+  () => route.query.location_id,
+  (newLocationId) => {
+    if (newLocationId !== searchStore.activeLocationId) {
+      searchStore.setActiveLocationId(newLocationId);
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true }
+);
+
+// Set default hash on initial page load if no hash is present
+watch(
+  () => searchDataCombined.value,
+  (newResults) => {
+    if (newResults && !route.hash) {
+      const defaultHash = getDefaultHashForResults(newResults);
+      if (defaultHash) {
+        router.replace({ ...route, hash: defaultHash });
+      }
+    }
+  },
+  { immediate: true }
 );
 
 // lifecycle methods

@@ -22,21 +22,28 @@
         v-else
         :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
-        <template v-if="!isLoading && error">
+        <template v-if="(!error && !dataSource) || error?.status === 404">
+          <h1>Data source not found</h1>
+          <p class="w-full max-w-full">
+            We don't have a record of that source.
+          </p>
+          <router-link to="/" class="pdap-button-primary inline-block">
+            Click here to return to search
+          </router-link>
+        </template>
+
+        <template v-else-if="error">
           <h1>An error occurred loading the data source</h1>
           <p>Please refresh the page and try again.</p>
         </template>
 
-        <!-- TODO: not found UI - do we want to send the user to search or something? -->
-        <template v-else-if="!error && !dataSource">
-          <h1>Data source not found</h1>
-          <p>We don't have a record of that source.</p>
-        </template>
         <!-- For each section, render details -->
         <template v-else>
           <!-- Heading and related material -->
           <hgroup>
-            <h1>{{ dataSource.name }}</h1>
+            <h1 :data-test="TEST_IDS.data_source_title">
+              {{ dataSource.name }}
+            </h1>
             <div class="flex gap-2 items-center">
               <p v-if="dataSource.record_type_name" class="pill w-max">
                 <RecordTypeIcon :record-type="dataSource.record_type_name" />
@@ -59,6 +66,7 @@
               <h4>Description</h4>
               <p
                 ref="descriptionRef"
+                :data-test="TEST_IDS.data_source_description"
                 class="description"
                 :class="{
                   'truncate-2': !isDescriptionExpanded
@@ -82,11 +90,11 @@
               <!-- 👤 Single agency: original layout -->
               <template v-if="dataSource.agencies.length === 1">
                 <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
-                  <div>
+                  <div :data-test="TEST_IDS.agency_info">
                     <h4 class="m-0">Agency</h4>
                     <p>{{ dataSource.agencies[0].submitted_name }}</p>
                   </div>
-                  <div>
+                  <div :data-test="TEST_IDS.county_state">
                     <h4 class="m-0">County, State</h4>
                     <p>
                       {{
@@ -101,7 +109,7 @@
                       {{ dataSource.agencies[0].state_iso || '' }}
                     </p>
                   </div>
-                  <div>
+                  <div :data-test="TEST_IDS.agency_type">
                     <h4 class="m-0">Agency Type</h4>
                     <p class="capitalize">
                       {{ dataSource.agencies[0].agency_type }}
@@ -157,6 +165,7 @@
             </div>
             <a
               :href="dataSource.source_url"
+              :data-test="TEST_IDS.data_source_url"
               class="pdap-button-primary py-3 px-4 h-max mr-4"
               target="_blank"
               rel="noreferrer">
@@ -231,6 +240,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { DATA_SOURCE } from '@/util/queryKeys';
 import { injectDerivedAgencyInfo } from '@/util/dataFormatter';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();
@@ -252,11 +262,12 @@ const {
     const rawResult = await getDataSource(route.params.id); // returns { data: { data: ... } }
     return injectDerivedAgencyInfo(rawResult);
   },
-  staleTime: 5 * 60 * 1000 // 5 minutes,
+  staleTime: 5 * 60 * 1000, // 5 minutes,
+  retry: 2
 });
 
 const dataSource = computed(() => {
-  return sourceData.value.data.data;
+  return sourceData.value?.data.data;
 });
 
 const isLoading = computed(

@@ -1,6 +1,10 @@
 <template>
-  <div class="relative w-full h-auto">
-    <div id="map-container" ref="mapContainer" />
+  <div class="relative h-auto flex flex-col lg:block">
+    <div
+      id="map-container"
+      ref="mapContainer"
+      class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full max-h-[80vh] lg:max-h-none overflow-hidden"
+      :data-test="TEST_IDS.data_source_map" />
     <!-- <span class="loading"></span> -->
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
@@ -12,6 +16,7 @@
       :counties="props.counties"
       :localities="props.localities"
       :states="props.states"
+      :federal="props.federal"
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
       @on-reset-zoom="() => mapDeps.resetZoom()"
@@ -21,11 +26,12 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useSearchStore } from '@/stores/search';
 import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
 import { Spinner } from 'pdap-design-system';
 import MapSidebar from './DataSourceMapSidebar.vue';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 import { FILL_COLORS, handleTheme } from './utils/theme';
 import {
@@ -84,15 +90,18 @@ const props = defineProps({
     type: Array,
     required: false,
     default: undefined
+  },
+  federal: {
+    type: Array,
+    required: false,
+    default: undefined
   }
 });
 
 // Define emits
 const emit = defineEmits(['on-follow', 'on-select-location']);
 
-// Get route for query parameters
-const route = useRoute();
-const router = useRouter();
+const searchStore = useSearchStore();
 
 // Reactive state
 const mapContainer = ref(null);
@@ -161,7 +170,7 @@ const locations = computed(() => [
 const activeLocationAggregated = computed(() => {
   return {
     stack: activeLocationStack.value,
-    loc_id: route.query.location_id,
+    loc_id: searchStore.activeLocationId,
     locations
   };
 });
@@ -185,14 +194,14 @@ const layers = computed(() => ({
     status: Object.keys(countyDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   localities: {
     status: Object.keys(localitiesByCounty.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   states: {
@@ -201,20 +210,20 @@ const layers = computed(() => ({
       ? STATUSES.IDLE
       : STATUSES.LOADING,
     minZoom: 0,
-    maxZoom: 3
+    maxZoom: 2
   },
   stateBoundaries: {
     data: statesGeoJSON.value,
     status: Object.keys(stateDataMap.value).length
       ? STATUSES.IDLE
       : STATUSES.LOADING,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   countyOverlay: {
     data: countiesGeoJSON.value,
     status: STATUSES.HIDDEN,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: Infinity
   },
   stateOverlay: {
@@ -229,6 +238,13 @@ const layers = computed(() => ({
 onMounted(() => {
   currentTheme.value = handleTheme();
   initMap();
+
+  // If activeLocationId exists on mount, zoom to it
+  if (searchStore.activeLocationId && svg.value) {
+    setTimeout(() => {
+      zoomToLocationById(searchStore.activeLocationId);
+    }, 250);
+  }
 
   // Listen for changes in color scheme preference
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -277,11 +293,37 @@ watch(
   (newStack) => {
     if (newStack.length > 0) {
       const activeLocation = newStack[newStack.length - 1];
-      if (activeLocation) emit('on-select-location', activeLocation);
-      // updateOnParamChange(route.query.location_id, newStack);
+      if (activeLocation) {
+        emit('on-select-location', activeLocation);
+        // Set activeLocationId in store when location stack changes
+        if (activeLocation.data?.location_id) {
+          searchStore.setActiveLocationId(activeLocation.data.location_id);
+        }
+      }
+    } else {
+      // Clear activeLocationId when stack is empty
+      searchStore.setActiveLocationId(null);
     }
   },
   { deep: true }
+);
+
+// Watch for activeLocationId changes to update map stack
+watch(
+  () => searchStore.activeLocationId,
+  (newLocationId) => {
+    const topLocation =
+      activeLocationStack.value[activeLocationStack.value.length - 1];
+    const topLocationId = topLocation?.data?.location_id;
+
+    if (newLocationId && newLocationId !== topLocationId) {
+      // If activeLocationId doesn't match top of stack, rebuild it
+      setTimeout(() => {
+        zoomToLocationById(newLocationId);
+      }, 100);
+    }
+  },
+  { immediate: true }
 );
 
 function updateOnParamChange(loc_id, stack) {
@@ -355,6 +397,10 @@ function initMap() {
     svg: svg.value,
     MIN_ZOOM,
     MAX_ZOOM,
+    filter: (event) => {
+      // Disable zoom on scroll/wheel and touch events
+      return !event.type.includes('wheel') && !event.type.includes('touch');
+    },
     onZoom: (event) => {
       const url = new URL(window.location.href);
 
@@ -362,9 +408,11 @@ function initMap() {
       if (
         event.transform.k < currentZoom.value &&
         event.transform.k < 1.125 &&
-        route.query.location_id
+        searchStore.activeLocationId
       ) {
         // We're zooming out (current zoom < previous zoom) and below threshold
+        // Clear activeLocationId from store
+        searchStore.setActiveLocationId(null);
         // Clear location_id from URL directly using window.history
         url.searchParams.delete('location_id');
         window.history.replaceState({}, '', url);
@@ -381,12 +429,12 @@ function initMap() {
         STATUSES
       });
 
-      if (
-        !newStack.length &&
-        activeLocationStack.value.length &&
-        route.query.location_id
-      )
-        router.replace({ query: {} });
+      // if (
+      //   !newStack.length &&
+      //   activeLocationStack.value.length &&
+      //   searchStore.activeLocationId
+      // )
+      //   router.replace({ query: {} });
       activeLocationStack.value = newStack;
 
       // Store current zoom transform
@@ -521,22 +569,6 @@ const mapDeps = computed(() => {
     },
 
     resetZoom: () => {
-      // Clear the location_id from URL
-      if (route.query.location_id) {
-        const query = { ...route.query };
-        delete query.location_id;
-
-        // Store current scroll position
-        const scrollPosition = window.pageYOffset;
-
-        // Update URL without the location_id
-        router.replace({
-          query,
-          // Preserve scroll position
-          state: { fromMap: true, scrollPosition }
-        });
-      }
-
       activeLocationStack.value = resetZoom({
         activeLocationStack: [...activeLocationStack.value],
         layers: layers.value,
@@ -708,8 +740,56 @@ function zoomToLocationById(locationId) {
       fips: location.fips // Include fips for county
     };
 
-    // Clear the stack and add the new location
-    activeLocationStack.value = [newLocation];
+    // Build proper location hierarchy
+    const stack = [];
+
+    if (locationType === 'locality' && location.county_fips) {
+      // Find the county and state for this locality
+      const county = props.counties.find(
+        (c) => c.fips === location.county_fips
+      );
+
+      if (county) {
+        // Find the state for this county
+        const state = props.states.find(
+          (s) => s.state_iso === county.state_iso
+        );
+
+        if (state) {
+          stack.push({
+            type: 'state',
+            data: state,
+            name: state.name
+          });
+        }
+
+        stack.push({
+          type: 'county',
+          data: county,
+          name: county.name,
+          fips: county.fips
+        });
+      }
+    } else if (locationType === 'county') {
+      // Find the state for this county
+      const state = props.states.find(
+        (s) => s.state_iso === location.state_iso
+      );
+
+      if (state) {
+        stack.push({
+          type: 'state',
+          data: state,
+          name: state.name
+        });
+      }
+    }
+
+    // Add the target location
+    stack.push(newLocation);
+
+    // Set the complete stack
+    activeLocationStack.value = stack;
 
     // Use setTimeout to ensure the DOM is ready
     setTimeout(() => {
@@ -733,7 +813,7 @@ function zoomToLocationById(locationId) {
         }
       }
 
-      // Otherwize zoom to location
+      // Otherwise zoom to location
       handleZoomToLocation(newLocation);
     }, 50);
   }
