@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
 import { useSearchStore } from '@/stores/search';
 import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
@@ -167,14 +167,6 @@ const locations = computed(() => [
   ...(props.localities ?? [])
 ]);
 
-const activeLocationAggregated = computed(() => {
-  return {
-    stack: activeLocationStack.value,
-    loc_id: searchStore.activeLocationId,
-    locations
-  };
-});
-
 // Convert TopoJSON to GeoJSON
 const countiesGeoJSON = computed(() => {
   // Get the first object key which should be the counties layer
@@ -254,30 +246,6 @@ onMounted(() => {
   });
 });
 
-watch(
-  () => activeLocationAggregated.value,
-  (locAgg, prevLocAgg) => {
-    const priority = ['state', 'county', 'locality'];
-    if (!locAgg.locations.value.length) return;
-    if (!locAgg?.loc_id && prevLocAgg?.loc_id && !locAgg?.stack.length) return;
-    const activeLocation = locAgg?.stack[locAgg?.stack.length - 1];
-    if (locAgg?.loc_id === prevLocAgg?.loc_id && activeLocation) return;
-
-    if (activeLocation?.data?.location_id === locAgg.loc_id) return;
-    const oldActiveLocation = prevLocAgg?.stack[prevLocAgg?.stack.length - 1];
-
-    if (
-      priority.indexOf(activeLocation?.type) <
-      priority.indexOf(oldActiveLocation?.type)
-    ) {
-      return;
-    }
-
-    updateOnParamChange(locAgg.loc_id, locAgg.stack);
-  },
-  { immediate: true, deep: true }
-);
-
 // Watch for changes in counties data
 watch(
   () => props.states,
@@ -326,24 +294,6 @@ watch(
   { immediate: true }
 );
 
-function updateOnParamChange(loc_id, stack) {
-  if (!loc_id || !stack) return;
-
-  const activeLoc = stack[stack.length - 1];
-  const activeLocID = activeLoc?.data?.location_id;
-  if (activeLocID === loc_id) return;
-
-  setTimeout(() => {
-    if (svg.value && loc_id) zoomToLocationById(loc_id);
-
-    updateDynamicLayers({
-      renderStateOverlay,
-      renderCountyOverlay,
-      renderLocalityMarkers,
-      deps: mapDeps.value
-    });
-  }, 250);
-}
 // Initialize the map
 function initMap() {
   const container = mapContainer.value;
@@ -429,12 +379,6 @@ function initMap() {
         STATUSES
       });
 
-      // if (
-      //   !newStack.length &&
-      //   activeLocationStack.value.length &&
-      //   searchStore.activeLocationId
-      // )
-      //   router.replace({ query: {} });
       activeLocationStack.value = newStack;
 
       // Store current zoom transform
@@ -649,6 +593,15 @@ function handleFollow(locationId) {
 // Update active location stack from sidebar
 function updateActiveLocationStack(newStack) {
   activeLocationStack.value = newStack;
+  // Use nextTick to ensure mapDeps has updated with new stack
+  nextTick(() => {
+    updateDynamicLayers({
+      renderStateOverlay,
+      renderCountyOverlay,
+      renderLocalityMarkers,
+      deps: mapDeps.value
+    });
+  });
 }
 
 // Handle zoom to location from sidebar
