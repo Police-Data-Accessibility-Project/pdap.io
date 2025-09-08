@@ -8,7 +8,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? '100%' : '50%',
+  workers: process.env.CI ? '50%' : '50%',
   reporter: 'html',
   testIgnore: process.env.E2E_TESTING_ENV === 'production' ? '**/sign-up.spec.js' : undefined, // exclude sign-up test from prod for now until we can decide on a strategy for cleaning up users created by the test
   use: {
