@@ -8,7 +8,8 @@
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
     <section class="col-span-full">
       <div
-        class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300">
+        class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300"
+      >
         <strong>Announcement:</strong>
         We are open for public signups!
         <router-link :to="'/sign-up'">Create a free account here.</router-link>
@@ -18,7 +19,8 @@
       <h1>Explore data about police systems</h1>
     </section>
     <section
-      class="px-2 md:px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]">
+      class="px-2 md:px-4 col-span-full relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-[calc(100vw-0.5rem)]"
+    >
       <div class="block">
         <DataSourceMap
           class="mb-6 w-full md:border-[1px] md:border-wineneutral-400 p-1"
@@ -30,7 +32,8 @@
           @on-select-location="
             ({ data: { location_id } }) =>
               search.setActiveLocationId(location_id)
-          " />
+          "
+        />
       </div>
     </section>
     <section class="col-span-full">
@@ -42,7 +45,8 @@
       <p>
         Each
         <a
-          href="https://docs.pdap.io/about/terms-and-definitions/what-is-a-data-source">
+          href="https://docs.pdap.io/about/terms-and-definitions/what-is-a-data-source"
+        >
           "Data Source"
         </a>
         is a place on the internet where public records can be found about a
@@ -75,13 +79,15 @@
         <div
           v-for="source in formattedSources"
           :key="source.id"
-          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2"
+        >
           <p>
             <strong>{{ source.name }}&nbsp;</strong>
             <a
               :href="source.sourceUrl"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+            >
               <FontAwesomeIcon :icon="faExternalLink" />
             </a>
           </p>
@@ -95,14 +101,17 @@
       </div>
     </section>
     <section
-      class="pdap-grid-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100">
+      class="pdap-grid-container col-span-full pt-6 mt-8 border-t-[3px] border-wineneutral-100"
+    >
       <h1 class="col-span-full pt-8 mb-0">Programs</h1>
       <div
-        class="col-span-full md:col-span-1 flex-column content-end justify-stretch">
+        class="col-span-full md:col-span-1 flex-column content-end justify-stretch"
+      >
         <img
           src="/assets/mapping.svg"
           class="w-3/12 place-self-center md:block md:w-10/12"
-          alt="A map scattered with icons representing different kinds of data." />
+          alt="A map scattered with icons representing different kinds of data."
+        />
         <p class="font-semibold lg:text-center">
           Finding and cataloguing sources of data
         </p>
@@ -111,7 +120,8 @@
         <img
           src="/assets/searching.svg"
           class="w-3/12 place-self-center md:block md:pb-6 md:w-11/12"
-          alt="An eye looking through a magnifying glass at a police website." />
+          alt="An eye looking through a magnifying glass at a police website."
+        />
         <p class="font-semibold lg:text-center">
           Project-based scraping and records requests
         </p>
@@ -120,7 +130,8 @@
         <img
           src="/assets/sharing.svg"
           class="w-3/12 place-self-center md:block md:w-9/12"
-          alt="A piece of police data being distributed to several people." />
+          alt="A piece of police data being distributed to several people."
+        />
         <p class="font-semibold lg:text-center">
           Connecting people to data and each other
         </p>
@@ -147,18 +158,21 @@
         </p>
         <router-link
           class="pdap-button-primary mt-4"
-          :to="'/data-request/create'">
+          :to="'/data-request/create'"
+        >
           Open a Data Request
         </router-link>
         <router-link
           class="pdap-button-secondary sm:ml-4 mt-4"
-          :to="'/sign-up'">
+          :to="'/sign-up'"
+        >
           Sign up for an account
         </router-link>
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100"
+    >
       <h1>Take action</h1>
       <p>
         This work is multidisciplinary and beginner-friendly. No matter what
@@ -177,7 +191,8 @@
       <h2>
         <FontAwesomeIcon
           :icon="faMagnifyingGlassLocation"
-          class="text-brand-wine-300" />
+          class="text-brand-wine-300"
+        />
         Locate sources
       </h2>
       <p>
@@ -188,12 +203,14 @@
         <a
           class="mt-2 pdap-button-primary"
           href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
-          target="blank">
+          target="blank"
+        >
           Help add Data Sources to our database
         </a>
         <router-link
           class="pdap-button-secondary mt-2 ml-2"
-          :to="'/data-source/create'">
+          :to="'/data-source/create'"
+        >
           Submit a source you found
         </router-link>
       </div>
@@ -227,13 +244,15 @@
       <a
         class="pdap-button-primary mt-2"
         href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
-        target="blank">
+        target="blank"
+      >
         Volunteer for data requests
       </a>
       <h2 class="pt-4 col-span-full">
         <FontAwesomeIcon
           :icon="faCodePullRequest"
-          class="text-brand-wine-300" />
+          class="text-brand-wine-300"
+        />
         Contribute code
       </h2>
       <p class="col-span-full">
@@ -243,12 +262,14 @@
       </p>
       <div
         v-if="!githubDataLoading && githubData?.goodFirstIssues.length"
-        class="grid grid-cols-3 mt-6 gap-4 text-lg">
+        class="grid grid-cols-3 mt-6 gap-4 text-lg"
+      >
         <h3 class="col-span-3">Good first issues</h3>
         <div
           v-for="(issue, index) in githubData.goodFirstIssues"
           :key="index"
-          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2">
+          class="col-span-full md:col-span-1 flex-column outline outline-2 outline-goldneutral-200 px-4 py-2"
+        >
           <p>
             <strong>{{ issue.title }}&nbsp;</strong>
             <a :href="issue.url" target="_blank" rel="noopener noreferrer">
@@ -259,13 +280,15 @@
         <a
           class="pdap-button-primary mt-2 col-span-full"
           href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/25/views/1"
-          target="blank">
+          target="blank"
+        >
           View more Good First Issues
         </a>
       </div>
     </section>
     <section
-      class="pdap-flex-container col-span-full text-lg pt-6 mt-8 border-t-[3px] border-wineneutral-100">
+      class="pdap-flex-container col-span-full text-lg pt-6 mt-8 border-t-[3px] border-wineneutral-100"
+    >
       <h1>Praise for our work</h1>
       <div class="p-4 my-2 mx-0 border-2 border-solid border-goldneutral-200">
         <p>
@@ -301,7 +324,8 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-grid-container grid-cols-2 pt-6 mt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-grid-container grid-cols-2 pt-6 mt-8 border-t-[3px] border-wineneutral-100"
+    >
       <div class="col-span-full">
         <h1>How our data is used</h1>
         <p>
@@ -381,7 +405,8 @@
         <p>
           It led to
           <a
-            href="https://www.publicsource.org/pittsburgh-police-traffic-stop-disparity-accountability-race/">
+            href="https://www.publicsource.org/pittsburgh-police-traffic-stop-disparity-accountability-race/"
+          >
             this article in Public Source
           </a>
           , among other research.
@@ -406,12 +431,14 @@
           We made a web scraper (
           <a
             href="https://docs.pdap.io/activities/terms-and-definitions/terminology"
-            target="blank">
+            target="blank"
+          >
             <i class="fa fa-question-circle" />
           </a>
           ) to archive the data every day, automatically, for free.
           <a
-            href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo/tree/main">
+            href="https://github.com/Police-Data-Accessibility-Project/github-actions-demo/tree/main"
+          >
             We made it open-source
           </a>
           , so it can be reused by anyone for future zero-budget research
@@ -420,7 +447,8 @@
       </div>
     </section>
     <section
-      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100">
+      class="col-span-full pdap-flex-container pt-6 mt-8 border-t-[3px] border-wineneutral-100"
+    >
       <h1>
         <FontAwesomeIcon :icon="faRoute" class="text-brand-wine-300" />
         Software roadmap
@@ -446,26 +474,30 @@
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Develop a database for tracking sources of police data
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Seed the database with volunteer-documented sources and existing
           collections
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Build an app for searching our database
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Respond to 100+ Data Requests to learn how people use public data, and
           where they get stuck
         </li>
@@ -473,19 +505,22 @@
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Add accounts & login, and the ability to “follow” any search location
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faCircleCheck"
-            class="pt-1.5 pr-3 text-brand-wine-500" />
+            class="pt-1.5 pr-3 text-brand-wine-500"
+          />
           Use and refine our toolset for locating and documenting data sources
         </li>
         <li class="flex flex-row pt-2">
           <FontAwesomeIcon
             :icon="faArrowUpRightDots"
-            class="pt-1.5 pr-3 text-brand-wine-100" />
+            class="pt-1.5 pr-3 text-brand-wine-100"
+          />
           <span>
             Grow our database, prioritizing locations followed by our users. To
             participate,

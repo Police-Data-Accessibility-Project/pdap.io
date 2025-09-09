@@ -1,7 +1,8 @@
 <template>
   <div class="px-4 mb-4 border-wineneutral-300 bg-wineneutral-50 border-2">
     <div
-      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
+      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0"
+    >
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
@@ -12,7 +13,8 @@
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
         @select-item="onSelectRecord"
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Pass label as slot to typeahead -->
         <template #label>
           <h4 class="uppercase">Search location</h4>
@@ -45,13 +47,15 @@
       :data-test="TEST_IDS.search_form"
       class="grid grid-cols-1 auto-rows-auto max-w-full gap-0.5 @md:gap-1 @md:grid-cols-2 @lg:grid-cols-3"
       @change="onChange"
-      @submit="submit">
+      @submit="submit"
+    >
       <InputCheckbox
         v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
         :id="id"
         :key="name"
         :default-checked="defaultChecked"
-        :name="name">
+        :name="name"
+      >
         <template #label>
           <RecordTypeIcon :record-type="label" />
           {{ label }}
@@ -63,7 +67,8 @@
         intent="primary"
         type="submit"
         :data-test="TEST_IDS.search_submit"
-        class="mt-4 max-w-full col-span-full">
+        class="mt-4 max-w-full col-span-full"
+      >
         {{ buttonCopy ?? 'Search' }}
       </Button>
     </FormV2>

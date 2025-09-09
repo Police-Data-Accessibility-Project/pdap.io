@@ -19,13 +19,15 @@
       :schema="SCHEMA"
       data-test="data-request-create-form"
       @error="error"
-      @submit="submit">
+      @submit="submit"
+    >
       <InputText
         :id="'input-' + INPUT_NAMES.title"
         class="md:col-span-2"
         :name="INPUT_NAMES.title"
         placeholder="Briefly describe the general purpose or topic."
-        data-test="data-request-create-title-input">
+        data-test="data-request-create-title-input"
+      >
         <template #label>
           <h4>Request title</h4>
         </template>
@@ -47,7 +49,8 @@
               if (indexToRemove > -1)
                 selectedLocations.splice(indexToRemove, 1);
             }
-          " />
+          "
+        />
       </TransitionGroup>
 
       <Typeahead
@@ -73,7 +76,8 @@
             }
           }
         "
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
           <!-- eslint-disable-next-line vue/no-v-html -->
@@ -100,7 +104,8 @@
         placeholder="What dates or years should the data cover?"
         year-picker
         range
-        position="left">
+        position="left"
+      >
         <template #label>
           <h4>Coverage range</h4>
         </template>
@@ -111,7 +116,8 @@
         class="md:col-span-2"
         :name="INPUT_NAMES.target"
         :options="SELECT_OPTS"
-        placeholder="When would you like to see this request filled?">
+        placeholder="When would you like to see this request filled?"
+      >
         <template #label>
           <h4>Target date</h4>
         </template>
@@ -122,7 +128,8 @@
         class="md:col-start-1 md:col-end-2"
         :name="INPUT_NAMES.notes"
         placeholder="What are you trying to learn? Is there anything you've already tried?"
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>Request notes</h4>
         </template>
@@ -133,21 +140,24 @@
         class="md:col-start-2 md:col-end-3"
         :name="INPUT_NAMES.requirements"
         placeholder="Details the data must have, like 'case numbers' or 'incident location'."
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>Data requirements</h4>
         </template>
       </InputTextArea>
 
       <div
-        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
+        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
+      >
         <Button
           :disabled="createRequestMutation.isLoading"
           :is-loading="createRequestMutation.isLoading"
           class="min-w-52"
           intent="primary"
           type="submit"
-          data-test="data-request-create-submit">
+          data-test="data-request-create-submit"
+        >
           Submit request
         </Button>
         <Button
@@ -155,7 +165,8 @@
           intent="secondary"
           type="button"
           data-test="data-request-create-clear"
-          @click="clear">
+          @click="clear"
+        >
           Clear
         </Button>
       </div>

@@ -6,7 +6,8 @@
       <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
       <div
         v-if="githubAuthIsLoading"
-        class="flex items-center justify-center h-full w-full">
+        class="flex items-center justify-center h-full w-full"
+      >
         <Spinner :show="githubAuthIsLoading" text="Logging in" />
       </div>
 
@@ -29,7 +30,8 @@
             class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
             intent="tertiary"
             :disabled="githubAuthData?.userExists"
-            @click="async () => await beginOAuthLogin('/sign-up')">
+            @click="async () => await beginOAuthLogin('/sign-up')"
+          >
             <FontAwesomeIcon :icon="faGithub" />
             Sign up with GitHub
           </Button>
@@ -45,7 +47,8 @@
           :schema="VALIDATION_SCHEMA"
           @change="onChange"
           @submit="completePasswordAuth"
-          @input="onInput">
+          @input="onInput"
+        >
           <InputText
             id="email"
             autocomplete="email"
@@ -53,12 +56,14 @@
             name="email"
             label="Email"
             type="text"
-            placeholder="Your email address" />
+            placeholder="Your email address"
+          />
 
           <InputPassword
             v-for="input of PASSWORD_INPUTS"
             v-bind="{ ...input }"
-            :key="input.name" />
+            :key="input.name"
+          />
 
           <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
@@ -67,24 +72,28 @@
             :disabled="passwordAuthIsLoading"
             :is-loading="passwordAuthIsLoading"
             type="submit"
-            :data-test="TEST_IDS.sign_up_submit">
+            :data-test="TEST_IDS.sign_up_submit"
+          >
             Create Account
           </Button>
         </FormV2>
         <div
-          class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full">
+          class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full"
+        >
           <p class="w-full max-w-[unset]">Already have an account?</p>
 
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
             :data-test="TEST_IDS.sign_in_link"
-            to="/sign-in">
+            to="/sign-in"
+          >
             Sign in
           </RouterLink>
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
             data-test="reset-link"
-            to="/request-reset-password">
+            to="/request-reset-password"
+          >
             Reset Password
           </RouterLink>
         </div>

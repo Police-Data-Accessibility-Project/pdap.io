@@ -6,22 +6,26 @@
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
       :set-nav-is="(val) => (navIs = val)"
-      class="text-xl font-semibold" />
+      class="text-xl font-semibold"
+    />
 
     <transition mode="out-in" :name="navIs">
       <div
         v-if="isLoading"
-        class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      >
         <Spinner
           :show="isLoading"
           :size="64"
-          text="Fetching data source results..." />
+          text="Fetching data source results..."
+        />
       </div>
 
       <div
         v-else
         :key="route.params.id"
-        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
+        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative"
+      >
         <template v-if="(!error && !dataSource) || error?.status === 404">
           <h1>Data source not found</h1>
           <p class="w-full max-w-full">
@@ -52,7 +56,8 @@
               <p
                 v-for="jurisdiction_type in dataSource.unique_jurisdictions"
                 :key="jurisdiction_type"
-                class="pill">
+                class="pill"
+              >
                 Jurisdiction: {{ jurisdiction_type }}
               </p>
               <template v-if="Array.isArray(dataSource.tags)">
@@ -70,13 +75,15 @@
                 class="description"
                 :class="{
                   'truncate-2': !isDescriptionExpanded
-                }">
+                }"
+              >
                 {{ dataSource.description }}
               </p>
               <Button
                 v-if="showExpandDescriptionButton"
                 intent="tertiary"
-                @click="isDescriptionExpanded = !isDescriptionExpanded">
+                @click="isDescriptionExpanded = !isDescriptionExpanded"
+              >
                 {{ isDescriptionExpanded ? 'See less' : 'See more' }}
               </Button>
             </div>
@@ -86,7 +93,8 @@
           <div class="flex-[0_0_100%] flex flex-col w-full">
             <div
               ref="agenciesRef"
-              class="w-full self-start justify-self-start mb-4">
+              class="w-full self-start justify-self-start mb-4"
+            >
               <!-- 👤 Single agency: original layout -->
               <template v-if="dataSource.agencies.length === 1">
                 <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
@@ -135,7 +143,8 @@
                       <tr
                         v-for="agency in dataSource.agencies"
                         :key="agency.submitted_name"
-                        class="">
+                        class=""
+                      >
                         <td class="w-1/3">{{ agency.submitted_name }}</td>
                         <td class="w-1/3">
                           {{
@@ -157,7 +166,8 @@
                   <p
                     v-for="agency_type in dataSource.unique_agency_type"
                     :key="agency_type"
-                    class="capitalize">
+                    class="capitalize"
+                  >
                     {{ agency_type }}
                   </p>
                 </div>
@@ -168,7 +178,8 @@
               :data-test="TEST_IDS.data_source_url"
               class="pdap-button-primary py-3 px-4 h-max mr-4"
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               Visit Data Source
               <FontAwesomeIcon :icon="faLink" />
             </a>
@@ -178,12 +189,14 @@
           <div
             v-for="section in DATA_SOURCE_UI_SHAPE"
             :key="section.header"
-            class="section">
+            class="section"
+          >
             <h2>{{ section.header }}</h2>
             <div
               v-for="record in section.records"
               :key="record.title"
-              class="flex flex-col">
+              class="flex flex-col"
+            >
               <!-- Only render if the key exists in the data source record -->
               <template v-if="dataSource[record.key]">
                 <h4>{{ record.title }}</h4>
@@ -191,12 +204,14 @@
                 <!-- If an array, render and nest inside of div -->
                 <div
                   v-if="Array.isArray(dataSource[record.key])"
-                  class="flex gap-2">
+                  class="flex gap-2"
+                >
                   <component
                     :is="record.component ?? 'p'"
                     v-for="item in dataSource[record.key]"
                     :key="item"
-                    :class="record.classNames">
+                    :class="record.classNames"
+                  >
                     {{ formatResult(record, item) }}
                   </component>
                 </div>
@@ -212,7 +227,8 @@
                   "
                   :class="record.classNames"
                   target="record.attributes.target"
-                  rel="record.attributes.rel">
+                  rel="record.attributes.rel"
+                >
                   {{ formatResult(record, dataSource[record.key]) }}
                 </component>
               </template>

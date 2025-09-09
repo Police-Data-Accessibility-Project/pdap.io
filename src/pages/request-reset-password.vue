@@ -1,7 +1,8 @@
 <template>
   <main
     class="pdap-flex-container"
-    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }"
+  >
     <h1 :data-test="TEST_IDS.reset_heading">
       Request a link to reset your password
     </h1>
@@ -21,19 +22,22 @@
         name="reset-password"
         :error="error"
         :schema="VALIDATION_SCHEMA_REQUEST_PASSWORD"
-        @submit="requestReset">
+        @submit="requestReset"
+      >
         <InputText
           id="email"
           autocomplete="email"
           :data-test="TEST_IDS.email_input"
           name="email"
           label="Email"
-          placeholder="Your email address" />
+          placeholder="Your email address"
+        />
         <Button
           class="max-w-full"
           :data-test="TEST_IDS.form_submit"
           :is-loading="isLoading"
-          type="submit">
+          type="submit"
+        >
           Request password reset
         </Button>
       </FormV2>

@@ -4,13 +4,15 @@
       searchIds?.length &&
       [nextIndex, previousIndex].some((id) => typeof id === 'number' && id > -1)
     "
-    class="self-start justify-self-start w-full">
+    class="self-start justify-self-start w-full"
+  >
     <RouterLink
       :to="`/data-source/${searchIds[previousIndex]}`"
       :class="{ disabled: typeof previousIndex !== 'number' }"
       replace
       @mouseenter="setNavIs('decrement')"
-      @focus="setNavIs('decrement')">
+      @focus="setNavIs('decrement')"
+    >
       PREV
     </RouterLink>
     /
@@ -19,7 +21,8 @@
       :class="{ disabled: typeof nextIndex !== 'number' }"
       replace
       @mouseenter="setNavIs('increment')"
-      @focus="setNavIs('increment')">
+      @focus="setNavIs('increment')"
+    >
       NEXT
     </RouterLink>
   </nav>

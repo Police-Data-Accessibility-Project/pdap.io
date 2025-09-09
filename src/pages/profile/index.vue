@@ -16,7 +16,8 @@
         <Button
           intent="primary"
           :data-test="TEST_IDS.profile_error_retry"
-          @click="refetchProfile">
+          @click="refetchProfile"
+        >
           Try again
         </Button>
       </div>
@@ -29,14 +30,16 @@
           <div
             :class="{
               'profile-loading': !profileData && profileLoading
-            }">
+            }"
+          >
             <h3 class="like-h4">Email</h3>
             <p :data-test="TEST_IDS.profile_email">
               {{ profileData?.email }}
             </p>
             <Button
               :data-test="TEST_IDS.profile_signout"
-              @click="signOutWithRedirect">
+              @click="signOutWithRedirect"
+            >
               Sign out
             </Button>
           </div>
@@ -45,7 +48,8 @@
             <router-link
               class="pdap-button-secondary"
               :to="'/change-password'"
-              :data-test="TEST_IDS.profile_reset_password">
+              :data-test="TEST_IDS.profile_reset_password"
+            >
               Reset your password
             </router-link>
           </div>
@@ -56,9 +60,11 @@
             <div
               :class="{
                 'profile-loading': !profileData && profileLoading
-              }">
+              }"
+            >
               <template
-                v-if="didLinkGithub || profileData?.external_accounts.github">
+                v-if="didLinkGithub || profileData?.external_accounts.github"
+              >
                 <p :data-test="TEST_IDS.profile_github_linked">
                   <FontAwesomeIcon :icon="faGithub" />
                   Your account is linked with GitHub
@@ -72,7 +78,8 @@
                   :disabled="githubAuthIsLoading"
                   intent="tertiary"
                   :data-test="TEST_IDS.profile_github_link"
-                  @click="async () => await beginOAuthLogin('/profile')">
+                  @click="async () => await beginOAuthLogin('/profile')"
+                >
                   <FontAwesomeIcon :icon="faGithub" />
                   Link account with GitHub
                 </Button>
@@ -87,7 +94,8 @@
             <div
               :class="{
                 'profile-loading h-12': !profileData && profileLoading
-              }">
+              }"
+            >
               <Button
                 :class="{ 'mb-5': apiKey }"
                 intent="secondary"
@@ -95,7 +103,8 @@
                 :disabled="apiKeyIsLoading"
                 type="button"
                 :data-test="TEST_IDS.profile_api_key_regenerate"
-                @click="recreateAPIKey">
+                @click="recreateAPIKey"
+              >
                 Regenerate API Key
               </Button>
             </div>
@@ -108,7 +117,8 @@
                     () => {
                       resetAPIKeyData();
                     }
-                  " />
+                  "
+                />
               </div>
             </transition>
           </section>
@@ -119,7 +129,8 @@
             <ul :data-test="TEST_IDS.profile_permissions">
               <li
                 v-for="permission of profileData.permissions"
-                :key="permission">
+                :key="permission"
+              >
                 {{ permission }}
               </li>
             </ul>
@@ -132,13 +143,15 @@
         <h3 class="like-h4">Followed searches</h3>
         <div
           v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
+          class="profile-loading h-20"
+        />
         <div
           v-if="
             profileData &&
             (!profileData.followed_searches?.data ||
               profileData.followed_searches.data.length === 0)
-          ">
+          "
+        >
           <p class="text-lg">
             Make a search from the homepage and click "follow" to see it here.
           </p>
@@ -146,7 +159,8 @@
         <ProfileTable
           v-else
           :items="followedSearches"
-          :data-test="TEST_IDS.profile_followed_searches_table">
+          :data-test="TEST_IDS.profile_followed_searches_table"
+        >
           <template #left="{ item }">
             <p class="flex items-center justify-start">
               {{ getFullLocationText(item) }}
@@ -162,7 +176,8 @@
               :is-loading="unFollowIsLoading"
               :data-test="TEST_IDS.profile_unfollow_button"
               @keydown.stop.prevent.enter="() => unFollow(item)"
-              @click.stop.prevent="() => unFollow(item)">
+              @click.stop.prevent="() => unFollow(item)"
+            >
               <FontAwesomeIcon :icon="faCircleXmark" />
               Unfollow
             </Button>
@@ -177,7 +192,8 @@
             profileData &&
             (!profileData.recent_searches?.data ||
               profileData.recent_searches.data.length === 0)
-          ">
+          "
+        >
           <p class="text-lg">Make a search from the homepage to see it here.</p>
         </div>
         <ProfileTable v-else :items="recentSearches">
@@ -186,7 +202,8 @@
               <p
                 v-for="category of item.record_categories"
                 :key="category"
-                class="pill w-max text-xxs">
+                class="pill w-max text-xxs"
+              >
                 <RecordTypeIcon :record-type="category" />
                 {{ category }}
               </p>
@@ -205,13 +222,15 @@
         <h3 class="like-h4">My requests</h3>
         <div
           v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
+          class="profile-loading h-20"
+        />
         <div
           v-if="
             profileData &&
             (!profileData.data_requests?.data ||
               profileData.data_requests.data.length === 0)
-          ">
+          "
+        >
           <p class="text-lg">
             To open a Data Request,
             <RouterLink to="/data-request/create">start here.</RouterLink>
@@ -226,7 +245,8 @@
           <template #center="{ item }">
             <p
               v-for="(location, i) of item.locations"
-              :key="'profile-request' + getFullLocationText(location)">
+              :key="'profile-request' + getFullLocationText(location)"
+            >
               {{
                 getFullLocationText(location) +
                 (i === item.locations.length - 1 ? '' : ', ')
@@ -240,7 +260,8 @@
               target="_blank"
               rel="noopener noreferrer"
               @keydown.stop.enter=""
-              @click.stop="">
+              @click.stop=""
+            >
               <FontAwesomeIcon :icon="faLink" />
               GitHub
             </a>
