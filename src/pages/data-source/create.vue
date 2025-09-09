@@ -223,8 +223,8 @@
                   :key="detail"
                   :name="INPUT_NAMES.type"
                   :value="detail"
-                :label="detail"
-                :data-test="`record-type-${toKebabCase(detail)}`"
+                  :label="detail"
+                  :data-test="`record-type-${toKebabCase(detail)}`"
                 />
               </div>
             </RadioGroup>
@@ -456,8 +456,8 @@
           :disabled="requestPending"
           intent="secondary"
           type="button"
-          @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
           :data-test="TEST_IDS.data_source_create_advanced"
+          @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
         >
           {{ advancedPropertiesExpanded ? 'Hide' : 'Show' }} advanced properties
         </Button>
