@@ -5,7 +5,8 @@
       <span
         :class="{
           valid: validation.fullLength
-        }">
+        }"
+      >
         8 characters
       </span>
       and include:
@@ -13,33 +14,41 @@
     <li
       :class="{
         valid: validation.uppercase
-      }">
+      }"
+    >
       <FontAwesomeIcon
-        :icon="validation.uppercase ? faCheckCircle : faDotCircle" />
+        :icon="validation.uppercase ? faCheckCircle : faDotCircle"
+      />
       1 uppercase letter
     </li>
     <li
       :class="{
         valid: validation.lowercase
-      }">
+      }"
+    >
       <FontAwesomeIcon
-        :icon="validation.lowercase ? faCheckCircle : faDotCircle" />
+        :icon="validation.lowercase ? faCheckCircle : faDotCircle"
+      />
       1 lowercase letter
     </li>
     <li
       :class="{
         valid: validation.number
-      }">
+      }"
+    >
       <FontAwesomeIcon
-        :icon="validation.number ? faCheckCircle : faDotCircle" />
+        :icon="validation.number ? faCheckCircle : faDotCircle"
+      />
       1 number
     </li>
     <li
       :class="{
         valid: validation.specialCharacter
-      }">
+      }"
+    >
       <FontAwesomeIcon
-        :icon="validation.specialCharacter ? faCheckCircle : faDotCircle" />
+        :icon="validation.specialCharacter ? faCheckCircle : faDotCircle"
+      />
       1 special character
     </li>
   </ul>

@@ -4,12 +4,14 @@
       id="map-container"
       ref="mapContainer"
       class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full max-h-[80vh] lg:max-h-none overflow-hidden"
-      :data-test="TEST_IDS.data_source_map" />
+      :data-test="TEST_IDS.data_source_map"
+    />
     <!-- <span class="loading"></span> -->
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
       :size="100"
-      class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70" />
+      class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70"
+    />
     <!-- Sidebar that appears when a location is selected -->
     <MapSidebar
       :locations="activeLocationStack"
@@ -20,7 +22,8 @@
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
       @on-reset-zoom="() => mapDeps.resetZoom()"
-      @zoom-to-location="handleZoomToLocation" />
+      @zoom-to-location="handleZoomToLocation"
+    />
   </div>
 </template>
 

@@ -6,7 +6,8 @@
     <p
       v-if="error || (hasValidatedToken && isExpiredToken)"
       data-test="token-expired"
-      class="flex flex-col items-start sm:gap-4">
+      class="flex flex-col items-start sm:gap-4"
+    >
       {{
         isExpiredToken
           ? 'Sorry, that token has expired.'

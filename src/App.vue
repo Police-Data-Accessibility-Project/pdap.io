@@ -10,7 +10,8 @@
                 class="absolute m-auto top-0 right-0 bottom-0 left-0"
                 :show="!Component"
                 :size="64"
-                text="Loading..." />
+                text="Loading..."
+              />
             </component>
           </div>
         </transition>
@@ -18,7 +19,8 @@
     </ErrorBoundary>
     <Footer
       :logo-image-src="acronym"
-      :fundraising-data="{ raised: 0, goal: 0 }" />
+      :fundraising-data="{ raised: 0, goal: 0 }"
+    />
   </AuthWrapper>
 </template>
 

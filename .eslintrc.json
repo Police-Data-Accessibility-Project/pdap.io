@@ -13,7 +13,7 @@
       {
         "trailingComma": "none",
         "htmlWhitespaceSensitivity": "ignore",
-        "bracketSameLine": true,
+        "bracketSameLine": false,
         "singleAttributePerLine": false,
         "singleQuote": true
       }
