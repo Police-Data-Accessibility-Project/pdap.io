@@ -199,6 +199,7 @@
                 :name="INPUT_NAMES.detail"
                 :value="detail"
                 :label="detail"
+                :data-test="`detail-level-${toKebabCase(detail)}`"
               />
             </RadioGroup>
 
@@ -222,7 +223,8 @@
                   :key="detail"
                   :name="INPUT_NAMES.type"
                   :value="detail"
-                  :label="detail"
+                :label="detail"
+                :data-test="`record-type-${toKebabCase(detail)}`"
                 />
               </div>
             </RadioGroup>
@@ -329,6 +331,7 @@
                 :name="INPUT_NAMES.method"
                 :value="method"
                 :label="method"
+                :data-test="`update-method-${toKebabCase(method)}`"
               />
             </RadioGroup>
 
@@ -407,6 +410,7 @@
               :name="INPUT_NAMES.accessNotes"
               placeholder="Anything else we should know about how to get this data?"
               rows="4"
+              :data-test="TEST_IDS.data_source_create_access_notes"
             >
               <template #label>
                 <h4>Access notes</h4>
@@ -419,6 +423,7 @@
               :name="INPUT_NAMES.notes"
               placeholder="Did you encounter an issue using this form? Were you unable to select an option you needed or give us information we did not ask for? Is there something special about this Data Source?"
               rows="4"
+              :data-test="TEST_IDS.data_source_create_submission_notes"
             >
               <template #label><h4>Submission notes</h4></template>
             </InputTextArea>
@@ -452,6 +457,7 @@
           intent="secondary"
           type="button"
           @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
+          :data-test="TEST_IDS.data_source_create_advanced"
         >
           {{ advancedPropertiesExpanded ? 'Hide' : 'Show' }} advanced properties
         </Button>
@@ -488,6 +494,13 @@ import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
 import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
+// Utility to create kebab-case identifiers from labels like "Arrest Records" -> "arrest-records"
+function toKebabCase(str) {
+  return String(str)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
