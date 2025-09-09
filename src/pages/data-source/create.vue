@@ -199,6 +199,7 @@
                 :name="INPUT_NAMES.detail"
                 :value="detail"
                 :label="detail"
+                :data-test="`detail-level-${detail.toLowerCase().replaceAll(' ', '-')}`"
               />
             </RadioGroup>
 
@@ -223,6 +224,7 @@
                   :name="INPUT_NAMES.type"
                   :value="detail"
                   :label="detail"
+                  :data-test="`record-type-${detail.toLowerCase().replaceAll(' ', '-')}`"
                 />
               </div>
             </RadioGroup>
@@ -241,6 +243,7 @@
                 :name="INPUT_NAMES.agencySupplied"
                 :default-checked="true"
                 label="Agency supplied data?"
+                :data-test="'agency-supplied'"
                 @change="(e) => (agencySuppliedChecked = e.target.checked)"
               />
 
@@ -251,6 +254,7 @@
                 :name="INPUT_NAMES.supplyingEntity"
                 placeholder="Who made this information available? Please provide a link to their website and contact information."
                 rows="4"
+                :data-test="'supplying-entity'"
               >
                 <template #label>
                   <h4>Supplying entity</h4>
@@ -272,6 +276,7 @@
                 :name="INPUT_NAMES.agencyOriginated"
                 :default-checked="true"
                 label="Agency originated data?"
+                :data-test="'agency-originated'"
                 @change="(e) => (agencyOriginatedChecked = e.target.checked)"
               />
 
@@ -282,6 +287,7 @@
                 :name="INPUT_NAMES.originatingEntity"
                 placeholder="Who originally collected these records? Please provide a link to their website."
                 rows="4"
+                :data-test="'originating-entity'"
               >
                 <template #label>
                   <h4>Originating entity</h4>
@@ -299,6 +305,7 @@
                 :name="accessType.name"
                 :label="accessType.label"
                 class="md:col-start-1 md:col-end-2"
+                :data-test="`access-type-${accessType.name}`"
               />
             </div>
 
@@ -314,6 +321,7 @@
                 :name="format.name"
                 :label="format.label"
                 class="w-[max-content]"
+                :data-test="`format-${format.name}`"
               />
             </div>
 
@@ -329,6 +337,7 @@
                 :name="INPUT_NAMES.method"
                 :value="method"
                 :label="method"
+                :data-test="`update-method-${method.toLowerCase().replaceAll(' ', '-')}`"
               />
             </RadioGroup>
 
@@ -407,6 +416,7 @@
               :name="INPUT_NAMES.accessNotes"
               placeholder="Anything else we should know about how to get this data?"
               rows="4"
+              :data-test="'access-notes'"
             >
               <template #label>
                 <h4>Access notes</h4>
@@ -419,6 +429,7 @@
               :name="INPUT_NAMES.notes"
               placeholder="Did you encounter an issue using this form? Were you unable to select an option you needed or give us information we did not ask for? Is there something special about this Data Source?"
               rows="4"
+              :data-test="'submission-notes'"
             >
               <template #label><h4>Submission notes</h4></template>
             </InputTextArea>
@@ -452,6 +463,7 @@
           intent="secondary"
           type="button"
           @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
+          :data-test="TEST_IDS.data_source_create_advanced"
         >
           {{ advancedPropertiesExpanded ? 'Hide' : 'Show' }} advanced properties
         </Button>
