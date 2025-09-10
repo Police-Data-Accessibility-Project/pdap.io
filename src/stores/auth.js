@@ -17,8 +17,7 @@ export const useAuthStore = defineStore('auth', {
     redirectTo: null
   }),
   persist: {
-    storage: localStorage,
-    pick: ['tokens']
+    storage: localStorage
   },
   getters: {
     isAuthenticated: (state) => {

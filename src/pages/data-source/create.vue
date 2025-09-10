@@ -16,6 +16,7 @@
 
     <FormV2
       id="new-data-source"
+      :key="formKey"
       ref="formRef"
       :error="formError"
       class="flex flex-col gap-2"
@@ -198,6 +199,7 @@
                 :name="INPUT_NAMES.detail"
                 :value="detail"
                 :label="detail"
+                :data-test="`detail-level-${toKebabCase(detail)}`"
               />
             </RadioGroup>
 
@@ -222,6 +224,7 @@
                   :name="INPUT_NAMES.type"
                   :value="detail"
                   :label="detail"
+                  :data-test="`record-type-${toKebabCase(detail)}`"
                 />
               </div>
             </RadioGroup>
@@ -328,6 +331,7 @@
                 :name="INPUT_NAMES.method"
                 :value="method"
                 :label="method"
+                :data-test="`update-method-${toKebabCase(method)}`"
               />
             </RadioGroup>
 
@@ -374,6 +378,7 @@
               placeholder="Select the data portal type."
               @change="
                 ({ value }) => {
+                  console.debug({ value });
                   isOtherPortalTypeSelected = value === 'Other';
                 }
               "
@@ -405,6 +410,7 @@
               :name="INPUT_NAMES.accessNotes"
               placeholder="Anything else we should know about how to get this data?"
               rows="4"
+              :data-test="TEST_IDS.data_source_create_access_notes"
             >
               <template #label>
                 <h4>Access notes</h4>
@@ -417,6 +423,7 @@
               :name="INPUT_NAMES.notes"
               placeholder="Did you encounter an issue using this form? Were you unable to select an option you needed or give us information we did not ask for? Is there something special about this Data Source?"
               rows="4"
+              :data-test="TEST_IDS.data_source_create_submission_notes"
             >
               <template #label><h4>Submission notes</h4></template>
             </InputTextArea>
@@ -449,6 +456,7 @@
           :disabled="requestPending"
           intent="secondary"
           type="button"
+          :data-test="TEST_IDS.data_source_create_advanced"
           @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
         >
           {{ advancedPropertiesExpanded ? 'Hide' : 'Show' }} advanced properties
@@ -486,6 +494,13 @@ import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
 import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
+// Utility to create kebab-case identifiers from labels like "Arrest Records" -> "arrest-records"
+function toKebabCase(str) {
+  return String(str)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -764,6 +779,7 @@ const SCHEMA = [
 ];
 
 const advancedPropertiesExpanded = ref(false);
+const formKey = ref(0);
 const agencySuppliedChecked = ref(true);
 const agencyOriginatedChecked = ref(true);
 const isOtherPortalTypeSelected = ref(false);
@@ -931,21 +947,26 @@ const checkDuplicates = _debounce(
 );
 
 async function clear() {
-  const newVal = Object.values(INPUT_NAMES)
-    // Exclude typeahead
-    .filter((n) => n !== INPUT_NAMES.agencies)
-    .reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur]: ''
-      }),
-      {}
-    );
+  // Force a full remount of the form to reset all inputs
+  formKey.value += 1;
 
-  formRef.value.setValues(newVal);
+  // Reset local UI flags tied to advanced/conditional inputs
+  agencySuppliedChecked.value = true;
+  agencyOriginatedChecked.value = true;
+  isOtherPortalTypeSelected.value = false;
+
+  // Clear typeahead and related state
   await nextTick();
   items.value = [];
   selectedAgencies.value = [];
+  agencyNotAvailable.value = '';
+  typeaheadRef.value?.clearInput && typeaheadRef.value.clearInput();
+
+  // Dismiss any duplicate URL toast if present
+  if (alreadyExistsToastId.value) {
+    toast.remove(alreadyExistsToastId.value);
+    alreadyExistsToastId.value = undefined;
+  }
 }
 
 async function submit(values) {

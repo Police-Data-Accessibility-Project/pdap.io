@@ -61,6 +61,7 @@
 <script setup>
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
+import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
 import parseJwt from '@/util/parseJwt';
 import { onMounted, ref } from 'vue';
@@ -124,6 +125,7 @@ const token = route.query.token;
 
 // Stores
 const user = useUserStore();
+const auth = useAuthStore();
 
 const {
   error,
@@ -215,6 +217,6 @@ async function onSubmitChangePassword(formValues) {
   await resetPassword(password, token);
   await signInWithEmail(parseJwt(token).sub.user_email, password);
 
-  router.push({ path: 'profile' });
+  router.push(auth.redirectTo ?? { path: 'profile' });
 }
 </script>
