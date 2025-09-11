@@ -1,24 +1,36 @@
 import { STATES_TO_ABBREVIATIONS } from './constants';
 
 export function getFullLocationText(location) {
-  if (Object.hasOwn(location, 'display_name')) {
-    return location?.display_name;
+  if (!location) return '';
+  if ('display_name' in location && location.display_name) {
+    return location.display_name;
   }
 
   const searched = getMostNarrowSearchLocationWithResults(location);
   switch (searched) {
-    case 'locality':
-      return `${location.locality_name}, ${location.county_name}, ${STATES_TO_ABBREVIATIONS.get(location.state_name)}`;
-    case 'county':
-      return `${location.county_name} ${STATES_TO_ABBREVIATIONS.get(location.state_name) === 'LA' ? 'Parish' : 'County'}, ${location.state_name}`;
+    case 'locality': {
+      const locality = location.locality_name ?? '';
+      const county = location.county_name ?? '';
+      const stateAbbr = STATES_TO_ABBREVIATIONS.get(location.state_name) ?? location.state_name ?? '';
+      return [locality, county, stateAbbr].filter(Boolean).join(', ');
+    }
+    case 'county': {
+      const isLA = (STATES_TO_ABBREVIATIONS.get(location.state_name) ?? '') === 'LA';
+      const countyLabel = location.county_name
+        ? `${location.county_name} ${isLA ? 'Parish' : 'County'}`
+        : '';
+      const state = location.state_name ?? '';
+      return [countyLabel, state].filter(Boolean).join(', ');
+    }
     case 'state':
-      return location.state_name;
+      return location.state_name ?? '';
     default:
       return location?.display_name ?? '';
   }
 }
 
 export function getLocationCityState(location) {
+  if (!location) return '';
   const searched = getMostNarrowSearchLocationWithResults(location);
 
   const locality = location.locality_name;
@@ -31,12 +43,13 @@ export function getLocationCityState(location) {
     else if (locality && stateAbbr) return `${locality}, ${stateAbbr}`;
     else if (locality && state) return `${locality}, ${state}`;
   } else if (searched === 'county' || searched === 'state') {
-    return state;
-  } else return displayName;
+    return state ?? '';
+  }
+  return displayName ?? '';
 }
 
 export function getMinimalLocationText(location) {
-  return getLocationCityState(location) || location?.display_name;
+  return getLocationCityState(location) || location?.display_name || '';
 }
 
 export function getMostNarrowSearchLocationWithResults(location) {
