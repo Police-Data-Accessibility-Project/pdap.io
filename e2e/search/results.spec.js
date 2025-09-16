@@ -36,9 +36,7 @@ test.describe('Search Results Page', () => {
   });
 
   // TODO: fix this flakiness
-  test.skip('should allow updating search from results page', async ({
-    page
-  }) => {
+  test('should allow updating search from results page', async ({ page }) => {
     await page.setViewportSize({ width: 1000, height: 667 });
     await page.goto('/search/results?location_id=6593');
     await page.waitForLoadState('networkidle');
@@ -105,6 +103,65 @@ test.describe('Search Results Page', () => {
     }
   });
 
+  test('should persist multiple record categories across updates', async ({
+    page
+  }) => {
+    await page.setViewportSize({ width: 1400, height: 900 });
+    await page.goto('/search/results?location_id=6593');
+
+    // Ensure search form is visible
+    await page.waitForSelector(`[data-test="${TEST_IDS.search_form}"]`);
+
+    // Initially "All data types" should be checked
+    await expect(page.locator('input[name="all-data-types"]')).toBeChecked();
+
+    // Select first category: Police & public interactions
+    await page.click('label[for="interactions"]');
+
+    // Submit update
+    await page
+      .locator(`[data-test="${TEST_IDS.search_submit}"]:not([disabled])`)
+      .waitFor({ state: 'visible' });
+    await page.click(`[data-test="${TEST_IDS.search_submit}"]`);
+
+    // URL should contain the first category (normalize + to space)
+    {
+      const url = new URL(await page.url());
+      const rc = url.searchParams.get('record_categories') || '';
+      const normalized = rc.replace(/\+/g, ' ');
+      expect(normalized).toContain('Police & public interactions');
+    }
+
+    // Select second category while first remains checked
+    await expect(
+      page.locator('input[name="police-and-public-interactions"]')
+    ).toBeChecked();
+    await page.click('label[for="info-officers"]');
+
+    // Submit update again
+    await page
+      .locator(`[data-test="${TEST_IDS.search_submit}"]:not([disabled])`)
+      .waitFor({ state: 'visible' });
+    await page.click(`[data-test="${TEST_IDS.search_submit}"]`);
+
+    // URL should contain both categories as a comma-separated value
+    {
+      const url = new URL(await page.url());
+      const rc = url.searchParams.get('record_categories') || '';
+      const normalized = rc.replace(/\+/g, ' ');
+      expect(normalized).toContain(
+        'Police & public interactions,Info about officers'
+      );
+    }
+
+    // Both checkboxes should be checked
+    await expect(
+      page.locator('input[name="police-and-public-interactions"]')
+    ).toBeChecked();
+    await expect(
+      page.locator('input[name="info-about-officers"]')
+    ).toBeChecked();
+  });
   test('should handle search with record categories', async ({ page }) => {
     await page.goto(
       '/search/results?location_id=4&record_categories=Police%20%26%20public%20interactions'
