@@ -330,15 +330,19 @@ watch(
   }
 );
 
-function submit(values) {
+function submit() {
   // Build values from actual DOM state to avoid any partial value issues
+  // NOTE: this indicates that we need better form/input components. TODO @joshuagraber research this
   const effectiveValues = getCheckboxValues();
   const built = buildParams(effectiveValues);
 
   // Build query string ensuring arrays are appended correctly
   const params = new URLSearchParams();
   if (built.location_id) params.set('location_id', built.location_id);
-  if (Array.isArray(built.record_categories) && built.record_categories.length) {
+  if (
+    Array.isArray(built.record_categories) &&
+    built.record_categories.length
+  ) {
     params.set('record_categories', built.record_categories.join(','));
   }
 
