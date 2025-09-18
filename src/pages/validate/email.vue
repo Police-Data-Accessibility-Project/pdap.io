@@ -33,6 +33,7 @@
 <script setup>
 import { Button, Spinner } from 'pdap-design-system';
 import { useUserStore } from '@/stores/user';
+import { useAuthStore } from '@/stores/auth';
 import parseJwt from '@/util/parseJwt';
 import { h, onMounted, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -47,6 +48,7 @@ const token = route.query.token;
 
 // Stores
 const user = useUserStore();
+const auth = useAuthStore();
 
 // Reactive vars
 const error = ref(undefined);
@@ -66,7 +68,7 @@ onMounted(async () => {
   try {
     await validateToken();
     await validateEmail(token);
-    router.replace({ path: '/profile' });
+    router.replace(auth.redirectTo ?? { path: '/profile' });
   } catch (err) {
     error.value = err?.message;
   }

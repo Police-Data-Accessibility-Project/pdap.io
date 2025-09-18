@@ -316,11 +316,51 @@ onMounted(() => {
   formRef.value.setValues(defaultChecked);
 });
 
-function submit(values) {
-  const params = new URLSearchParams(buildParams(values));
+// Keep checkbox state in sync with URL query changes
+watch(
+  () => route.query.record_categories,
+  () => {
+    const defaultChecked = {};
+    CHECKBOXES.forEach(({ name, label }) => {
+      if (route.query.record_categories?.includes(label)) {
+        defaultChecked[name] = true;
+      }
+    });
+    formRef.value.setValues(defaultChecked);
+  }
+);
+
+function submit() {
+  // Build values from actual DOM state to avoid any partial value issues
+  // NOTE: this indicates that we need better form/input components. TODO @joshuagraber research this
+  const effectiveValues = getCheckboxValues();
+  const built = buildParams(effectiveValues);
+
+  // Build query string ensuring arrays are appended correctly
+  const params = new URLSearchParams();
+  if (built.location_id) params.set('location_id', built.location_id);
+  if (
+    Array.isArray(built.record_categories) &&
+    built.record_categories.length
+  ) {
+    params.set('record_categories', built.record_categories.join(','));
+  }
+
   const path = `/search/results?${params.toString()}`;
   router.push(path);
   emit('searched');
+}
+
+function getCheckboxValues() {
+  const values = {};
+  const formEl = document.getElementById('pdap-data-sources-search');
+  if (!formEl) return values;
+
+  const inputs = formEl.querySelectorAll('input[type="checkbox"][name]');
+  inputs.forEach((input) => {
+    values[input.name] = !!input.checked;
+  });
+  return values;
 }
 
 function buildParams(values) {

@@ -11,11 +11,27 @@ const HEADERS_BASIC = {
   authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
+function buildSearchParams(params) {
+  const qs = new URLSearchParams();
+
+  if (params?.location_id) qs.set('location_id', params.location_id);
+
+  const cats = params?.record_categories;
+  if (Array.isArray(cats) && cats.length) {
+    qs.set('record_categories', cats.join(','));
+  } else if (typeof cats === 'string' && cats.length) {
+    // Already comma-separated string
+    qs.set('record_categories', cats);
+  }
+
+  return qs;
+}
+
 export async function search(params) {
   const authStore = useAuthStore();
 
   return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.RESULTS}`, {
-    params,
+    params: buildSearchParams(params),
     headers: {
       ...HEADERS_BASIC,
       ...(authStore.isAuthenticated()
