@@ -413,6 +413,19 @@ function onChange(values, event) {
       formRef.value.setValues({ ...values, ['all-data-types']: false });
       allTypesCheckbox.checked = false;
     }
+
+    if (
+      // All other checkboxes are unchecked, default the all checkbox to checked
+      CHECKBOXES.filter(({ name }) => name !== 'all-data-types').every(
+        ({ name }) => {
+          const checkbox = document.querySelector(`input[name=${name}]`);
+          return !checkbox?.checked;
+        }
+      )
+    ) {
+      formRef.value.setValues({ ...values, ['all-data-types']: true });
+      allTypesCheckbox.checked = true;
+    }
   }
 
   if (event.target.type === 'checkbox') hasUpdatedCategories.value = true;
