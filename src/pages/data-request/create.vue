@@ -191,8 +191,11 @@ import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nextTick, ref, watch, computed } from 'vue';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { DATA_REQUEST, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { getLocation } from '@/api/locations';
+import { useRoute } from 'vue-router';
+import { useSearchStore } from '@/stores/search';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { DATA_REQUEST, LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
 const INPUT_NAMES = {
   // contact: 'contact',
@@ -282,6 +285,95 @@ const formRef = ref();
 const typeaheadRef = ref();
 const typeaheadError = ref();
 const formError = ref();
+
+const route = useRoute();
+const searchStore = useSearchStore();
+
+const prefillLocationId = computed(() => {
+  const queryId = route.query.location_id;
+  if (queryId) {
+    const parsed = Number(queryId);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  const activeId = searchStore.activeLocationId;
+  if (activeId) {
+    const parsed = Number(activeId);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  return null;
+});
+
+const locationQueryKey = computed(() => [LOCATION, prefillLocationId.value]);
+
+const { data: prefillLocationData } = useQuery({
+  queryKey: locationQueryKey,
+  queryFn: async () => {
+    if (!prefillLocationId.value) return null;
+
+    const response = await getLocation(prefillLocationId.value);
+    return response?.data;
+  },
+  enabled: computed(() => !!prefillLocationId.value),
+  staleTime: 60 * 60 * 1000,
+  onError: (err) => {
+    console.error('Error fetching prefill location:', err);
+  }
+});
+
+const lastPrefillId = ref(null);
+
+watch(
+  () => prefillLocationId.value,
+  (id) => {
+    if (id) return;
+
+    if (lastPrefillId.value) {
+      selectedLocations.value = selectedLocations.value.filter(
+        (loc) => Number(loc.location_id) !== Number(lastPrefillId.value)
+      );
+      lastPrefillId.value = null;
+    }
+  }
+);
+
+watch(
+  prefillLocationData,
+  (data) => {
+    if (!data) return;
+
+    const rawId = data.location_id ?? data.id ?? prefillLocationId.value;
+    const locationId = Number(rawId);
+
+    if (!locationId || Number.isNaN(locationId)) return;
+
+    if (
+      lastPrefillId.value &&
+      Number(lastPrefillId.value) !== Number(locationId)
+    ) {
+      selectedLocations.value = selectedLocations.value.filter(
+        (loc) => Number(loc.location_id) !== Number(lastPrefillId.value)
+      );
+    }
+
+    const normalized = {
+      ...data,
+      location_id: locationId,
+      display_name: data.display_name ?? data.name ?? ''
+    };
+
+    const alreadySelected = selectedLocations.value.some(
+      (loc) => Number(loc.location_id) === locationId
+    );
+
+    if (alreadySelected) return;
+
+    selectedLocations.value = [...selectedLocations.value, normalized];
+    lastPrefillId.value = locationId;
+  },
+  { immediate: true }
+);
 
 const queryClient = useQueryClient();
 const queryKey = computed(() => [
