@@ -353,7 +353,9 @@ watchEffect(() => {
   const el = descriptionRef.value;
 
   const checkOverflow = () => {
-    showExpandDescriptionButton.value = el.offsetHeight < el.scrollHeight;
+    const hasOverflow = el.offsetHeight < el.scrollHeight;
+    showExpandDescriptionButton.value =
+      hasOverflow || isDescriptionExpanded.value;
   };
 
   observer.value = new ResizeObserver(checkOverflow);
