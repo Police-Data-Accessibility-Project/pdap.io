@@ -91,25 +91,13 @@ export async function getFollowedNationalSearch(params = {}) {
 
   if (!auth.isAuthenticated()) return false;
 
-  const response = await axios.get(
-    `${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW_NATIONAL}`,
-    {
-      params,
-      headers: {
-        ...JSON_HEADERS,
-        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
-      }
+  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
+    params,
+    headers: {
+      ...JSON_HEADERS,
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
     }
-  );
-
-  const payload = response?.data;
-
-  if (typeof payload === 'boolean') return payload;
-  if (payload?.data === undefined) return Boolean(payload);
-  if (typeof payload.data === 'boolean') return payload.data;
-  if (typeof payload.data?.followed === 'boolean') return payload.data.followed;
-
-  return Boolean(payload.data);
+  });
 }
 
 export async function getFollowedSearch(locationId) {
