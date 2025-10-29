@@ -32,6 +32,11 @@ export function createLegend(deps) {
       ? countyColorBreakpoints
       : stateColorBreakpoints;
 
+  const effectiveBreakpoints =
+    Array.isArray(breakpoints) && breakpoints.length ? breakpoints : [0, 1];
+  const minLabel = effectiveBreakpoints[0];
+  const maxLabel = effectiveBreakpoints[effectiveBreakpoints.length - 1];
+
   // Create legend dimensions
   const legendWidth = 200;
   const legendHeight = 30;
@@ -82,7 +87,7 @@ export function createLegend(deps) {
     .attr('text-anchor', 'start')
     .attr('font-size', '10px')
     .attr('fill', currentTheme.theme.legend.textColor)
-    .text(`${Math.min(...breakpoints)}`);
+    .text(`${minLabel}`);
 
   legend
     .append('text')
@@ -91,7 +96,7 @@ export function createLegend(deps) {
     .attr('text-anchor', 'end')
     .attr('font-size', '10px')
     .attr('fill', currentTheme.theme.legend.textColor)
-    .text(`${Math.max(...breakpoints)}+`);
+    .text(`${maxLabel}+`);
 
   // Add title based on visible layer
   const title =

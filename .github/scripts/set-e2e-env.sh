@@ -9,21 +9,21 @@ if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
   if [[ -n "$API_URL" ]]; then
     echo "VITE_API_URL=$API_URL" >> $GITHUB_ENV
   elif [[ "$TEST_URL" == *"pdap.io"* ]]; then
-    echo "VITE_API_URL=https://data-sources.pdap.io/api" >> $GITHUB_ENV
+    echo "VITE_API_URL=https://data-sources.pdap.io/api/v2" >> $GITHUB_ENV
     echo "VITE_API_KEY=$E2E_API_KEY_PROD" >> $GITHUB_ENV
     echo "E2E_TESTING_ENV=production" >> $GITHUB_ENV
   else
-    echo "VITE_API_URL=https://data-sources.pdap.dev/api" >> $GITHUB_ENV
+    echo "VITE_API_URL=https://data-sources.pdap.dev/api/v2" >> $GITHUB_ENV
     echo "VITE_API_KEY=$E2E_API_KEY_DEV" >> $GITHUB_ENV
   fi
 else 
   # It's a PR. Run against prod if merging to main, dev otherwise
   if [[ $GITHUB_BASE_REF == "main" ]]; then
-    echo "VITE_API_URL=https://data-sources.pdap.io/api" >> $GITHUB_ENV
+    echo "VITE_API_URL=https://data-sources.pdap.io/api/v2" >> $GITHUB_ENV
     echo "VITE_API_KEY=$E2E_API_KEY_PROD" >> $GITHUB_ENV
     echo "E2E_TESTING_ENV=production" >> $GITHUB_ENV
   else
-    echo "VITE_API_URL=https://data-sources.pdap.dev/api" >> $GITHUB_ENV
+    echo "VITE_API_URL=https://data-sources.pdap.dev/api/v2" >> $GITHUB_ENV
     echo "VITE_API_KEY=$E2E_API_KEY_DEV" >> $GITHUB_ENV
   fi
 fi

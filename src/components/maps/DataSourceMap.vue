@@ -3,7 +3,10 @@
     <div
       id="map-container"
       ref="mapContainer"
-      class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full max-h-[80vh] lg:max-h-none overflow-hidden"
+      :class="[
+        'hidden md:block relative w-full h-full max-h-[80vh] lg:max-h-none overflow-hidden',
+        shouldShowSidebar ? 'lg:w-[calc(100%-320px)]' : 'lg:w-full'
+      ]"
       :data-test="TEST_IDS.data_source_map"
     />
     <!-- <span class="loading"></span> -->
@@ -13,12 +16,10 @@
       class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70"
     />
     <!-- Sidebar that appears when a location is selected -->
-    <MapSidebar
-      :locations="activeLocationStack"
-      :counties="props.counties"
-      :localities="props.localities"
-      :states="props.states"
-      :federal="props.federal"
+    <component
+      :is="sidebarComponentResolved"
+      v-if="shouldShowSidebar"
+      v-bind="sidebarBindings"
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
       @on-reset-zoom="() => mapDeps.resetZoom()"
@@ -73,9 +74,39 @@ const STATUSES = {
 };
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 50;
-// Define separate breakpoints for counties and states
-const countyColorBreakpoints = [1, 5, 10, 15, 25, 40, 60, 100];
-const stateColorBreakpoints = [1, 10, 25, 50, 100, 200, 500];
+const DEFAULT_COUNTY_BREAKPOINTS = [1, 5, 10, 15, 25, 40, 60, 100];
+const DEFAULT_STATE_BREAKPOINTS = [1, 10, 25, 50, 100, 200, 500];
+
+function generateBreakpoints(values, fallback) {
+  const positives = values.filter(
+    (value) => typeof value === 'number' && value > 0
+  );
+
+  if (!positives.length) {
+    return fallback;
+  }
+
+  const uniqueValues = Array.from(new Set(positives)).sort((a, b) => a - b);
+
+  if (uniqueValues.length === 1) {
+    return [uniqueValues[0]];
+  }
+
+  const maxSteps = FILL_COLORS.length - 1;
+  const thresholds = uniqueValues;
+
+  if (thresholds.length <= maxSteps) {
+    return thresholds;
+  }
+
+  const step = Math.ceil(thresholds.length / maxSteps);
+  const reduced = [];
+  for (let i = 0; i < thresholds.length; i += step) {
+    reduced.push(thresholds[i]);
+  }
+
+  return reduced;
+}
 
 // Props definition
 const props = defineProps({
@@ -98,11 +129,50 @@ const props = defineProps({
     type: Array,
     required: false,
     default: undefined
+  },
+  locationSources: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
+  sidebarComponent: {
+    type: [Object, Function],
+    required: false,
+    default: null
+  },
+  sidebarProps: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
+  showLocalityMarkers: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  useDynamicBreakpoints: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  showSidebar: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  hideSidebarWithoutSelection: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 
 // Define emits
-const emit = defineEmits(['on-follow', 'on-select-location']);
+const emit = defineEmits([
+  'on-follow',
+  'on-select-location',
+  'has-active-location-change'
+]);
 
 const searchStore = useSearchStore();
 
@@ -118,6 +188,53 @@ const countyColorScale = ref(null);
 const stateColorScale = ref(null);
 const currentTheme = ref(null);
 const activeLocationStack = ref([]); // Stack to track selected locations
+
+const sidebarComponentResolved = computed(
+  () => props.sidebarComponent ?? MapSidebar
+);
+
+const sidebarBindings = computed(() => {
+  const base = {
+    locations: activeLocationStack.value
+  };
+
+  if (props.sidebarComponent) {
+    return {
+      ...base,
+      ...(props.sidebarProps ?? {})
+    };
+  }
+
+  return {
+    ...base,
+    counties: props.counties ?? [],
+    localities: props.localities ?? [],
+    states: props.states ?? [],
+    federal: props.federal ?? [],
+    locationSources: props.locationSources ?? {},
+    ...(props.sidebarProps ?? {})
+  };
+});
+
+const localityRenderer = computed(() =>
+  props.showLocalityMarkers ? renderLocalityMarkers : null
+);
+
+const hasActiveLocation = computed(() => activeLocationStack.value.length > 0);
+const shouldShowSidebar = computed(
+  () =>
+    props.showSidebar &&
+    (!props.hideSidebarWithoutSelection || hasActiveLocation.value)
+);
+
+watch(
+  () => shouldShowSidebar.value,
+  () => {
+    nextTick(() => {
+      updateMap();
+    });
+  }
+);
 
 // Zoom-related state
 const currentZoom = ref(1);
@@ -147,6 +264,24 @@ const stateDataMap = computed(() => {
   }
   return map;
 });
+
+const countyBreakpoints = computed(() =>
+  props.useDynamicBreakpoints
+    ? generateBreakpoints(
+        Object.values(countyDataMap.value ?? {}),
+        DEFAULT_COUNTY_BREAKPOINTS
+      )
+    : DEFAULT_COUNTY_BREAKPOINTS
+);
+
+const stateBreakpoints = computed(() =>
+  props.useDynamicBreakpoints
+    ? generateBreakpoints(
+        Object.values(stateDataMap.value ?? {}),
+        DEFAULT_STATE_BREAKPOINTS
+      )
+    : DEFAULT_STATE_BREAKPOINTS
+);
 
 // Organize localities by county FIPS code for faster lookup
 const localitiesByCounty = computed(() => {
@@ -186,32 +321,24 @@ const statesGeoJSON = computed(() => {
 const layers = computed(() => ({
   counties: {
     data: countiesGeoJSON.value,
-    status: Object.keys(countyDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.counties) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
   localities: {
-    status: Object.keys(localitiesByCounty.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.localities) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
   states: {
     data: statesGeoJSON.value,
-    status: Object.keys(stateDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.states) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 0,
     maxZoom: 2
   },
   stateBoundaries: {
     data: statesGeoJSON.value,
-    status: Object.keys(stateDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.states) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
@@ -253,7 +380,25 @@ onMounted(() => {
 watch(
   () => props.states,
   (newStates) => {
-    if (newStates.length) {
+    if (Array.isArray(newStates)) {
+      updateMap();
+    }
+  },
+  { deep: true }
+);
+watch(
+  () => props.counties,
+  (newCounties) => {
+    if (Array.isArray(newCounties)) {
+      updateMap();
+    }
+  },
+  { deep: true }
+);
+watch(
+  () => props.localities,
+  (newLocalities) => {
+    if (Array.isArray(newLocalities)) {
       updateMap();
     }
   },
@@ -262,6 +407,8 @@ watch(
 watch(
   () => activeLocationStack.value,
   (newStack) => {
+    const isActive = newStack.length > 0;
+    emit('has-active-location-change', isActive);
     if (newStack.length > 0) {
       const activeLocation = newStack[newStack.length - 1];
       if (activeLocation) {
@@ -274,6 +421,7 @@ watch(
     } else {
       // Clear activeLocationId when stack is empty
       searchStore.setActiveLocationId(null);
+      emit('on-select-location', null);
     }
   },
   { deep: true }
@@ -295,6 +443,25 @@ watch(
     }
   },
   { immediate: true }
+);
+
+watch(
+  () => props.showSidebar,
+  (visible) => {
+    if (!visible) {
+      activeLocationStack.value = [];
+      emit('has-active-location-change', false);
+      emit('on-select-location', null);
+      nextTick(() => {
+        mapDeps.value.resetZoom();
+        updateMap();
+      });
+    } else {
+      nextTick(() => {
+        updateMap();
+      });
+    }
+  }
 );
 
 // Initialize the map
@@ -338,12 +505,12 @@ function initMap() {
 
   // Create color scales with specific thresholds for counties and states
   countyColorScale.value = scaleThreshold()
-    .domain(countyColorBreakpoints) // County-specific breakpoints
-    .range(FILL_COLORS); // Use all custom colors
+    .domain(countyBreakpoints.value)
+    .range(FILL_COLORS);
 
   stateColorScale.value = scaleThreshold()
-    .domain(stateColorBreakpoints) // State-specific breakpoints
-    .range(FILL_COLORS); // Use all custom colors
+    .domain(stateBreakpoints.value)
+    .range(FILL_COLORS);
 
   // Setup zoom behavior
   setupZoom({
@@ -392,11 +559,11 @@ function initMap() {
 
       // Apply transform to all layers
       const mapContainer = svg.value.select('.map-container');
-      if (!mapContainer.empty()) {
-        mapContainer.attr('transform', event.transform);
-      } else {
-        console.error('Map container not found for zoom transform');
+      if (mapContainer.empty()) {
+        return;
       }
+
+      mapContainer.attr('transform', event.transform);
 
       // Update layer visibility based on zoom level
       updateLayerVisibility({
@@ -447,8 +614,8 @@ const mapDeps = computed(() => {
     MAX_ZOOM,
     FILL_COLORS,
     STATUSES,
-    countyColorBreakpoints,
-    stateColorBreakpoints,
+    countyColorBreakpoints: countyBreakpoints.value,
+    stateColorBreakpoints: stateBreakpoints.value,
 
     // Handler functions
     handleStateClick: (event, d) => {
@@ -467,7 +634,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           })
       });
@@ -489,7 +656,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           })
       });
@@ -508,7 +675,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           }),
         svg: svg.value
@@ -529,7 +696,7 @@ const mapDeps = computed(() => {
       return updateDynamicLayers({
         renderStateOverlay,
         renderCountyOverlay,
-        renderLocalityMarkers,
+        renderLocalityMarkers: localityRenderer.value,
         deps: mapDeps.value
       });
     }
@@ -538,6 +705,8 @@ const mapDeps = computed(() => {
 
 // Update the map with current data
 function updateMap() {
+  if (!svg.value) return;
+
   // Clear previous map if any
   svg.value.selectAll('*').remove();
 
@@ -550,6 +719,14 @@ function updateMap() {
 
   const deps = mapDeps.value;
 
+  if (countyColorScale.value) {
+    countyColorScale.value.domain(countyBreakpoints.value);
+  }
+
+  if (stateColorScale.value) {
+    stateColorScale.value.domain(stateBreakpoints.value);
+  }
+
   // Render static layers in the correct order:
   renderStatesLayer(mapContainer, deps);
   renderCountiesLayer(mapContainer, deps);
@@ -559,7 +736,7 @@ function updateMap() {
   updateDynamicLayers({
     renderStateOverlay,
     renderCountyOverlay,
-    renderLocalityMarkers,
+    renderLocalityMarkers: localityRenderer.value,
     deps
   });
 
@@ -588,7 +765,6 @@ function updateMap() {
 
 // Handle follow event from sidebar
 function handleFollow(locationId) {
-  console.log('Follow location:', locationId);
   // Emit event to parent component
   emit('on-follow', locationId);
 }
@@ -601,7 +777,7 @@ function updateActiveLocationStack(newStack) {
     updateDynamicLayers({
       renderStateOverlay,
       renderCountyOverlay,
-      renderLocalityMarkers,
+      renderLocalityMarkers: localityRenderer.value,
       deps: mapDeps.value
     });
   });

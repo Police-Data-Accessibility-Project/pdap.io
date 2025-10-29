@@ -8,7 +8,11 @@ import _isEqual from 'lodash/isEqual';
  *
  * Add the route's path to this set to include in auth redirect logic after routing to `/sign-in`
  */
-const NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS = new Set(['/search/results', '/']);
+const NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS = new Set([
+  '/search/results',
+  '/',
+  '/portals/court-warrant'
+]);
 
 const router = createRouter({
   history: createWebHistory(),

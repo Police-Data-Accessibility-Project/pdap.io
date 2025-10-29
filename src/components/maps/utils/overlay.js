@@ -47,8 +47,9 @@ export function updateDynamicLayers({
 
       // Render locality markers for county or locality selections
       if (
-        activeLocation.type === 'county' ||
-        activeLocation.type === 'locality'
+        (activeLocation.type === 'county' ||
+          activeLocation.type === 'locality') &&
+        typeof renderLocalityMarkers === 'function'
       ) {
         renderLocalityMarkers(container, deps);
       }

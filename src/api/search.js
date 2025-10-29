@@ -1,76 +1,67 @@
 import axios from 'axios';
+
 import { ENDPOINTS } from './constants';
 import { useAuthStore } from '@/stores/auth';
 
 const SEARCH_BASE = `${import.meta.env.VITE_API_URL}/search`;
-const HEADERS = {
-  'Content-Type': 'application/json'
-};
-const HEADERS_BASIC = {
-  ...HEADERS,
+const JSON_HEADERS = { 'Content-Type': 'application/json' };
+const BASIC_HEADERS = {
+  ...JSON_HEADERS,
   authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
-function buildSearchParams(params) {
-  const qs = new URLSearchParams();
-
-  if (params?.location_id) qs.set('location_id', params.location_id);
-
-  const cats = params?.record_categories;
-  if (Array.isArray(cats) && cats.length) {
-    qs.set('record_categories', cats.join(','));
-  } else if (typeof cats === 'string' && cats.length) {
-    // Already comma-separated string
-    qs.set('record_categories', cats);
-  }
-
-  return qs;
+function withAuthHeaders(baseHeaders = JSON_HEADERS) {
+  const authStore = useAuthStore();
+  return {
+    ...baseHeaders,
+    ...(authStore.isAuthenticated()
+      ? { Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}` }
+      : {})
+  };
 }
 
-export async function search(params) {
-  const authStore = useAuthStore();
-
-  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.RESULTS}`, {
-    params: buildSearchParams(params),
-    headers: {
-      ...HEADERS_BASIC,
-      ...(authStore.isAuthenticated()
-        ? {
-            Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
-          }
-        : {})
-    }
+export async function search(params = {}) {
+  return axios.get(SEARCH_BASE, {
+    params: { ...params },
+    headers: withAuthHeaders(BASIC_HEADERS)
   });
 }
 
-export async function searchFederal() {
-  const authStore = useAuthStore();
-
-  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FEDERAL}`, {
-    headers: {
-      ...HEADERS_BASIC,
-      ...(authStore.isAuthenticated()
-        ? {
-            Authorization: `Bearer ${authStore.$state.tokens.accessToken.value}`
-          }
-        : {})
-    }
+export async function searchFederal(params = {}) {
+  return axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FEDERAL}`, {
+    params,
+    headers: withAuthHeaders(BASIC_HEADERS)
   });
 }
 
-export async function followSearch(location_id) {
+export async function followSearch(locationId) {
   const auth = useAuthStore();
 
-  return await axios.post(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, null, {
-    params: {
-      location_id
-    },
+  return axios.post(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, null, {
+    params: { location_id: locationId },
     headers: {
-      ...HEADERS,
+      ...JSON_HEADERS,
       Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
     }
   });
 }
+
+export async function followNationalSearch(params = {}) {
+  const auth = useAuthStore();
+
+  return axios.post(
+    `${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW_NATIONAL}`,
+    null,
+    {
+      params,
+      headers: {
+        ...JSON_HEADERS,
+        Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+      }
+    }
+  );
+}
+
 export async function getFollowedSearches() {
   const auth = useAuthStore();
 
@@ -78,24 +69,38 @@ export async function getFollowedSearches() {
     `${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`,
     {
       headers: {
-        ...HEADERS,
+        ...JSON_HEADERS,
         Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
       }
     }
   );
 
-  response.data.data.map((followed) => {
+  response.data.data.forEach((followed) => {
     Object.entries(followed).forEach(([key, value]) => {
       if (!value) {
         delete followed[key];
       }
     });
-    return followed;
   });
 
   return response;
 }
-export async function getFollowedSearch(location_id) {
+
+export async function getFollowedNationalSearch(params = {}) {
+  const auth = useAuthStore();
+
+  if (!auth.isAuthenticated()) return false;
+
+  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
+    params,
+    headers: {
+      ...JSON_HEADERS,
+      Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+    }
+  });
+}
+
+export async function getFollowedSearch(locationId) {
   const auth = useAuthStore();
 
   if (!auth.isAuthenticated()) return false;
@@ -104,22 +109,20 @@ export async function getFollowedSearch(location_id) {
     const response = await getFollowedSearches();
 
     return response.data.data.find(
-      ({ location_id: followed_id }) =>
-        Number(followed_id) === Number(location_id)
+      ({ location_id: followedId }) => Number(followedId) === Number(locationId)
     );
   } catch (error) {
     return null;
   }
 }
-export async function deleteFollowedSearch(location_id) {
+
+export async function deleteFollowedSearch(locationId) {
   const auth = useAuthStore();
 
-  return await axios.delete(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
-    params: {
-      location_id
-    },
+  return axios.delete(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
+    params: { location_id: locationId },
     headers: {
-      ...HEADERS,
+      ...JSON_HEADERS,
       Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
     }
   });
