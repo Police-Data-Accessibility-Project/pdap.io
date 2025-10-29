@@ -11,11 +11,15 @@ export function getFullLocationText(location) {
     case 'locality': {
       const locality = location.locality_name ?? '';
       const county = location.county_name ?? '';
-      const stateAbbr = STATES_TO_ABBREVIATIONS.get(location.state_name) ?? location.state_name ?? '';
+      const stateAbbr =
+        STATES_TO_ABBREVIATIONS.get(location.state_name) ??
+        location.state_name ??
+        '';
       return [locality, county, stateAbbr].filter(Boolean).join(', ');
     }
     case 'county': {
-      const isLA = (STATES_TO_ABBREVIATIONS.get(location.state_name) ?? '') === 'LA';
+      const isLA =
+        (STATES_TO_ABBREVIATIONS.get(location.state_name) ?? '') === 'LA';
       const countyLabel = location.county_name
         ? `${location.county_name} ${isLA ? 'Parish' : 'County'}`
         : '';
@@ -25,7 +29,7 @@ export function getFullLocationText(location) {
     case 'state':
       return location.state_name ?? '';
     default:
-      return location?.display_name ?? '';
+      return location?.display_name ?? 'United States - All'; // Assumes federal as fallback in case no location data or display name
   }
 }
 

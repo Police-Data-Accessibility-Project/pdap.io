@@ -198,7 +198,7 @@
         </div>
         <ProfileTable v-else :items="recentSearches">
           <template #left="{ item }">
-            <div class="max-1/3">
+            <div v-if="item.record_categories.length" class="max-1/3">
               <p
                 v-for="category of item.record_categories"
                 :key="category"
