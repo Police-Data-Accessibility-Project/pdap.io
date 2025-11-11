@@ -221,7 +221,8 @@ const queryClient = useQueryClient();
 
 const reactiveQuery = computed(() => ({
   location_id: route.query.location_id,
-  record_categories: route.query.record_categories
+  record_categories: route.query.record_categories,
+  record_types: route.query.record_types
 }));
 
 const queryKeySearch = computed(() => [SEARCH, reactiveQuery.value]);
@@ -336,19 +337,24 @@ const fetchingSearch = computed(
 const errorSearch = computed(() => searchError.value || fedSearchError.value);
 
 const searchDataCombined = computed(() => {
-  if (!searchData.value || !fedSearchData.value) return;
+  const baseResults = searchData.value?.response;
+  const federalResults = fedSearchData.value?.data;
 
-  const copy = JSON.parse(JSON.stringify(searchData.value.response));
+  if (!baseResults) {
+    return null;
+  }
 
-  copy.count = copy.count + (fedSearchData.value.data?.count || 0);
-  copy.data.federal = JSON.parse(
-    JSON.stringify(fedSearchData.value.data || {})
-  );
+  const copy = JSON.parse(JSON.stringify(baseResults));
+  const fedData = JSON.parse(JSON.stringify(federalResults || {}));
+
+  copy.count = (copy.count || 0) + (fedData.count || 0);
+  copy.data.federal = fedData;
 
   return groupResultsByAgency(copy);
 });
 
 watch(searchDataCombined, (newValue) => {
+  if (!newValue) return;
   searchStore.setMostRecentSearchIds(getAllIdsSearched(newValue));
 });
 

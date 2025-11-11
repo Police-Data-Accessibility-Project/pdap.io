@@ -93,6 +93,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 import { useSearchStore } from '@/stores/search';
+import { normalizeSearchParams } from '@/util/searchParams';
 
 const route = useRoute();
 const router = useRouter();
@@ -336,15 +337,13 @@ function submit() {
   const effectiveValues = getCheckboxValues();
   const built = buildParams(effectiveValues);
 
-  // Build query string ensuring arrays are appended correctly
-  const params = new URLSearchParams();
-  if (built.location_id) params.set('location_id', built.location_id);
-  if (
-    Array.isArray(built.record_categories) &&
-    built.record_categories.length
-  ) {
-    params.set('record_categories', built.record_categories.join(','));
-  }
+  const params = new URLSearchParams(
+    normalizeSearchParams({
+      location_id: built.location_id,
+      record_categories: built.record_categories,
+      record_types: route.query.record_types
+    })
+  );
 
   const path = `/search/results?${params.toString()}`;
   router.push(path);

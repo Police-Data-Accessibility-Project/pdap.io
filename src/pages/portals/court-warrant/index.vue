@@ -149,8 +149,7 @@ import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 import { SEARCH_FOLLOWED_NATIONAL, PROFILE } from '@/util/queryKeys';
 import { useAuthStore } from '@/stores/auth';
 import CourtWarrantMapSidebar from './_CourtWarrantMapSidebar.vue';
-
-const COURT_WARRANT_RECORD_TYPES = ['Court cases', 'Wanted persons'];
+import { COURT_WARRANT_RECORD_TYPES } from '@/util/constants';
 
 const auth = useAuthStore();
 const queryClient = useQueryClient();
