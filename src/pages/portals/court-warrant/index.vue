@@ -131,6 +131,7 @@
 
 <script setup>
 import { computed, ref, nextTick, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Button, Spinner } from 'pdap-design-system';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
@@ -156,6 +157,8 @@ const queryClient = useQueryClient();
 const searchResultsRef = ref(null);
 const selectedFilter = ref(null);
 const showSidebar = ref(false);
+const route = useRoute();
+const router = useRouter();
 
 const followFeatureEnabled = computed(() =>
   getIsV2FeatureEnabled('ENHANCED_SEARCH')
@@ -712,60 +715,26 @@ async function handleSelectLocation(location) {
 }
 
 function applyLocaleFilter(locale) {
-  if (!groupedResults.value) return;
-
-  if (!groupedResults.value[locale]?.count) {
+  if (!filteredGroupedResults.value?.[locale]?.count) {
     clearFilterAndScroll();
     return;
   }
 
-  const bindings = mapBindings.value;
+  const hasActiveLocationFilter = Boolean(selectedFilter.value);
+  if (!hasActiveLocationFilter) {
+    showSidebar.value = false;
+  }
 
-  if (!bindings) {
-    clearFilterAndScroll();
+  const targetHash = `#${locale}`;
+
+  if (route.hash === targetHash) {
+    nextTick(() => {
+      searchResultsRef.value?.handleScrollTo?.();
+    });
     return;
   }
 
-  if (locale === 'state' && bindings.states?.length) {
-    const state = bindings.states[0];
-    if (state) {
-      selectedFilter.value = {
-        type: 'state',
-        stateIso: (state.state_iso ?? '').toUpperCase()
-      };
-      return;
-    }
-  }
-
-  if (locale === 'county' && bindings.counties?.length) {
-    const county = bindings.counties[0];
-    if (county) {
-      selectedFilter.value = {
-        type: 'county',
-        stateIso: (county.state_iso ?? '').toUpperCase(),
-        countyFips: county.fips != null ? String(county.fips) : null,
-        countyName: normalizeName(county.name)
-      };
-      return;
-    }
-  }
-
-  if (locale === 'locality' && bindings.localities?.length) {
-    const locality = bindings.localities[0];
-    if (locality) {
-      selectedFilter.value = {
-        type: 'locality',
-        localityId: locality.location_id,
-        stateIso: (locality.state_iso ?? '').toUpperCase(),
-        countyFips:
-          locality.county_fips != null ? String(locality.county_fips) : null,
-        countyName: normalizeName(locality.county_name)
-      };
-      return;
-    }
-  }
-
-  clearFilterAndScroll();
+  router.replace({ ...route, hash: targetHash });
 }
 
 function handleActiveLocationChange(isActive) {
