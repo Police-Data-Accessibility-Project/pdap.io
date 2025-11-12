@@ -51,10 +51,9 @@
       @submit="submit"
     >
       <InputCheckbox
-        v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
+        v-for="{ id, name, label } in CHECKBOXES"
         :id="id"
         :key="name"
-        :default-checked="defaultChecked"
         :name="name"
       >
         <template #label>
@@ -84,7 +83,7 @@ import {
   RecordTypeIcon
 } from 'pdap-design-system';
 import Typeahead from '@/components/TypeaheadInput.vue';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, nextTick } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
@@ -110,58 +109,52 @@ const emit = defineEmits(['searched']);
 /* constants */
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
 const CHECKBOXES = [
-  {
-    id: 'all-data-types',
-    get defaultChecked() {
-      return (
-        route.query.record_categories?.includes(this.label) ||
-        !route.query.record_categories?.length
-      );
-    },
-    name: 'all-data-types',
-    label: 'All data types'
-  },
+  { id: 'all-data-types', name: 'all-data-types', label: 'All data types' },
   {
     id: 'interactions',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'police-and-public-interactions',
     label: 'Police & public interactions'
   },
   {
     id: 'info-officers',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'info-about-officers',
     label: 'Info about officers'
   },
   {
     id: 'info-agencies',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'info-about-agencies',
     label: 'Info about agencies'
   },
   {
     id: 'agency-published-resources',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'agency-published-resources',
     label: 'Agency-published resources'
   },
   {
     id: 'jails-and-courts',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'jails-and-courts',
     label: 'Jails & Courts'
   }
 ];
+
+function normalizeCategory(value) {
+  if (!value) return '';
+  try {
+    return decodeURIComponent(value.replace(/\+/g, ' ')).trim().toLowerCase();
+  } catch (error) {
+    return value.replace(/\+/g, ' ').trim().toLowerCase();
+  }
+}
+
+const routeCategories = computed(() => {
+  const raw = route.query.record_categories;
+  if (!raw) return [];
+  const entries = Array.isArray(raw) ? raw : raw.split(',');
+  return entries
+    .flatMap((entry) => entry.split(','))
+    .map(normalizeCategory)
+    .filter(Boolean);
+});
 
 const items = ref([]);
 const selectedRecord = ref();
@@ -170,8 +163,17 @@ const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
 const isEditingLocation = ref(false);
 const hasUpdatedCategories = ref(false);
+const hasLocation = computed(() =>
+  Boolean(
+    selectedRecord.value ||
+      initiallySearchedRecord.value ||
+      searchStore.activeLocation?.location_id ||
+      route.query.location_id
+  )
+);
+
 const isButtonDisabled = computed(() => {
-  if (!selectedRecord.value && !initiallySearchedRecord.value) return true;
+  if (!hasLocation.value) return true;
 
   const selectedRecordEqualsInitiallySearched = _isEqual(
     selectedRecord.value,
@@ -198,7 +200,7 @@ const isButtonDisabled = computed(() => {
 });
 const queryClient = useQueryClient();
 const activeLocationId = computed(
-  () => searchStore.activeLocation?.location_id ?? null
+  () => searchStore.activeLocation?.location_id ?? route.query.location_id ?? null
 );
 const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
@@ -301,30 +303,30 @@ function clearSelectedLocation() {
   typeaheadRef.value?.clearInput();
 }
 
-onMounted(() => {
-  // Sync values state with default checked state.
-  const defaultChecked = {};
-  CHECKBOXES.forEach(({ name, label }) => {
-    if (route.query.record_categories?.includes(label)) {
-      defaultChecked[name] = true;
-    }
-  });
-  formRef.value.setValues(defaultChecked);
-});
+onMounted(syncCategoriesFromRoute);
 
-// Keep checkbox state in sync with URL query changes
-watch(
-  () => route.query.record_categories,
-  () => {
-    const defaultChecked = {};
-    CHECKBOXES.forEach(({ name, label }) => {
-      if (route.query.record_categories?.includes(label)) {
-        defaultChecked[name] = true;
-      }
-    });
-    formRef.value.setValues(defaultChecked);
-  }
-);
+watch(() => route.query.record_categories, syncCategoriesFromRoute);
+
+async function syncCategoriesFromRoute() {
+  await nextTick();
+  if (!formRef.value) return;
+  const formEl = document.getElementById('pdap-data-sources-search');
+  if (!formEl) return;
+
+  const normalized = routeCategories.value;
+  CHECKBOXES.forEach(({ name, label }) => {
+    const input = formEl.querySelector(`input[name="${name}"]`);
+    if (!input) return;
+    if (name === 'all-data-types') {
+      input.checked = normalized.length === 0;
+    } else {
+      input.checked = normalized.includes(normalizeCategory(label));
+    }
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  hasUpdatedCategories.value = false;
+}
 
 function submit() {
   // Build values from actual DOM state to avoid any partial value issues
@@ -361,7 +363,12 @@ function buildParams(values) {
   const obj = {};
 
   /* Handle record from typeahead input */
-  const selected = selectedRecord.value ?? initiallySearchedRecord.value;
+  const selected =
+    selectedRecord.value ??
+    initiallySearchedRecord.value ??
+    (activeLocationId.value
+      ? { location_id: activeLocationId.value }
+      : null);
 
   if (!selected) return obj;
 

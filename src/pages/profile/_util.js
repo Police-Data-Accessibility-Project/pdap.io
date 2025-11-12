@@ -10,7 +10,7 @@ export function makeRawParams(search = {}) {
     : [];
 
   return {
-    location_id: search.location_id,
+    location_id: search.location_info.location_id,
     record_types: search.record_types,
     record_categories: categories.length ? [...categories] : undefined
   };
