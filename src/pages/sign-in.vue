@@ -120,15 +120,20 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ref, watch } from 'vue';
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
+import { SEARCH_FOLLOWED_NATIONAL } from '@/util/queryKeys';
 
 const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
+const queryClient = useQueryClient();
+
+const invalidateCourtWarrantFollowQueries = () =>
+  queryClient.invalidateQueries({ queryKey: [SEARCH_FOLLOWED_NATIONAL] });
 
 // Constants
 const VALIDATION_SCHEMA = [
@@ -164,6 +169,7 @@ const {
   // onError: (error) => {},
   onSuccess: (data) => {
     if (!data || data?.userExists) return;
+    invalidateCourtWarrantFollowQueries();
     router.replace(auth.redirectTo ?? { path: '/profile' });
   }
 });
@@ -176,6 +182,7 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
         'Error logging in. Please ensure your password is correct and try again.';
     },
     onSuccess: () => {
+      invalidateCourtWarrantFollowQueries();
       router.replace(auth.redirectTo ?? '/profile');
     }
   });

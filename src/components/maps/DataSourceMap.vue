@@ -176,6 +176,21 @@ const emit = defineEmits([
 
 const searchStore = useSearchStore();
 
+function toStoreLocation(location) {
+  if (!location) return null;
+  const source = location.data ? { ...location.data } : { ...location };
+  const rawId =
+    source?.location_id ?? source?.id ?? location?.location_id ?? location?.id;
+
+  if (rawId === undefined || rawId === null) return null;
+
+  return {
+    ...source,
+    type: location?.type ?? source?.type ?? null,
+    location_id: String(rawId)
+  };
+}
+
 // Reactive state
 const mapContainer = ref(null);
 const width = ref(960);
@@ -413,14 +428,11 @@ watch(
       const activeLocation = newStack[newStack.length - 1];
       if (activeLocation) {
         emit('on-select-location', activeLocation);
-        // Set activeLocationId in store when location stack changes
-        if (activeLocation.data?.location_id) {
-          searchStore.setActiveLocationId(activeLocation.data.location_id);
-        }
+        const normalized = toStoreLocation(activeLocation);
+        searchStore.setActiveLocation(normalized);
       }
     } else {
-      // Clear activeLocationId when stack is empty
-      searchStore.setActiveLocationId(null);
+      searchStore.setActiveLocation(null);
       emit('on-select-location', null);
     }
   },
@@ -452,6 +464,7 @@ watch(
       activeLocationStack.value = [];
       emit('has-active-location-change', false);
       emit('on-select-location', null);
+      searchStore.setActiveLocation(null);
       nextTick(() => {
         mapDeps.value.resetZoom();
         updateMap();
@@ -532,7 +545,7 @@ function initMap() {
       ) {
         // We're zooming out (current zoom < previous zoom) and below threshold
         // Clear activeLocationId from store
-        searchStore.setActiveLocationId(null);
+        searchStore.setActiveLocation(null);
         // Clear location_id from URL directly using window.history
         url.searchParams.delete('location_id');
         window.history.replaceState({}, '', url);

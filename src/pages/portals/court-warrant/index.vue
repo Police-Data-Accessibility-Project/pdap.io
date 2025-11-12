@@ -472,9 +472,9 @@ function ensureAllLocationBuckets(results) {
   return enriched;
 }
 
-const groupedResults = computed(() =>
-  ensureAllLocationBuckets(resultsQuery.data.value?.grouped)
-);
+// const groupedResults = computed(() =>
+//  ensureAllLocationBuckets(resultsQuery.data.value?.grouped)
+// );
 
 const filteredRawResults = computed(() => {
   const raw = resultsQuery.data.value?.raw;

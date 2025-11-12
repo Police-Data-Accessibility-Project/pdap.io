@@ -369,6 +369,17 @@ watch(
   { immediate: true }
 );
 
+// When the search API returns a full location payload, hydrate the store
+watch(
+  () => searchData.value?.location,
+  (location) => {
+    if (location) {
+      searchStore.setActiveLocation(location);
+    }
+  },
+  { immediate: true }
+);
+
 // Set default hash on initial page load if no hash is present
 watch(
   () => searchDataCombined.value,

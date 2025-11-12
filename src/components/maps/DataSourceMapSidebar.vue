@@ -29,6 +29,12 @@
         v-if="activeLocation"
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}#${activeLocationType}`"
         class="pdap-button-primary mb-2 w-full max-w-full text-center gap-2"
+        @click="
+          setActiveLocationForNavigation(
+            activeLocation?.data,
+            activeLocationType
+          )
+        "
       >
         View
         {{
@@ -113,7 +119,7 @@
                   ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
                   : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
               ]"
-              @click.stop
+              @click.stop="setActiveLocationForNavigation(county, 'county')"
             >
               <span v-show="county">
                 {{ county?.source_count }}
@@ -150,7 +156,7 @@
                 ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
                 : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
             ]"
-            @click.stop
+            @click.stop="setActiveLocationForNavigation(locality, 'locality')"
           >
             <span v-show="locality">
               View {{ locality?.source_count }}
@@ -238,6 +244,7 @@ import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import pluralize from '@/util/pluralize';
 import { getFollowedSearch } from '@/api/search';
 import { useAuthStore } from '@/stores/auth';
+import { useSearchStore } from '@/stores/search';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faArrowRight,
@@ -252,6 +259,7 @@ import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const route = useRoute();
 const auth = useAuthStore();
+const searchStore = useSearchStore();
 const props = defineProps({
   locations: {
     type: Array,
@@ -406,6 +414,17 @@ const federalSourcesByAgency = computed(() => {
 const federalSourceCount = computed(() => {
   return props.federal ? props.federal.length : 0;
 });
+
+function setActiveLocationForNavigation(location, type) {
+  if (!location) return;
+  const locationId =
+    location.location_id ?? location.id ?? location.data?.location_id;
+  searchStore.setActiveLocation({
+    ...location,
+    type: type ?? location.type ?? null,
+    location_id: locationId ? String(locationId) : locationId
+  });
+}
 
 // Handle selecting a location from the list
 function selectLocation(type, item) {

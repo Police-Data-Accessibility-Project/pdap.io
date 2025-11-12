@@ -8,7 +8,8 @@
         ref="typeaheadRef"
         :data-test="TEST_IDS.search_typeahead"
         :format-item-for-display="
-          (item) => item?.display_name ?? item?.name ?? ''
+          (item) =>
+            item?.display_name || item?.name || getFullLocationText(item)
         "
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
@@ -88,12 +89,12 @@ import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { getLocation } from '@/api/locations';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 import { useSearchStore } from '@/stores/search';
-import { normalizeSearchParams } from '@/util/searchParams';
+import { normalizeParamsForSearch } from '@/util/searchParams';
+import { getFullLocationText } from '@/util/locationFormatters';
 
 const route = useRoute();
 const router = useRouter();
@@ -167,6 +168,7 @@ const selectedRecord = ref();
 const formRef = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
+const isEditingLocation = ref(false);
 const hasUpdatedCategories = ref(false);
 const isButtonDisabled = computed(() => {
   if (!selectedRecord.value && !initiallySearchedRecord.value) return true;
@@ -195,30 +197,13 @@ const isButtonDisabled = computed(() => {
   return false;
 });
 const queryClient = useQueryClient();
+const activeLocationId = computed(
+  () => searchStore.activeLocation?.location_id ?? null
+);
 const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
-const queryKeyLocation = computed(() => [
-  LOCATION,
-  searchStore.activeLocationId
-]);
-
-const { data: locationData, refetch } = useQuery({
-  queryFn: async () => {
-    const id = route.query.location_id ?? searchStore.activeLocationId;
-    if (!id) return null;
-
-    const l = await getLocation(id);
-    return l?.data;
-  },
-  queryKey: queryKeyLocation,
-  enabled: !!searchStore.activeLocationId || !!route.query.location_id,
-  staleTime: 60 * 60 * 1000, // 1 hour
-  onError: (err) => {
-    console.error('Error fetching location:', err);
-  }
-});
 
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {
@@ -255,55 +240,65 @@ const fetchTypeaheadResults = _debounce(
 );
 
 watch(
-  locationData,
-  (data) => {
-    // Set the state first
-    items.value = [];
-    data = data?.location_id
-      ? data
-      : { ...data, location_id: searchStore.activeLocationId };
-    selectedRecord.value = data;
-    initiallySearchedRecord.value = data;
-
-    // Force the typeahead to update in the next tick
-    if (typeaheadRef.value) {
-      typeaheadRef.value.selectItem(data);
+  () => searchStore.activeLocation,
+  (location) => {
+    if (!location) {
+      if (!route.query.location_id) {
+        clearSelectedLocation();
+      }
+      return;
     }
+
+    applyLocationToForm(location);
   },
   { immediate: true }
 );
 
-watch(
-  () => searchStore.activeLocationId,
-  (newLocationId) => {
-    if (typeaheadRef.value && !newLocationId) {
-      // Clear the typeahead when location_id is removed
-      typeaheadRef.value.clearInput();
-      selectedRecord.value = null;
-      initiallySearchedRecord.value = null;
-    }
+// We rely entirely on the search store to supply the active location.
+// Other parts of the app (maps, results pages, typeahead) are responsible
+// for hydrating the store when needed.
 
-    updateFromLocationId(newLocationId);
-  },
-  {
-    immediate: true
+function normalizeLocationRecord(location) {
+  if (!location) return null;
+  const locationId =
+    location.location_id ?? location.id ?? location.data?.location_id;
+  if (!locationId) return null;
+
+  return {
+    ...location,
+    location_id: String(locationId)
+  };
+}
+
+function applyLocationToForm(location) {
+  const normalized = normalizeLocationRecord(location);
+  if (!normalized) return;
+
+  const locationChanged =
+    normalized.location_id !== selectedRecord.value?.location_id;
+
+  if (isEditingLocation.value && !locationChanged) {
+    return;
   }
-);
 
-// Function to update typeahead from location ID
-async function updateFromLocationId(id) {
-  if (!id) return;
+  items.value = [];
+  initiallySearchedRecord.value = normalized;
+  selectedRecord.value = normalized;
+  hasUpdatedCategories.value = false;
+  isEditingLocation.value = false;
 
-  // Check if we already have this location in cache
-  const cachedData = queryClient.getQueryData([LOCATION, id]);
-
-  if (cachedData && typeaheadRef.value) {
-    // If we have cached data, use it directly without refetching
-    selectedRecord.value = cachedData;
-    typeaheadRef.value.selectItem(cachedData);
-  } else {
-    refetch(id);
+  if (typeaheadRef.value) {
+    typeaheadRef.value.selectItem(normalized);
   }
+}
+
+function clearSelectedLocation() {
+  items.value = [];
+  selectedRecord.value = null;
+  initiallySearchedRecord.value = null;
+  hasUpdatedCategories.value = false;
+  isEditingLocation.value = false;
+  typeaheadRef.value?.clearInput();
 }
 
 onMounted(() => {
@@ -338,7 +333,7 @@ function submit() {
   const built = buildParams(effectiveValues);
 
   const params = new URLSearchParams(
-    normalizeSearchParams({
+    normalizeParamsForSearch({
       location_id: built.location_id,
       record_categories: built.record_categories,
       record_types: route.query.record_types
@@ -370,7 +365,7 @@ function buildParams(values) {
 
   if (!selected) return obj;
 
-  obj.location_id = selected.location_id ?? searchStore.activeLocationId;
+  obj.location_id = selected.location_id ?? activeLocationId.value;
 
   /* Handle form values from checkboxes */
   // Return obj without setting record_types if 'all-data-types' is true or no checkboxes checked
@@ -431,8 +426,13 @@ function onChange(values, event) {
 }
 
 function onSelectRecord(item) {
-  selectedRecord.value = item;
+  const normalized = normalizeLocationRecord(item);
+  selectedRecord.value = normalized;
   items.value = [];
+  isEditingLocation.value = true;
+  if (normalized) {
+    searchStore.setActiveLocation(normalized);
+  }
 }
 </script>
 
