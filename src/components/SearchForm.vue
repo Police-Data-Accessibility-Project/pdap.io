@@ -200,7 +200,8 @@ const isButtonDisabled = computed(() => {
 });
 const queryClient = useQueryClient();
 const activeLocationId = computed(
-  () => searchStore.activeLocation?.location_id ?? route.query.location_id ?? null
+  () =>
+    searchStore.activeLocation?.location_id ?? route.query.location_id ?? null
 );
 const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
@@ -366,9 +367,7 @@ function buildParams(values) {
   const selected =
     selectedRecord.value ??
     initiallySearchedRecord.value ??
-    (activeLocationId.value
-      ? { location_id: activeLocationId.value }
-      : null);
+    (activeLocationId.value ? { location_id: activeLocationId.value } : null);
 
   if (!selected) return obj;
 
