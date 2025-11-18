@@ -91,7 +91,7 @@ export async function getFollowedNationalSearch(params = {}) {
 
   if (!auth.isAuthenticated()) return false;
 
-  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW}`, {
+  return await axios.get(`${SEARCH_BASE}/${ENDPOINTS.SEARCH.FOLLOW_NATIONAL}`, {
     params,
     headers: {
       ...JSON_HEADERS,

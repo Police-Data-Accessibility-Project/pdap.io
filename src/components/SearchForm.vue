@@ -8,7 +8,8 @@
         ref="typeaheadRef"
         :data-test="TEST_IDS.search_typeahead"
         :format-item-for-display="
-          (item) => item?.display_name ?? item?.name ?? ''
+          (item) =>
+            item?.display_name || item?.name || getFullLocationText(item)
         "
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
@@ -50,10 +51,9 @@
       @submit="submit"
     >
       <InputCheckbox
-        v-for="{ id, defaultChecked, name, label } in CHECKBOXES"
+        v-for="{ id, name, label } in CHECKBOXES"
         :id="id"
         :key="name"
-        :default-checked="defaultChecked"
         :name="name"
       >
         <template #label>
@@ -83,16 +83,17 @@ import {
   RecordTypeIcon
 } from 'pdap-design-system';
 import Typeahead from '@/components/TypeaheadInput.vue';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, nextTick } from 'vue';
 import _debounce from 'lodash/debounce';
 import _isEqual from 'lodash/isEqual';
 import { useRouter, useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { getLocation } from '@/api/locations';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 import { useSearchStore } from '@/stores/search';
+import { normalizeParamsForSearch } from '@/util/searchParams';
+import { getFullLocationText } from '@/util/locationFormatters';
 
 const route = useRoute();
 const router = useRouter();
@@ -108,67 +109,71 @@ const emit = defineEmits(['searched']);
 /* constants */
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
 const CHECKBOXES = [
-  {
-    id: 'all-data-types',
-    get defaultChecked() {
-      return (
-        route.query.record_categories?.includes(this.label) ||
-        !route.query.record_categories?.length
-      );
-    },
-    name: 'all-data-types',
-    label: 'All data types'
-  },
+  { id: 'all-data-types', name: 'all-data-types', label: 'All data types' },
   {
     id: 'interactions',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'police-and-public-interactions',
     label: 'Police & public interactions'
   },
   {
     id: 'info-officers',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'info-about-officers',
     label: 'Info about officers'
   },
   {
     id: 'info-agencies',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'info-about-agencies',
     label: 'Info about agencies'
   },
   {
     id: 'agency-published-resources',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'agency-published-resources',
     label: 'Agency-published resources'
   },
   {
     id: 'jails-and-courts',
-    get defaultChecked() {
-      return route.query.record_categories?.includes(this.label);
-    },
     name: 'jails-and-courts',
     label: 'Jails & Courts'
   }
 ];
+
+function normalizeCategory(value) {
+  if (!value) return '';
+  try {
+    return decodeURIComponent(value.replace(/\+/g, ' ')).trim().toLowerCase();
+  } catch (error) {
+    return value.replace(/\+/g, ' ').trim().toLowerCase();
+  }
+}
+
+const routeCategories = computed(() => {
+  const raw = route.query.record_categories;
+  if (!raw) return [];
+  const entries = Array.isArray(raw) ? raw : raw.split(',');
+  return entries
+    .flatMap((entry) => entry.split(','))
+    .map(normalizeCategory)
+    .filter(Boolean);
+});
 
 const items = ref([]);
 const selectedRecord = ref();
 const formRef = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
+const isEditingLocation = ref(false);
 const hasUpdatedCategories = ref(false);
+const hasLocation = computed(() =>
+  Boolean(
+    selectedRecord.value ||
+      initiallySearchedRecord.value ||
+      searchStore.activeLocation?.location_id ||
+      route.query.location_id
+  )
+);
+
 const isButtonDisabled = computed(() => {
-  if (!selectedRecord.value && !initiallySearchedRecord.value) return true;
+  if (!hasLocation.value) return true;
 
   const selectedRecordEqualsInitiallySearched = _isEqual(
     selectedRecord.value,
@@ -194,30 +199,14 @@ const isButtonDisabled = computed(() => {
   return false;
 });
 const queryClient = useQueryClient();
+const activeLocationId = computed(
+  () =>
+    searchStore.activeLocation?.location_id ?? route.query.location_id ?? null
+);
 const queryKeyTypeahead = computed(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
-const queryKeyLocation = computed(() => [
-  LOCATION,
-  searchStore.activeLocationId
-]);
-
-const { data: locationData, refetch } = useQuery({
-  queryFn: async () => {
-    const id = route.query.location_id ?? searchStore.activeLocationId;
-    if (!id) return null;
-
-    const l = await getLocation(id);
-    return l?.data;
-  },
-  queryKey: queryKeyLocation,
-  enabled: !!searchStore.activeLocationId || !!route.query.location_id,
-  staleTime: 60 * 60 * 1000, // 1 hour
-  onError: (err) => {
-    console.error('Error fetching location:', err);
-  }
-});
 
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {
@@ -254,81 +243,91 @@ const fetchTypeaheadResults = _debounce(
 );
 
 watch(
-  locationData,
-  (data) => {
-    // Set the state first
-    items.value = [];
-    data = data?.location_id
-      ? data
-      : { ...data, location_id: searchStore.activeLocationId };
-    selectedRecord.value = data;
-    initiallySearchedRecord.value = data;
-
-    // Force the typeahead to update in the next tick
-    if (typeaheadRef.value) {
-      typeaheadRef.value.selectItem(data);
+  () => searchStore.activeLocation,
+  (location) => {
+    if (!location) {
+      if (!route.query.location_id) {
+        clearSelectedLocation();
+      }
+      return;
     }
+
+    applyLocationToForm(location);
   },
   { immediate: true }
 );
 
-watch(
-  () => searchStore.activeLocationId,
-  (newLocationId) => {
-    if (typeaheadRef.value && !newLocationId) {
-      // Clear the typeahead when location_id is removed
-      typeaheadRef.value.clearInput();
-      selectedRecord.value = null;
-      initiallySearchedRecord.value = null;
-    }
+// We rely entirely on the search store to supply the active location.
+// Other parts of the app (maps, results pages, typeahead) are responsible
+// for hydrating the store when needed.
 
-    updateFromLocationId(newLocationId);
-  },
-  {
-    immediate: true
+function normalizeLocationRecord(location) {
+  if (!location) return null;
+  const locationId =
+    location.location_id ?? location.id ?? location.data?.location_id;
+  if (!locationId) return null;
+
+  return {
+    ...location,
+    location_id: String(locationId)
+  };
+}
+
+function applyLocationToForm(location) {
+  const normalized = normalizeLocationRecord(location);
+  if (!normalized) return;
+
+  const locationChanged =
+    normalized.location_id !== selectedRecord.value?.location_id;
+
+  if (isEditingLocation.value && !locationChanged) {
+    return;
   }
-);
 
-// Function to update typeahead from location ID
-async function updateFromLocationId(id) {
-  if (!id) return;
+  items.value = [];
+  initiallySearchedRecord.value = normalized;
+  selectedRecord.value = normalized;
+  hasUpdatedCategories.value = false;
+  isEditingLocation.value = false;
 
-  // Check if we already have this location in cache
-  const cachedData = queryClient.getQueryData([LOCATION, id]);
-
-  if (cachedData && typeaheadRef.value) {
-    // If we have cached data, use it directly without refetching
-    selectedRecord.value = cachedData;
-    typeaheadRef.value.selectItem(cachedData);
-  } else {
-    refetch(id);
+  if (typeaheadRef.value) {
+    typeaheadRef.value.selectItem(normalized);
   }
 }
 
-onMounted(() => {
-  // Sync values state with default checked state.
-  const defaultChecked = {};
-  CHECKBOXES.forEach(({ name, label }) => {
-    if (route.query.record_categories?.includes(label)) {
-      defaultChecked[name] = true;
-    }
-  });
-  formRef.value.setValues(defaultChecked);
-});
+function clearSelectedLocation() {
+  items.value = [];
+  selectedRecord.value = null;
+  initiallySearchedRecord.value = null;
+  hasUpdatedCategories.value = false;
+  isEditingLocation.value = false;
+  typeaheadRef.value?.clearInput();
+}
 
-// Keep checkbox state in sync with URL query changes
-watch(
-  () => route.query.record_categories,
-  () => {
-    const defaultChecked = {};
-    CHECKBOXES.forEach(({ name, label }) => {
-      if (route.query.record_categories?.includes(label)) {
-        defaultChecked[name] = true;
-      }
-    });
-    formRef.value.setValues(defaultChecked);
-  }
-);
+onMounted(syncCategoriesFromRoute);
+
+watch(() => route.query.record_categories, syncCategoriesFromRoute);
+
+async function syncCategoriesFromRoute() {
+  await nextTick();
+  if (!formRef.value) return;
+  const formEl = document.getElementById('pdap-data-sources-search');
+  if (!formEl) return;
+
+  const normalized = routeCategories.value;
+  CHECKBOXES.forEach(({ name, label }) => {
+    const input = formEl.querySelector(`input[name="${name}"]`);
+    if (!input) return;
+    if (name === 'all-data-types') {
+      input.checked = normalized.length === 0;
+    } else {
+      input.checked = normalized.includes(normalizeCategory(label));
+    }
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  hasUpdatedCategories.value = false;
+}
 
 function submit() {
   // Build values from actual DOM state to avoid any partial value issues
@@ -336,15 +335,13 @@ function submit() {
   const effectiveValues = getCheckboxValues();
   const built = buildParams(effectiveValues);
 
-  // Build query string ensuring arrays are appended correctly
-  const params = new URLSearchParams();
-  if (built.location_id) params.set('location_id', built.location_id);
-  if (
-    Array.isArray(built.record_categories) &&
-    built.record_categories.length
-  ) {
-    params.set('record_categories', built.record_categories.join(','));
-  }
+  const params = new URLSearchParams(
+    normalizeParamsForSearch({
+      location_id: built.location_id,
+      record_categories: built.record_categories,
+      record_types: route.query.record_types
+    })
+  );
 
   const path = `/search/results?${params.toString()}`;
   router.push(path);
@@ -367,11 +364,14 @@ function buildParams(values) {
   const obj = {};
 
   /* Handle record from typeahead input */
-  const selected = selectedRecord.value ?? initiallySearchedRecord.value;
+  const selected =
+    selectedRecord.value ??
+    initiallySearchedRecord.value ??
+    (activeLocationId.value ? { location_id: activeLocationId.value } : null);
 
   if (!selected) return obj;
 
-  obj.location_id = selected.location_id ?? searchStore.activeLocationId;
+  obj.location_id = selected.location_id ?? activeLocationId.value;
 
   /* Handle form values from checkboxes */
   // Return obj without setting record_types if 'all-data-types' is true or no checkboxes checked
@@ -432,8 +432,13 @@ function onChange(values, event) {
 }
 
 function onSelectRecord(item) {
-  selectedRecord.value = item;
+  const normalized = normalizeLocationRecord(item);
+  selectedRecord.value = normalized;
   items.value = [];
+  isEditingLocation.value = true;
+  if (normalized) {
+    searchStore.setActiveLocation(normalized);
+  }
 }
 </script>
 

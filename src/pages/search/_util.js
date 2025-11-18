@@ -35,6 +35,7 @@ export function groupResultsByAgency(results) {
 }
 
 export function normalizeLocaleForHash(locale, results) {
+  if (!locale || !results) return null;
   if (results.data[locale]?.count) return locale;
 
   // Go to narrower categories first

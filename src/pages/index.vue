@@ -31,8 +31,8 @@
           :use-dynamic-breakpoints="true"
           @on-follow="(location_id) => followMutation.mutate(location_id)"
           @on-select-location="
-            ({ data: { location_id } }) =>
-              search.setActiveLocationId(location_id)
+            (payload) =>
+              search.setActiveLocation(payload?.data ?? payload ?? null)
           "
         />
       </div>
