@@ -97,9 +97,11 @@
           @click="toggleAggregatedSection"
         >
           <div class="flex flex-col gap-1">
-            <span class="text-xs font-semibold uppercase tracking-wide text-wineneutral-500"
-              >Aggregated sources</span
+            <span
+              class="text-xs font-semibold uppercase tracking-wide text-wineneutral-500"
             >
+              Aggregated sources
+            </span>
             <span class="text-lg font-semibold text-wineneutral-900">
               {{ headerTitle }}
             </span>
@@ -164,7 +166,9 @@
                         <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
                       </a>
                       <router-link
-                        v-if="(source.id ?? source.source_id)?.toString().trim()"
+                        v-if="
+                          (source.id ?? source.source_id)?.toString().trim()
+                        "
                         :to="`/data-source/${source.id ?? source.source_id}`"
                         class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
                         @click.stop
