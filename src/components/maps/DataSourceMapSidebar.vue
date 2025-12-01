@@ -86,8 +86,109 @@
     <hr class="mb-4 border-wineneutral-400" />
 
     <!-- 2. Content section -->
-    <!-- State level: show counties -->
     <div>
+      <div
+        v-if="shouldShowAggregatedSection"
+        class="w-full border-b border-wineneutral-300 pb-3 mb-3"
+      >
+        <button
+          class="w-full flex items-start justify-between gap-4 px-4 py-2 rounded-sm text-left hover:bg-wineneutral-100 focus:bg-wineneutral-100"
+          type="button"
+          @click="toggleAggregatedSection"
+        >
+          <div class="flex flex-col gap-1">
+            <span
+              class="text-xs font-semibold uppercase tracking-wide text-wineneutral-500"
+            >
+              Aggregated sources
+            </span>
+            <span class="text-lg font-semibold text-wineneutral-900">
+              {{ headerTitle }}
+            </span>
+            <span class="text-sm text-wineneutral-600">
+              Statewide or countywide sources covering this selection.
+            </span>
+          </div>
+          <FontAwesomeIcon
+            :icon="aggregatedSectionExpanded ? faChevronUp : faChevronDown"
+            class="text-wineneutral-600 mt-1"
+          />
+        </button>
+        <div v-if="aggregatedSectionExpanded" class="mt-3">
+          <p
+            v-if="isAggregatedSourcesLoading"
+            class="px-4 text-sm text-wineneutral-600"
+          >
+            Loading aggregated sources…
+          </p>
+          <p
+            v-else-if="isAggregatedSourcesError"
+            class="px-4 text-sm text-status-error-700"
+          >
+            Unable to load aggregated sources. Please try again.
+          </p>
+          <template v-else>
+            <div
+              v-if="aggregatedSourceGroups.length"
+              class="flex flex-col w-full"
+            >
+              <div
+                v-for="group in aggregatedSourceGroups"
+                :key="group.agency"
+                class="mb-4"
+              >
+                <h3
+                  class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4"
+                >
+                  {{ group.agency }}
+                </h3>
+                <ul class="px-4 space-y-4">
+                  <li
+                    v-for="source in group.sources"
+                    :key="source.id ?? source.source_id"
+                    class="text-sm mb-2"
+                  >
+                    <h4
+                      class="font-semibold text-lg text-wineneutral-950 capitalize tracking-normal mb-1"
+                    >
+                      {{ source.data_source_name }}
+                    </h4>
+                    <span class="flex gap-2 flex-wrap">
+                      <a
+                        v-if="source.source_url"
+                        :href="source.source_url"
+                        class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100 dark:text-wineneutral-950 dark:bg-brand-gold-800"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        @click.stop
+                      >
+                        <span>Visit</span>
+                        <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+                      </a>
+                      <router-link
+                        v-if="
+                          (source.id ?? source.source_id)?.toString().trim()
+                        "
+                        :to="`/data-source/${source.id ?? source.source_id}`"
+                        class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
+                        @click.stop
+                      >
+                        Details
+                        <FontAwesomeIcon :icon="faCircleInfo" />
+                      </router-link>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p v-else class="px-4 text-sm text-wineneutral-600">
+              No aggregated sources yet for this
+              {{ activeLocationType === 'state' ? 'state' : 'county' }}.
+            </p>
+          </template>
+        </div>
+      </div>
+      <!-- State level: show counties -->
       <div
         v-if="activeLocationType === 'state' && countiesInState.length"
         class="flex flex-col w-full"
@@ -237,12 +338,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Button } from 'pdap-design-system';
 import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import pluralize from '@/util/pluralize';
-import { getFollowedSearch } from '@/api/search';
+import { getFollowedSearch, search } from '@/api/search';
 import { useAuthStore } from '@/stores/auth';
 import { useSearchStore } from '@/stores/search';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -251,7 +352,9 @@ import {
   faChevronLeft,
   faMagnifyingGlass,
   faArrowUpRightFromSquare,
-  faCircleInfo
+  faCircleInfo,
+  faChevronDown,
+  faChevronUp
 } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/vue-query';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
@@ -347,6 +450,95 @@ const headerTitle = computed(() => {
 
   return '';
 });
+
+const activeLocationId = computed(() => {
+  if (!activeLocation.value) return null;
+  const possibleTargets = [
+    activeLocation.value?.data?.location_id,
+    activeLocation.value?.data?.id,
+    activeLocation.value?.location_id,
+    activeLocation.value?.id
+  ];
+  const resolvedId = possibleTargets.find(
+    (value) => value !== undefined && value !== null
+  );
+  return resolvedId !== undefined && resolvedId !== null
+    ? String(resolvedId)
+    : null;
+});
+
+const shouldShowAggregatedSection = computed(() => {
+  if (!activeLocation.value) return false;
+  return (
+    !!activeLocationId.value &&
+    (activeLocationType.value === 'state' ||
+      activeLocationType.value === 'county')
+  );
+});
+
+const aggregatedSectionExpanded = ref(false);
+
+watch(
+  () => [activeLocationId.value, activeLocationType.value],
+  () => {
+    aggregatedSectionExpanded.value = false;
+  }
+);
+
+const aggregatedQueryKey = computed(() => [
+  'mapAggregatedSources',
+  activeLocationId.value ?? 'none'
+]);
+const aggregatedQueryEnabled = computed(
+  () => shouldShowAggregatedSection.value && aggregatedSectionExpanded.value
+);
+
+const {
+  data: aggregatedSourcesResponse,
+  isLoading: isAggregatedSourcesLoading,
+  isError: isAggregatedSourcesError
+} = useQuery({
+  queryKey: aggregatedQueryKey,
+  queryFn: async () => {
+    if (!activeLocationId.value) return null;
+    const response = await search({
+      location_id: activeLocationId.value
+    });
+    return response.data;
+  },
+  enabled: aggregatedQueryEnabled,
+  staleTime: 5 * 60 * 1000
+});
+
+const aggregatedSources = computed(() => {
+  if (!shouldShowAggregatedSection.value || !activeLocationType.value) {
+    return [];
+  }
+  const results =
+    aggregatedSourcesResponse.value?.data?.[activeLocationType.value]
+      ?.results ?? [];
+  return results.filter((source) => {
+    const agencyName = (source?.agency_name ?? '').toLowerCase();
+    return agencyName.includes('aggregated');
+  });
+});
+
+const aggregatedSourceGroups = computed(() => {
+  if (!aggregatedSources.value.length) return [];
+  const grouped = new Map();
+  aggregatedSources.value.forEach((source) => {
+    const agency = source.agency_name || 'Aggregated';
+    grouped.set(agency, [...(grouped.get(agency) ?? []), source]);
+  });
+  return Array.from(grouped.entries())
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([agency, sources]) => ({ agency, sources }));
+});
+
+function toggleAggregatedSection() {
+  if (!shouldShowAggregatedSection.value) return;
+  aggregatedSectionExpanded.value = !aggregatedSectionExpanded.value;
+}
 
 // Get counties in the active state
 const countiesInState = computed(() => {
