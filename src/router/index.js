@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/community',
       name: 'community',
       component: CommunityView
+    },
+    {
+      path: '/annotate',
+      name: 'annotate',
+      component:
     }
   ],
   linkActiveClass: 'current'

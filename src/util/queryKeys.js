@@ -7,7 +7,7 @@ export const GITHUB_AUTH = 'github_auth';
 export const PROFILE = 'profile';
 export const TYPEAHEAD_LOCATIONS = 'typeahead_locations';
 export const TYPEAHEAD_AGENCIES = 'typeahead_agencies';
-
+export const ANNOTATE = 'annotate';
 /**
  * Creates a predicate function to check if a query key includes a partial string.
  * Matches both array and string syntax
