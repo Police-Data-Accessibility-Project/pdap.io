@@ -168,16 +168,36 @@
         </template>
       </InputTextArea>
 
-      <InputText
-        :id="'input-' + INPUT_NAMES.contact"
-        class="md:col-start-1 md:col-end-2"
-        :name="INPUT_NAMES.contact"
-        placeholder="Please provide an email address so we can give credit or follow up with questions."
-      >
-        <template #label>
-          <h4>Contact info</h4>
-        </template>
-      </InputText>
+      <RadioGroup class="record-type-group" :name="INPUT_NAMES.type">
+        <h4 class="col-span-2">
+          Record type
+          <sup>*</sup>
+        </h4>
+
+        <div
+          v-for="[categoryTitle, recordTypes] of Object.entries(
+            RECORD_TYPES_BY_CATEGORY
+          )"
+          :key="categoryTitle"
+          v-bind="{
+            [RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY[categoryTitle]]: true
+          }"
+        >
+          <h5 class="text-lg col-span-2">
+            {{ categoryTitle }}
+          </h5>
+
+          <InputRadio
+            v-for="detail of recordTypes"
+            :id="detail"
+            :key="detail"
+            :name="INPUT_NAMES.type"
+            :value="detail"
+            :label="detail"
+            :data-test="`record-type-${toKebabCase(detail)}`"
+          />
+        </div>
+      </RadioGroup>
 
       <p class="mt-4">
         <sup>*</sup>
@@ -190,45 +210,6 @@
           class="max-h-[6000px] overflow-hidden pb-20"
         >
           <div>
-            <RadioGroup class="mt-4" :name="INPUT_NAMES.detail">
-              <h4>Level of detail available at this source</h4>
-              <InputRadio
-                v-for="detail of DETAIL_LEVEL"
-                :id="detail"
-                :key="detail"
-                :name="INPUT_NAMES.detail"
-                :value="detail"
-                :label="detail"
-                :data-test="`detail-level-${toKebabCase(detail)}`"
-              />
-            </RadioGroup>
-
-            <RadioGroup class="record-type-group" :name="INPUT_NAMES.type">
-              <h4 class="col-span-2">Record type</h4>
-
-              <div
-                v-for="[categoryTitle, recordTypes] of Object.entries(
-                  RECORD_TYPES_BY_CATEGORY
-                )"
-                :key="categoryTitle"
-                v-bind="{
-                  [RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY[categoryTitle]]: true
-                }"
-              >
-                <h5 class="text-lg col-span-2">{{ categoryTitle }}</h5>
-
-                <InputRadio
-                  v-for="detail of recordTypes"
-                  :id="detail"
-                  :key="detail"
-                  :name="INPUT_NAMES.type"
-                  :value="detail"
-                  :label="detail"
-                  :data-test="`record-type-${toKebabCase(detail)}`"
-                />
-              </div>
-            </RadioGroup>
-
             <div class="mt-2">
               <h4>Agency supplied</h4>
               <p class="text-sm max-w-full lg:w-3/4">
@@ -378,7 +359,6 @@
               placeholder="Select the data portal type."
               @change="
                 ({ value }) => {
-                  console.debug({ value });
                   isOtherPortalTypeSelected = value === 'Other';
                 }
               "
@@ -508,11 +488,9 @@ const INPUT_NAMES = {
   agencies: 'agencies',
   name: 'name',
   description: 'description',
-  contact: 'submitter_contact_info',
+  type: 'record_type',
 
   // Advanced properties
-  detail: 'detail_level',
-  type: 'record_type_name',
   agencySupplied: 'agency_supplied',
   agencyOriginated: 'agency_originated',
   supplyingEntity: 'supplying_entity',
@@ -582,11 +560,6 @@ const RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY = {
   'Jails & courts': 'short'
 };
 
-const DETAIL_LEVEL = [
-  'Individual record',
-  'Aggregated records',
-  'Summarized totals'
-];
 const ACCESS_TYPE = ['web-page', 'download', 'api'].map(formatAccessType);
 function formatAccessType(accessType) {
   return {
@@ -768,11 +741,11 @@ const SCHEMA = [
     }
   },
   {
-    name: INPUT_NAMES.contact,
+    name: INPUT_NAMES.type,
     validators: {
-      email: {
+      required: {
         value: true,
-        message: 'Please provide a valid email address.'
+        message: 'Please include a record type.'
       }
     }
   }
@@ -799,10 +772,11 @@ const createDataSourceMutation = useMutation({
     if (formError.value) {
       formError.value = '';
     }
+
     await createDataSource(formValues);
 
     window.scrollTo(0, 0);
-    const message = `${formValues.entry_data[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
+    const message = `${formValues[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
@@ -976,8 +950,8 @@ async function submit(values) {
   const agencies = _cloneDeep(selectedAgencies.value);
 
   const requestBody = {
-    entry_data: formatData(values),
-    linked_agency_ids: agencies?.map(({ id }) => id)
+    ...formatData(values),
+    agency_ids: agencies?.map(({ id }) => id)
   };
 
   formRef.value.setValues({ ...values });
