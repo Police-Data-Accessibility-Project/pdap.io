@@ -15,10 +15,10 @@ export default defineConfig({
     baseURL: process.env.E2E_TESTING_URL ?? 'http://localhost:8888',
     trace: 'on-first-retry'
   },
-  webServer: process.env.E2E_TESTING_URL ? 
+  webServer: process.env.E2E_TESTING_URL?.includes('pdap.') ? 
     undefined : 
     {
-      command: 'npm run build && npm run serve',
+      command: 'npm run build:dev && npm run serve',
       url: 'http://localhost:8888',
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const DATA_SOURCES_BASE = `${import.meta.env.VITE_API_URL}/data-sources`;
+const SOURCE_COLLECTOR_BASE = `${import.meta.env.VITE_SOURCE_COLLECTOR_API_URL}`;
 const HEADERS_BASE = {
   'Content-Type': 'application/json'
 };
@@ -18,7 +19,7 @@ export async function getDataSource(id) {
 
 export async function createDataSource(data) {
   const auth = useAuthStore();
-  return await axios.post(DATA_SOURCES_BASE, data, {
+  return await axios.post(SOURCE_COLLECTOR_BASE + '/submit/data-source', data, {
     headers: {
       ...HEADERS_BASE,
       authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
