@@ -2,13 +2,10 @@
   <div>
     <label class="block text-sm font-medium mb-1">Record type</label>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 gap-4">
       <!-- TODO: Add handleSelections here to modifed selected record type as well-->
       <div class="col-auto">
-        <RadioForm :options="userOptions" header="👥" />
-      </div>
-      <div class="col-auto">
-        <RadioForm :options="roboOptions" header="🤖" />
+        <RadioForm :options="radioOptions" header="Suggestions" />
       </div>
     </div>
 
@@ -44,6 +41,12 @@ import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 
 const selectedRecordType = ref(null);
 const emit = defineEmits(['update:modelValue']);
+const props = defineProps({
+  suggestions: {
+    type: Array,
+    default: null
+  }
+});
 
 function handleSelectChange(event) {
   emit('update:modelValue', selectedRecordType);
@@ -95,18 +98,13 @@ const RECORD_TYPES_BY_CATEGORY = {
 };
 
 // TODO: Dynamically populate user options from annotation info
-const userOptions = ref([
-  { value: 'Crime Maps & Reports', label: 'Crime Maps & Reports' },
-  { value: 'Incident Reports', label: 'Incident Reports' },
-  { value: 'Car GPS', label: 'Car GPS' }
+const radioOptions = ref([
+  { value: 'Crime Maps & Reports', label: 'Crime Maps & Reports 👥 2 🤖 95%' },
+  { value: 'Incident Reports', label: 'Incident Reports 👥 1' },
+  { value: 'Car GPS', label: 'Car GPS 🤖 55%' }
 ]);
 
-// TODO: Dynamically populate robo options from annotation info
-const roboOptions = ref([
-  { value: 'Accident Reports', label: 'Accident Reports' },
-  { value: 'Personnel Records', label: 'Personnel Records' },
-  { value: 'Wanted Persons', label: 'Wanted Persons' }
-]);
+
 </script>
 
 <style scoped></style>

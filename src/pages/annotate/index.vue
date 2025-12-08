@@ -31,21 +31,17 @@
           <div v-else>Image Not Found</div>
 
           <div class="w-full mx-auto">
-            <!-- Tabs -->
-            <!-- Tab labels (non-clickable) -->
-            <div class="border-b border-gray-300 flex space-x-4">
-              <div
-                v-for="(tab, index) in tabs"
-                :key="tab.id"
-                class="py-2 px-4 -mb-px border-b-2"
-                :class="
-                  index === currentGlobalIndex
-                    ? 'border-blue-600 text-blue-600 font-semibold'
-                    : 'border-transparent text-gray-400'
-                ">
-                {{ tab.name }}
-              </div>
-            </div>
+            <TabControls
+              :current-index="currentGlobalIndex"
+              :total="tabs.length"
+              :is-next-disabled="isNextDisabled"
+              @prev="prevTab"
+              @next="nextTab" />
+
+            <TabsHeader
+              :tabs="tabs"
+              :current-index="currentGlobalIndex"
+              @select="selectTab" />
 
             <!-- Tab content -->
 
@@ -54,19 +50,27 @@
                 <URLTypeView
                   v-model="selectedURLType"
                   :options="urlTypeOptions"
-                  />
+                  :suggestions="annotation.url_type_suggestions" />
               </div>
               <div v-if="currentTab.id === 'location'">
-                <LocationView v-model="selectedLocationID"/>
+                <LocationView
+                  v-model="selectedLocationID"
+                  :suggestions="annotation.location_suggestions.suggestions" />
               </div>
               <div v-if="currentTab.id === 'agency'">
-                <AgencyView v-model="selectedAgencyID" />
+                <AgencyView
+                  v-model="selectedAgencyID"
+                  :suggestions="annotation.agency_suggestions.suggestions" />
               </div>
               <div v-if="currentTab.id === 'record_type'">
-                <RecordTypeView v-model="selectedRecordType" />
+                <RecordTypeView
+                  v-model="selectedRecordType"
+                  :suggestions="annotation.record_type_suggestions" />
               </div>
               <div v-if="currentTab.id === 'name'">
-                <NameView v-model="selectedName" />
+                <NameView
+                  v-model="selectedName"
+                  :suggestions="annotation.name_suggestions" />
               </div>
               <div v-if="currentTab.id === 'confirm'">
                 <ConfirmView
@@ -77,27 +81,6 @@
                   :name="selectedName" />
               </div>
             </div>
-          </div>
-
-          <!-- Controls -->
-          <div class="mt-6 flex justify-between items-center">
-            <button
-              class="px-4 py-2 rounded-md border text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-              :disabled="currentGlobalIndex === 0"
-              @click="prevTab">
-              Previous
-            </button>
-
-            <span class="text-sm text-gray-500">
-              Step {{ currentGlobalIndex + 1 }} of {{ tabs.length }}
-            </span>
-
-            <button
-              class="px-4 py-2 rounded-md border bg-blue-600 text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-              :disabled="isNextDisabled"
-              @click="nextTab">
-              Next
-            </button>
           </div>
         </template>
       </div>
@@ -123,6 +106,8 @@ import {
   urlTypes,
   validTabsByUrlType
 } from '@/pages/annotate/_components/_index/constants';
+import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
+import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 
 // TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
@@ -149,6 +134,10 @@ const currentGlobalIndex = ref(0);
 const currentPathIndex = ref(0);
 
 const currentTab = computed(() => tabs[currentGlobalIndex.value]);
+
+function selectTab(index) {
+  currentGlobalIndex.value = index;
+}
 
 // Path index refers to the index for the given URL Type path
 
