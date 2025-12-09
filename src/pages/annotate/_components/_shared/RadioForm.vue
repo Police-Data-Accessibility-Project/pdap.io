@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from 'vue';
-
-const selectedType = ref('');
+import { computed } from 'vue';
 
 const props = defineProps({
   options: {
@@ -11,11 +9,33 @@ const props = defineProps({
   header: {
     type: String,
     default: null
+  },
+  modelValue: {
+    type: Object,
+    default: null
   }
 });
 
 // TODO: How to pass reset logic to radio form, deselecting all?
 // TODO: Add emit for selection
+const emit = defineEmits(['update:modelValue']);
+
+const selectedType = computed({
+  get: () => props.modelValue,
+  set: (option) => emit('update:modelValue', option)
+});
+
+function labelClasses(option) {
+  return {
+    'bg-orange-600 text-white border-orange-700':
+      selectedType.value?.value === option.value,
+    'bg-purple-600': selectedType.value?.value !== option.value
+  };
+}
+
+function handleSelect(option) {
+  emit('update:modelValue', option);
+}
 </script>
 
 <template>
@@ -25,17 +45,14 @@ const props = defineProps({
       v-for="option in options"
       :key="option.value"
       class="cursor-pointer rounded-xl p-4 border flex flex-col items-center transition hover:bg-gray-100"
-      :class="{
-        'bg-orange-600 text-white border-orange-700':
-          selectedType === option.value,
-        'bg-purple-600': selectedType !== option.value
-      }">
+      :class="labelClasses(option)">
       <input
         v-model="selectedType"
         type="radio"
         class="hidden"
         name="url-type"
-        :value="option.value" />
+        :value="option"
+        @change="handleSelect(option)" />
 
       <div class="font-semibold">{{ option.label }}</div>
     </label>

@@ -75,13 +75,6 @@ const queryKey = computed(() => [
   typeaheadRef.value?.value.toLowerCase()
 ]);
 
-const props = defineProps({
-  modelValue: {
-    type: Number,
-    default: null
-  }
-});
-
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {
     if (!searchValue || searchValue.length <= 1) {

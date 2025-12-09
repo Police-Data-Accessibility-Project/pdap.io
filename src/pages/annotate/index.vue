@@ -65,12 +65,14 @@
               <div v-if="currentTab.id === 'record_type'">
                 <RecordTypeView
                   v-model="selectedRecordType"
-                  :suggestions="annotation.record_type_suggestions" />
+                  :suggestions="
+                    annotation.record_type_suggestions.suggestions
+                  " />
               </div>
               <div v-if="currentTab.id === 'name'">
                 <NameView
                   v-model="selectedName"
-                  :suggestions="annotation.name_suggestions" />
+                  :suggestions="annotation.name_suggestions.suggestions" />
               </div>
               <div v-if="currentTab.id === 'confirm'">
                 <ConfirmView
@@ -184,6 +186,8 @@ const urlTypeOptions = Object.values(urlTypes);
 
 const imageOk = ref(false);
 
+// TODO: Change selectedLocationID to selectedLocation
+// TODO: Change selectedAgencyID to selectedAgency
 const selectedURLType = ref(null);
 const selectedLocationID = ref(null);
 const selectedAgencyID = ref(null);

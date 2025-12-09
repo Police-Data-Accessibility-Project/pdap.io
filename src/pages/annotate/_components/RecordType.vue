@@ -3,9 +3,13 @@
     <label class="block text-sm font-medium mb-1">Record type</label>
 
     <div class="grid grid-cols-1 gap-4">
-      <!-- TODO: Add handleSelections here to modifed selected record type as well-->
+      <p>Record Type: {{ selectedRecordType }}</p>
       <div class="col-auto">
-        <RadioForm :options="radioOptions" header="Suggestions" />
+        <RadioForm
+          v-model="selectedRecordType"
+          :options="radioOptions"
+          header="Suggestions"
+          @update:model-value="handleRadioFormSelect" />
       </div>
     </div>
 
@@ -36,11 +40,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed } from 'vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 
-const selectedRecordType = ref(null);
-const emit = defineEmits(['update:modelValue']);
+const selectedRecordType = defineModel({ type: Object, default: null });
+// const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   suggestions: {
     type: Array,
@@ -48,8 +52,8 @@ const props = defineProps({
   }
 });
 
-function handleSelectChange(event) {
-  emit('update:modelValue', selectedRecordType);
+function handleRadioFormSelect(option) {
+  selectedRecordType.value = option.value;
 }
 
 // TODO: Duplicate of data-request/create.vue. Extract?
@@ -97,14 +101,25 @@ const RECORD_TYPES_BY_CATEGORY = {
   'Jails & courts': ['Booking Reports', 'Court Cases', 'Incarceration Records']
 };
 
-// TODO: Dynamically populate user options from annotation info
-const radioOptions = ref([
-  { value: 'Crime Maps & Reports', label: 'Crime Maps & Reports 👥 2 🤖 95%' },
-  { value: 'Incident Reports', label: 'Incident Reports 👥 1' },
-  { value: 'Car GPS', label: 'Car GPS 🤖 55%' }
-]);
+function getRecordTypeEndorsementString(suggestion) {
+  let base = suggestion.record_type;
+  if (suggestion.user_count) {
+    base += ' 👥 ' + suggestion.user_count;
+  }
+  if (suggestion.robo_confidence) {
+    base += ' 🤖 ' + suggestion.robo_confidence + '%';
+  }
+  return base;
+}
 
-
+const radioOptions = computed(() => {
+  console.log(props.suggestions);
+  return props.suggestions.map((s) => ({
+    value: s.record_type,
+    display_name: s.record_type,
+    label: getRecordTypeEndorsementString(s)
+  }));
+});
 </script>
 
 <style scoped></style>
