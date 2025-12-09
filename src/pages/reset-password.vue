@@ -1,7 +1,8 @@
 <template>
   <main
     class="pdap-flex-container"
-    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }"
+  >
     <h1>Change your password</h1>
     <p v-if="!hasValidatedToken" class="flex flex-col items-start sm:gap-4">
       Loading...
@@ -9,7 +10,8 @@
     <p
       v-else-if="hasValidatedToken && isExpiredToken"
       :data-test="TEST_IDS.token_expired"
-      class="flex flex-col items-start sm:gap-4">
+      class="flex flex-col items-start sm:gap-4"
+    >
       Sorry, that token has expired.
       <RouterLink
         :data-test="TEST_IDS.re_request_link"
@@ -18,7 +20,8 @@
           isExpiredToken = false;
           error = undefined;
           token = undefined;
-        ">
+        "
+      >
         Click here to request another
       </RouterLink>
     </p>
@@ -33,11 +36,13 @@
       :schema="VALIDATION_SCHEMA_CHANGE_PASSWORD"
       @change="onChange"
       @submit="changePassword"
-      @input="onResetInput">
+      @input="onResetInput"
+    >
       <InputPassword
         v-for="input of FORM_INPUTS_CHANGE_PASSWORD"
         v-bind="{ ...input }"
-        :key="input.name" />
+        :key="input.name"
+      />
 
       <PasswordValidationChecker ref="passwordRef" />
 
@@ -45,7 +50,8 @@
         class="max-w-full"
         :data-test="TEST_IDS.form_submit"
         :is-loading="isLoading || status === 'pending'"
-        type="submit">
+        type="submit"
+      >
         Change password
       </Button>
     </FormV2>
@@ -55,6 +61,7 @@
 <script setup>
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
+import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
 import parseJwt from '@/util/parseJwt';
 import { onMounted, ref } from 'vue';
@@ -118,6 +125,7 @@ const token = route.query.token;
 
 // Stores
 const user = useUserStore();
+const auth = useAuthStore();
 
 const {
   error,
@@ -209,6 +217,6 @@ async function onSubmitChangePassword(formValues) {
   await resetPassword(password, token);
   await signInWithEmail(parseJwt(token).sub.user_email, password);
 
-  router.push({ path: 'profile' });
+  router.push(auth.redirectTo ?? { path: 'profile' });
 }
 </script>

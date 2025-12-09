@@ -4,12 +4,14 @@
       requestIds?.length &&
       [nextIndex, previousIndex].some((id) => Number(id) > -1)
     "
-    class="self-start justify-self-start w-full">
+    class="self-start justify-self-start w-full"
+  >
     <RouterLink
       :to="`/data-request/${requestIds[previousIndex]}`"
       :class="{ disabled: typeof previousIndex !== 'number' }"
       replace
-      @mouseenter="setNavIs('decrement')">
+      @mouseenter="setNavIs('decrement')"
+    >
       PREV
     </RouterLink>
     /
@@ -17,7 +19,8 @@
       :to="`/data-request/${requestIds[nextIndex]}`"
       :class="{ disabled: typeof nextIndex !== 'number' }"
       replace
-      @mouseenter="setNavIs('increment')">
+      @mouseenter="setNavIs('increment')"
+    >
       NEXT
     </RouterLink>
   </nav>

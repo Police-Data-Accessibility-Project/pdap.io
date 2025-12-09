@@ -4,7 +4,8 @@
       <h4
         v-for="title of HEADING_TITLES"
         :key="title + 'heading'"
-        :class="getClassNameFromHeadingType(title)">
+        :class="getClassNameFromHeadingType(title)"
+      >
         {{ title }}
       </h4>
     </div>
@@ -14,21 +15,25 @@
         v-if="isLoading"
         :show="isLoading"
         :size="64"
-        text="Fetching search results..." />
+        text="Fetching search results..."
+      />
       <template v-else>
         <!-- eslint-disable vue/no-v-for-template-key -->
         <template
           v-for="locale in ALL_LOCATION_TYPES"
-          :key="locale + 'results'">
+          :key="locale + 'results'"
+        >
           <template v-if="results[locale] && 'count' in results[locale]">
             <div
               :id="'scroll-to-' + locale"
               aria-hidden="true"
-              class="w-full" />
+              class="w-full"
+            />
             <!-- Header by agency -->
             <template
               v-for="agency in Object.keys(results[locale].sourcesByAgency)"
-              :key="agency + 'results'">
+              :key="agency + 'results'"
+            >
               <div class="agency-heading-row">
                 <h5 class="font-semibold">{{ agency }}</h5>
                 <span class="pill">{{ locale }}</span>
@@ -40,7 +45,8 @@
                 :key="source.agency_name"
                 :to="`/data-source/${source.id}`"
                 :data-test="TEST_IDS.data_source_link"
-                class="agency-row group">
+                class="agency-row group"
+              >
                 <!-- Source name and record type -->
                 <div :class="getClassNameFromHeadingType(HEADING_TITLES[0])">
                   <h6>
@@ -49,7 +55,8 @@
                   <span class="pill flex items-center mt-1 gap-2 w-max">
                     <RecordTypeIcon
                       :record-type="source.record_type"
-                      class="text-brand-wine-500" />
+                      class="text-brand-wine-500"
+                    />
                     {{ source.record_type }}
                   </span>
                 </div>
@@ -67,7 +74,8 @@
                 <!-- Links to data source view and data source url -->
                 <div class="links text-lg">
                   <span
-                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300">
+                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300"
+                  >
                     <FontAwesomeIcon :icon="faInfoCircle" />
                     More
                   </span>
@@ -76,7 +84,8 @@
                     target="_blank"
                     rel="noreferrer"
                     @keydown.stop.enter=""
-                    @click.stop="">
+                    @click.stop=""
+                  >
                     <FontAwesomeIcon :icon="faLink" />
                     Visit
                   </a>

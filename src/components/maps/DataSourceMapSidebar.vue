@@ -1,14 +1,16 @@
 <template>
   <div
     class="map-sidebar relative bg-wineneutral-50 w-full h-auto max-h-[80vh] overflow-y-auto grid grid-cols-1 grid-rows-[auto,auto,auto,1fr,auto] mt-4 lg:mt-0 lg:absolute lg:top-0 lg:right-0 lg:w-[320px] lg:h-[calc(100%)] lg:max-h-none"
-    :class="{ visible: activeLocation || federal.length }">
+    :class="{ visible: activeLocation || federal.length }"
+  >
     <!-- 1. Header with back button, title, top-level actions -->
     <div class="flex items-center content-between w-full p-4">
       <Button
         v-if="activeLocation"
         class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-goldneutral-400 dark:hover:bg-goldneutral-400/90 dark:focus:bg-goldneutral-400/90"
         intent="tertiary"
-        @click="handleBackClick">
+        @click="handleBackClick"
+      >
         <FontAwesomeIcon :icon="faChevronLeft" />
       </Button>
       <div>
@@ -26,7 +28,14 @@
       <router-link
         v-if="activeLocation"
         :to="`/search/results?location_id=${activeLocation?.data?.location_id || ''}#${activeLocationType}`"
-        class="pdap-button-primary mb-2 w-full max-w-full text-center gap-2">
+        class="pdap-button-primary mb-2 w-full max-w-full text-center gap-2"
+        @click="
+          setActiveLocationForNavigation(
+            activeLocation?.data,
+            activeLocationType
+          )
+        "
+      >
         View
         {{
           activeLocation ? activeLocation.data.source_count : federalSourceCount
@@ -43,22 +52,26 @@
         "
         :class="{
           'loading-shimmer': isFollowedFetching
-        }">
+        }"
+      >
         <div
           v-if="!isFollowed"
-          class="flex flex-col md:items-end md:row-start-1 md:row-span-2 md:col-start-2 md:col-span-1">
+          class="flex flex-col md:items-end md:row-start-1 md:row-span-2 md:col-start-2 md:col-span-1"
+        >
           <Button
             v-if="auth.isAuthenticated()"
             variant="primary"
             class="w-full max-w-full"
-            @click="$emit('on-follow', activeLocation?.data?.location_id)">
+            @click="$emit('on-follow', activeLocation?.data?.location_id)"
+          >
             Follow for updates
           </Button>
         </div>
         <div v-else class="flex flex-col md:items-end md:max-w-80">
           <p
             v-if="auth.isAuthenticated()"
-            class="text-med text-wineneutral-500 max-w-full md:text-right">
+            class="text-med text-wineneutral-500 max-w-full md:text-right"
+          >
             <FontAwesomeIcon class="[&>svg]:m-0" :icon="faUserCheck" />
             Following this location
             <br />
@@ -73,25 +86,129 @@
     <hr class="mb-4 border-wineneutral-400" />
 
     <!-- 2. Content section -->
-    <!-- State level: show counties -->
     <div>
       <div
+        v-if="shouldShowAggregatedSection"
+        class="w-full border-b border-wineneutral-300 pb-3 mb-3"
+      >
+        <button
+          class="w-full flex items-start justify-between gap-4 px-4 py-2 rounded-sm text-left hover:bg-wineneutral-100 focus:bg-wineneutral-100"
+          type="button"
+          @click="toggleAggregatedSection"
+        >
+          <div class="flex flex-col gap-1">
+            <span
+              class="text-xs font-semibold uppercase tracking-wide text-wineneutral-500"
+            >
+              Aggregated sources
+            </span>
+            <span class="text-lg font-semibold text-wineneutral-900">
+              {{ headerTitle }}
+            </span>
+            <span class="text-sm text-wineneutral-600">
+              Statewide or countywide sources covering this selection.
+            </span>
+          </div>
+          <FontAwesomeIcon
+            :icon="aggregatedSectionExpanded ? faChevronUp : faChevronDown"
+            class="text-wineneutral-600 mt-1"
+          />
+        </button>
+        <div v-if="aggregatedSectionExpanded" class="mt-3">
+          <p
+            v-if="isAggregatedSourcesLoading"
+            class="px-4 text-sm text-wineneutral-600"
+          >
+            Loading aggregated sources…
+          </p>
+          <p
+            v-else-if="isAggregatedSourcesError"
+            class="px-4 text-sm text-status-error-700"
+          >
+            Unable to load aggregated sources. Please try again.
+          </p>
+          <template v-else>
+            <div
+              v-if="aggregatedSourceGroups.length"
+              class="flex flex-col w-full"
+            >
+              <div
+                v-for="group in aggregatedSourceGroups"
+                :key="group.agency"
+                class="mb-4"
+              >
+                <h3
+                  class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4"
+                >
+                  {{ group.agency }}
+                </h3>
+                <ul class="px-4 space-y-4">
+                  <li
+                    v-for="source in group.sources"
+                    :key="source.id ?? source.source_id"
+                    class="text-sm mb-2"
+                  >
+                    <h4
+                      class="font-semibold text-lg text-wineneutral-950 capitalize tracking-normal mb-1"
+                    >
+                      {{ source.data_source_name }}
+                    </h4>
+                    <span class="flex gap-2 flex-wrap">
+                      <a
+                        v-if="source.source_url"
+                        :href="source.source_url"
+                        class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100 dark:text-wineneutral-950 dark:bg-brand-gold-800"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        @click.stop
+                      >
+                        <span>Visit</span>
+                        <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+                      </a>
+                      <router-link
+                        v-if="
+                          (source.id ?? source.source_id)?.toString().trim()
+                        "
+                        :to="`/data-source/${source.id ?? source.source_id}`"
+                        class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
+                        @click.stop
+                      >
+                        Details
+                        <FontAwesomeIcon :icon="faCircleInfo" />
+                      </router-link>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p v-else class="px-4 text-sm text-wineneutral-600">
+              No aggregated sources yet for this
+              {{ activeLocationType === 'state' ? 'state' : 'county' }}.
+            </p>
+          </template>
+        </div>
+      </div>
+      <!-- State level: show counties -->
+      <div
         v-if="activeLocationType === 'state' && countiesInState.length"
-        class="flex flex-col w-full">
+        class="flex flex-col w-full"
+      >
         <h3 class="px-4 font-medium text-wineneutral-700">Counties</h3>
         <div
           v-for="county in countiesInState.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
           :key="county.fips"
-          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med"
+        >
           <h4 class="grow capitalize text-med font-bold tracking-normal mb-0">
             {{ county.name }}
           </h4>
           <span class="flex items-center gap-2 flex-wrap mt-1 mb-3">
             <button
               class="w-auto max-w-full flex items-center gap-1 px-1 py-0.5 rounded-sm text-sm text-goldneutral-950 bg-goldneutral-100 hover:bg-goldneutral-200 focus:bg-goldneutral-200 dark:text-goldneutral-950 dark:bg-goldneutral-100 dark:hover:bg-goldneutral-200 dark:focus:bg-goldneutral-200"
-              @click="selectLocation('county', county)">
+              @click="selectLocation('county', county)"
+            >
               <FontAwesomeIcon :icon="faMagnifyingGlass" />
               Explore localities
             </button>
@@ -103,7 +220,8 @@
                   ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
                   : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
               ]"
-              @click.stop>
+              @click.stop="setActiveLocationForNavigation(county, 'county')"
+            >
               <span v-show="county">
                 {{ county?.source_count }}
                 {{ pluralize('Source', county?.source_count ?? 0) }}
@@ -118,14 +236,16 @@
       <!-- County level: show localities -->
       <div
         v-if="activeLocationType === 'county' && localitiesInCounty.length"
-        class="flex flex-col w-full">
+        class="flex flex-col w-full"
+      >
         <h3 class="px-4 font-medium text-wineneutral-700">Localities</h3>
         <div
           v-for="locality in localitiesInCounty.toSorted(
             (a, b) => b.source_count - a.source_count
           )"
           :key="locality.location_id"
-          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med">
+          class="w-full max-w-full flex flex-col items-start gap-0 mb-0 px-4 py-1 text-med"
+        >
           <h4 class="capitalize tracking-normal mb-0 text-med">
             {{ locality.name }}
           </h4>
@@ -137,7 +257,8 @@
                 ? 'text-goldneutral-950 bg-brand-gold-100 dark:text-goldneutral-950 dark:bg-brand-gold-800'
                 : 'text-goldneutral-950 bg-goldneutral-100 dark:text-goldneutral-950 dark:bg-goldneutral-100'
             ]"
-            @click.stop>
+            @click.stop="setActiveLocationForNavigation(locality, 'locality')"
+          >
             <span v-show="locality">
               View {{ locality?.source_count }}
               {{ pluralize('Data Source', locality?.source_count ?? 0) }}
@@ -151,22 +272,27 @@
       <!-- Federal level: show agencies and sources -->
       <div
         v-if="!activeLocation && Object.keys(federalSourcesByAgency).length"
-        class="flex flex-col w-full">
+        class="flex flex-col w-full"
+      >
         <div
           v-for="(sources, agency) in federalSourcesByAgency"
           :key="agency"
-          class="mb-4">
+          class="mb-4"
+        >
           <h3
-            class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4">
+            class="capitalize text-xl tracking-normal font-medium text-wineneutral-500 mb-2 px-4"
+          >
             {{ agency }}
           </h3>
           <ul class="px-4 space-y-4">
             <li
               v-for="source in sources"
               :key="source.source_id"
-              class="text-sm mb-2">
+              class="text-sm mb-2"
+            >
               <h4
-                class="font-semibold text-lg text-wineneutral-950 capitalize tracking-normal mb-1">
+                class="font-semibold text-lg text-wineneutral-950 capitalize tracking-normal mb-1"
+              >
                 {{ source.data_source_name }}
               </h4>
               <span class="flex gap-2">
@@ -176,7 +302,8 @@
                   class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-brand-gold-100 dark:text-wineneutral-950 dark:bg-brand-gold-800"
                   target="_blank"
                   rel="noopener noreferrer"
-                  @click.stop>
+                  @click.stop
+                >
                   <span>Visit</span>
                   <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
                 </a>
@@ -184,7 +311,8 @@
                   v-if="source.source_id && source.source_id.toString().trim()"
                   :to="`/data-source/${source.source_id}`"
                   class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
-                  @click.stop>
+                  @click.stop
+                >
                   Details
                   <FontAwesomeIcon :icon="faCircleInfo" />
                 </router-link>
@@ -197,10 +325,12 @@
 
     <!-- 3. Second action block (pinned to bottom) -->
     <div
-      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 hidden md:flex h-auto">
+      class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 hidden md:flex h-auto"
+    >
       <router-link
         to="/data-request/create"
-        class="pdap-button-secondary block w-full text-center">
+        class="pdap-button-secondary block w-full text-center"
+      >
         Request missing data
       </router-link>
     </div>
@@ -208,20 +338,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Button } from 'pdap-design-system';
 import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import pluralize from '@/util/pluralize';
-import { getFollowedSearch } from '@/api/search';
+import { getFollowedSearch, search } from '@/api/search';
 import { useAuthStore } from '@/stores/auth';
+import { useSearchStore } from '@/stores/search';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faArrowRight,
   faChevronLeft,
   faMagnifyingGlass,
   faArrowUpRightFromSquare,
-  faCircleInfo
+  faCircleInfo,
+  faChevronDown,
+  faChevronUp
 } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/vue-query';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
@@ -229,6 +362,7 @@ import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 
 const route = useRoute();
 const auth = useAuthStore();
+const searchStore = useSearchStore();
 const props = defineProps({
   locations: {
     type: Array,
@@ -317,6 +451,95 @@ const headerTitle = computed(() => {
   return '';
 });
 
+const activeLocationId = computed(() => {
+  if (!activeLocation.value) return null;
+  const possibleTargets = [
+    activeLocation.value?.data?.location_id,
+    activeLocation.value?.data?.id,
+    activeLocation.value?.location_id,
+    activeLocation.value?.id
+  ];
+  const resolvedId = possibleTargets.find(
+    (value) => value !== undefined && value !== null
+  );
+  return resolvedId !== undefined && resolvedId !== null
+    ? String(resolvedId)
+    : null;
+});
+
+const shouldShowAggregatedSection = computed(() => {
+  if (!activeLocation.value) return false;
+  return (
+    !!activeLocationId.value &&
+    (activeLocationType.value === 'state' ||
+      activeLocationType.value === 'county')
+  );
+});
+
+const aggregatedSectionExpanded = ref(false);
+
+watch(
+  () => [activeLocationId.value, activeLocationType.value],
+  () => {
+    aggregatedSectionExpanded.value = false;
+  }
+);
+
+const aggregatedQueryKey = computed(() => [
+  'mapAggregatedSources',
+  activeLocationId.value ?? 'none'
+]);
+const aggregatedQueryEnabled = computed(
+  () => shouldShowAggregatedSection.value && aggregatedSectionExpanded.value
+);
+
+const {
+  data: aggregatedSourcesResponse,
+  isLoading: isAggregatedSourcesLoading,
+  isError: isAggregatedSourcesError
+} = useQuery({
+  queryKey: aggregatedQueryKey,
+  queryFn: async () => {
+    if (!activeLocationId.value) return null;
+    const response = await search({
+      location_id: activeLocationId.value
+    });
+    return response.data;
+  },
+  enabled: aggregatedQueryEnabled,
+  staleTime: 5 * 60 * 1000
+});
+
+const aggregatedSources = computed(() => {
+  if (!shouldShowAggregatedSection.value || !activeLocationType.value) {
+    return [];
+  }
+  const results =
+    aggregatedSourcesResponse.value?.data?.[activeLocationType.value]
+      ?.results ?? [];
+  return results.filter((source) => {
+    const agencyName = (source?.agency_name ?? '').toLowerCase();
+    return agencyName.includes('aggregated');
+  });
+});
+
+const aggregatedSourceGroups = computed(() => {
+  if (!aggregatedSources.value.length) return [];
+  const grouped = new Map();
+  aggregatedSources.value.forEach((source) => {
+    const agency = source.agency_name || 'Aggregated';
+    grouped.set(agency, [...(grouped.get(agency) ?? []), source]);
+  });
+  return Array.from(grouped.entries())
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([agency, sources]) => ({ agency, sources }));
+});
+
+function toggleAggregatedSection() {
+  if (!shouldShowAggregatedSection.value) return;
+  aggregatedSectionExpanded.value = !aggregatedSectionExpanded.value;
+}
+
 // Get counties in the active state
 const countiesInState = computed(() => {
   if (activeLocationType.value !== 'state' || !activeLocation.value) return [];
@@ -383,6 +606,17 @@ const federalSourcesByAgency = computed(() => {
 const federalSourceCount = computed(() => {
   return props.federal ? props.federal.length : 0;
 });
+
+function setActiveLocationForNavigation(location, type) {
+  if (!location) return;
+  const locationId =
+    location.location_id ?? location.id ?? location.data?.location_id;
+  searchStore.setActiveLocation({
+    ...location,
+    type: type ?? location.type ?? null,
+    location_id: locationId ? String(locationId) : locationId
+  });
+}
 
 // Handle selecting a location from the list
 function selectLocation(type, item) {

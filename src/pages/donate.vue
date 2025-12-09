@@ -18,7 +18,8 @@
         height="770px"
         width="100%"
         style="max-width: 500px; min-width: 310px; max-height: none !important"
-        allow="payment" />
+        allow="payment"
+      />
       <p>PDAP is a non-profit, so your donations may be tax deductible.</p>
 
       <h3>Send a check</h3>

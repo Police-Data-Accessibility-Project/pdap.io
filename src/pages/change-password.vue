@@ -9,7 +9,8 @@
 <template>
   <main
     class="pdap-flex-container"
-    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }"
+  >
     <h1>Change your password</h1>
 
     <!-- GH auth user - no password to change -->
@@ -34,11 +35,13 @@
         :schema="VALIDATION_SCHEMA"
         @change="onChange"
         @submit="updatePassword"
-        @input="onInput">
+        @input="onInput"
+      >
         <InputPassword
           v-for="input of INPUTS"
           v-bind="{ ...input }"
-          :key="input.name" />
+          :key="input.name"
+        />
 
         <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
@@ -47,7 +50,8 @@
           :data-test="TEST_IDS.change_password_submit"
           :disabled="isLoading"
           :is-loading="isLoading"
-          type="submit">
+          type="submit"
+        >
           Change password
         </Button>
       </FormV2>

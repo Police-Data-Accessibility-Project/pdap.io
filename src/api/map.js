@@ -11,8 +11,11 @@ const HEADERS_BASIC = {
   authorization: `Basic ${import.meta.env.VITE_API_KEY}`
 };
 
-export async function getMapLocations() {
+export async function getMapLocations(params = {}) {
+  const hasParams = params && Object.keys(params).length > 0;
+
   return await axios.get(`${MAP_BASE}/${ENDPOINTS.MAP.DATA}`, {
-    headers: HEADERS_BASIC
+    headers: HEADERS_BASIC,
+    params: hasParams ? params : undefined
   });
 }

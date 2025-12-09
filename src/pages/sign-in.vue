@@ -8,13 +8,15 @@
         !(isGithubAuthError || githubAuthData?.userExists) &&
         (githubAuthIsLoading || route.query.gh_access_token)
       "
-      class="flex items-center justify-center h-full w-full">
+      class="flex items-center justify-center h-full w-full"
+    >
       <Spinner
         :show="
           !(isGithubAuthError || githubAuthData?.userExists) &&
           (githubAuthIsLoading || route.query.gh_access_token)
         "
-        text="Logging in" />
+        text="Logging in"
+      />
     </div>
 
     <template v-else>
@@ -36,7 +38,8 @@
           intent="tertiary"
           :data-test="TEST_IDS.github_signin_button"
           :disabled="githubAuthData?.userExists"
-          @click="async () => await beginOAuthLogin()">
+          @click="async () => await beginOAuthLogin()"
+        >
           <FontAwesomeIcon :icon="faGithub" />
           Sign in with GitHub
         </Button>
@@ -50,7 +53,8 @@
         name="login"
         :error="error"
         :schema="VALIDATION_SCHEMA"
-        @submit="completePasswordAuth">
+        @submit="completePasswordAuth"
+      >
         <InputText
           id="email"
           autocomplete="email"
@@ -58,7 +62,8 @@
           name="email"
           label="Email"
           type="text"
-          placeholder="Your email address" />
+          placeholder="Your email address"
+        />
         <InputPassword
           id="password"
           autocomplete="password"
@@ -66,30 +71,35 @@
           name="password"
           label="Password"
           type="password"
-          placeholder="Your password" />
+          placeholder="Your password"
+        />
 
         <Button
           class="max-w-full mt-4"
           :disabled="passwordAuthIsLoading"
           :is-loading="passwordAuthIsLoading"
           type="submit"
-          :data-test="TEST_IDS.sign_in_submit">
+          :data-test="TEST_IDS.sign_in_submit"
+        >
           Sign in
         </Button>
       </FormV2>
       <div
-        class="flex flex-col items-start sm:flex-row sm:items-center sm:gap-4 w-full">
+        class="flex flex-col items-start sm:flex-row sm:items-center sm:gap-4 w-full"
+      >
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
           intent="secondary"
           :data-test="TEST_IDS.sign_up_link"
-          to="/sign-up">
+          to="/sign-up"
+        >
           Create Account
         </RouterLink>
         <RouterLink
           class="pdap-button-secondary flex-1 max-w-full"
           :data-test="TEST_IDS.forgot_password_link"
-          to="/request-reset-password">
+          to="/request-reset-password"
+        >
           Reset Password
         </RouterLink>
       </div>
@@ -110,15 +120,20 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ref, watch } from 'vue';
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
+import { SEARCH_FOLLOWED_NATIONAL } from '@/util/queryKeys';
 
 const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
+const queryClient = useQueryClient();
+
+const invalidateCourtWarrantFollowQueries = () =>
+  queryClient.invalidateQueries({ queryKey: [SEARCH_FOLLOWED_NATIONAL] });
 
 // Constants
 const VALIDATION_SCHEMA = [
@@ -154,6 +169,7 @@ const {
   // onError: (error) => {},
   onSuccess: (data) => {
     if (!data || data?.userExists) return;
+    invalidateCourtWarrantFollowQueries();
     router.replace(auth.redirectTo ?? { path: '/profile' });
   }
 });
@@ -166,6 +182,7 @@ const { mutate: completePasswordAuth, isLoading: passwordAuthIsLoading } =
         'Error logging in. Please ensure your password is correct and try again.';
     },
     onSuccess: () => {
+      invalidateCourtWarrantFollowQueries();
       router.replace(auth.redirectTo ?? '/profile');
     }
   });

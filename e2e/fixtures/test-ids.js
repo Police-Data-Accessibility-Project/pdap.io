@@ -80,6 +80,20 @@ export const TEST_IDS = {
   data_source_create_submit: 'data-source-create-submit',
   data_source_create_clear: 'data-source-create-clear',
   data_source_create_advanced: 'data-source-create-advanced',
+  // Data Source Create Advanced (specific controls used in tests)
+  data_source_create_detail_individual: 'detail-level-individual-record',
+  data_source_create_record_type_arrest_records: 'record-type-arrest-records',
+  data_source_create_agency_supplied: 'agency-supplied',
+  data_source_create_supplying_entity: 'supplying-entity',
+  data_source_create_agency_originated: 'agency-originated',
+  data_source_create_originating_entity: 'originating-entity',
+  data_source_create_access_type_web_page: 'access-type-access_types-web-page',
+  data_source_create_access_type_api: 'access-type-access_types-api',
+  data_source_create_format_json: 'format-record_formats-json',
+  data_source_create_format_pdf: 'format-record_formats-pdf',
+  data_source_create_update_method_insert: 'update-method-insert',
+  data_source_create_access_notes: 'access-notes',
+  data_source_create_submission_notes: 'submission-notes',
 
   // Data Request Pages
   data_request_link: 'data-request-link',

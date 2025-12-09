@@ -3,29 +3,33 @@
     <div
       id="map-container"
       ref="mapContainer"
-      class="hidden md:block relative w-full lg:w-[calc(100%-320px)] h-full max-h-[80vh] lg:max-h-none overflow-hidden"
-      :data-test="TEST_IDS.data_source_map" />
+      :class="[
+        'hidden md:block relative w-full h-full max-h-[80vh] lg:max-h-none overflow-hidden',
+        shouldShowSidebar ? 'lg:w-[calc(100%-320px)]' : 'lg:w-full'
+      ]"
+      :data-test="TEST_IDS.data_source_map"
+    />
     <!-- <span class="loading"></span> -->
     <Spinner
       :show="layers.states.status === STATUSES.LOADING"
       :size="100"
-      class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70" />
+      class="h-full w-full absolute left-0 top-0 bg-goldneutral-500/70 dark:bg-wineneutral-500/70"
+    />
     <!-- Sidebar that appears when a location is selected -->
-    <MapSidebar
-      :locations="activeLocationStack"
-      :counties="props.counties"
-      :localities="props.localities"
-      :states="props.states"
-      :federal="props.federal"
+    <component
+      :is="sidebarComponentResolved"
+      v-if="shouldShowSidebar"
+      v-bind="sidebarBindings"
       @update-active-location="updateActiveLocationStack"
       @on-follow="handleFollow"
       @on-reset-zoom="() => mapDeps.resetZoom()"
-      @zoom-to-location="handleZoomToLocation" />
+      @zoom-to-location="handleZoomToLocation"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
 import { useSearchStore } from '@/stores/search';
 import * as d3 from 'd3';
 import { scaleThreshold } from 'd3-scale';
@@ -70,9 +74,39 @@ const STATUSES = {
 };
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 50;
-// Define separate breakpoints for counties and states
-const countyColorBreakpoints = [1, 5, 10, 15, 25, 40, 60, 100];
-const stateColorBreakpoints = [1, 10, 25, 50, 100, 200, 500];
+const DEFAULT_COUNTY_BREAKPOINTS = [1, 5, 10, 15, 25, 40, 60, 100];
+const DEFAULT_STATE_BREAKPOINTS = [1, 10, 25, 50, 100, 200, 500];
+
+function generateBreakpoints(values, fallback) {
+  const positives = values.filter(
+    (value) => typeof value === 'number' && value > 0
+  );
+
+  if (!positives.length) {
+    return fallback;
+  }
+
+  const uniqueValues = Array.from(new Set(positives)).sort((a, b) => a - b);
+
+  if (uniqueValues.length === 1) {
+    return [uniqueValues[0]];
+  }
+
+  const maxSteps = FILL_COLORS.length - 1;
+  const thresholds = uniqueValues;
+
+  if (thresholds.length <= maxSteps) {
+    return thresholds;
+  }
+
+  const step = Math.ceil(thresholds.length / maxSteps);
+  const reduced = [];
+  for (let i = 0; i < thresholds.length; i += step) {
+    reduced.push(thresholds[i]);
+  }
+
+  return reduced;
+}
 
 // Props definition
 const props = defineProps({
@@ -95,13 +129,67 @@ const props = defineProps({
     type: Array,
     required: false,
     default: undefined
+  },
+  locationSources: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
+  sidebarComponent: {
+    type: [Object, Function],
+    required: false,
+    default: null
+  },
+  sidebarProps: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
+  showLocalityMarkers: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  useDynamicBreakpoints: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  showSidebar: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  hideSidebarWithoutSelection: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 
 // Define emits
-const emit = defineEmits(['on-follow', 'on-select-location']);
+const emit = defineEmits([
+  'on-follow',
+  'on-select-location',
+  'has-active-location-change'
+]);
 
 const searchStore = useSearchStore();
+
+function toStoreLocation(location) {
+  if (!location) return null;
+  const source = location.data ? { ...location.data } : { ...location };
+  const rawId =
+    source?.location_id ?? source?.id ?? location?.location_id ?? location?.id;
+
+  if (rawId === undefined || rawId === null) return null;
+
+  return {
+    ...source,
+    type: location?.type ?? source?.type ?? null,
+    location_id: String(rawId)
+  };
+}
 
 // Reactive state
 const mapContainer = ref(null);
@@ -115,6 +203,53 @@ const countyColorScale = ref(null);
 const stateColorScale = ref(null);
 const currentTheme = ref(null);
 const activeLocationStack = ref([]); // Stack to track selected locations
+
+const sidebarComponentResolved = computed(
+  () => props.sidebarComponent ?? MapSidebar
+);
+
+const sidebarBindings = computed(() => {
+  const base = {
+    locations: activeLocationStack.value
+  };
+
+  if (props.sidebarComponent) {
+    return {
+      ...base,
+      ...(props.sidebarProps ?? {})
+    };
+  }
+
+  return {
+    ...base,
+    counties: props.counties ?? [],
+    localities: props.localities ?? [],
+    states: props.states ?? [],
+    federal: props.federal ?? [],
+    locationSources: props.locationSources ?? {},
+    ...(props.sidebarProps ?? {})
+  };
+});
+
+const localityRenderer = computed(() =>
+  props.showLocalityMarkers ? renderLocalityMarkers : null
+);
+
+const hasActiveLocation = computed(() => activeLocationStack.value.length > 0);
+const shouldShowSidebar = computed(
+  () =>
+    props.showSidebar &&
+    (!props.hideSidebarWithoutSelection || hasActiveLocation.value)
+);
+
+watch(
+  () => shouldShowSidebar.value,
+  () => {
+    nextTick(() => {
+      updateMap();
+    });
+  }
+);
 
 // Zoom-related state
 const currentZoom = ref(1);
@@ -145,6 +280,24 @@ const stateDataMap = computed(() => {
   return map;
 });
 
+const countyBreakpoints = computed(() =>
+  props.useDynamicBreakpoints
+    ? generateBreakpoints(
+        Object.values(countyDataMap.value ?? {}),
+        DEFAULT_COUNTY_BREAKPOINTS
+      )
+    : DEFAULT_COUNTY_BREAKPOINTS
+);
+
+const stateBreakpoints = computed(() =>
+  props.useDynamicBreakpoints
+    ? generateBreakpoints(
+        Object.values(stateDataMap.value ?? {}),
+        DEFAULT_STATE_BREAKPOINTS
+      )
+    : DEFAULT_STATE_BREAKPOINTS
+);
+
 // Organize localities by county FIPS code for faster lookup
 const localitiesByCounty = computed(() => {
   const map = {};
@@ -167,14 +320,6 @@ const locations = computed(() => [
   ...(props.localities ?? [])
 ]);
 
-const activeLocationAggregated = computed(() => {
-  return {
-    stack: activeLocationStack.value,
-    loc_id: searchStore.activeLocationId,
-    locations
-  };
-});
-
 // Convert TopoJSON to GeoJSON
 const countiesGeoJSON = computed(() => {
   // Get the first object key which should be the counties layer
@@ -191,32 +336,24 @@ const statesGeoJSON = computed(() => {
 const layers = computed(() => ({
   counties: {
     data: countiesGeoJSON.value,
-    status: Object.keys(countyDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.counties) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
   localities: {
-    status: Object.keys(localitiesByCounty.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.localities) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
   states: {
     data: statesGeoJSON.value,
-    status: Object.keys(stateDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.states) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 0,
     maxZoom: 2
   },
   stateBoundaries: {
     data: statesGeoJSON.value,
-    status: Object.keys(stateDataMap.value).length
-      ? STATUSES.IDLE
-      : STATUSES.LOADING,
+    status: Array.isArray(props.states) ? STATUSES.IDLE : STATUSES.LOADING,
     minZoom: 2,
     maxZoom: Infinity
   },
@@ -254,35 +391,29 @@ onMounted(() => {
   });
 });
 
-watch(
-  () => activeLocationAggregated.value,
-  (locAgg, prevLocAgg) => {
-    const priority = ['state', 'county', 'locality'];
-    if (!locAgg.locations.value.length) return;
-    if (!locAgg?.loc_id && prevLocAgg?.loc_id && !locAgg?.stack.length) return;
-    const activeLocation = locAgg?.stack[locAgg?.stack.length - 1];
-    if (locAgg?.loc_id === prevLocAgg?.loc_id && activeLocation) return;
-
-    if (activeLocation?.data?.location_id === locAgg.loc_id) return;
-    const oldActiveLocation = prevLocAgg?.stack[prevLocAgg?.stack.length - 1];
-
-    if (
-      priority.indexOf(activeLocation?.type) <
-      priority.indexOf(oldActiveLocation?.type)
-    ) {
-      return;
-    }
-
-    updateOnParamChange(locAgg.loc_id, locAgg.stack);
-  },
-  { immediate: true, deep: true }
-);
-
 // Watch for changes in counties data
 watch(
   () => props.states,
   (newStates) => {
-    if (newStates.length) {
+    if (Array.isArray(newStates)) {
+      updateMap();
+    }
+  },
+  { deep: true }
+);
+watch(
+  () => props.counties,
+  (newCounties) => {
+    if (Array.isArray(newCounties)) {
+      updateMap();
+    }
+  },
+  { deep: true }
+);
+watch(
+  () => props.localities,
+  (newLocalities) => {
+    if (Array.isArray(newLocalities)) {
       updateMap();
     }
   },
@@ -291,18 +422,18 @@ watch(
 watch(
   () => activeLocationStack.value,
   (newStack) => {
+    const isActive = newStack.length > 0;
+    emit('has-active-location-change', isActive);
     if (newStack.length > 0) {
       const activeLocation = newStack[newStack.length - 1];
       if (activeLocation) {
         emit('on-select-location', activeLocation);
-        // Set activeLocationId in store when location stack changes
-        if (activeLocation.data?.location_id) {
-          searchStore.setActiveLocationId(activeLocation.data.location_id);
-        }
+        const normalized = toStoreLocation(activeLocation);
+        searchStore.setActiveLocation(normalized);
       }
     } else {
-      // Clear activeLocationId when stack is empty
-      searchStore.setActiveLocationId(null);
+      searchStore.setActiveLocation(null);
+      emit('on-select-location', null);
     }
   },
   { deep: true }
@@ -326,24 +457,26 @@ watch(
   { immediate: true }
 );
 
-function updateOnParamChange(loc_id, stack) {
-  if (!loc_id || !stack) return;
+watch(
+  () => props.showSidebar,
+  (visible) => {
+    if (!visible) {
+      activeLocationStack.value = [];
+      emit('has-active-location-change', false);
+      emit('on-select-location', null);
+      searchStore.setActiveLocation(null);
+      nextTick(() => {
+        mapDeps.value.resetZoom();
+        updateMap();
+      });
+    } else {
+      nextTick(() => {
+        updateMap();
+      });
+    }
+  }
+);
 
-  const activeLoc = stack[stack.length - 1];
-  const activeLocID = activeLoc?.data?.location_id;
-  if (activeLocID === loc_id) return;
-
-  setTimeout(() => {
-    if (svg.value && loc_id) zoomToLocationById(loc_id);
-
-    updateDynamicLayers({
-      renderStateOverlay,
-      renderCountyOverlay,
-      renderLocalityMarkers,
-      deps: mapDeps.value
-    });
-  }, 250);
-}
 // Initialize the map
 function initMap() {
   const container = mapContainer.value;
@@ -385,12 +518,12 @@ function initMap() {
 
   // Create color scales with specific thresholds for counties and states
   countyColorScale.value = scaleThreshold()
-    .domain(countyColorBreakpoints) // County-specific breakpoints
-    .range(FILL_COLORS); // Use all custom colors
+    .domain(countyBreakpoints.value)
+    .range(FILL_COLORS);
 
   stateColorScale.value = scaleThreshold()
-    .domain(stateColorBreakpoints) // State-specific breakpoints
-    .range(FILL_COLORS); // Use all custom colors
+    .domain(stateBreakpoints.value)
+    .range(FILL_COLORS);
 
   // Setup zoom behavior
   setupZoom({
@@ -412,7 +545,7 @@ function initMap() {
       ) {
         // We're zooming out (current zoom < previous zoom) and below threshold
         // Clear activeLocationId from store
-        searchStore.setActiveLocationId(null);
+        searchStore.setActiveLocation(null);
         // Clear location_id from URL directly using window.history
         url.searchParams.delete('location_id');
         window.history.replaceState({}, '', url);
@@ -429,12 +562,6 @@ function initMap() {
         STATUSES
       });
 
-      // if (
-      //   !newStack.length &&
-      //   activeLocationStack.value.length &&
-      //   searchStore.activeLocationId
-      // )
-      //   router.replace({ query: {} });
       activeLocationStack.value = newStack;
 
       // Store current zoom transform
@@ -445,11 +572,11 @@ function initMap() {
 
       // Apply transform to all layers
       const mapContainer = svg.value.select('.map-container');
-      if (!mapContainer.empty()) {
-        mapContainer.attr('transform', event.transform);
-      } else {
-        console.error('Map container not found for zoom transform');
+      if (mapContainer.empty()) {
+        return;
       }
+
+      mapContainer.attr('transform', event.transform);
 
       // Update layer visibility based on zoom level
       updateLayerVisibility({
@@ -500,8 +627,8 @@ const mapDeps = computed(() => {
     MAX_ZOOM,
     FILL_COLORS,
     STATUSES,
-    countyColorBreakpoints,
-    stateColorBreakpoints,
+    countyColorBreakpoints: countyBreakpoints.value,
+    stateColorBreakpoints: stateBreakpoints.value,
 
     // Handler functions
     handleStateClick: (event, d) => {
@@ -520,7 +647,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           })
       });
@@ -542,7 +669,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           })
       });
@@ -561,7 +688,7 @@ const mapDeps = computed(() => {
           updateDynamicLayers({
             renderStateOverlay,
             renderCountyOverlay,
-            renderLocalityMarkers,
+            renderLocalityMarkers: localityRenderer.value,
             deps: mapDeps.value
           }),
         svg: svg.value
@@ -582,7 +709,7 @@ const mapDeps = computed(() => {
       return updateDynamicLayers({
         renderStateOverlay,
         renderCountyOverlay,
-        renderLocalityMarkers,
+        renderLocalityMarkers: localityRenderer.value,
         deps: mapDeps.value
       });
     }
@@ -591,6 +718,8 @@ const mapDeps = computed(() => {
 
 // Update the map with current data
 function updateMap() {
+  if (!svg.value) return;
+
   // Clear previous map if any
   svg.value.selectAll('*').remove();
 
@@ -603,6 +732,14 @@ function updateMap() {
 
   const deps = mapDeps.value;
 
+  if (countyColorScale.value) {
+    countyColorScale.value.domain(countyBreakpoints.value);
+  }
+
+  if (stateColorScale.value) {
+    stateColorScale.value.domain(stateBreakpoints.value);
+  }
+
   // Render static layers in the correct order:
   renderStatesLayer(mapContainer, deps);
   renderCountiesLayer(mapContainer, deps);
@@ -612,7 +749,7 @@ function updateMap() {
   updateDynamicLayers({
     renderStateOverlay,
     renderCountyOverlay,
-    renderLocalityMarkers,
+    renderLocalityMarkers: localityRenderer.value,
     deps
   });
 
@@ -641,7 +778,6 @@ function updateMap() {
 
 // Handle follow event from sidebar
 function handleFollow(locationId) {
-  console.log('Follow location:', locationId);
   // Emit event to parent component
   emit('on-follow', locationId);
 }
@@ -649,6 +785,15 @@ function handleFollow(locationId) {
 // Update active location stack from sidebar
 function updateActiveLocationStack(newStack) {
   activeLocationStack.value = newStack;
+  // Use nextTick to ensure mapDeps has updated with new stack
+  nextTick(() => {
+    updateDynamicLayers({
+      renderStateOverlay,
+      renderCountyOverlay,
+      renderLocalityMarkers: localityRenderer.value,
+      deps: mapDeps.value
+    });
+  });
 }
 
 // Handle zoom to location from sidebar

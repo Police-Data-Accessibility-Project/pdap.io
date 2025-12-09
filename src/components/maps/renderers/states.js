@@ -54,7 +54,7 @@ export function renderStatesLayer(container, deps) {
     .on('mouseover', (event, d) => {
       // Find the state using the name
       const stateName = d.properties.NAME;
-      const state = props.states.find((s) => s.name === stateName);
+      const state = props.states?.find((s) => s.name === stateName);
 
       if (state) {
         tooltip

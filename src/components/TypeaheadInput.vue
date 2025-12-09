@@ -4,7 +4,8 @@
     :id="wrapperId"
     :data-test="TEST_IDS.typeahead_wrapper"
     class="pdap-typeahead"
-    :class="{ 'pdap-typeahead-expanded': isListOpen }">
+    :class="{ 'pdap-typeahead-expanded': isListOpen }"
+  >
     <label v-if="$slots.label" class="col-span-2" :for="id">
       <slot name="label" />
     </label>
@@ -28,11 +29,13 @@
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
-      @keydown.down.prevent="onArrowDown" />
+      @keydown.down.prevent="onArrowDown"
+    />
     <ul
       v-if="itemsToDisplay?.length && inputRef?.value"
       :data-test="TEST_IDS.typeahead_list"
-      class="pdap-typeahead-list">
+      class="pdap-typeahead-list"
+    >
       <li
         v-for="(item, index) in itemsToDisplay"
         :key="index"
@@ -43,7 +46,8 @@
         @click="selectItem(item)"
         @keydown.enter.prevent="selectItem(item)"
         @keydown.down.prevent="onArrowDown"
-        @keydown.up.prevent="onArrowUp">
+        @keydown.up.prevent="onArrowUp"
+      >
         <slot v-if="$slots.item" name="item" v-bind="item" />
         <span v-else>{{ boldMatchText(item) }}</span>
       </li>
@@ -51,12 +55,14 @@
     <ul
       v-else-if="typeof itemsToDisplay === 'undefined' && input.length > 1"
       class="pdap-typeahead-list"
-      :data-test="TEST_IDS.typeahead_list_not_found">
+      :data-test="TEST_IDS.typeahead_list_not_found"
+    >
       <li class="max-w-[unset]">
         <slot
           v-if="$slots['not-found']"
           name="not-found"
-          v-bind="notFound ?? {}" />
+          v-bind="notFound ?? {}"
+        />
         <span v-else>
           <strong>No results found.</strong>
           Please check your spelling.

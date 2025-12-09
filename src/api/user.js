@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { signInWithEmail } from './auth';
 
 const USER_BASE = `${import.meta.env.VITE_API_URL}/user`;
+const USER_BASE_V3 = `${import.meta.env.VITE_API_URL_V3}/user`;
 const HEADERS = {
   'Content-Type': 'application/json'
 };
@@ -31,7 +32,7 @@ export async function getUser() {
   const auth = useAuthStore();
   const user = useUserStore();
 
-  return await axios.get(`${USER_BASE}/${user.id}`, {
+  return await axios.get(`${USER_BASE_V3}/${user.id}`, {
     headers: {
       ...HEADERS,
       Authorization: `Bearer ${auth.$state.tokens.accessToken.value}`

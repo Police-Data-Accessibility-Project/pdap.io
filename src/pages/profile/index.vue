@@ -16,7 +16,8 @@
         <Button
           intent="primary"
           :data-test="TEST_IDS.profile_error_retry"
-          @click="refetchProfile">
+          @click="refetchProfile"
+        >
           Try again
         </Button>
       </div>
@@ -29,14 +30,16 @@
           <div
             :class="{
               'profile-loading': !profileData && profileLoading
-            }">
+            }"
+          >
             <h3 class="like-h4">Email</h3>
             <p :data-test="TEST_IDS.profile_email">
               {{ profileData?.email }}
             </p>
             <Button
               :data-test="TEST_IDS.profile_signout"
-              @click="signOutWithRedirect">
+              @click="signOutWithRedirect"
+            >
               Sign out
             </Button>
           </div>
@@ -45,7 +48,8 @@
             <router-link
               class="pdap-button-secondary"
               :to="'/change-password'"
-              :data-test="TEST_IDS.profile_reset_password">
+              :data-test="TEST_IDS.profile_reset_password"
+            >
               Reset your password
             </router-link>
           </div>
@@ -56,9 +60,11 @@
             <div
               :class="{
                 'profile-loading': !profileData && profileLoading
-              }">
+              }"
+            >
               <template
-                v-if="didLinkGithub || profileData?.external_accounts.github">
+                v-if="didLinkGithub || profileData?.external_accounts.github"
+              >
                 <p :data-test="TEST_IDS.profile_github_linked">
                   <FontAwesomeIcon :icon="faGithub" />
                   Your account is linked with GitHub
@@ -72,7 +78,8 @@
                   :disabled="githubAuthIsLoading"
                   intent="tertiary"
                   :data-test="TEST_IDS.profile_github_link"
-                  @click="async () => await beginOAuthLogin('/profile')">
+                  @click="async () => await beginOAuthLogin('/profile')"
+                >
                   <FontAwesomeIcon :icon="faGithub" />
                   Link account with GitHub
                 </Button>
@@ -87,7 +94,8 @@
             <div
               :class="{
                 'profile-loading h-12': !profileData && profileLoading
-              }">
+              }"
+            >
               <Button
                 :class="{ 'mb-5': apiKey }"
                 intent="secondary"
@@ -95,7 +103,8 @@
                 :disabled="apiKeyIsLoading"
                 type="button"
                 :data-test="TEST_IDS.profile_api_key_regenerate"
-                @click="recreateAPIKey">
+                @click="recreateAPIKey"
+              >
                 Regenerate API Key
               </Button>
             </div>
@@ -108,7 +117,8 @@
                     () => {
                       resetAPIKeyData();
                     }
-                  " />
+                  "
+                />
               </div>
             </transition>
           </section>
@@ -119,7 +129,8 @@
             <ul :data-test="TEST_IDS.profile_permissions">
               <li
                 v-for="permission of profileData.permissions"
-                :key="permission">
+                :key="permission"
+              >
                 {{ permission }}
               </li>
             </ul>
@@ -132,13 +143,15 @@
         <h3 class="like-h4">Followed searches</h3>
         <div
           v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
+          class="profile-loading h-20"
+        />
         <div
           v-if="
             profileData &&
-            (!profileData.followed_searches?.data ||
-              profileData.followed_searches.data.length === 0)
-          ">
+            (!profileData.followed_searches ||
+              profileData.followed_searches.length === 0)
+          "
+        >
           <p class="text-lg">
             Make a search from the homepage and click "follow" to see it here.
           </p>
@@ -146,10 +159,11 @@
         <ProfileTable
           v-else
           :items="followedSearches"
-          :data-test="TEST_IDS.profile_followed_searches_table">
+          :data-test="TEST_IDS.profile_followed_searches_table"
+        >
           <template #left="{ item }">
             <p class="flex items-center justify-start">
-              {{ getFullLocationText(item) }}
+              {{ item.display_name ?? getFullLocationText(item) }}
             </p>
           </template>
           <template #center><span /></template>
@@ -162,39 +176,52 @@
               :is-loading="unFollowIsLoading"
               :data-test="TEST_IDS.profile_unfollow_button"
               @keydown.stop.prevent.enter="() => unFollow(item)"
-              @click.stop.prevent="() => unFollow(item)">
+              @click.stop.prevent="() => unFollow(item)"
+            >
               <FontAwesomeIcon :icon="faCircleXmark" />
               Unfollow
             </Button>
           </template>
         </ProfileTable>
 
-        <!-- Recent searches -->
+        <!-- Recent searches TODO @joshuagraber -- De-dupe before render!! -->
         <h3 class="like-h4">Recent searches</h3>
         <div v-if="!profileData && profileLoading" class="h-20" />
         <div
           v-if="
             profileData &&
-            (!profileData.recent_searches?.data ||
-              profileData.recent_searches.data.length === 0)
-          ">
+            (!profileData.recent_searches ||
+              profileData.recent_searches.length === 0)
+          "
+        >
           <p class="text-lg">Make a search from the homepage to see it here.</p>
         </div>
         <ProfileTable v-else :items="recentSearches">
           <template #left="{ item }">
-            <div class="max-1/3">
+            <div v-if="item.record_categories.length" class="max-1/3">
               <p
                 v-for="category of item.record_categories"
                 :key="category"
-                class="pill w-max text-xxs">
+                class="pill w-max text-xxs"
+              >
                 <RecordTypeIcon :record-type="category" />
                 {{ category }}
+              </p>
+            </div>
+            <div v-if="item.record_types.length" class="max-1/3">
+              <p
+                v-for="type of item.record_types"
+                :key="type"
+                class="pill w-max text-xxs"
+              >
+                <RecordTypeIcon :record-type="type" />
+                {{ type }}
               </p>
             </div>
           </template>
           <template #center="{ item }">
             <p class="flex items-center justify-start">
-              {{ getFullLocationText(item) }}
+              {{ item.display_name ?? getFullLocationText(item) }}
             </p>
           </template>
           <template #right>
@@ -205,13 +232,15 @@
         <h3 class="like-h4">My requests</h3>
         <div
           v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
+          class="profile-loading h-20"
+        />
         <div
           v-if="
             profileData &&
-            (!profileData.data_requests?.data ||
-              profileData.data_requests.data.length === 0)
-          ">
+            (!profileData.data_requests ||
+              profileData.data_requests.length === 0)
+          "
+        >
           <p class="text-lg">
             To open a Data Request,
             <RouterLink to="/data-request/create">start here.</RouterLink>
@@ -226,7 +255,8 @@
           <template #center="{ item }">
             <p
               v-for="(location, i) of item.locations"
-              :key="'profile-request' + getFullLocationText(location)">
+              :key="'profile-request' + getFullLocationText(location)"
+            >
               {{
                 getFullLocationText(location) +
                 (i === item.locations.length - 1 ? '' : ', ')
@@ -240,7 +270,8 @@
               target="_blank"
               rel="noopener noreferrer"
               @keydown.stop.enter=""
-              @click.stop="">
+              @click.stop=""
+            >
               <FontAwesomeIcon :icon="faLink" />
               GitHub
             </a>
@@ -272,6 +303,7 @@ import { getUser } from '@/api/user';
 import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
+import { makeRawParams, makeSearchPath } from './_util';
 
 const route = useRoute();
 const router = useRouter();
@@ -290,7 +322,7 @@ const {
   queryKey: [PROFILE],
   queryFn: async () => {
     const response = await getUser();
-    return response.data.data;
+    return response.data;
   },
   staleTime: 5 * 60 * 1000, // 5 minutes
   onError: (err) => {
@@ -366,40 +398,24 @@ const {
 });
 
 const requests = computed(() =>
-  profileData.value?.data_requests.data.map((req) => ({
+  profileData.value?.data_requests.map((req) => ({
     ...req,
     to: `/data-request/${req.id}`
   }))
 );
 const followedSearches = computed(() =>
-  profileData.value?.followed_searches.data.map((search) => {
-    const params = new URLSearchParams({ location_id: search.location_id });
-
+  profileData.value?.followed_searches.map((search) => {
     return {
       ...search,
-      to: `/search/results?${params.toString()}`
+      to: makeSearchPath(makeRawParams(search))
     };
   })
 );
 const recentSearches = computed(() =>
-  profileData.value?.recent_searches.data.map((search) => {
-    const allAt = search.record_categories.indexOf('All');
-    const catWithOutAll =
-      allAt === -1
-        ? search.record_categories
-        : search.record_categories.splice(allAt);
-    const params = new URLSearchParams({
-      location_id: search.location_id,
-      ...(catWithOutAll.length
-        ? {
-            record_categories: [...catWithOutAll]
-          }
-        : {})
-    });
-
+  profileData.value?.recent_searches.map((search) => {
     return {
       ...search,
-      to: `/search/results?${params.toString()}`
+      to: makeSearchPath(makeRawParams(search))
     };
   })
 );

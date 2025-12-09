@@ -4,25 +4,34 @@ import { getMostNarrowSearchLocationWithResults } from '@/util/locationFormatter
 import { normalizeLocaleForHash } from './_util';
 
 export async function getSearchResults(route) {
-  const searchLocation = await getLocation(route.query.location_id);
-  const searched = getMostNarrowSearchLocationWithResults(searchLocation.data);
+  const searchLocation = route.query.location_id
+    ? await getLocation(route.query.location_id)
+    : undefined;
+  const searched = getMostNarrowSearchLocationWithResults(searchLocation?.data);
   const response = await search(route.query);
 
   return {
     response: response.data,
     searched,
-    location: searchLocation.data,
+    location: searchLocation?.data ?? null,
     hash: normalizeLocaleForHash(searched, response.data)
   };
 }
 
 export async function getIsFollowed(route) {
-  const isFollowed = await getFollowedSearch(route.query.location_id);
-  return !!isFollowed;
+  try {
+    const isFollowed = await getFollowedSearch(route.query.location_id);
+    return !!isFollowed;
+  } catch {
+    return false;
+  }
 }
 
 export async function getLocationRequests(route) {
-  const requests = await getLocationDataRequests(route.query.location_id);
+  if (route.query.location_id) {
+    const requests = await getLocationDataRequests(route.query.location_id);
 
-  return requests.data.data;
+    return requests.data.data;
+  }
+  return null;
 }
