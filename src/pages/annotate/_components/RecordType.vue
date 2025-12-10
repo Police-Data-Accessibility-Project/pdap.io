@@ -43,11 +43,10 @@
 import { computed, PropType, ref } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
-const selectedRecordType = defineModel({ type: Object, default: null });
+const selectedRecordType = defineModel({ type: String, default: null });
 const selectedRadioRecordType = ref(null);
-// const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   suggestions: {
     type: Array as PropType<RecordTypeSuggestionType[] | null>,
@@ -59,13 +58,13 @@ function handleSelectChange(selected) {
   selectedRadioRecordType.value = null;
 }
 
-function handleRadioFormSelect(option) {
+function handleRadioFormSelect(option: RadioOptionType) {
   selectedRecordType.value = option.value;
 }
 
 
 
-function getRecordTypeEndorsementString(suggestion) {
+function getRecordTypeEndorsementString(suggestion: RecordTypeSuggestionType): string {
   let base = suggestion.record_type;
   if (suggestion.user_count) {
     base += ' 👥 ' + suggestion.user_count;
@@ -76,7 +75,7 @@ function getRecordTypeEndorsementString(suggestion) {
   return base;
 }
 
-const radioOptions = computed(() => {
+const radioOptions = computed((): RadioOptionType[] => {
   return props.suggestions.map((s) => ({
     value: s.record_type,
     display_name: s.record_type,

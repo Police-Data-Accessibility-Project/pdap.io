@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Typeahead from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
 import _debounce from 'lodash/debounce';
@@ -56,19 +56,21 @@ import { getTypeaheadLocations } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
-const emit = defineEmits(['selected', 'update:modelValue']);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: any): void;
+}>()
 const { query: params } = useRoute();
 
 /* constants */
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
 
-const items = ref([]);
+const items = ref<Array>([]);
 const selectedRecord = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
 
 const queryClient = useQueryClient();
-const queryKey = computed(() => [
+const queryKey = computed<string>(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);

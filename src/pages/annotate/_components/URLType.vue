@@ -1,30 +1,30 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { urlTypes } from '@/pages/annotate/_components/_shared/types';
+import { urlTypeType, urlTypes, URLTypeSuggestion } from '@/pages/annotate/_components/_shared/types';
 
 const props = defineProps({
   options: {
-    type: Array,
+    type: Array as PropType<urlTypeType[]>,
     required: true
   },
   modelValue: {
-    type: String,
+    type: String as PropType<urlTypeType>,
     default: null
   },
   suggestions: {
-    type: Array as PropType<>,
+    type: Array as PropType<URLTypeSuggestion[] | null>,
     default: null
   }
 });
 
-const suggestionMap = computed(() => {
+const suggestionMap = computed<Record<urlTypeType, number>>(() => {
   return Object.fromEntries(
     props.suggestions.map((s) => [s.url_type, s.endorsement_count]) // or transform however you want
   );
 });
 
-function getEndorsementString(ut: urlType) {
-  const suggestionKey = urlTypeMapping[ut];
+function getEndorsementString(ut: urlTypeType): string {
+  const suggestionKey: string = urlTypeMapping[ut];
 
   if (!(suggestionKey in suggestionMap.value)) {
     return '';
@@ -36,7 +36,7 @@ function getEndorsementString(ut: urlType) {
 
 const emit = defineEmits(['update:modelValue']);
 
-function selectOption(option) {
+function selectOption(option: urlTypeType) {
   emit('update:modelValue', option);
 }
 
@@ -49,7 +49,12 @@ const urlTypeMapping = {
   [urlTypes.BROKEN]: 'broken page'
 };
 
-const formattedOptions = computed(() =>
+type URLTypeOption = {
+  value: urlTypeType;
+  endorsementString: string;
+}
+
+const formattedOptions = computed<URLTypeOption[]>(() =>
   props.options.map((opt) => ({
     value: opt,
     endorsementString: getEndorsementString(opt)

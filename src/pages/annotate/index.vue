@@ -110,7 +110,12 @@ import {
 } from '@/pages/annotate/_components/_index/constants';
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
-import { NextAnonymousAnnotationType, urlTypes } from '@/pages/annotate/_components/_shared/types';
+import {
+  AgencyLocationSelectionType, NameSelectionType,
+  NextAnonymousAnnotationType, RecordType,
+  urlTypes,
+  urlTypeType
+} from '@/pages/annotate/_components/_shared/types';
 
 // TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
@@ -180,16 +185,15 @@ const prevTab = () => {
 };
 
 // URL Type
-// TODO: Expand to include description for each
-const urlTypeOptions: Array<string> = Object.values(urlTypes);
+const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 
 const imageOk = ref<boolean>(false);
 
-const selectedURLType = ref(null);
-const selectedLocation = ref(null);
-const selectedAgency = ref(null);
-const selectedRecordType = ref(null);
-const selectedName = ref(null);
+const selectedURLType = ref<urlTypeType>(null);
+const selectedLocation = ref<AgencyLocationSelectionType(null);
+const selectedAgency = ref<AgencyLocationSelectionType>(null);
+const selectedRecordType = ref<RecordType>(null);
+const selectedName = ref<NameSelectionType>(null);
 
 const tabVarMapping = {
   [tabIDs.URL_TYPE]: selectedURLType,

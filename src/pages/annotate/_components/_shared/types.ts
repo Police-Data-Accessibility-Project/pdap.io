@@ -1,5 +1,8 @@
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 
+//======================
+// Annotation GET Types
+//======================
 export type NextAnonymousAnnotationType = {
   url_info: URLInfoType;
   html_info: Record<string, number | string>; //Unused in logic
@@ -13,7 +16,7 @@ export type NextAnonymousAnnotationType = {
 }
 
 export type URLTypeSuggestion = {
-  url_type: urlType;
+  url_type: urlTypeType;
   endorsement_count: number;
 }
 
@@ -60,6 +63,10 @@ export type NameSuggestionsType = {
   suggestions: NameSuggestionType[];
 }
 
+//======================
+// Miscellaneous Types
+//======================
+
 export type RadioOptionType = {
   value: string | number;
   label: string;
@@ -73,7 +80,7 @@ export const urlTypes = {
   BROKEN: 'Broken / bad data',
   NOT_SURE: 'Not Sure'
 };
-export type urlType = (typeof urlTypes)[keyof typeof urlTypes];
+export type urlTypeType = (typeof urlTypes)[keyof typeof urlTypes];
 
 // Category names (keys of the object)
 export type RecordCategory = keyof typeof RECORD_TYPES_BY_CATEGORY;
@@ -81,3 +88,18 @@ export type RecordCategory = keyof typeof RECORD_TYPES_BY_CATEGORY;
 // All possible record types (inner string values)
 export type RecordType =
   (typeof RECORD_TYPES_BY_CATEGORY)[RecordCategory][number];
+
+//======================
+// Variable Types
+//======================
+
+export type AgencyLocationSelectionType = {
+  id: number;
+  display_name: string;
+}
+
+export type NameSelectionType = {
+  nameID: number | null;
+  name: string;
+  new: boolean;
+}

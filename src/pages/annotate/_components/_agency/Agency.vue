@@ -22,9 +22,10 @@ import { getEndorsementString } from '@/pages/annotate/_components/_shared/helpe
 
 import { computed, type PropType, ref } from 'vue';
 import {
-  AgencyType
-} from '@/pages/annotate/_components/_agency/types';
-import { AgencyLocationSuggestionType, RadioOptionType } from '@/pages/annotate/_components/_shared/types';
+  AgencyLocationSelectionType,
+  AgencyLocationSuggestionType,
+  RadioOptionType
+} from '@/pages/annotate/_components/_shared/types';
 
 // ─────────────────────────────────────
 // Props
@@ -43,7 +44,7 @@ const props = defineProps({
 // ─────────────────────────────────────
 
 const selectedRadioAgency = ref<RadioOptionType | null>(null);
-const agency = defineModel<AgencyType | null>({ default: null });
+const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
 
 // ─────────────────────────────────────
 // Helpers
@@ -77,7 +78,7 @@ function handleRadioFormSelect(option: RadioOptionType) {
   };
 }
 
-function handleAgencySelect(ag: AgencyType | null) {
+function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
   if (ag == null) {
     return;
   }

@@ -21,7 +21,11 @@ import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { computed, PropType, ref } from 'vue';
 import { getEndorsementString } from '@/pages/annotate/_components/_shared/helpers';
 import { LocationSuggestionType } from '@/pages/annotate/_components/_location/types';
-import { AgencyLocationSuggestionType, RadioOptionType } from '@/pages/annotate/_components/_shared/types';
+import {
+  AgencyLocationSelectionType,
+  AgencyLocationSuggestionType,
+  RadioOptionType
+} from '@/pages/annotate/_components/_shared/types';
 
 const props = defineProps({
   suggestions: {
@@ -36,7 +40,7 @@ const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
 
-const location = defineModel<LocationSuggestionType>({ default: null });
+const location = defineModel<AgencyLocationSelectionType>({ default: null });
 
 function handleRadioFormSelect(option: RadioOptionType) {
   location.value = {
@@ -51,10 +55,13 @@ function handleSearchLocationSelect(loc: LocationSuggestionType) {
   }
 
   resetRadio();
-  location.value = loc;
+  location.value = {
+    id: Number(loc.location_id),
+    display_name: loc.display_name
+  };
 }
 
-const radioOptions = computed(() => {
+const radioOptions = computed((): RadioOptionType[] => {
   return props.suggestions.map((s) => ({
     value: s.id,
     display_name: s.display_name,

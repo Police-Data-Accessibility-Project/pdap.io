@@ -1,22 +1,41 @@
-<script setup>
-import { reactive } from 'vue';
+<script setup lang="ts">
+import { PropType, reactive } from 'vue';
+import { NameSelectionType } from '@/pages/annotate/_components/_shared/types';
+
+//======================
+// Types
+//======================
+
+type editableRadioOption = {
+  id: string;
+  text: string;
+  preEditText: string;
+}
+
+type nameEditState = {
+  name: string;  // Text of name
+  dirty: boolean;  // Whether name was modified
+}
 
 const props = defineProps({
   modelValue: {
-    type: [String, Number, null],
+    type: Object as PropType<NameSelectionType>,
     default: null
   },
   // [{ id, text, preEditText}]
   options: {
-    type: Array,
+    type: Array as PropType<editableRadioOption[]>,
     required: true
   }
 });
 
-const emit = defineEmits(['update:modelValue', 'update:options', 'selected']);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: NameSelectionType): void;
+}>()
 
-// id → { text, dirty }
-const nameMapping = reactive(
+
+
+const nameMapping = reactive<Record<string, nameEditState>>(
   Object.fromEntries(
     props.options.map((item) => [
       item.id,
@@ -28,7 +47,7 @@ const nameMapping = reactive(
   )
 );
 
-function setDirty(id, value = undefined) {
+function setDirty(id: number, value: boolean | undefined = undefined) {
   const entry = nameMapping[id];
   if (!entry) return;
 
@@ -36,20 +55,15 @@ function setDirty(id, value = undefined) {
   entry.dirty = value ?? !entry.dirty;
 }
 
-function resetOption(option) {
+function resetOption(option: editableRadioOption) {
   /*Reset option to its original text*/
   option.text = nameMapping[option.id].text;
   setDirty(option.id, false);
 }
 
-function choose(option) {
-  /*
-  Output Format:
-    nameID: None | int
-    name: str
-    new: bool
- */
-  const isNew = isDirty(option.id);
+function choose(option: NameSelectionType) {
+
+  const isNew: boolean = isDirty(option.id);
 
   emit('update:modelValue', {
     nameID: option.id,
@@ -59,15 +73,15 @@ function choose(option) {
 }
 
 // When user edits the text of an option
-const onInput = (option, event) => {
+const onInput = (option: editableRadioOption, event) => {
   setDirty(option.id, true);
   option.text = event.target.value;
   // emit updated options so parent can keep it in sync
   choose(option);
 };
 
-const isSelected = (id) => props.modelValue?.nameID === id;
-const isDirty = (id) => nameMapping[id].dirty;
+const isSelected = (id): boolean => props.modelValue?.nameID === id;
+const isDirty = (id): boolean => nameMapping[id].dirty;
 </script>
 <template>
   <div class="space-y-2">

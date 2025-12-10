@@ -1,23 +1,31 @@
-<script setup>
+<script setup lang="ts">
+import { PropType } from 'vue';
+import {
+  AgencyLocationSelectionType,
+  NameSelectionType,
+  RecordType,
+  urlTypeType
+} from '@/pages/annotate/_components/_shared/types';
+
 const props = defineProps({
   urlType: {
-    type: String,
+    type: String as PropType<urlTypeType>,
     required: true
   },
   location: {
-    type: Number,
+    type: Object as PropType<AgencyLocationSelectionType>,
     default: null
   },
   agency: {
-    type: Object,
+    type: Object as PropType<AgencyLocationSelectionType>,
     default: null
   },
   recordType: {
-    type: String,
+    type: String as PropType<RecordType>,
     default: null
   },
   name: {
-    type: Object,
+    type: Object as PropType<NameSelectionType>,
     default: null
   }
 });

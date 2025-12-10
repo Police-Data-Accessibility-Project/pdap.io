@@ -11,21 +11,21 @@
 <script setup lang="ts">
 import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadioGroup.vue';
 import { computed, type PropType } from 'vue';
-import { NameSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { NameSelectionType, NameSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
-// TODO: Get all existing name annotations
-// TODO: Create map of names to ids
 
-function handleRadioGroupUpdate(rg_id) {
+function handleRadioGroupUpdate(rg: NameSelectionType) {
   // TODO: Get name associated with rg_id from EditableRadioGroup
   // TODO: Check if name exists in existingNameMap
   // TODO: If yet, emit the number and name
   // TODO: If not, emit the name and a null number
 
-  emit('update:modelValue', rg_id);
+  emit('update:modelValue', rg);
 }
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: NameSelectionType): void;
+}>()
 
 function getNameEndorsementString(suggestion: NameSuggestionType): string {
   let base = '';
@@ -38,7 +38,6 @@ function getNameEndorsementString(suggestion: NameSuggestionType): string {
   return base;
 }
 
-// TODO: Dynamically populate from annotation
 const props = defineProps({
   suggestions: {
     type: Array as PropType<NameSuggestionType[] | null>,
@@ -46,8 +45,7 @@ const props = defineProps({
   }
 });
 
-const options = computed(() => {
-  console.log(props.suggestions);
+const options = computed((): editableRadioOption[] => {
   return props.suggestions
     .map((s) => ({
       id: s.id,
