@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
+import { NextAnonymousAnnotationType } from '@/pages/annotate/_components/_shared/types';
 
 const ANNOTATE_BASE = `${import.meta.env.VITE_SM_API_URL}/annotate`;
 const HEADERS_BASE = {
   'Content-Type': 'application/json'
 };
 
-export async function getAnonymousAnnotationURL() {
-  return await axios.get(`${ANNOTATE_BASE}/anonymous`);
+export async function getAnonymousAnnotationURL(): Promise<NextAnonymousAnnotationType> {
+  return await axios.get(`${ANNOTATE_BASE}/anonymous`)
+    .then((res) => res.data.next_annotation);
 }
 
 export async function postAnonymousAnnotation(annotation, url_id) {
@@ -40,5 +42,5 @@ export async function postUserAnnotation(annotation, url_id) {
 }
 
 export async function get_url_screenshot(url_id) {
-  return await axios.get(`${URL_BASE}/${url_id}/screenshot`);
+  return await axios.get(`${ANNOTATE_BASE}/${url_id}/screenshot`);
 }

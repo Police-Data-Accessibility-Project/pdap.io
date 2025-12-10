@@ -1,11 +1,5 @@
-export const urlTypes = {
-  DATA_SOURCE: 'Relevant Data Source',
-  META_URL: 'Agency Homepage or Info',
-  INDIVIDUAL: 'Individual Record',
-  NOT_RELEVANT: 'Not Relevant Or Useful',
-  BROKEN: 'Broken / bad data',
-  NOT_SURE: 'Not Sure'
-};
+import { urlTypes } from '@/pages/annotate/_components/_shared/types';
+
 export const tabIDs = {
   URL_TYPE: 'url_type',
   LOCATION: 'location',
@@ -14,6 +8,7 @@ export const tabIDs = {
   NAME: 'name',
   CONFIRM: 'confirm'
 };
+export type TabID = (typeof tabIDs)[keyof typeof tabIDs];
 
 export const tabs = [
   { name: 'URL Type', id: tabIDs.URL_TYPE },

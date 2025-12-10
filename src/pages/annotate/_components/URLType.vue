@@ -1,6 +1,6 @@
-<script setup>
-import { urlTypes } from '@/pages/annotate/_components/_index/constants';
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed, PropType } from 'vue';
+import { urlTypes } from '@/pages/annotate/_components/_shared/types';
 
 const props = defineProps({
   options: {
@@ -12,7 +12,7 @@ const props = defineProps({
     default: null
   },
   suggestions: {
-    type: Array,
+    type: Array as PropType<>,
     default: null
   }
 });
@@ -23,8 +23,8 @@ const suggestionMap = computed(() => {
   );
 });
 
-function getEndorsementString(urlType) {
-  const suggestionKey = urlTypeMapping[urlType];
+function getEndorsementString(ut: urlType) {
+  const suggestionKey = urlTypeMapping[ut];
 
   if (!(suggestionKey in suggestionMap.value)) {
     return '';

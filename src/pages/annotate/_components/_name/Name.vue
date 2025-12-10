@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ selected }}</p>
+    <p>{{ selected?.name }}</p>
     <EditableRadioGroup
       v-model="selected"
       :options="options"
@@ -8,9 +8,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadioGroup.vue';
-import { ref } from 'vue';
+import { computed, type PropType } from 'vue';
+import { NameSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
 // TODO: Get all existing name annotations
 // TODO: Create map of names to ids
@@ -26,20 +27,42 @@ function handleRadioGroupUpdate(rg_id) {
 
 const emit = defineEmits(['update:modelValue']);
 
+function getNameEndorsementString(suggestion: NameSuggestionType): string {
+  let base = '';
+  if (suggestion.user_count) {
+    base += ' 👥 ' + suggestion.user_count;
+  }
+  if (suggestion.robo_count) {
+    base += ' 🤖 ' + suggestion.robo_count;
+  }
+  return base;
+}
+
 // TODO: Dynamically populate from annotation
 const props = defineProps({
   suggestions: {
-    type: Array,
+    type: Array as PropType<NameSuggestionType[] | null>,
     default: null
   }
 });
-// TODO: Change annotations icon so they appear outside the editable text area
-const options = ref([
-  { id: '1', text: 'Relevant Data Source 👥 2', editable: true },
-  { id: '2', text: 'Agency Homepage or Info 👥 1 🤖 1', editable: true },
-  { id: 'not_sure', text: 'Not Sure', editable: false }
-]);
 
+const options = computed(() => {
+  console.log(props.suggestions);
+  return props.suggestions
+    .map((s) => ({
+      id: s.id,
+      text: s.display_name,
+      preEditText: getNameEndorsementString(s)
+    }))
+    .concat([
+      // Include an option for a new name as well
+      {
+        id: 'new',
+        text: 'New Name',
+        preEditText: ''
+      }
+    ]);
+});
 </script>
 
 <style scoped></style>

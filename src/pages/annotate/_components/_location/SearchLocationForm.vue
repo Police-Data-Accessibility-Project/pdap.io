@@ -48,7 +48,6 @@
 </template>
 
 <script setup>
-
 import Typeahead from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
 import _debounce from 'lodash/debounce';
@@ -56,12 +55,6 @@ import { useRoute } from 'vue-router';
 import { getTypeaheadLocations } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
-
-const { buttonCopy } = defineProps({
-  buttonCopy: String,
-  placeholder: String
-});
-
 
 const emit = defineEmits(['selected', 'update:modelValue']);
 const { query: params } = useRoute();
@@ -73,7 +66,6 @@ const items = ref([]);
 const selectedRecord = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
-
 
 const queryClient = useQueryClient();
 const queryKey = computed(() => [
@@ -123,8 +115,6 @@ onMounted(() => {
     initiallySearchedRecord.value = params;
   }
 });
-
-
 
 function onSelectRecord(item) {
   emit('update:modelValue', item);

@@ -4,12 +4,12 @@ const props = defineProps({
     type: String,
     required: true
   },
-  locationID: {
+  location: {
     type: Number,
     default: null
   },
-  agencyID: {
-    type: Number,
+  agency: {
+    type: Object,
     default: null
   },
   recordType: {
@@ -17,7 +17,7 @@ const props = defineProps({
     default: null
   },
   name: {
-    type: String,
+    type: Object,
     default: null
   }
 });
@@ -31,11 +31,11 @@ const props = defineProps({
     </p>
     <p>
       <b>Location</b>
-      : {{ props.locationID }}
+      : {{ props.location?.display_name }}
     </p>
     <p>
       <b>Agency</b>
-      : {{ props.agencyID }}
+      : {{ props.agency?.display_name }}
     </p>
     <p>
       <b>RecordType</b>
@@ -43,7 +43,7 @@ const props = defineProps({
     </p>
     <p>
       <b>Name</b>
-      : {{ props.name }}
+      : {{ props.name?.name }}
     </p>
   </div>
 </template>

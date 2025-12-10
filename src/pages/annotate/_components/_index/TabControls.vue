@@ -18,12 +18,18 @@
         :disabled="isNextDisabled"
         @click="emit('next')"
     >
-      Next
+      {{nextText}}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
+
+const nextText = defineModel({
+  type: String,
+  default: 'Next'
+})
+
 const props = defineProps<{
   currentIndex: number
   total: number

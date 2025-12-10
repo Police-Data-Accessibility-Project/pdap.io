@@ -6,7 +6,7 @@
       <p>Record Type: {{ selectedRecordType }}</p>
       <div class="col-auto">
         <RadioForm
-          v-model="selectedRecordType"
+          v-model="selectedRadioRecordType"
           :options="radioOptions"
           header="Suggestions"
           @update:model-value="handleRadioFormSelect" />
@@ -39,67 +39,31 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed, PropType, ref } from 'vue';
+import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
+import { RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
 const selectedRecordType = defineModel({ type: Object, default: null });
+const selectedRadioRecordType = ref(null);
 // const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   suggestions: {
-    type: Array,
+    type: Array as PropType<RecordTypeSuggestionType[] | null>,
     default: null
   }
 });
+
+function handleSelectChange(selected) {
+  selectedRadioRecordType.value = null;
+}
 
 function handleRadioFormSelect(option) {
   selectedRecordType.value = option.value;
 }
 
-// TODO: Duplicate of data-request/create.vue. Extract?
-const RECORD_TYPES_BY_CATEGORY = {
-  'Police & Public Interactions': [
-    'Accident Reports',
-    'Arrest Records',
-    'Calls for Service',
-    'Car GPS',
-    'Citations',
-    'Dispatch Logs',
-    'Dispatch Recordings',
-    'Field Contacts',
-    'Incident Reports',
-    'Misc Police Activity',
-    'Officer Involved Shootings',
-    'Stops',
-    'Surveys',
-    'Use of Force Reports',
-    'Vehicle Pursuits'
-  ],
-  'Info about officers': [
-    'Complaints & Misconduct',
-    'Daily Activity Logs',
-    'Training & Hiring Info',
-    'Personnel Records'
-  ],
-  'Info about agencies': [
-    'Annual & Monthly Reports',
-    'Budgets & Finances',
-    'Contact Info & Agency Meta',
-    'Geographic',
-    'List of Data Sources',
-    'Policies & Contracts'
-  ],
-  'Agency-published Resources': [
-    'Crime Maps & Reports',
-    'Crime Statistics',
-    'Media Bulletins',
-    'Records Request Info',
-    'Resources',
-    'Sex Offender Registry',
-    'Wanted Persons'
-  ],
-  'Jails & courts': ['Booking Reports', 'Court Cases', 'Incarceration Records']
-};
+
 
 function getRecordTypeEndorsementString(suggestion) {
   let base = suggestion.record_type;
@@ -113,7 +77,6 @@ function getRecordTypeEndorsementString(suggestion) {
 }
 
 const radioOptions = computed(() => {
-  console.log(props.suggestions);
   return props.suggestions.map((s) => ({
     value: s.record_type,
     display_name: s.record_type,

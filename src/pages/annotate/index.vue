@@ -32,6 +32,7 @@
 
           <div class="w-full mx-auto">
             <TabControls
+              v-model="nextText"
               :current-index="currentGlobalIndex"
               :total="tabs.length"
               :is-next-disabled="isNextDisabled"
@@ -44,45 +45,44 @@
               @select="selectTab" />
 
             <!-- Tab content -->
-
-            <div class="mt-4 relative overflow-hidden">
-              <div v-if="currentTab.id === 'url_type'">
-                <URLTypeView
-                  v-model="selectedURLType"
-                  :options="urlTypeOptions"
-                  :suggestions="annotation.url_type_suggestions" />
+            <keep-alive>
+              <div class="mt-4 relative overflow-hidden">
+                <keep-alive>
+                  <URLTypeView
+                    v-if="currentTab.id === 'url_type'"
+                    v-model="selectedURLType"
+                    :options="urlTypeOptions"
+                    :suggestions="annotation.url_type_suggestions" />
+                  <LocationView
+                    v-else-if="currentTab.id === 'location'"
+                    v-model="selectedLocation"
+                    :suggestions="
+                      annotation.location_suggestions.suggestions
+                    " />
+                  <AgencyView
+                    v-else-if="currentTab.id === 'agency'"
+                    v-model="selectedAgency"
+                    :suggestions="annotation.agency_suggestions.suggestions" />
+                  <RecordTypeView
+                    v-else-if="currentTab.id === 'record_type'"
+                    v-model="selectedRecordType"
+                    :suggestions="
+                      annotation.record_type_suggestions.suggestions
+                    " />
+                  <NameView
+                    v-else-if="currentTab.id === 'name'"
+                    v-model="selectedName"
+                    :suggestions="annotation.name_suggestions.suggestions" />
+                  <ConfirmView
+                    v-else-if="currentTab.id === 'confirm'"
+                    :url-type="selectedURLType"
+                    :location="selectedLocation"
+                    :agency="selectedAgency"
+                    :record-type="selectedRecordType"
+                    :name="selectedName" />
+                </keep-alive>
               </div>
-              <div v-if="currentTab.id === 'location'">
-                <LocationView
-                  v-model="selectedLocationID"
-                  :suggestions="annotation.location_suggestions.suggestions" />
-              </div>
-              <div v-if="currentTab.id === 'agency'">
-                <AgencyView
-                  v-model="selectedAgencyID"
-                  :suggestions="annotation.agency_suggestions.suggestions" />
-              </div>
-              <div v-if="currentTab.id === 'record_type'">
-                <RecordTypeView
-                  v-model="selectedRecordType"
-                  :suggestions="
-                    annotation.record_type_suggestions.suggestions
-                  " />
-              </div>
-              <div v-if="currentTab.id === 'name'">
-                <NameView
-                  v-model="selectedName"
-                  :suggestions="annotation.name_suggestions.suggestions" />
-              </div>
-              <div v-if="currentTab.id === 'confirm'">
-                <ConfirmView
-                  :url-type="selectedURLType"
-                  :location-i-d="selectedLocationID"
-                  :agency-i-d="selectedAgencyID"
-                  :record-type="selectedRecordType"
-                  :name="selectedName" />
-              </div>
-            </div>
+            </keep-alive>
           </div>
         </template>
       </div>
@@ -90,7 +90,7 @@
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getAnonymousAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';
@@ -103,13 +103,14 @@ import LocationView from '@/pages/annotate/_components/_location/Location.vue';
 import NameView from '@/pages/annotate/_components/_name/Name.vue';
 import ConfirmView from '@/pages/annotate/_components/Confirm.vue';
 import {
+  TabID,
   tabIDs,
   tabs,
-  urlTypes,
   validTabsByUrlType
 } from '@/pages/annotate/_components/_index/constants';
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
+import { NextAnonymousAnnotationType, urlTypes } from '@/pages/annotate/_components/_shared/types';
 
 // TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
@@ -120,30 +121,29 @@ const {
   isLoading: annotationPending,
   data: annotation,
   error
-} = useQuery({
+}: UseQueryResult<NextAnonymousAnnotationType> = useQuery({
   queryKey,
-  queryFn: async () => {
-    const response = await getAnonymousAnnotationURL();
-    return response.data.next_annotation;
+  queryFn: async (): Promise<NextAnonymousAnnotationType> => {
+    return await getAnonymousAnnotationURL();
   }
 });
 
 // TABS
 // Two indices exist:
 // The global index, determining which of the six tabs is selected
-const currentGlobalIndex = ref(0);
-// The path index, determining which tab *in the given path* is slected
-const currentPathIndex = ref(0);
+const currentGlobalIndex = ref<number>(0);
+// The path index, determining which tab *in the given path* is selected
+const currentPathIndex = ref<number>(0);
 
 const currentTab = computed(() => tabs[currentGlobalIndex.value]);
 
-function selectTab(index) {
+function selectTab(index: number) {
   currentGlobalIndex.value = index;
 }
 
 // Path index refers to the index for the given URL Type path
 
-const isNextDisabled = computed(() => {
+const isNextDisabled = computed((): boolean => {
   // Disabled if at end of tabs
   if (currentGlobalIndex.value === tabs.length - 1) {
     return true;
@@ -152,52 +152,61 @@ const isNextDisabled = computed(() => {
   return selectedURLType.value === null;
 });
 
-const tabIndexByValue = Object.fromEntries(
+const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
   Object.values(tabIDs).map((value, index) => [value, index])
-);
-
-// TODO: Add logic for converting "Next" button to "Skip"
+) as Record<TabID, number>;
+const tabValueByIndex: Record<number, TabID> = Object.fromEntries(
+  Object.values(tabIDs).map((value, index) => [index, value])
+) as Record<number, TabID>;
 
 const nextTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs = validTabsByUrlType[selectedURLType.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value];
   // Get next tab in path
   currentPathIndex.value++;
-  const nextTabInPath = pathTabs[currentPathIndex.value];
+  const nextTabInPath: TabID = pathTabs[currentPathIndex.value];
   // Get global index value corresponding to that tab and set to currentGlobalIndex
   currentGlobalIndex.value = tabIndexByValue[nextTabInPath];
 };
 
 const prevTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs = validTabsByUrlType[selectedURLType.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value];
   // Get previous tab in path
   currentPathIndex.value--;
-  const prevTabInPath = pathTabs[currentPathIndex.value];
+  const prevTabInPath: TabID = pathTabs[currentPathIndex.value];
   // Get global index value corresponding to that tab and set to currentGlobalIndex
   currentGlobalIndex.value = tabIndexByValue[prevTabInPath];
 };
 
 // URL Type
 // TODO: Expand to include description for each
-// TODO: Expand further to note which have Robo or Human Annotations
-// TODO: Update so that tab values don't reset each time
-const urlTypeOptions = Object.values(urlTypes);
+const urlTypeOptions: Array<string> = Object.values(urlTypes);
 
-const imageOk = ref(false);
+const imageOk = ref<boolean>(false);
 
-// TODO: Change selectedLocationID to selectedLocation
-// TODO: Change selectedAgencyID to selectedAgency
 const selectedURLType = ref(null);
-const selectedLocationID = ref(null);
-const selectedAgencyID = ref(null);
+const selectedLocation = ref(null);
+const selectedAgency = ref(null);
 const selectedRecordType = ref(null);
 const selectedName = ref(null);
 
-// Location
+const tabVarMapping = {
+  [tabIDs.URL_TYPE]: selectedURLType,
+  [tabIDs.LOCATION]: selectedLocation,
+  [tabIDs.AGENCY]: selectedAgency,
+  [tabIDs.RECORD_TYPE]: selectedRecordType,
+  [tabIDs.NAME]: selectedName
+};
 
-function selectOption(option) {
-  selectedURLType.value = option;
-  console.log(option);
-}
+const nextText = computed<string>((): string => {
+  const currentTabValue = tabValueByIndex[currentGlobalIndex.value];
+  const currentTabVar = tabVarMapping[currentTabValue];
+  if (currentTabVar?.value) {
+    return 'Next';
+  }
+  return 'Skip';
+});
+
+async function submit(values) {}
 </script>

@@ -1,39 +1,35 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
+import { RadioOptionType } from '@/pages/annotate/_components/_shared/types';
 
-const props = defineProps({
-  options: {
-    type: Array,
-    required: true
-  },
-  header: {
-    type: String,
-    default: null
-  },
-  modelValue: {
-    type: Object,
-    default: null
-  }
-});
+export type Props = {
+  options: RadioOptionType[];
+  header?: string | null;
+  modelValue?: RadioOptionType | null;
+};
 
-// TODO: How to pass reset logic to radio form, deselecting all?
-// TODO: Add emit for selection
-const emit = defineEmits(['update:modelValue']);
 
-const selectedType = computed({
-  get: () => props.modelValue,
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  'update:modelValue': [RadioOptionType | null];
+}>();
+
+const selectedType = computed<RadioOptionType | null>({
+  get: () => props.modelValue ?? null,
   set: (option) => emit('update:modelValue', option)
 });
 
-function labelClasses(option) {
+function labelClasses(option: RadioOptionType) {
   return {
     'bg-orange-600 text-white border-orange-700':
       selectedType.value?.value === option.value,
-    'bg-purple-600': selectedType.value?.value !== option.value
+    'bg-purple-600':
+      selectedType.value?.value !== option.value
   };
 }
 
-function handleSelect(option) {
+function handleSelect(option: RadioOptionType) {
   emit('update:modelValue', option);
 }
 </script>
