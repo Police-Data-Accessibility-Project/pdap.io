@@ -10,7 +10,7 @@
         :format-item-for-display="formatText"
         :items="items"
         placeholder="Enter an agency"
-        @select-item="onSelectRecord"
+        @select-item="handleSelectRecord"
         @on-input="fetchTypeaheadResults">
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
@@ -120,7 +120,8 @@ const fetchTypeaheadResults = _debounce(
   { leading: true, trailing: true }
 );
 
-function onSelectRecord(item) {
+
+function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>

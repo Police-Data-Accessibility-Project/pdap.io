@@ -20,7 +20,7 @@
           class="flex-1 text-black bg-white outline-none border-b border-dashed"
           :value="option.text"
           @click.stop
-          @input="onInput(option, $event)" />
+          @input="handleInput(option, $event)" />
         <button @click="resetOption(option)">🔁</button>
       </span>
 
@@ -70,8 +70,9 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelectionType): void;
 }>()
 
-
-
+//====================
+//     Variables
+//====================
 const nameMapping = reactive<Record<string, nameEditState>>(
   Object.fromEntries(
     props.options.map((item) => [
@@ -84,6 +85,9 @@ const nameMapping = reactive<Record<string, nameEditState>>(
   )
 );
 
+//===================
+//  Control Logic
+//===================
 function setDirty(id: number, value: boolean | undefined = undefined) {
   const entry = nameMapping[id];
   if (!entry) return;
@@ -99,9 +103,7 @@ function resetOption(option: editableRadioOption) {
 }
 
 function choose(option: NameSelectionType) {
-
   const isNew: boolean = isDirty(option.id);
-
   emit('update:modelValue', {
     nameID: option.id,
     new: isNew,
@@ -110,13 +112,17 @@ function choose(option: NameSelectionType) {
 }
 
 // When user edits the text of an option
-const onInput = (option: editableRadioOption, event) => {
+const handleInput = (option: editableRadioOption, event) => {
   setDirty(option.id, true);
   option.text = event.target.value;
   // emit updated options so parent can keep it in sync
   choose(option);
 };
 
+
+//====================
+//     Helpers
+//====================
 const isSelected = (id): boolean => props.modelValue?.nameID === id;
 const isDirty = (id): boolean => nameMapping[id].dirty;
 </script>

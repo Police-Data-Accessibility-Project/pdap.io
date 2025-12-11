@@ -79,7 +79,7 @@ function getEndorsementString(ut: urlTypeType): string {
 }
 
 
-function selectOption(option: string) {
+function handleSelectOption(option: string) {
   emit('update:modelValue', {
     value: urlTypeMapping[option],
     display_name: option
@@ -102,7 +102,7 @@ function selectOption(option: string) {
         'bg-blue-200 border-blue-500': props.modelValue?.display_name === option.value,
         'bg-purple-900 border-transparent': props.modelValue?.display_name !== option.value
       }"
-      @click="selectOption(option.value)">
+      @click="handleSelectOption(option.value)">
       <div
         class="rounded-lg p-4 text-white"
         :class="props.modelValue?.display_name === option.value ? 'bg-blue-700' : 'bg-black'">

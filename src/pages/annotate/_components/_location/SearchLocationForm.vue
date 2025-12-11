@@ -8,7 +8,7 @@
         :format-item-for-display="(item) => item.display_name"
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
-        @select-item="onSelectRecord"
+        @select-item="handleSelectRecord"
         @on-input="fetchTypeaheadResults">
         <!-- Pass label as slot to typeahead -->
         <template #label>
@@ -130,7 +130,8 @@ onMounted(() => {
   }
 });
 
-function onSelectRecord(item) {
+
+function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>

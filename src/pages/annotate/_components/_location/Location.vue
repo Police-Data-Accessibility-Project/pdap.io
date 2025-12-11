@@ -56,6 +56,9 @@ const radioOptions = computed((): RadioOptionType[] => {
   }));
 });
 
+//===================
+//  Control Logic
+//===================
 const resetRadio = () => {
   selectedRadioLocation.value = null;
 };

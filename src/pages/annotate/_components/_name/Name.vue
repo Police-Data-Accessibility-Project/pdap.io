@@ -51,7 +51,7 @@ const options = computed((): editableRadioOption[] => {
 });
 
 //================
-//Helper Functions
+//    Helpers
 //================
 function getNameEndorsementString(suggestion: NameSuggestionType): string {
   let base = '';
