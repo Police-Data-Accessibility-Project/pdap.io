@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { urlTypeType, urlTypes, URLTypeSuggestion } from '@/pages/annotate/_components/_shared/types';
+import {
+  urlTypeType,
+  urlTypes,
+  URLTypeSuggestion,
+} from '@/pages/annotate/_components/_shared/types';
 
 const props = defineProps({
   options: {
@@ -34,10 +38,15 @@ function getEndorsementString(ut: urlTypeType): string {
   return '👥 ' + endorsementCount;
 }
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: urlTypeType): void;
+}>()
 
-function selectOption(option: urlTypeType) {
-  emit('update:modelValue', option);
+function selectOption(option: string) {
+  emit('update:modelValue', {
+    value: urlTypeMapping[option],
+    display_name: option
+  });
 }
 
 // Mapping to URL Types
@@ -69,13 +78,13 @@ const formattedOptions = computed<URLTypeOption[]>(() =>
       :key="option.value"
       class="p-4 cursor-pointer rounded-lg border transition"
       :class="{
-        'bg-blue-200 border-blue-500': props.modelValue === option.value,
-        'bg-purple-900 border-transparent': props.modelValue !== option.value
+        'bg-blue-200 border-blue-500': props.modelValue?.display_name === option.value,
+        'bg-purple-900 border-transparent': props.modelValue?.display_name !== option.value
       }"
       @click="selectOption(option.value)">
       <div
         class="rounded-lg p-4 text-white"
-        :class="props.modelValue === option.value ? 'bg-blue-700' : 'bg-black'">
+        :class="props.modelValue?.display_name === option.value ? 'bg-blue-700' : 'bg-black'">
         {{ option.value }}
       </div>
 

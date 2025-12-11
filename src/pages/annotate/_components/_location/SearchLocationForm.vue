@@ -56,9 +56,13 @@ import { getTypeaheadLocations } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
+//====================
+//Props, Models, Emits
+//====================
 const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void;
 }>()
+
 const { query: params } = useRoute();
 
 /* constants */

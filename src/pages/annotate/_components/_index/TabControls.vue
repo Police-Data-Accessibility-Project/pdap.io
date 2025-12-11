@@ -25,16 +25,20 @@
 
 <script setup lang="ts">
 
-const nextText = defineModel({
-  type: String,
-  default: 'Next'
-})
-
+//====================
+//Props, Models, Emits
+//====================
 const props = defineProps<{
   currentIndex: number
   total: number
   isNextDisabled: boolean
 }>()
+
+const nextText = defineModel({
+  type: String,
+  default: 'Next'
+})
+
 
 const emit = defineEmits<{
   (e: 'prev'): void

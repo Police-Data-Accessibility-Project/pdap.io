@@ -3,6 +3,11 @@ import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/c
 //======================
 // Annotation GET Types
 //======================
+export type NextAnonymousAnnotationResponseType = {
+  next_annotation: NextAnonymousAnnotationType;
+  session_id: string;
+}
+
 export type NextAnonymousAnnotationType = {
   url_info: URLInfoType;
   html_info: Record<string, number | string>; //Unused in logic
@@ -12,7 +17,6 @@ export type NextAnonymousAnnotationType = {
   url_type_suggestions: URLTypeSuggestion[];
   record_type_suggestions: RecordTypeSuggestionsType;
   name_suggestions: NameSuggestionsType;
-  session_id: string;
 }
 
 export type URLTypeSuggestion = {
@@ -80,7 +84,7 @@ export const urlTypes = {
   BROKEN: 'Broken / bad data',
   NOT_SURE: 'Not Sure'
 };
-export type urlTypeType = (typeof urlTypes)[keyof typeof urlTypes];
+export type urlTypeType = 'data source' | 'meta url' | 'not relevant' | 'individual record' | 'broken page'
 
 // Category names (keys of the object)
 export type RecordCategory = keyof typeof RECORD_TYPES_BY_CATEGORY;
@@ -93,6 +97,11 @@ export type RecordType =
 // Variable Types
 //======================
 
+export type URLTypeSelectionType = {
+  value: urlTypeType | null;
+  display_name: string | null;
+}
+
 export type AgencyLocationSelectionType = {
   id: number;
   display_name: string;
@@ -102,4 +111,31 @@ export type NameSelectionType = {
   nameID: number | null;
   name: string;
   new: boolean;
+}
+
+//======================
+// Submission Types
+//======================
+
+export type AgencySubmissionType = {
+  not_found: boolean;
+  agency_ids: Array<number>;
+}
+
+export type LocationSubmissionType = {
+  not_found: boolean;
+  location_ids: Array<number>;
+}
+
+export type NameInfoSubmissionType = {
+  new_name: string | null;
+  existing_name_id: number | null;
+}
+
+export type AnnotationSubmissionType = {
+  suggested_status: urlTypeType;
+  record_type: RecordType | null;
+  agency_info: AgencySubmissionType;
+  location_info: LocationSubmissionType;
+  name_info: NameInfoSubmissionType;
 }

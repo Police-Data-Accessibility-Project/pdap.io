@@ -13,19 +13,28 @@ import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadio
 import { computed, type PropType } from 'vue';
 import { NameSelectionType, NameSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
-
-function handleRadioGroupUpdate(rg: NameSelectionType) {
-  // TODO: Get name associated with rg_id from EditableRadioGroup
-  // TODO: Check if name exists in existingNameMap
-  // TODO: If yet, emit the number and name
-  // TODO: If not, emit the name and a null number
-
-  emit('update:modelValue', rg);
-}
+//====================
+//Props, Models, Emits
+//====================
+const props = defineProps({
+  suggestions: {
+    type: Array as PropType<NameSuggestionType[] | null>,
+    default: null
+  }
+});
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelectionType): void;
 }>()
+
+function handleRadioGroupUpdate(rg: NameSelectionType) {
+  emit('update:modelValue', rg);
+}
+
+
+//================
+//Helper Functions
+//================
 
 function getNameEndorsementString(suggestion: NameSuggestionType): string {
   let base = '';
@@ -37,13 +46,6 @@ function getNameEndorsementString(suggestion: NameSuggestionType): string {
   }
   return base;
 }
-
-const props = defineProps({
-  suggestions: {
-    type: Array as PropType<NameSuggestionType[] | null>,
-    default: null
-  }
-});
 
 const options = computed((): editableRadioOption[] => {
   return props.suggestions

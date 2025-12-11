@@ -63,12 +63,17 @@ import Typeahead from '@/components/TypeaheadInput.vue';
 import { Button } from 'pdap-design-system';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 
+//====================
+//Props, Models, Emits
+//====================
+const emit = defineEmits(['selected', 'update:modelValue']);
+
+
 const agencyNotAvailable = ref('');
 const queryClient = useQueryClient();
 const typeaheadRef = ref();
 const typeaheadError = ref();
 const items = ref([]);
-const emit = defineEmits(['selected', 'update:modelValue']);
 
 const queryKey = computed(() => [
   TYPEAHEAD_AGENCIES,

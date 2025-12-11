@@ -27,10 +27,9 @@ import {
   RadioOptionType
 } from '@/pages/annotate/_components/_shared/types';
 
-// ─────────────────────────────────────
-// Props
-// ─────────────────────────────────────
-
+//====================
+//Props, Models, Emits
+//====================
 const props = defineProps({
   suggestions: {
     type: Array as PropType<AgencyLocationSuggestionType[] | null>,
@@ -38,13 +37,14 @@ const props = defineProps({
   }
 });
 
+const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
+
 
 // ─────────────────────────────────────
 // State
 // ─────────────────────────────────────
 
 const selectedRadioAgency = ref<RadioOptionType | null>(null);
-const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
 
 // ─────────────────────────────────────
 // Helpers

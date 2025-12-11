@@ -2,12 +2,14 @@
 import { computed } from 'vue';
 import { RadioOptionType } from '@/pages/annotate/_components/_shared/types';
 
+//====================
+//Props, Models, Emits
+//====================
 export type Props = {
   options: RadioOptionType[];
   header?: string | null;
   modelValue?: RadioOptionType | null;
 };
-
 
 const props = defineProps<Props>();
 

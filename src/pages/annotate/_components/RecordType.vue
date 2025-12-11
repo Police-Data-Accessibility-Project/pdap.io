@@ -45,14 +45,22 @@ import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/c
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
 
-const selectedRecordType = defineModel({ type: String, default: null });
-const selectedRadioRecordType = ref(null);
+//====================
+//Props, Models, Emits
+//====================
+
 const props = defineProps({
   suggestions: {
     type: Array as PropType<RecordTypeSuggestionType[] | null>,
     default: null
   }
 });
+
+const selectedRecordType = defineModel({ type: String, default: null });
+
+
+const selectedRadioRecordType = ref(null);
+
 
 function handleSelectChange(selected) {
   selectedRadioRecordType.value = null;

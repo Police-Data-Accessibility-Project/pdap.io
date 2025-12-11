@@ -21,12 +21,12 @@
 
         <template v-else>
           <hgroup>
-            <h1>{{ annotation.url_info.url }}</h1>
+            <h1>{{ localAnnotation.next_annotation.url_info.url }}</h1>
           </hgroup>
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
-            :src="`${URL_BASE}/${annotation.url_info.url_id}/screenshot`"
+            :src="`${URL_BASE}/${localAnnotation.next_annotation.url_info.url_id}/screenshot`"
             @error="imageOk = false" />
           <div v-else>Image Not Found</div>
 
@@ -52,34 +52,36 @@
                     v-if="currentTab.id === 'url_type'"
                     v-model="selectedURLType"
                     :options="urlTypeOptions"
-                    :suggestions="annotation.url_type_suggestions" />
+                    :suggestions="localAnnotation.next_annotation.url_type_suggestions" />
                   <LocationView
                     v-else-if="currentTab.id === 'location'"
                     v-model="selectedLocation"
                     :suggestions="
-                      annotation.location_suggestions.suggestions
+                      localAnnotation.next_annotation.location_suggestions.suggestions
                     " />
                   <AgencyView
                     v-else-if="currentTab.id === 'agency'"
                     v-model="selectedAgency"
-                    :suggestions="annotation.agency_suggestions.suggestions" />
+                    :suggestions="localAnnotation.next_annotation.agency_suggestions.suggestions" />
                   <RecordTypeView
                     v-else-if="currentTab.id === 'record_type'"
                     v-model="selectedRecordType"
                     :suggestions="
-                      annotation.record_type_suggestions.suggestions
+                      localAnnotation.next_annotation.record_type_suggestions.suggestions
                     " />
                   <NameView
                     v-else-if="currentTab.id === 'name'"
                     v-model="selectedName"
-                    :suggestions="annotation.name_suggestions.suggestions" />
+                    :suggestions="localAnnotation.next_annotation.name_suggestions.suggestions" />
                   <ConfirmView
                     v-else-if="currentTab.id === 'confirm'"
                     :url-type="selectedURLType"
                     :location="selectedLocation"
                     :agency="selectedAgency"
                     :record-type="selectedRecordType"
-                    :name="selectedName" />
+                    :name="selectedName"
+                    v-model="localAnnotation"
+                  />
                 </keep-alive>
               </div>
             </keep-alive>
@@ -94,7 +96,7 @@
 import { getAnonymousAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Spinner } from 'pdap-design-system';
 import URLTypeView from '@/pages/annotate/_components/URLType.vue';
 import RecordTypeView from '@/pages/annotate/_components/RecordType.vue';
@@ -113,7 +115,7 @@ import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
   AgencyLocationSelectionType, NameSelectionType,
   NextAnonymousAnnotationType, RecordType,
-  urlTypes,
+  urlTypes, URLTypeSelectionType,
   urlTypeType
 } from '@/pages/annotate/_components/_shared/types';
 
@@ -130,6 +132,14 @@ const {
   queryKey,
   queryFn: async (): Promise<NextAnonymousAnnotationType> => {
     return await getAnonymousAnnotationURL();
+  }
+});
+
+const localAnnotation = ref<NextAnonymousAnnotationType | null>(null);
+
+watch(annotation, (newVal) => {
+  if (newVal) {
+    localAnnotation.value = newVal;
   }
 });
 
@@ -189,8 +199,8 @@ const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 
 const imageOk = ref<boolean>(false);
 
-const selectedURLType = ref<urlTypeType>(null);
-const selectedLocation = ref<AgencyLocationSelectionType(null);
+const selectedURLType = ref<URLTypeSelectionType>(null);
+const selectedLocation = ref<AgencyLocationSelectionType>(null);
 const selectedAgency = ref<AgencyLocationSelectionType>(null);
 const selectedRecordType = ref<RecordType>(null);
 const selectedName = ref<NameSelectionType>(null);

@@ -20,9 +20,11 @@
 interface Tab {
   id: string | number
   name: string
-  // ...anything else you have on tab
 }
 
+//====================
+//Props, Models, Emits
+//====================
 const props = defineProps<{
   tabs: Tab[]
   currentIndex: number
@@ -31,4 +33,5 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'select', index: number): void
 }>()
+
 </script>

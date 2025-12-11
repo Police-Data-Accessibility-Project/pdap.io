@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>Location: {{ location?.display_name }}</p>
-    <p>Location ID: {{ location?.location_id }}</p>
+    <p>Location ID: {{ location?.id }}</p>
     <div class="grid grid-cols-1 gap-4">
       <div class="col-auto">
         <RadioForm
@@ -27,6 +27,10 @@ import {
   RadioOptionType
 } from '@/pages/annotate/_components/_shared/types';
 
+//====================
+//Props, Models, Emits
+//====================
+
 const props = defineProps({
   suggestions: {
     type: Array as PropType<AgencyLocationSuggestionType[] | null> ,
@@ -34,17 +38,19 @@ const props = defineProps({
   }
 });
 
+const location = defineModel<AgencyLocationSelectionType>({ default: null });
+
+
 const selectedRadioLocation = ref<RadioOptionType | null>(null);
 
 const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
 
-const location = defineModel<AgencyLocationSelectionType>({ default: null });
 
 function handleRadioFormSelect(option: RadioOptionType) {
   location.value = {
-    location_id: Number(option.value), // option.value is typed as String | Number
+    id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
   };
 }
