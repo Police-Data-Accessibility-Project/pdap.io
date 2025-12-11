@@ -29,6 +29,13 @@ const emit = defineEmits<{
 }>()
 
 //====================
+//       Types
+//====================
+type URLTypeOption = {
+  value: urlTypeType;
+  endorsementString: string;
+}
+//====================
 // Constants
 //====================
 // Mapping to URL Types
@@ -77,10 +84,7 @@ function selectOption(option: string) {
 }
 
 
-type URLTypeOption = {
-  value: urlTypeType;
-  endorsementString: string;
-}
+
 
 
 </script>

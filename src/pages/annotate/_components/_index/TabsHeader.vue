@@ -17,6 +17,10 @@
 </template>
 
 <script setup lang="ts">
+
+//====================
+//       Types
+//====================
 interface Tab {
   id: string | number
   name: string

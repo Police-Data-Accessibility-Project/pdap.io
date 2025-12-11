@@ -37,7 +37,7 @@ import { PropType, reactive } from 'vue';
 import { NameSelectionType } from '@/pages/annotate/_components/_shared/types';
 
 //======================
-// Types
+//       Types
 //======================
 
 type editableRadioOption = {
