@@ -39,12 +39,10 @@ const props = defineProps({
 
 const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
 
-
 //====================
 //     Variables
 //====================
 const selectedRadioAgency = ref<RadioOptionType | null>(null);
-
 
 //====================
 // Computed Variables
@@ -66,9 +64,6 @@ const resetRadio = () => {
   selectedRadioAgency.value = null;
 };
 
-
-
-
 //===================
 //     Handlers
 //===================
@@ -87,7 +82,6 @@ function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
   resetRadio();
   agency.value = ag;
 }
-
 
 </script>
 

@@ -39,7 +39,6 @@ const nextText = defineModel({
   default: 'Next'
 })
 
-
 const emit = defineEmits<{
   (e: 'prev'): void
   (e: 'next'): void

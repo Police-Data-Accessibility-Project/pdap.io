@@ -51,7 +51,6 @@ import { postAnonymousAnnotation } from '@/api/annotate';
 import { Spinner } from 'pdap-design-system';
 import { useMutation } from '@tanstack/vue-query';
 
-
 //====================
 //Props, Models, Emits
 //====================
@@ -81,7 +80,6 @@ const props = defineProps({
 const annotation = defineModel<NextAnonymousAnnotationResponseType>({})
 
 // TODO: Add emit to propagate reset command
-
 //=================
 // Query Mutation
 //=================

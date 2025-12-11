@@ -84,6 +84,9 @@ const queryKey = computed(() => [
   typeaheadRef.value?.value.toLowerCase()
 ]);
 
+//====================
+//   Request Logic
+//====================
 const queryClient = useQueryClient();
 
 const typeaheadMutation = useMutation({

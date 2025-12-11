@@ -30,7 +30,6 @@ import {
 //====================
 //Props, Models, Emits
 //====================
-
 const props = defineProps({
   suggestions: {
     type: Array as PropType<AgencyLocationSuggestionType[] | null> ,
@@ -84,8 +83,6 @@ function handleSearchLocationSelect(loc: LocationSuggestionType) {
     display_name: loc.display_name
   };
 }
-
-
 </script>
 
 <style scoped></style>

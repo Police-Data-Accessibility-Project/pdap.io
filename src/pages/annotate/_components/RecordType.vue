@@ -48,7 +48,6 @@ import { RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_com
 //====================
 //Props, Models, Emits
 //====================
-
 const props = defineProps({
   suggestions: {
     type: Array as PropType<RecordTypeSuggestionType[] | null>,
@@ -73,7 +72,6 @@ const radioOptions = computed((): RadioOptionType[] => {
     label: getRecordTypeEndorsementString(s)
   }));
 });
-
 
 //====================
 //      Handles

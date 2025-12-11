@@ -173,6 +173,9 @@ const isNextDisabled = computed((): boolean => {
   return selectedURLType.value === null;
 });
 
+//====================
+// Request Logic
+//====================
 
 // Load annotation
 const {
@@ -185,7 +188,6 @@ const {
     return await getAnonymousAnnotationURL();
   }
 });
-
 
 watch(annotation, (newVal) => {
   if (newVal) {
