@@ -81,6 +81,7 @@
                     :record-type="selectedRecordType"
                     :name="selectedName"
                     v-model="localAnnotation"
+                    @submit="handleConfirmSubmit"
                   />
                 </keep-alive>
               </div>
@@ -113,23 +114,17 @@ import {
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
-  AgencyLocationSelectionType, NameSelectionType,
+  AgencyLocationSelectionType, NameSelectionType, NextAnonymousAnnotationResponseType,
   NextAnonymousAnnotationType, RecordType,
   urlTypes, URLTypeSelectionType,
   urlTypeType
 } from '@/pages/annotate/_components/_shared/types';
 
 //====================
-//     Constants
+//     Types
 //====================
-const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
-const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
-  Object.values(tabIDs).map((value, index) => [value, index])
-) as Record<TabID, number>;
-const tabValueByIndex: Record<number, TabID> = Object.fromEntries(
-  Object.values(tabIDs).map((value, index) => [index, value])
-) as Record<number, TabID>;
-
+// URL Type
+const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 
 //====================
 //     Variables
@@ -151,7 +146,28 @@ const selectedAgency = ref<AgencyLocationSelectionType>(null);
 const selectedRecordType = ref<RecordType>(null);
 const selectedName = ref<NameSelectionType>(null);
 
-const localAnnotation = ref<NextAnonymousAnnotationType | null>(null);
+const localAnnotation = ref<NextAnonymousAnnotationResponseType | null>(null);
+
+//====================
+//     Constants
+//====================
+const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
+
+const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
+  Object.values(tabIDs).map((value, index) => [value, index])
+) as Record<TabID, number>;
+
+const tabValueByIndex: Record<number, TabID> = Object.fromEntries(
+  Object.values(tabIDs).map((value, index) => [index, value])
+) as Record<number, TabID>;
+
+const tabVarMapping = {
+  [tabIDs.URL_TYPE]: selectedURLType,
+  [tabIDs.LOCATION]: selectedLocation,
+  [tabIDs.AGENCY]: selectedAgency,
+  [tabIDs.RECORD_TYPE]: selectedRecordType,
+  [tabIDs.NAME]: selectedName
+};
 
 //====================
 // Computed Variables
@@ -160,10 +176,6 @@ const currentTab = computed(() => tabs[currentGlobalIndex.value]);
 // TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
 
-function selectTab(index: number) {
-  currentGlobalIndex.value = index;
-}
-
 const isNextDisabled = computed((): boolean => {
   // Disabled if at end of tabs
   if (currentGlobalIndex.value === tabs.length - 1) {
@@ -171,6 +183,15 @@ const isNextDisabled = computed((): boolean => {
   }
   // Next is otherwise disabled if selected URL type is null
   return selectedURLType.value === null;
+});
+
+const nextText = computed<string>((): string => {
+  const currentTabValue = tabValueByIndex[currentGlobalIndex.value];
+  const currentTabVar = tabVarMapping[currentTabValue];
+  if (currentTabVar?.value) {
+    return 'Next';
+  }
+  return 'Skip';
 });
 
 //====================
@@ -195,20 +216,16 @@ watch(annotation, (newVal) => {
   }
 });
 
-// TABS
-
-
-
-
-
-
-
-
-
+//====================
+// Control Logic
+//====================
+function selectTab(index: number) {
+  currentGlobalIndex.value = index;
+}
 
 const nextTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.value];
   // Get next tab in path
   currentPathIndex.value++;
   const nextTabInPath: TabID = pathTabs[currentPathIndex.value];
@@ -218,7 +235,7 @@ const nextTab = () => {
 
 const prevTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.value];
   // Get previous tab in path
   currentPathIndex.value--;
   const prevTabInPath: TabID = pathTabs[currentPathIndex.value];
@@ -226,27 +243,34 @@ const prevTab = () => {
   currentGlobalIndex.value = tabIndexByValue[prevTabInPath];
 };
 
-// URL Type
-const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
+const resetTab = () => {
+  currentPathIndex.value = 0;
+  currentGlobalIndex.value = 0;
+}
+
+function resetAnnotationVariables() {
+  selectedURLType.value = null;
+  selectedLocation.value = null;
+  selectedAgency.value = null;
+  selectedRecordType.value = null;
+  selectedName.value = null;
+}
+
+//====================
+// Handlers
+//====================
+function handleConfirmSubmit() {
+  resetAnnotationVariables();
+  resetTab();
+}
 
 
 
-const tabVarMapping = {
-  [tabIDs.URL_TYPE]: selectedURLType,
-  [tabIDs.LOCATION]: selectedLocation,
-  [tabIDs.AGENCY]: selectedAgency,
-  [tabIDs.RECORD_TYPE]: selectedRecordType,
-  [tabIDs.NAME]: selectedName
-};
 
-const nextText = computed<string>((): string => {
-  const currentTabValue = tabValueByIndex[currentGlobalIndex.value];
-  const currentTabVar = tabVarMapping[currentTabValue];
-  if (currentTabVar?.value) {
-    return 'Next';
-  }
-  return 'Skip';
-});
+
+
+
+
 
 async function submit(values) {}
 </script>

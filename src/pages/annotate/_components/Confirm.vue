@@ -79,7 +79,10 @@ const props = defineProps({
 
 const annotationModel = defineModel<NextAnonymousAnnotationResponseType>({})
 
-// TODO: Add emit to propagate reset command
+const emit = defineEmits<{
+  (e: 'submit'): void;
+}>();
+
 //=================
 // Query Mutation
 //=================
@@ -131,6 +134,7 @@ async function handleSubmit() {
   };
 
   await submitAnnotation(postData);
+  emit('submit');
 }
 
 </script>

@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, reactive } from 'vue';
+import { PropType, reactive, watch } from 'vue';
 import { NameSelectionType } from '@/pages/annotate/_components/_shared/types';
 
 //======================
@@ -110,6 +110,23 @@ function choose(option: NameSelectionType) {
     name: option.text
   });
 }
+
+// When prop options changes, reset the nameMapping.
+watch(
+  () => props.options,
+  (options) => {
+    for (const [id, state] of Object.entries(nameMapping)) {
+      delete nameMapping[id]; // clear old keys
+    }
+    for (const item of options) {
+      nameMapping[item.id] = {
+        name: item.text,
+        dirty: false
+      };
+    }
+  },
+  { immediate: true }
+);
 
 //===================
 //     Handlers
