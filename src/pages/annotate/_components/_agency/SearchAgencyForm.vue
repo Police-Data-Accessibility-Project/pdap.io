@@ -76,13 +76,15 @@ const typeaheadRef = ref();
 const typeaheadError = ref();
 const items = ref([]);
 
-
-const queryClient = useQueryClient();
-
+//====================
+// Computed Variables
+//====================
 const queryKey = computed(() => [
   TYPEAHEAD_AGENCIES,
   typeaheadRef.value?.value.toLowerCase()
 ]);
+
+const queryClient = useQueryClient();
 
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {

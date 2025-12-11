@@ -39,6 +39,9 @@ const emit = defineEmits<{
   'update:modelValue': [RadioOptionType | null];
 }>();
 
+//====================
+// Computed Variables
+//====================
 const selectedType = computed<RadioOptionType | null>({
   get: () => props.modelValue ?? null,
   set: (option) => emit('update:modelValue', option)

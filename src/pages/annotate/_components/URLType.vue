@@ -28,12 +28,34 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: urlTypeType): void;
 }>()
 
+//====================
+// Constants
+//====================
+// Mapping to URL Types
+const urlTypeMapping = {
+  [urlTypes.DATA_SOURCE]: 'data source',
+  [urlTypes.META_URL]: 'meta url',
+  [urlTypes.NOT_RELEVANT]: 'not relevant',
+  [urlTypes.INDIVIDUAL]: 'individual record',
+  [urlTypes.BROKEN]: 'broken page'
+};
 
+
+//====================
+// Computed Variables
+//====================
 const suggestionMap = computed<Record<urlTypeType, number>>(() => {
   return Object.fromEntries(
     props.suggestions.map((s) => [s.url_type, s.endorsement_count]) // or transform however you want
   );
 });
+
+const formattedOptions = computed<URLTypeOption[]>(() =>
+  props.options.map((opt) => ({
+    value: opt,
+    endorsementString: getEndorsementString(opt)
+  }))
+);
 
 function getEndorsementString(ut: urlTypeType): string {
   const suggestionKey: string = urlTypeMapping[ut];
@@ -54,26 +76,13 @@ function selectOption(option: string) {
   });
 }
 
-// Mapping to URL Types
-const urlTypeMapping = {
-  [urlTypes.DATA_SOURCE]: 'data source',
-  [urlTypes.META_URL]: 'meta url',
-  [urlTypes.NOT_RELEVANT]: 'not relevant',
-  [urlTypes.INDIVIDUAL]: 'individual record',
-  [urlTypes.BROKEN]: 'broken page'
-};
 
 type URLTypeOption = {
   value: urlTypeType;
   endorsementString: string;
 }
 
-const formattedOptions = computed<URLTypeOption[]>(() =>
-  props.options.map((opt) => ({
-    value: opt,
-    endorsementString: getEndorsementString(opt)
-  }))
-);
+
 </script>
 
 <template>

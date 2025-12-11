@@ -30,23 +30,9 @@ const emit = defineEmits<{
 function handleRadioGroupUpdate(rg: NameSelectionType) {
   emit('update:modelValue', rg);
 }
-
-
-//================
-//Helper Functions
-//================
-
-function getNameEndorsementString(suggestion: NameSuggestionType): string {
-  let base = '';
-  if (suggestion.user_count) {
-    base += ' 👥 ' + suggestion.user_count;
-  }
-  if (suggestion.robo_count) {
-    base += ' 🤖 ' + suggestion.robo_count;
-  }
-  return base;
-}
-
+//====================
+// Computed Variables
+//====================
 const options = computed((): editableRadioOption[] => {
   return props.suggestions
     .map((s) => ({
@@ -63,6 +49,23 @@ const options = computed((): editableRadioOption[] => {
       }
     ]);
 });
+
+//================
+//Helper Functions
+//================
+
+function getNameEndorsementString(suggestion: NameSuggestionType): string {
+  let base = '';
+  if (suggestion.user_count) {
+    base += ' 👥 ' + suggestion.user_count;
+  }
+  if (suggestion.robo_count) {
+    base += ' 🤖 ' + suggestion.robo_count;
+  }
+  return base;
+}
+
+
 </script>
 
 <style scoped></style>

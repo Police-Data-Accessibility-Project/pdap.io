@@ -111,7 +111,7 @@ const {
 });
 
 //=================
-// Submission Logic
+// Request Logic
 //=================
 async function handleSubmit() {
   // Compose post annotation

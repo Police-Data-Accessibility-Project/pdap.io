@@ -45,15 +45,10 @@ const agency = defineModel<AgencyLocationSelectionType | null>({ default: null }
 //====================
 const selectedRadioAgency = ref<RadioOptionType | null>(null);
 
-// ─────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────
 
-const resetRadio = () => {
-  selectedRadioAgency.value = null;
-};
-
-
+//====================
+// Computed Variables
+//====================
 const radioOptions = computed<RadioOptionType[]>(() => {
   const raw = props.suggestions ?? [];
 
@@ -63,6 +58,17 @@ const radioOptions = computed<RadioOptionType[]>(() => {
     label: getEndorsementString(s)
   }));
 });
+
+
+// ─────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────
+
+const resetRadio = () => {
+  selectedRadioAgency.value = null;
+};
+
+
 
 
 // ─────────────────────────────────────

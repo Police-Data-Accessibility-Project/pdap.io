@@ -45,6 +45,17 @@ const location = defineModel<AgencyLocationSelectionType>({ default: null });
 //====================
 const selectedRadioLocation = ref<RadioOptionType | null>(null);
 
+//====================
+// Computed Variables
+//====================
+const radioOptions = computed((): RadioOptionType[] => {
+  return props.suggestions.map((s) => ({
+    value: s.id,
+    display_name: s.display_name,
+    label: getEndorsementString(s)
+  }));
+});
+
 const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
@@ -69,13 +80,7 @@ function handleSearchLocationSelect(loc: LocationSuggestionType) {
   };
 }
 
-const radioOptions = computed((): RadioOptionType[] => {
-  return props.suggestions.map((s) => ({
-    value: s.id,
-    display_name: s.display_name,
-    label: getEndorsementString(s)
-  }));
-});
+
 </script>
 
 <style scoped></style>

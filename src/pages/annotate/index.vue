@@ -119,9 +119,17 @@ import {
   urlTypeType
 } from '@/pages/annotate/_components/_shared/types';
 
-// TODO: Check to see if this queryKey is appropriate
-const queryKey = computed(() => [ANNOTATE]);
+//====================
+//     Constants
+//====================
 const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
+const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
+  Object.values(tabIDs).map((value, index) => [value, index])
+) as Record<TabID, number>;
+const tabValueByIndex: Record<number, TabID> = Object.fromEntries(
+  Object.values(tabIDs).map((value, index) => [index, value])
+) as Record<number, TabID>;
+
 
 //====================
 //     Variables
@@ -143,6 +151,28 @@ const selectedAgency = ref<AgencyLocationSelectionType>(null);
 const selectedRecordType = ref<RecordType>(null);
 const selectedName = ref<NameSelectionType>(null);
 
+const localAnnotation = ref<NextAnonymousAnnotationType | null>(null);
+
+//====================
+// Computed Variables
+//====================
+const currentTab = computed(() => tabs[currentGlobalIndex.value]);
+// TODO: Check to see if this queryKey is appropriate
+const queryKey = computed(() => [ANNOTATE]);
+
+function selectTab(index: number) {
+  currentGlobalIndex.value = index;
+}
+
+const isNextDisabled = computed((): boolean => {
+  // Disabled if at end of tabs
+  if (currentGlobalIndex.value === tabs.length - 1) {
+    return true;
+  }
+  // Next is otherwise disabled if selected URL type is null
+  return selectedURLType.value === null;
+});
+
 
 // Load annotation
 const {
@@ -156,7 +186,6 @@ const {
   }
 });
 
-const localAnnotation = ref<NextAnonymousAnnotationType | null>(null);
 
 watch(annotation, (newVal) => {
   if (newVal) {
@@ -167,28 +196,13 @@ watch(annotation, (newVal) => {
 // TABS
 
 
-const currentTab = computed(() => tabs[currentGlobalIndex.value]);
-
-function selectTab(index: number) {
-  currentGlobalIndex.value = index;
-}
 
 
-const isNextDisabled = computed((): boolean => {
-  // Disabled if at end of tabs
-  if (currentGlobalIndex.value === tabs.length - 1) {
-    return true;
-  }
-  // Next is otherwise disabled if selected URL type is null
-  return selectedURLType.value === null;
-});
 
-const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
-  Object.values(tabIDs).map((value, index) => [value, index])
-) as Record<TabID, number>;
-const tabValueByIndex: Record<number, TabID> = Object.fromEntries(
-  Object.values(tabIDs).map((value, index) => [index, value])
-) as Record<number, TabID>;
+
+
+
+
 
 const nextTab = () => {
   // Get tab path for selected URL Type

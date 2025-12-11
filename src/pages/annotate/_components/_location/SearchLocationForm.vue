@@ -76,11 +76,16 @@ const selectedRecord = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
 
-const queryClient = useQueryClient();
+//====================
+// Computed Variables
+//====================
 const queryKey = computed<string>(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
+
+
+const queryClient = useQueryClient();
 
 const typeaheadMutation = useMutation({
   mutationFn: async (searchValue) => {

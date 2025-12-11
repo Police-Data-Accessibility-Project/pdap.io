@@ -63,6 +63,17 @@ const selectedRecordType = defineModel({ type: String, default: null });
 //====================
 const selectedRadioRecordType = ref(null);
 
+//====================
+// Computed Variables
+//====================
+const radioOptions = computed((): RadioOptionType[] => {
+  return props.suggestions.map((s) => ({
+    value: s.record_type,
+    display_name: s.record_type,
+    label: getRecordTypeEndorsementString(s)
+  }));
+});
+
 
 function handleSelectChange(selected) {
   selectedRadioRecordType.value = null;
@@ -85,13 +96,7 @@ function getRecordTypeEndorsementString(suggestion: RecordTypeSuggestionType): s
   return base;
 }
 
-const radioOptions = computed((): RadioOptionType[] => {
-  return props.suggestions.map((s) => ({
-    value: s.record_type,
-    display_name: s.record_type,
-    label: getRecordTypeEndorsementString(s)
-  }));
-});
+
 </script>
 
 <style scoped></style>
