@@ -68,6 +68,9 @@ const { query: params } = useRoute();
 /* constants */
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
 
+//====================
+//     Variables
+//====================
 const items = ref<Array>([]);
 const selectedRecord = ref();
 const typeaheadRef = ref();

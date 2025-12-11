@@ -58,7 +58,9 @@ const props = defineProps({
 
 const selectedRecordType = defineModel({ type: String, default: null });
 
-
+//====================
+//     Variables
+//====================
 const selectedRadioRecordType = ref(null);
 
 

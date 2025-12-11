@@ -40,10 +40,9 @@ const props = defineProps({
 const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
 
 
-// ─────────────────────────────────────
-// State
-// ─────────────────────────────────────
-
+//====================
+//     Variables
+//====================
 const selectedRadioAgency = ref<RadioOptionType | null>(null);
 
 // ─────────────────────────────────────

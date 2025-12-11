@@ -68,12 +68,16 @@ import { getTypeaheadAgencies } from '@/api/typeahead';
 //====================
 const emit = defineEmits(['selected', 'update:modelValue']);
 
-
+//====================
+//     Variables
+//====================
 const agencyNotAvailable = ref('');
-const queryClient = useQueryClient();
 const typeaheadRef = ref();
 const typeaheadError = ref();
 const items = ref([]);
+
+
+const queryClient = useQueryClient();
 
 const queryKey = computed(() => [
   TYPEAHEAD_AGENCIES,

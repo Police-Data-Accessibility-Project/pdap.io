@@ -6,6 +6,9 @@ import {
   URLTypeSuggestion,
 } from '@/pages/annotate/_components/_shared/types';
 
+//====================
+//Props, Models, Emits
+//====================
 const props = defineProps({
   options: {
     type: Array as PropType<urlTypeType[]>,
@@ -20,6 +23,11 @@ const props = defineProps({
     default: null
   }
 });
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: urlTypeType): void;
+}>()
+
 
 const suggestionMap = computed<Record<urlTypeType, number>>(() => {
   return Object.fromEntries(
@@ -38,9 +46,6 @@ function getEndorsementString(ut: urlTypeType): string {
   return '👥 ' + endorsementCount;
 }
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: urlTypeType): void;
-}>()
 
 function selectOption(option: string) {
   emit('update:modelValue', {

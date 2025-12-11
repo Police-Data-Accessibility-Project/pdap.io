@@ -123,6 +123,27 @@ import {
 const queryKey = computed(() => [ANNOTATE]);
 const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
 
+//====================
+//     Variables
+//====================
+// Two indices exist:
+// The global index, determining which of the six tabs is selected
+const currentGlobalIndex = ref<number>(0);
+// The path index, determining which tab *in the given path* is selected
+// Path index refers to the index for the given URL Type path
+const currentPathIndex = ref<number>(0);
+
+// Whether the image successfully loaded.
+const imageOk = ref<boolean>(false);
+
+// Variables tracking selections of annotation components.
+const selectedURLType = ref<URLTypeSelectionType>(null);
+const selectedLocation = ref<AgencyLocationSelectionType>(null);
+const selectedAgency = ref<AgencyLocationSelectionType>(null);
+const selectedRecordType = ref<RecordType>(null);
+const selectedName = ref<NameSelectionType>(null);
+
+
 // Load annotation
 const {
   isLoading: annotationPending,
@@ -144,11 +165,7 @@ watch(annotation, (newVal) => {
 });
 
 // TABS
-// Two indices exist:
-// The global index, determining which of the six tabs is selected
-const currentGlobalIndex = ref<number>(0);
-// The path index, determining which tab *in the given path* is selected
-const currentPathIndex = ref<number>(0);
+
 
 const currentTab = computed(() => tabs[currentGlobalIndex.value]);
 
@@ -156,7 +173,6 @@ function selectTab(index: number) {
   currentGlobalIndex.value = index;
 }
 
-// Path index refers to the index for the given URL Type path
 
 const isNextDisabled = computed((): boolean => {
   // Disabled if at end of tabs
@@ -197,13 +213,7 @@ const prevTab = () => {
 // URL Type
 const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 
-const imageOk = ref<boolean>(false);
 
-const selectedURLType = ref<URLTypeSelectionType>(null);
-const selectedLocation = ref<AgencyLocationSelectionType>(null);
-const selectedAgency = ref<AgencyLocationSelectionType>(null);
-const selectedRecordType = ref<RecordType>(null);
-const selectedName = ref<NameSelectionType>(null);
 
 const tabVarMapping = {
   [tabIDs.URL_TYPE]: selectedURLType,
