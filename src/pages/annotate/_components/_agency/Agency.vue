@@ -60,10 +60,6 @@ const radioOptions = computed<RadioOptionType[]>(() => {
 });
 
 
-// ─────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────
-
 const resetRadio = () => {
   selectedRadioAgency.value = null;
 };

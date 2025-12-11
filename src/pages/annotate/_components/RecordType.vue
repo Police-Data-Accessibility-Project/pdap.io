@@ -74,7 +74,9 @@ const radioOptions = computed((): RadioOptionType[] => {
   }));
 });
 
-
+//====================
+//     Helpers
+//====================
 function handleSelectChange(selected) {
   selectedRadioRecordType.value = null;
 }
@@ -82,8 +84,6 @@ function handleSelectChange(selected) {
 function handleRadioFormSelect(option: RadioOptionType) {
   selectedRecordType.value = option.value;
 }
-
-
 
 function getRecordTypeEndorsementString(suggestion: RecordTypeSuggestionType): string {
   let base = suggestion.record_type;

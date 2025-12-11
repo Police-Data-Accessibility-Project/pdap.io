@@ -47,6 +47,9 @@ const selectedType = computed<RadioOptionType | null>({
   set: (option) => emit('update:modelValue', option)
 });
 
+//====================
+//     Helpers
+//====================
 function labelClasses(option: RadioOptionType) {
   return {
     'bg-orange-600 text-white border-orange-700':

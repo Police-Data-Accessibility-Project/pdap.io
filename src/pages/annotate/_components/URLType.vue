@@ -64,6 +64,9 @@ const formattedOptions = computed<URLTypeOption[]>(() =>
   }))
 );
 
+//====================
+//     Helpers
+//====================
 function getEndorsementString(ut: urlTypeType): string {
   const suggestionKey: string = urlTypeMapping[ut];
 
