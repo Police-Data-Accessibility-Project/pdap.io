@@ -47,6 +47,13 @@ const selectedType = computed<RadioOptionType | null>({
   set: (option) => emit('update:modelValue', option)
 });
 
+//===================
+//     Handlers
+//===================
+function handleSelect(option: RadioOptionType) {
+  emit('update:modelValue', option);
+}
+
 //====================
 //     Helpers
 //====================
@@ -59,7 +66,5 @@ function labelClasses(option: RadioOptionType) {
   };
 }
 
-function handleSelect(option: RadioOptionType) {
-  emit('update:modelValue', option);
-}
+
 </script>

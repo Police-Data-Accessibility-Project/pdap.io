@@ -120,7 +120,9 @@ const fetchTypeaheadResults = _debounce(
   { leading: true, trailing: true }
 );
 
-
+//===================
+//     Handlers
+//===================
 function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }

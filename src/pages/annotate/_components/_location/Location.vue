@@ -63,7 +63,9 @@ const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
 
-
+//===================
+//     Handlers
+//===================
 function handleRadioFormSelect(option: RadioOptionType) {
   location.value = {
     id: Number(option.value), // option.value is typed as String | Number

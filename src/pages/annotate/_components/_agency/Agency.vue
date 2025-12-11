@@ -69,10 +69,9 @@ const resetRadio = () => {
 
 
 
-// ─────────────────────────────────────
-// Event handlers
-// ─────────────────────────────────────
-
+//===================
+//     Handlers
+//===================
 function handleRadioFormSelect(option: RadioOptionType) {
 
   agency.value = {

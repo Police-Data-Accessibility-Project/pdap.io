@@ -78,17 +78,15 @@ function getEndorsementString(ut: urlTypeType): string {
   return '👥 ' + endorsementCount;
 }
 
-
+//===================
+//     Handlers
+//===================
 function handleSelectOption(option: string) {
   emit('update:modelValue', {
     value: urlTypeMapping[option],
     display_name: option
   });
 }
-
-
-
-
 
 </script>
 

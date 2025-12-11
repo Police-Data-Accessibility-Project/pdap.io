@@ -111,6 +111,9 @@ function choose(option: NameSelectionType) {
   });
 }
 
+//===================
+//     Handlers
+//===================
 // When user edits the text of an option
 const handleInput = (option: editableRadioOption, event) => {
   setDirty(option.id, true);
