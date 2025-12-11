@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p>Location: {{ location?.display_name }}</p>
-    <p>Location ID: {{ location?.id }}</p>
+    <p>Location: {{ locationModel?.display_name }}</p>
+    <p>Location ID: {{ locationModel?.id }}</p>
     <div class="grid grid-cols-1 gap-4">
       <div class="col-auto">
         <RadioForm
@@ -37,7 +37,7 @@ const props = defineProps({
   }
 });
 
-const location = defineModel<AgencyLocationSelectionType>({ default: null });
+const locationModel = defineModel<AgencyLocationSelectionType>({ default: null });
 
 //====================
 //     Variables
@@ -66,7 +66,7 @@ const resetRadio = () => {
 //     Handlers
 //===================
 function handleRadioFormSelect(option: RadioOptionType) {
-  location.value = {
+  locationModel.value = {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
   };
@@ -78,7 +78,7 @@ function handleSearchLocationSelect(loc: LocationSuggestionType) {
   }
 
   resetRadio();
-  location.value = {
+  locationModel.value = {
     id: Number(loc.location_id),
     display_name: loc.display_name
   };

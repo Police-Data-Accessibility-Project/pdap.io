@@ -63,9 +63,10 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void;
 }>()
 
-const { query: params } = useRoute();
 
-/* constants */
+//====================
+//     Constants
+//====================
 const TYPEAHEAD_ID = 'pdap-search-typeahead';
 
 //====================
@@ -84,6 +85,10 @@ const queryKey = computed<string>(() => [
   typeaheadRef.value?.value.toLowerCase()
 ]);
 
+//===================
+//  Request Logic
+//===================
+const { query: params } = useRoute();
 
 const queryClient = useQueryClient();
 
@@ -122,6 +127,9 @@ const fetchTypeaheadResults = _debounce(
   { leading: true, trailing: true }
 );
 
+//===================
+//   Control Logic
+//===================
 onMounted(() => {
   // Set up selected state based on params
   if (params.location_id) {

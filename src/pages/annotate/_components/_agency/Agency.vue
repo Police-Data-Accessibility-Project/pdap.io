@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p>Agency: {{ agency?.display_name }}</p>
-    <p>Agency ID: {{ agency?.id }}</p>
+    <p>Agency: {{ agencyModel?.display_name }}</p>
+    <p>Agency ID: {{ agencyModel?.id }}</p>
     <div class="grid grid-cols-1 gap-4">
       <div class="col-auto">
         <RadioForm
@@ -37,7 +37,7 @@ const props = defineProps({
   }
 });
 
-const agency = defineModel<AgencyLocationSelectionType | null>({ default: null });
+const agencyModel = defineModel<AgencyLocationSelectionType | null>({ default: null });
 
 //====================
 //     Variables
@@ -69,7 +69,7 @@ const resetRadio = () => {
 //===================
 function handleRadioFormSelect(option: RadioOptionType) {
 
-  agency.value = {
+  agencyModel.value = {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
   };
@@ -80,7 +80,7 @@ function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
     return;
   }
   resetRadio();
-  agency.value = ag;
+  agencyModel.value = ag;
 }
 
 </script>

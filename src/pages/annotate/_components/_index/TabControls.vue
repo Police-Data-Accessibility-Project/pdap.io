@@ -18,7 +18,7 @@
         :disabled="isNextDisabled"
         @click="emit('next')"
     >
-      {{nextText}}
+      {{ nextTextModel }}
     </button>
   </div>
 </template>
@@ -34,7 +34,7 @@ const props = defineProps<{
   isNextDisabled: boolean
 }>()
 
-const nextText = defineModel({
+const nextTextModel = defineModel({
   type: String,
   default: 'Next'
 })

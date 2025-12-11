@@ -27,9 +27,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelectionType): void;
 }>()
 
-function handleRadioGroupUpdate(rg: NameSelectionType) {
-  emit('update:modelValue', rg);
-}
+
 
 //====================
 // Computed Variables
@@ -50,6 +48,13 @@ const options = computed((): editableRadioOption[] => {
       }
     ]);
 });
+
+//================
+//    Handlers
+//================
+function handleRadioGroupUpdate(rg: NameSelectionType) {
+  emit('update:modelValue', rg);
+}
 
 //================
 //    Helpers

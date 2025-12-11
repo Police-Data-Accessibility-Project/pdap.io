@@ -77,7 +77,7 @@ const props = defineProps({
   },
 });
 
-const annotation = defineModel<NextAnonymousAnnotationResponseType>({})
+const annotationModel = defineModel<NextAnonymousAnnotationResponseType>({})
 
 // TODO: Add emit to propagate reset command
 //=================
@@ -95,7 +95,7 @@ const {
         url_info: { url_id }
       },
       session_id
-    } = annotation.value;
+    } = annotationModel.value;
 
     return await postAnonymousAnnotation(
       postData,
@@ -104,7 +104,7 @@ const {
     );
   },
   onSuccess: (data) => {
-    annotation.value = data;
+    annotationModel.value = data;
   }
 });
 

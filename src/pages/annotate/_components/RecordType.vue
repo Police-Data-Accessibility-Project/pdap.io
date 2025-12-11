@@ -3,7 +3,7 @@
     <label class="block text-sm font-medium mb-1">Record type</label>
 
     <div class="grid grid-cols-1 gap-4">
-      <p>Record Type: {{ selectedRecordType }}</p>
+      <p>Record Type: {{ selectedRecordTypeModel }}</p>
       <div class="col-auto">
         <RadioForm
           v-model="selectedRadioRecordType"
@@ -16,7 +16,7 @@
     <br />
     <!-- Select for Record Type -->
     <select
-      v-model="selectedRecordType"
+      v-model="selectedRecordTypeModel"
       class="border rounded px-2 py-1 w-full text-black"
       @change="handleSelectChange">
       <option disabled value="">Select a record type…</option>
@@ -34,7 +34,7 @@
     </select>
 
     <p class="mt-2 text-sm text-gray-600">
-      Selected: {{ selectedRecordType || 'none' }}
+      Selected: {{ selectedRecordTypeModel || 'none' }}
     </p>
   </div>
 </template>
@@ -55,7 +55,7 @@ const props = defineProps({
   }
 });
 
-const selectedRecordType = defineModel({ type: String, default: null });
+const selectedRecordTypeModel = defineModel({ type: String, default: null });
 
 //====================
 //     Variables
@@ -81,7 +81,7 @@ function handleSelectChange(selected) {
 }
 
 function handleRadioFormSelect(option: RadioOptionType) {
-  selectedRecordType.value = option.value;
+  selectedRecordTypeModel.value = option.value;
 }
 
 //====================
