@@ -75,6 +75,7 @@ export type RadioOptionType = {
   value: string | number;
   label: string;
   display_name?: string | null;
+  anno_labels?: AnnoLabels | null;
 };
 export const urlTypes = {
   DATA_SOURCE: 'Relevant Data Source',
@@ -92,6 +93,12 @@ export type RecordCategory = keyof typeof RECORD_TYPES_BY_CATEGORY;
 // All possible record types (inner string values)
 export type RecordType =
   (typeof RECORD_TYPES_BY_CATEGORY)[RecordCategory][number];
+
+export type AnnoLabels = {
+  user?: string | null;
+  robo?: string | null;
+}
+
 
 //======================
 // Variable Types

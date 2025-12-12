@@ -43,7 +43,8 @@
 import { computed, PropType, ref } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels, RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 
 //====================
 //Props, Models, Emits
@@ -69,7 +70,8 @@ const radioOptions = computed((): RadioOptionType[] => {
   return props.suggestions.map((s) => ({
     value: s.record_type,
     display_name: s.record_type,
-    label: getRecordTypeEndorsementString(s)
+    label: s.record_type,
+    anno_labels: getEndorsementLabels(s)
   }));
 });
 
@@ -83,21 +85,6 @@ function handleSelectChange(selected) {
 function handleRadioFormSelect(option: RadioOptionType) {
   selectedRecordTypeModel.value = option.value;
 }
-
-//====================
-//     Helpers
-//====================
-function getRecordTypeEndorsementString(suggestion: RecordTypeSuggestionType): string {
-  let base = suggestion.record_type;
-  if (suggestion.user_count) {
-    base += ' 👥 ' + suggestion.user_count;
-  }
-  if (suggestion.robo_confidence) {
-    base += ' 🤖 ' + suggestion.robo_confidence + '%';
-  }
-  return base;
-}
-
 
 </script>
 

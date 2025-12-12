@@ -15,7 +15,7 @@
         :value="option"
         @change="handleSelect(option)" />
 
-      <div class="font-semibold">{{ option.label }}</div>
+      <div class="font-semibold">{{ option.label + " " }}<AnnotationSpan :labels="option.anno_labels"/></div>
     </label>
   </div>
 </template>
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { RadioOptionType } from '@/pages/annotate/_components/_shared/types';
+import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //====================
 //Props, Models, Emits

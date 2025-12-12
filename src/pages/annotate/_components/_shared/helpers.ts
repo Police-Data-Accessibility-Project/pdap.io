@@ -1,12 +1,15 @@
-import { AgencyLocationSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { AgencyLocationSuggestionType, AnnoLabels } from '@/pages/annotate/_components/_shared/types';
 
-export function getEndorsementString(suggestion: AgencyLocationSuggestionType): string {
-  let base: string = suggestion.display_name;
-  if (suggestion.user_count) {
-    base += ' 👥 ' + suggestion.user_count;
+interface EndorsementSource {
+  user_count?: number | null;
+  robo_confidence?: number | null;
+}
+
+export function getEndorsementLabels(
+  suggestion: EndorsementSource
+): AnnoLabels {
+  return {
+    user: suggestion.user_count ? suggestion.user_count.toString(): null,
+    robo: suggestion.robo_confidence ? suggestion.robo_confidence + '%': null
   }
-  if (suggestion.robo_confidence) {
-    base += ' 🤖 ' + suggestion.robo_confidence + "%";
-  }
-  return base;
 }

@@ -15,7 +15,11 @@
         {{ option.value }}
       </div>
 
-      <div class="mt-2">{{ option.endorsementString }}</div>
+      <div class="mt-2">
+        <AnnotationSpan
+        :labels="option.annoLabels"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -25,8 +29,9 @@ import { computed, PropType } from 'vue';
 import {
   urlTypeType,
   urlTypes,
-  URLTypeSuggestion, URLTypeSelectionType
+  URLTypeSuggestion, URLTypeSelectionType, AnnoLabels
 } from '@/pages/annotate/_components/_shared/types';
+import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //====================
 //Props, Models, Emits
@@ -55,7 +60,7 @@ const emit = defineEmits<{
 //====================
 type URLTypeOption = {
   value: urlTypeType;
-  endorsementString: string;
+  annoLabels?: AnnoLabels | null;
 }
 //====================
 // Constants
@@ -81,7 +86,7 @@ const suggestionMap = computed<Record<urlTypeType, number>>(() => {
 const formattedOptions = computed<URLTypeOption[]>(() =>
   props.options.map((opt) => ({
     value: opt,
-    endorsementString: getEndorsementString(opt)
+    annoLabels: getAnnotationSuggestionValues(opt)
   }))
 );
 
@@ -98,15 +103,18 @@ function handleSelectOption(option: string) {
 //====================
 //     Helpers
 //====================
-function getEndorsementString(ut: urlTypeType): string {
+function getAnnotationSuggestionValues(ut: urlTypeType): AnnoLabels {
   const suggestionKey: string = urlTypeMapping[ut];
-
   if (!(suggestionKey in suggestionMap.value)) {
-    return '';
+    return {};
   }
 
-  const endorsementCount = suggestionMap.value[suggestionKey];
-  return '👥 ' + endorsementCount;
+  const endorsementCount: number = suggestionMap.value[suggestionKey];
+  return {
+    user: endorsementCount.toString()
+  }
+
 }
+
 </script>
 

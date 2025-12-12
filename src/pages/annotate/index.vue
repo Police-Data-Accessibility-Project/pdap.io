@@ -225,7 +225,7 @@ function selectTab(index: number) {
 
 const nextTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.display_name];
   // Get next tab in path
   currentPathIndex.value++;
   const nextTabInPath: TabID = pathTabs[currentPathIndex.value];
@@ -235,7 +235,7 @@ const nextTab = () => {
 
 const prevTab = () => {
   // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.value];
+  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.display_name];
   // Get previous tab in path
   currentPathIndex.value--;
   const prevTabInPath: TabID = pathTabs[currentPathIndex.value];
@@ -263,14 +263,6 @@ function handleConfirmSubmit() {
   resetAnnotationVariables();
   resetTab();
 }
-
-
-
-
-
-
-
-
 
 async function submit(values) {}
 </script>

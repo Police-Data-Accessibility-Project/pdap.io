@@ -25,8 +25,8 @@
       </span>
 
       <span v-else class="flex-1">
-        <span>{{ option.text }}</span>
-        <span v-if="!isDirty(option.id)">{{ ' ' + option?.preEditText }}</span>
+        <span>{{ option.text + " " }}</span>
+        <AnnotationSpan v-if="!isDirty(option.id)" :labels="option.annoLabels"/>
       </span>
     </div>
   </div>
@@ -34,7 +34,8 @@
 
 <script setup lang="ts">
 import { PropType, reactive, watch } from 'vue';
-import { NameSelectionType } from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels, NameSelectionType } from '@/pages/annotate/_components/_shared/types';
+import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //======================
 //       Types
@@ -43,7 +44,7 @@ import { NameSelectionType } from '@/pages/annotate/_components/_shared/types';
 type editableRadioOption = {
   id: string;
   text: string;
-  preEditText: string;
+  annoLabels: AnnoLabels;
 }
 
 type nameEditState = {

@@ -19,7 +19,7 @@
 import SearchForm from '@/pages/annotate/_components/_location/SearchLocationForm.vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { computed, PropType, ref } from 'vue';
-import { getEndorsementString } from '@/pages/annotate/_components/_shared/helpers';
+import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 import { LocationSuggestionType } from '@/pages/annotate/_components/_location/types';
 import {
   AgencyLocationSelectionType,
@@ -51,7 +51,8 @@ const radioOptions = computed((): RadioOptionType[] => {
   return props.suggestions.map((s) => ({
     value: s.id,
     display_name: s.display_name,
-    label: getEndorsementString(s)
+    label: s.display_name,
+    anno_labels: getEndorsementLabels(s)
   }));
 });
 

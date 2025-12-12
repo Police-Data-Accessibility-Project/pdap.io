@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import SearchForm from '@/pages/annotate/_components/_agency/SearchAgencyForm.vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { getEndorsementString } from '@/pages/annotate/_components/_shared/helpers';
+import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 
 import { computed, type PropType, ref } from 'vue';
 import {
@@ -53,7 +53,8 @@ const radioOptions = computed<RadioOptionType[]>(() => {
   return raw.map((s): RadioOptionType => ({
     value: s.id,
     display_name: s.display_name,
-    label: getEndorsementString(s)
+    label: s.display_name,
+    anno_labels: getEndorsementLabels(s)
   }));
 });
 
