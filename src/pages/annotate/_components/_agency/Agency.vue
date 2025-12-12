@@ -20,7 +20,7 @@ import SearchForm from '@/pages/annotate/_components/_agency/SearchAgencyForm.vu
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 
-import { computed, type PropType, ref } from 'vue';
+import { computed, type PropType, ref, watch } from 'vue';
 import {
   AgencyLocationSelectionType,
   AgencyLocationSuggestionType,
@@ -64,6 +64,12 @@ const radioOptions = computed<RadioOptionType[]>(() => {
 const resetRadio = () => {
   selectedRadioAgency.value = null;
 };
+
+watch(agencyModel, (newValue, oldValue) => {
+  if (!newValue) {
+    resetRadio();
+  }
+})
 
 //===================
 //     Handlers

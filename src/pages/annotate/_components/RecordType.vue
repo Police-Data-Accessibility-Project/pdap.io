@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType, ref } from 'vue';
+import { computed, PropType, ref, watch } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { AnnoLabels, RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
@@ -74,6 +74,16 @@ const radioOptions = computed((): RadioOptionType[] => {
     anno_labels: getEndorsementLabels(s)
   }));
 });
+
+//===================
+//  Control Logic
+//===================
+watch(selectedRecordTypeModel, (newValue, oldValue) => {
+  if (!newValue) {
+    selectedRadioRecordType.value = null;
+  }
+})
+
 
 //====================
 //      Handles

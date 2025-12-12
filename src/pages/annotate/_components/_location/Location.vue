@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import SearchForm from '@/pages/annotate/_components/_location/SearchLocationForm.vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { computed, PropType, ref } from 'vue';
+import { computed, PropType, ref, watch } from 'vue';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 import { LocationSuggestionType } from '@/pages/annotate/_components/_location/types';
 import {
@@ -62,6 +62,12 @@ const radioOptions = computed((): RadioOptionType[] => {
 const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
+
+watch(locationModel, (newValue, oldValue) => {
+  if (!newValue) {
+    resetRadio();
+  }
+})
 
 //===================
 //     Handlers
