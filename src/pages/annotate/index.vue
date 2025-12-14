@@ -26,6 +26,7 @@
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
+            :key="localAnnotation.next_annotation.url_info.url_id"
             :src="`${URL_BASE}/${localAnnotation.next_annotation.url_info.url_id}/screenshot`"
             @error="imageOk = false" />
           <div v-else>Image Not Found</div>
@@ -147,7 +148,7 @@ const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 const currentPathIndex = ref<number>(0);
 
 // Whether the image successfully loaded.
-const imageOk = ref<boolean>(false);
+const imageOk = ref<boolean>(true);
 
 // Variables tracking selections of annotation components.
 const selectedURLType = ref<URLTypeSelectionType>(null);
