@@ -42,7 +42,9 @@
             <TabsHeader
               :tabs="tabs"
               :current-index="currentGlobalIndex"
-              @select="selectTab" />
+              :enabled-indices="permittedGlobalIndices"
+              @select="selectTab"
+            />
 
             <!-- Tab content -->
             <keep-alive>
@@ -52,23 +54,35 @@
                     v-if="currentTab.id === 'url_type'"
                     v-model="selectedURLType"
                     :options="urlTypeOptions"
-                    :suggestions="localAnnotation.next_annotation.url_type_suggestions" />
+                    :suggestions="localAnnotation.next_annotation.url_type_suggestions"
+                    @select="handleSelect"
+                  />
+
                   <LocationView
                     v-else-if="currentTab.id === 'location'"
                     v-model="selectedLocation"
                     :suggestions="
                       localAnnotation.next_annotation.location_suggestions.suggestions
-                    " />
+                    "
+                    @select="handleSelect"
+                    v-model:resetKey="globalResetKey"
+                  />
                   <AgencyView
                     v-else-if="currentTab.id === 'agency'"
                     v-model="selectedAgency"
-                    :suggestions="localAnnotation.next_annotation.agency_suggestions.suggestions" />
+                    :suggestions="localAnnotation.next_annotation.agency_suggestions.suggestions"
+                    @select="handleSelect"
+                    v-model:resetKey="globalResetKey"
+                  />
                   <RecordTypeView
                     v-else-if="currentTab.id === 'record_type'"
                     v-model="selectedRecordType"
                     :suggestions="
                       localAnnotation.next_annotation.record_type_suggestions.suggestions
-                    " />
+                    "
+                    @select="handleSelect"
+                    v-model:resetKey="globalResetKey"
+                  />
                   <NameView
                     v-else-if="currentTab.id === 'name'"
                     v-model="selectedName"
@@ -129,10 +143,6 @@ const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
 //====================
 //     Variables
 //====================
-// Two indices exist:
-// The global index, determining which of the six tabs is selected
-const currentGlobalIndex = ref<number>(0);
-// The path index, determining which tab *in the given path* is selected
 // Path index refers to the index for the given URL Type path
 const currentPathIndex = ref<number>(0);
 
@@ -147,6 +157,9 @@ const selectedRecordType = ref<RecordType>(null);
 const selectedName = ref<NameSelectionType>(null);
 
 const localAnnotation = ref<NextAnonymousAnnotationResponseType | null>(null);
+
+const isThrottled = ref<boolean>(false);
+const globalResetKey = ref<number>(0);
 
 //====================
 //     Constants
@@ -169,9 +182,46 @@ const tabVarMapping = {
   [tabIDs.NAME]: selectedName
 };
 
+const throttleMs = 250;
+
 //====================
 // Computed Variables
 //====================
+// Tabs for the current path
+const currentPathTabs = computed<Array<TabID>>(() => {
+  const urlType = selectedURLType.value?.display_name;
+  return urlType ? validTabsByUrlType[urlType] ?? [] : [];
+});
+
+const permittedGlobalIndices = computed<number[]>(() => {
+  return currentPathTabs.value
+    .map(tabId => tabIndexByValue[tabId])
+    .filter((i): i is number => i !== undefined);
+});
+
+// Global index as a computed projection of the current path position.
+const currentGlobalIndex = computed<number>({
+  get() {
+    const pathTabs = currentPathTabs.value;
+    if (pathTabs.length === 0) return 0;
+
+    const tabId = pathTabs[currentPathIndex.value] ?? pathTabs[0];
+    return tabIndexByValue[tabId] ?? 0;
+  },
+  set(globalIndex: number) {
+    const pathTabs = currentPathTabs.value;
+    if (pathTabs.length === 0) return;
+
+    const tabId = tabValueByIndex[globalIndex] as TabID | undefined;
+    if (!tabId) return;
+
+    const idxInPath = pathTabs.indexOf(tabId);
+    if (idxInPath === -1) return; // policy: ignore clicks outside the current path
+
+    currentPathIndex.value = idxInPath;
+  }
+});
+
 const currentTab = computed(() => tabs[currentGlobalIndex.value]);
 // TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
@@ -219,34 +269,40 @@ watch(annotation, (newVal) => {
 //====================
 // Control Logic
 //====================
+watch(
+  () => selectedURLType.value?.display_name,
+  () => {
+    const len = currentPathTabs.value.length;
+    if (len === 0) {
+      currentPathIndex.value = 0;
+      return;
+    }
+    // clamp (or you could always reset to 0 if you prefer)
+    currentPathIndex.value = Math.min(currentPathIndex.value, len - 1);
+  },
+  { immediate: true }
+);
+
 function selectTab(index: number) {
+  // setter maps global index -> path index
   currentGlobalIndex.value = index;
 }
 
 const nextTab = () => {
-  // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.display_name];
-  // Get next tab in path
-  currentPathIndex.value++;
-  const nextTabInPath: TabID = pathTabs[currentPathIndex.value];
-  // Get global index value corresponding to that tab and set to currentGlobalIndex
-  currentGlobalIndex.value = tabIndexByValue[nextTabInPath];
+  const len = currentPathTabs.value.length;
+  if (len === 0) return;
+  currentPathIndex.value = Math.min(currentPathIndex.value + 1, len - 1);
 };
 
 const prevTab = () => {
-  // Get tab path for selected URL Type
-  const pathTabs: Array<TabID> = validTabsByUrlType[selectedURLType.value.display_name];
-  // Get previous tab in path
-  currentPathIndex.value--;
-  const prevTabInPath: TabID = pathTabs[currentPathIndex.value];
-  // Get global index value corresponding to that tab and set to currentGlobalIndex
-  currentGlobalIndex.value = tabIndexByValue[prevTabInPath];
+  const len = currentPathTabs.value.length;
+  if (len === 0) return;
+  currentPathIndex.value = Math.max(currentPathIndex.value - 1, 0);
 };
 
 const resetTab = () => {
   currentPathIndex.value = 0;
-  currentGlobalIndex.value = 0;
-}
+};
 
 function resetAnnotationVariables() {
   selectedURLType.value = null;
@@ -262,7 +318,20 @@ function resetAnnotationVariables() {
 function handleConfirmSubmit() {
   resetAnnotationVariables();
   resetTab();
+  globalResetKey.value++;
 }
 
-async function submit(values) {}
+function handleSelect() {
+  if (isThrottled.value) return;
+
+  isThrottled.value = true;
+
+  nextTab();
+
+  setTimeout(() => {
+    isThrottled.value = false;
+  }, throttleMs);
+
+}
+
 </script>

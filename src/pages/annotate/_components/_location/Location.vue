@@ -38,6 +38,11 @@ const props = defineProps({
 });
 
 const locationModel = defineModel<AgencyLocationSelectionType>({ default: null });
+const resetKey = defineModel<number>('resetKey');
+
+const emit = defineEmits<{
+  (e: 'select', v: null): void
+}>()
 
 //====================
 //     Variables
@@ -63,10 +68,8 @@ const resetRadio = () => {
   selectedRadioLocation.value = null;
 };
 
-watch(locationModel, (newValue, oldValue) => {
-  if (!newValue) {
-    resetRadio();
-  }
+watch(resetKey, () => {
+  resetRadio();
 })
 
 //===================
@@ -77,6 +80,7 @@ function handleRadioFormSelect(option: RadioOptionType) {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
   };
+  emit('select', null);
 }
 
 function handleSearchLocationSelect(loc: LocationSuggestionType) {
@@ -89,6 +93,7 @@ function handleSearchLocationSelect(loc: LocationSuggestionType) {
     id: Number(loc.location_id),
     display_name: loc.display_name
   };
+  emit('select', null);
 }
 </script>
 

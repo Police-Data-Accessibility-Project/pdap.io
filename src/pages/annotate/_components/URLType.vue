@@ -53,6 +53,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: urlTypeType): void;
+  (e: 'select', value: null): void
 }>()
 
 //====================
@@ -98,6 +99,7 @@ function handleSelectOption(option: string) {
     value: urlTypeMapping[option],
     display_name: option
   });
+  emit('select', null);
 }
 
 //====================

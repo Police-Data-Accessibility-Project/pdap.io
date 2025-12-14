@@ -57,6 +57,11 @@ const props = defineProps({
 });
 
 const selectedRecordTypeModel = defineModel({ type: String, default: null });
+const resetKey = defineModel<number>('resetKey', { default: 0 });
+
+const emit = defineEmits<{
+  (e: 'select', v: null): void
+}>()
 
 //====================
 //     Variables
@@ -78,10 +83,8 @@ const radioOptions = computed((): RadioOptionType[] => {
 //===================
 //  Control Logic
 //===================
-watch(selectedRecordTypeModel, (newValue, oldValue) => {
-  if (!newValue) {
-    selectedRadioRecordType.value = null;
-  }
+watch(resetKey, () => {
+  selectedRadioRecordType.value = null;
 })
 
 
@@ -90,10 +93,12 @@ watch(selectedRecordTypeModel, (newValue, oldValue) => {
 //====================
 function handleSelectChange(selected) {
   selectedRadioRecordType.value = null;
+  emit('select', null);
 }
 
 function handleRadioFormSelect(option: RadioOptionType) {
   selectedRecordTypeModel.value = option.value;
+  emit('select', null);
 }
 
 </script>

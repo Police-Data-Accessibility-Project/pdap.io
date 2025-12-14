@@ -38,6 +38,11 @@ const props = defineProps({
 });
 
 const agencyModel = defineModel<AgencyLocationSelectionType | null>({ default: null });
+const resetKey = defineModel<number>('resetKey', { default: 0 });
+
+const emit = defineEmits<{
+  (e: 'select', v: null): void
+}>()
 
 //====================
 //     Variables
@@ -65,10 +70,8 @@ const resetRadio = () => {
   selectedRadioAgency.value = null;
 };
 
-watch(agencyModel, (newValue, oldValue) => {
-  if (!newValue) {
-    resetRadio();
-  }
+watch(resetKey, () => {
+  resetRadio();
 })
 
 //===================
@@ -80,6 +83,7 @@ function handleRadioFormSelect(option: RadioOptionType) {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
   };
+  emit('select', null);
 }
 
 function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
@@ -88,6 +92,7 @@ function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
   }
   resetRadio();
   agencyModel.value = ag;
+  emit('select', null);
 }
 
 </script>

@@ -24,6 +24,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelectionType): void;
+  (e: 'select', value: null): void;
 }>()
 
 //====================
