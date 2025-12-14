@@ -48,7 +48,7 @@ type editableRadioOption = {
 }
 
 type nameEditState = {
-  name: string;  // Text of name
+  text: string;  // Text of name
   dirty: boolean;  // Whether name was modified
 }
 
@@ -60,7 +60,6 @@ const props = defineProps({
     type: Object as PropType<NameSelectionType>,
     default: null
   },
-  // [{ id, text, preEditText}]
   options: {
     type: Array as PropType<editableRadioOption[]>,
     required: true
@@ -121,7 +120,7 @@ watch(
     }
     for (const item of options) {
       nameMapping[item.id] = {
-        name: item.text,
+        text: item.text,
         dirty: false
       };
     }
