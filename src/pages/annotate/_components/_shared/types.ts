@@ -3,20 +3,21 @@ import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/c
 //======================
 // Annotation GET Types
 //======================
-export type NextAnonymousAnnotationResponse = {
-  next_annotation: NextAnonymousAnnotationType;
-  session_id: string;
+
+export type NextAnnotationResponse = {
+  next_annotation: NextAnnotation;
+  session_id: string | null;
 }
 
-export type NextAnonymousAnnotationType = {
+export type NextAnnotation = {
   url_info: URLInfoType;
   html_info: Record<string, number | string>; //Unused in logic
   batch_info: BatchInfoType;
-  agency_suggestions: AgencyLocationSuggestionsType;
-  location_suggestions: AgencyLocationSuggestionsType;
+  agency_suggestions: AgencyLocationSuggestions;
+  location_suggestions: AgencyLocationSuggestions;
   url_type_suggestions: URLTypeSuggestion[];
-  record_type_suggestions: RecordTypeSuggestionsType;
-  name_suggestions: NameSuggestionsType;
+  record_type_suggestions: RecordTypeSuggestions;
+  name_suggestions: NameSuggestions;
 }
 
 export type URLTypeSuggestion = {
@@ -31,7 +32,7 @@ export type AgencyLocationSuggestion = {
   robo_confidence: number | null;
 }
 
-export type AgencyLocationSuggestionsType = {
+export type AgencyLocationSuggestions = {
   suggestions: AgencyLocationSuggestion[];
 }
 
@@ -52,7 +53,7 @@ export type RecordTypeSuggestionType = {
   robo_confidence: number;
 }
 
-export type RecordTypeSuggestionsType = {
+export type RecordTypeSuggestions = {
   suggestions: RecordTypeSuggestionType[];
 }
 
@@ -63,7 +64,7 @@ export type NameSuggestion = {
   robo_count: number;
 }
 
-export type NameSuggestionsType = {
+export type NameSuggestions = {
   suggestions: NameSuggestion[];
 }
 
