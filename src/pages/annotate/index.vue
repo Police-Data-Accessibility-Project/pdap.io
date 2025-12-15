@@ -19,9 +19,42 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-          <hgroup>
-            <h1>{{ localAnnotation.next_annotation?.url_info.url }}</h1>
-          </hgroup>
+            <div
+              v-if="!auth.isAuthenticated() && showAnonWarning"
+              class="relative rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900"
+            >
+              <!-- Close button -->
+              <button
+                @click="showAnonWarning = false"
+                class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
+                aria-label="Dismiss warning"
+              >
+                ✕
+              </button>
+
+              <p class="font-semibold">
+                You are accessing this as an anonymous user.
+              </p>
+
+              <p class="mt-1 text-sm">
+                Anonymous users can make annotations, but their annotations weigh less
+                than those made by signed-in users.
+              </p>
+
+              <p class="mt-2 text-sm">
+                Click
+                <RouterLink
+                  to="/sign-in"
+                  class="font-medium underline hover:text-amber-800"
+                >here</RouterLink>
+                to sign in or
+                <RouterLink
+                  to="/sign-up"
+                  class="font-medium underline hover:text-amber-800"
+                >here</RouterLink>
+                to sign up.
+              </p>
+            </div>
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
@@ -29,6 +62,14 @@
             :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
             @error="imageOk = false" />
           <div v-else>Image Not Found</div>
+          <div>URL:
+            <a
+            :href="localAnnotation.next_annotation?.url_info.url"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{localAnnotation.next_annotation?.url_info.url}}
+            </a>
+          </div>
 
           <div class="w-full mx-auto">
             <TabControls
@@ -173,6 +214,7 @@ const localAnnotation = ref<NextAnnotationResponse | null>(null);
 
 const isThrottled = ref<boolean>(false);
 const globalResetKey = ref<number>(0);
+const showAnonWarning = ref(true);
 
 //====================
 //     Constants
