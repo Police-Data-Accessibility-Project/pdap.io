@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import {
-  AgencyAnonymousSubmissionType,
-  AnnotationSubmissionType,
-  NextAnonymousAnnotationType
+  AnnotationSubmission, NextAnnotationResponse
 } from '@/pages/annotate/_components/_shared/types';
 
 const ANNOTATE_BASE = `${import.meta.env.VITE_SM_API_URL}/annotate`;
@@ -11,51 +9,42 @@ const HEADERS_BASE = {
   'Content-Type': 'application/json'
 };
 
-export async function getAnonymousAnnotationURL(): Promise<NextAnonymousAnnotationType> {
-  console.log(`${ANNOTATE_BASE}/anonymous`)
-  const result = await axios.get(`${ANNOTATE_BASE}/anonymous`)
-    .then((res) => res.data);
-  console.log(result);
-  return result
-}
-
-export async function postAnonymousAnnotation(
-  annotation: AgencyAnonymousSubmissionType,
-  url_id: number,
-  session_id: string,
-): Promise<NextAnonymousAnnotationType> {
-  return await axios.post(`${ANNOTATE_BASE}/anonymous/${url_id}?session_id=${session_id}`,
-    annotation, {
-    headers: {
-      ...HEADERS_BASE
-    }
-  }).then((res) => res.data);
-}
-
-export async function getUserAnnotationURL() {
+export async function getAnnotationURL(): Promise<NextAnnotationResponse> {
   const auth = useAuthStore();
 
-  return await axios.get(`${ANNOTATE_BASE}/all`, {
-    headers: {
-      ...HEADERS_BASE,
-      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
-    }
-  });
+  if (auth.isAuthenticated()) {
+    return await axios.get(`${ANNOTATE_BASE}/all`, {
+      headers: {
+        ...HEADERS_BASE,
+        authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+      }
+    }).then((res) => res.data);
+  }
+  // Fall back to anonymous annotation.
+  return await axios.get(`${ANNOTATE_BASE}/anonymous`)
+    .then((res) => res.data);
 }
-export async function postUserAnnotation(
-  annotation: AnnotationSubmissionType,
+
+export async function postAnnotation(
+  annotation: AnnotationSubmission,
   url_id: number,
+  session_id: string | null,
 ) {
   const auth = useAuthStore();
-
-  return await axios.post(`${ANNOTATE_BASE}/anonymous/${url_id}`, annotation, {
-    headers: {
-      ...HEADERS_BASE,
-      authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
-    }
-  }).then((res) => res.data.next_annotation);
+  if (auth.isAuthenticated()) {
+    return await axios.post(`${ANNOTATE_BASE}/all/${url_id}`, annotation, {
+      headers: {
+        ...HEADERS_BASE,
+        authorization: `Bearer ${auth.$state.tokens.accessToken.value}`
+      }
+    }).then((res) => res.data);
+  }
+  // Fall back to anonymous annotation.
+  return await axios.post(`${ANNOTATE_BASE}/anonymous/${url_id}?session_id=${session_id}`,
+    annotation, {
+      headers: {
+        ...HEADERS_BASE
+      }
+    }).then((res) => res.data);
 }
 
-export async function get_url_screenshot(url_id: number) {
-  return await axios.get(`${ANNOTATE_BASE}/${url_id}/screenshot`);
-}

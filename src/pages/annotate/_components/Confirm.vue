@@ -50,10 +50,10 @@
 import { PropType } from 'vue';
 import {
   AgencyLocationSelection, AnnotationSubmission,
-  NameSelection, NextAnonymousAnnotationResponse, NextAnonymousAnnotationType,
+  NameSelection, NextAnnotationResponse,
   RecordType, URLTypeSelection,
 } from '@/pages/annotate/_components/_shared/types';
-import { postAnonymousAnnotation } from '@/api/annotate';
+import { postAnnotation } from '@/api/annotate';
 import { Spinner } from 'pdap-design-system';
 import { useMutation } from '@tanstack/vue-query';
 
@@ -83,7 +83,7 @@ const props = defineProps({
   },
 });
 
-const annotationModel = defineModel<NextAnonymousAnnotationResponse>({})
+const annotationModel = defineModel<NextAnnotationResponse>({})
 
 const emit = defineEmits<{
   (e: 'submit'): void;
@@ -102,11 +102,11 @@ const {
     const {
       next_annotation: {
         url_info: { url_id }
-      },
-      session_id
+      }
     } = annotationModel.value;
+    const session_id: string | null = annotationModel.value?.session_id;
 
-    return await postAnonymousAnnotation(
+    return await postAnnotation(
       postData,
       url_id,
       session_id

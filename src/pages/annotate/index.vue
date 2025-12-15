@@ -18,7 +18,7 @@
           <p>Please refresh the page and try again.</p>
         </template>
 
-        <template v-if="localAnnotation.next_annotation">
+        <template v-if="localAnnotation?.next_annotation">
           <hgroup>
             <h1>{{ localAnnotation.next_annotation?.url_info.url }}</h1>
           </hgroup>
@@ -121,7 +121,7 @@
  * Controls tab management and cross-tab display logic.
  * Requests initial annotation.
  */
-import { getAnonymousAnnotationURL } from '@/api/annotate';
+import { getAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';
 import { computed, ref, watch } from 'vue';
@@ -141,12 +141,12 @@ import {
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
-  AgencyLocationSelection, NameSelection, NextAnonymousAnnotationResponse,
-  NextAnonymousAnnotationType, RecordType,
+  AgencyLocationSelection, NameSelection, NextAnnotationResponse,
+  NextAnnotation, RecordType,
   urlTypes, URLTypeSelection,
   UrlType
 } from '@/pages/annotate/_components/_shared/types';
-
+import { useAuthStore } from '@/stores/auth';
 //====================
 //     Types
 //====================
@@ -169,7 +169,7 @@ const selectedAgency = ref<AgencyLocationSelection>(null);
 const selectedRecordType = ref<RecordType>(null);
 const selectedName = ref<NameSelection>(null);
 
-const localAnnotation = ref<NextAnonymousAnnotationResponse | null>(null);
+const localAnnotation = ref<NextAnnotationResponse | null>(null);
 
 const isThrottled = ref<boolean>(false);
 const globalResetKey = ref<number>(0);
@@ -178,6 +178,8 @@ const globalResetKey = ref<number>(0);
 //     Constants
 //====================
 const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
+const auth = useAuthStore();
+console.log(auth.isAuthenticated());
 
 const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
   Object.values(tabIDs).map((value, index) => [value, index])
@@ -266,10 +268,10 @@ const {
   isLoading: annotationPending,
   data: annotation,
   error
-}: UseQueryResult<NextAnonymousAnnotationType> = useQuery({
+}: UseQueryResult<NextAnnotationResponse> = useQuery({
   queryKey,
-  queryFn: async (): Promise<NextAnonymousAnnotationType> => {
-    return await getAnonymousAnnotationURL();
+  queryFn: async (): Promise<NextAnnotationResponse> => {
+    return await getAnnotationURL();
   }
 });
 
