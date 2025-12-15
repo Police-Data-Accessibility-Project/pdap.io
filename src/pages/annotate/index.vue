@@ -20,13 +20,13 @@
 
         <template v-else>
           <hgroup>
-            <h1>{{ localAnnotation.next_annotation.url_info.url }}</h1>
+            <h1>{{ localAnnotation.next_annotation?.url_info.url }}</h1>
           </hgroup>
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
-            :key="localAnnotation.next_annotation.url_info.url_id"
-            :src="`${URL_BASE}/${localAnnotation.next_annotation.url_info.url_id}/screenshot`"
+            :key="localAnnotation.next_annotation?.url_info.url_id"
+            :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
             @error="imageOk = false" />
           <div v-else>Image Not Found</div>
 
