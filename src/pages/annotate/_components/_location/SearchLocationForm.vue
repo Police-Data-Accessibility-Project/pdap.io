@@ -29,7 +29,7 @@
             We don't have agencies in the place you're looking for. Is it
             spelled correctly? If our database is missing something, please
             reach us at
-            <a href="mailto:contat@pdap.io">contact@pdap.io</a>
+            <a href="mailto:contact@pdap.io">contact@pdap.io</a>
           </span>
         </template>
       </Typeahead>
