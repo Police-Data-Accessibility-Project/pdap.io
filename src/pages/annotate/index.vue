@@ -10,7 +10,6 @@
           text="Fetching annotation..." />
       </div>
 
-      <!--TODO: Look into if class should change-->
       <div
         v-else
         class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
@@ -109,6 +108,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Annotation Index
+ *
+ * Main file for manaaging all annotation logic.
+ *
+ * Imports annotation sub-components
+ * Incorporates into tab display
+ * Controls tab management and cross-tab display logic.
+ * Requests initial annotation.
+ */
 import { getAnonymousAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';

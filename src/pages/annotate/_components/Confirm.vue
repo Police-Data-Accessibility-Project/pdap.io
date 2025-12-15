@@ -41,6 +41,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Annotation Confirmation Component
+ *
+ * Users can review their annotations to ensure correct behavior before submitting.
+ * Handles calls to network, sending request and retrieving new annotation.
+ */
 import { PropType } from 'vue';
 import {
   AgencyLocationSelectionType, AnnotationSubmissionType,

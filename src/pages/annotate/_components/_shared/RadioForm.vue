@@ -21,6 +21,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Radio Annotation Component
+ *
+ * Provides a suite of radio options, along with information on how
+ *  users or robo-annotations annotated them.
+ */
 import { computed } from 'vue';
 import { RadioOptionType } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';

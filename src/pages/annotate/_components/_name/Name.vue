@@ -9,6 +9,13 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Name Annotation Component
+ *
+ * Handles logic for selecting name annotations.
+ * Allows user to select name from user- or robo-provided suggestions.
+ * OR to add a new name.
+ */
 import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadioGroup.vue';
 import { computed, type PropType } from 'vue';
 import { AnnoLabels, NameSelectionType, NameSuggestionType } from '@/pages/annotate/_components/_shared/types';

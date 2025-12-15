@@ -16,6 +16,13 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Location Annotation Component
+ *
+ * Handles logic for selecting location annotations.
+ * Allows user to select location from user- or robo- provided suggestions
+ * OR to select a new location entirely from a typeahead search.
+ */
 import SearchForm from '@/pages/annotate/_components/_location/SearchLocationForm.vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { computed, PropType, ref, watch } from 'vue';

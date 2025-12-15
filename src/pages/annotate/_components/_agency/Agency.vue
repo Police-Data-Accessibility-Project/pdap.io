@@ -16,6 +16,13 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Agency Annotation Component
+ *
+ * Handles logic for selecting agency annotations.
+ * Allows user to select agency from user- or robo-provided suggestions
+ * OR to select a new agency entirely from a typeahead search.
+ */
 import SearchForm from '@/pages/annotate/_components/_agency/SearchAgencyForm.vue';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';

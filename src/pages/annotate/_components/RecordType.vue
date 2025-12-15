@@ -40,6 +40,13 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Record Type Annotation Component
+ *
+ * Handles logic for selecting Record Type annotation.
+ * Allows user to select record type from user- or robo-provided suggestions.
+ * OR to select a new record type entirely.
+ */
 import { computed, PropType, ref, watch } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';

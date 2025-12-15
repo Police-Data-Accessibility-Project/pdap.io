@@ -33,6 +33,13 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Editable Radio Annotation Component
+ *
+ * Provides radio options which can be selected and the name edited.
+ * Also provides information on user and robo-annotations for each
+ *  (non-edited) name.
+ */
 import { PropType, reactive, watch } from 'vue';
 import { AnnoLabels, NameSelectionType } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';

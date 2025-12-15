@@ -25,6 +25,15 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * URL Type Annotation Component
+ *
+ * Handles logic for selecting URL Type Annotations
+ * URL types are included along with counts of how many other users
+ *  selected the same URL type for this URL.
+ * Selection of URL Type impacts what other components are allowed to be
+ *  annotated for the given URL.
+ */
 import { computed, PropType } from 'vue';
 import {
   urlTypeType,

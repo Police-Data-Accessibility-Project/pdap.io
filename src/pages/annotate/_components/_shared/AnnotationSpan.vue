@@ -16,7 +16,7 @@
 /**
  * Displays one or more annotation badges with icons.
  *
- * Both `user` and `robo` may be provided. When present, each
+ * Both `user` and `robo` may be provided. When present, that
  * annotation is rendered with its corresponding icon.
 */
 
