@@ -19,9 +19,6 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-          <hgroup>
-            <h1>{{ localAnnotation.next_annotation?.url_info.url }}</h1>
-          </hgroup>
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
@@ -29,6 +26,14 @@
             :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
             @error="imageOk = false" />
           <div v-else>Image Not Found</div>
+          <div>URL:
+            <a
+            :href="localAnnotation.next_annotation?.url_info.url"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{localAnnotation.next_annotation?.url_info.url}}
+            </a>
+          </div>
 
           <div class="w-full mx-auto">
             <TabControls
