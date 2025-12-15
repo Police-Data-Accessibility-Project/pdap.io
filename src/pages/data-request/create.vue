@@ -17,13 +17,17 @@
       class="grid md:grid-cols-2 gap-x-4 gap-y-2 [&>.pdap-form-error-message]:md:col-span-2"
       name="new-request"
       :schema="SCHEMA"
+      data-test="data-request-create-form"
       @error="error"
-      @submit="submit">
+      @submit="submit"
+    >
       <InputText
         :id="'input-' + INPUT_NAMES.title"
         class="md:col-span-2"
         :name="INPUT_NAMES.title"
-        placeholder="Briefly describe the general purpose or topic.">
+        placeholder="Briefly describe the general purpose or topic."
+        data-test="data-request-create-title-input"
+      >
         <template #label>
           <h4>Request title</h4>
         </template>
@@ -38,14 +42,15 @@
           v-for="location in selectedLocations"
           :key="JSON.stringify(location)"
           class="md:col-span-2"
-          :content="location.display_name"
+          :content="location?.display_name"
           :on-click="
             () => {
               const indexToRemove = selectedLocations.indexOf(location);
               if (indexToRemove > -1)
                 selectedLocations.splice(indexToRemove, 1);
             }
-          " />
+          "
+        />
       </TransitionGroup>
 
       <Typeahead
@@ -53,11 +58,14 @@
         ref="typeaheadRef"
         class="md:col-span-2"
         :error="typeaheadError"
-        :format-item-for-display="(item) => item.display_name"
+        :format-item-for-display="
+          (item) => item?.display_name ?? item?.name ?? ''
+        "
         :items="items"
         :placeholder="
           selectedLocations.length ? 'Enter another place' : 'Enter a place'
         "
+        data-test="data-request-create-location-input"
         @select-item="
           (item) => {
             if (item) {
@@ -68,10 +76,12 @@
             }
           }
         "
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
-          <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span v-html="typeaheadRef?.boldMatchText(item?.display_name)" />
           <span class="locale-type">
             {{ item.type }}
           </span>
@@ -94,7 +104,8 @@
         placeholder="What dates or years should the data cover?"
         year-picker
         range
-        position="left">
+        position="left"
+      >
         <template #label>
           <h4>Coverage range</h4>
         </template>
@@ -105,7 +116,8 @@
         class="md:col-span-2"
         :name="INPUT_NAMES.target"
         :options="SELECT_OPTS"
-        placeholder="When would you like to see this request filled?">
+        placeholder="When would you like to see this request filled?"
+      >
         <template #label>
           <h4>Target date</h4>
         </template>
@@ -116,7 +128,8 @@
         class="md:col-start-1 md:col-end-2"
         :name="INPUT_NAMES.notes"
         placeholder="What are you trying to learn? Is there anything you've already tried?"
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>Request notes</h4>
         </template>
@@ -127,27 +140,33 @@
         class="md:col-start-2 md:col-end-3"
         :name="INPUT_NAMES.requirements"
         placeholder="Details the data must have, like 'case numbers' or 'incident location'."
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>Data requirements</h4>
         </template>
       </InputTextArea>
 
       <div
-        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
+        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
+      >
         <Button
           :disabled="createRequestMutation.isLoading"
           :is-loading="createRequestMutation.isLoading"
           class="min-w-52"
           intent="primary"
-          type="submit">
+          type="submit"
+          data-test="data-request-create-submit"
+        >
           Submit request
         </Button>
         <Button
           :disabled="createRequestMutation.isLoading"
           intent="secondary"
           type="button"
-          @click="clear">
+          data-test="data-request-create-clear"
+          @click="clear"
+        >
           Clear
         </Button>
       </div>
@@ -172,8 +191,11 @@ import _debounce from 'lodash/debounce';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nextTick, ref, watch, computed } from 'vue';
 import { getTypeaheadLocations } from '@/api/typeahead';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { DATA_REQUEST, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
+import { getLocation } from '@/api/locations';
+import { useRoute } from 'vue-router';
+import { useSearchStore } from '@/stores/search';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { DATA_REQUEST, LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
 const INPUT_NAMES = {
   // contact: 'contact',
@@ -263,6 +285,95 @@ const formRef = ref();
 const typeaheadRef = ref();
 const typeaheadError = ref();
 const formError = ref();
+
+const route = useRoute();
+const searchStore = useSearchStore();
+
+const prefillLocationId = computed(() => {
+  const queryId = route.query.location_id;
+  if (queryId) {
+    const parsed = Number(queryId);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  const activeId = searchStore.activeLocationId;
+  if (activeId) {
+    const parsed = Number(activeId);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  return null;
+});
+
+const locationQueryKey = computed(() => [LOCATION, prefillLocationId.value]);
+
+const { data: prefillLocationData } = useQuery({
+  queryKey: locationQueryKey,
+  queryFn: async () => {
+    if (!prefillLocationId.value) return null;
+
+    const response = await getLocation(prefillLocationId.value);
+    return response?.data;
+  },
+  enabled: computed(() => !!prefillLocationId.value),
+  staleTime: 60 * 60 * 1000,
+  onError: (err) => {
+    console.error('Error fetching prefill location:', err);
+  }
+});
+
+const lastPrefillId = ref(null);
+
+watch(
+  () => prefillLocationId.value,
+  (id) => {
+    if (id) return;
+
+    if (lastPrefillId.value) {
+      selectedLocations.value = selectedLocations.value.filter(
+        (loc) => Number(loc.location_id) !== Number(lastPrefillId.value)
+      );
+      lastPrefillId.value = null;
+    }
+  }
+);
+
+watch(
+  prefillLocationData,
+  (data) => {
+    if (!data) return;
+
+    const rawId = data.location_id ?? data.id ?? prefillLocationId.value;
+    const locationId = Number(rawId);
+
+    if (!locationId || Number.isNaN(locationId)) return;
+
+    if (
+      lastPrefillId.value &&
+      Number(lastPrefillId.value) !== Number(locationId)
+    ) {
+      selectedLocations.value = selectedLocations.value.filter(
+        (loc) => Number(loc.location_id) !== Number(lastPrefillId.value)
+      );
+    }
+
+    const normalized = {
+      ...data,
+      location_id: locationId,
+      display_name: data.display_name ?? data.name ?? ''
+    };
+
+    const alreadySelected = selectedLocations.value.some(
+      (loc) => Number(loc.location_id) === locationId
+    );
+
+    if (alreadySelected) return;
+
+    selectedLocations.value = [...selectedLocations.value, normalized];
+    lastPrefillId.value = locationId;
+  },
+  { immediate: true }
+);
 
 const queryClient = useQueryClient();
 const queryKey = computed(() => [

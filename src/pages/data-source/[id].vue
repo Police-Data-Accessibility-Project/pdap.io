@@ -6,37 +6,48 @@
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
       :set-nav-is="(val) => (navIs = val)"
-      class="text-xl font-semibold" />
+      class="text-xl font-semibold"
+    />
 
     <transition mode="out-in" :name="navIs">
       <div
         v-if="isLoading"
-        class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      >
         <Spinner
           :show="isLoading"
           :size="64"
-          text="Fetching data source results..." />
+          text="Fetching data source results..."
+        />
       </div>
 
       <div
         v-else
         :key="route.params.id"
-        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative">
-        <template v-if="!isLoading && error">
+        class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative"
+      >
+        <template v-if="(!error && !dataSource) || error?.status === 404">
+          <h1>Data source not found</h1>
+          <p class="w-full max-w-full">
+            We don't have a record of that source.
+          </p>
+          <router-link to="/" class="pdap-button-primary inline-block">
+            Click here to return to search
+          </router-link>
+        </template>
+
+        <template v-else-if="error">
           <h1>An error occurred loading the data source</h1>
           <p>Please refresh the page and try again.</p>
         </template>
 
-        <!-- TODO: not found UI - do we want to send the user to search or something? -->
-        <template v-else-if="!error && !dataSource">
-          <h1>Data source not found</h1>
-          <p>We don't have a record of that source.</p>
-        </template>
         <!-- For each section, render details -->
         <template v-else>
           <!-- Heading and related material -->
           <hgroup>
-            <h1>{{ dataSource.name }}</h1>
+            <h1 :data-test="TEST_IDS.data_source_title">
+              {{ dataSource.name }}
+            </h1>
             <div class="flex gap-2 items-center">
               <p v-if="dataSource.record_type_name" class="pill w-max">
                 <RecordTypeIcon :record-type="dataSource.record_type_name" />
@@ -45,7 +56,8 @@
               <p
                 v-for="jurisdiction_type in dataSource.unique_jurisdictions"
                 :key="jurisdiction_type"
-                class="pill">
+                class="pill"
+              >
                 Jurisdiction: {{ jurisdiction_type }}
               </p>
               <template v-if="Array.isArray(dataSource.tags)">
@@ -59,16 +71,19 @@
               <h4>Description</h4>
               <p
                 ref="descriptionRef"
+                :data-test="TEST_IDS.data_source_description"
                 class="description"
                 :class="{
                   'truncate-2': !isDescriptionExpanded
-                }">
+                }"
+              >
                 {{ dataSource.description }}
               </p>
               <Button
                 v-if="showExpandDescriptionButton"
                 intent="tertiary"
-                @click="isDescriptionExpanded = !isDescriptionExpanded">
+                @click="isDescriptionExpanded = !isDescriptionExpanded"
+              >
                 {{ isDescriptionExpanded ? 'See less' : 'See more' }}
               </Button>
             </div>
@@ -78,25 +93,31 @@
           <div class="flex-[0_0_100%] flex flex-col w-full">
             <div
               ref="agenciesRef"
-              class="w-full self-start justify-self-start mb-4">
+              class="w-full self-start justify-self-start mb-4"
+            >
               <!-- 👤 Single agency: original layout -->
               <template v-if="dataSource.agencies.length === 1">
                 <div class="inline-flex flex-wrap gap-8 [&>div]:w-max">
-                  <div>
+                  <div :data-test="TEST_IDS.agency_info">
                     <h4 class="m-0">Agency</h4>
                     <p>{{ dataSource.agencies[0].submitted_name }}</p>
                   </div>
-                  <div>
+                  <div :data-test="TEST_IDS.county_state">
                     <h4 class="m-0">County, State</h4>
                     <p>
                       {{
-                        typeof dataSource.agencies[0].county_name === 'string'
-                          ? dataSource.agencies[0].county_name
-                          : dataSource.agencies[0].county_name?.join(', ')
-                      }}, {{ dataSource.agencies[0].state_iso }}
+                        dataSource.agencies[0].county_name
+                          ? (typeof dataSource.agencies[0].county_name ===
+                            'string'
+                              ? dataSource.agencies[0].county_name
+                              : dataSource.agencies[0].county_name.join(', ')) +
+                            (dataSource.agencies[0].state_iso ? ', ' : '')
+                          : ''
+                      }}
+                      {{ dataSource.agencies[0].state_iso || '' }}
                     </p>
                   </div>
-                  <div>
+                  <div :data-test="TEST_IDS.agency_type">
                     <h4 class="m-0">Agency Type</h4>
                     <p class="capitalize">
                       {{ dataSource.agencies[0].agency_type }}
@@ -122,7 +143,8 @@
                       <tr
                         v-for="agency in dataSource.agencies"
                         :key="agency.submitted_name"
-                        class="">
+                        class=""
+                      >
                         <td class="w-1/3">{{ agency.submitted_name }}</td>
                         <td class="w-1/3">
                           {{
@@ -144,7 +166,8 @@
                   <p
                     v-for="agency_type in dataSource.unique_agency_type"
                     :key="agency_type"
-                    class="capitalize">
+                    class="capitalize"
+                  >
                     {{ agency_type }}
                   </p>
                 </div>
@@ -152,9 +175,11 @@
             </div>
             <a
               :href="dataSource.source_url"
+              :data-test="TEST_IDS.data_source_url"
               class="pdap-button-primary py-3 px-4 h-max mr-4"
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               Visit Data Source
               <FontAwesomeIcon :icon="faLink" />
             </a>
@@ -164,12 +189,14 @@
           <div
             v-for="section in DATA_SOURCE_UI_SHAPE"
             :key="section.header"
-            class="section">
+            class="section"
+          >
             <h2>{{ section.header }}</h2>
             <div
               v-for="record in section.records"
               :key="record.title"
-              class="flex flex-col">
+              class="flex flex-col"
+            >
               <!-- Only render if the key exists in the data source record -->
               <template v-if="dataSource[record.key]">
                 <h4>{{ record.title }}</h4>
@@ -177,12 +204,14 @@
                 <!-- If an array, render and nest inside of div -->
                 <div
                   v-if="Array.isArray(dataSource[record.key])"
-                  class="flex gap-2">
+                  class="flex gap-2"
+                >
                   <component
                     :is="record.component ?? 'p'"
                     v-for="item in dataSource[record.key]"
                     :key="item"
-                    :class="record.classNames">
+                    :class="record.classNames"
+                  >
                     {{ formatResult(record, item) }}
                   </component>
                 </div>
@@ -198,7 +227,8 @@
                   "
                   :class="record.classNames"
                   target="record.attributes.target"
-                  rel="record.attributes.rel">
+                  rel="record.attributes.rel"
+                >
                   {{ formatResult(record, dataSource[record.key]) }}
                 </component>
               </template>
@@ -220,12 +250,13 @@ import { DATA_SOURCE_UI_SHAPE } from './_util';
 import { getDataSource } from '@/api/data-sources';
 import { formatDateForSearchResults } from '@/util/dateFormatters';
 import { isDescendantOf } from '@/util/DOM';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { useSwipe } from '@vueuse/core';
 import { DATA_SOURCE } from '@/util/queryKeys';
 import { injectDerivedAgencyInfo } from '@/util/dataFormatter';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
 const router = useRouter();
@@ -247,11 +278,12 @@ const {
     const rawResult = await getDataSource(route.params.id); // returns { data: { data: ... } }
     return injectDerivedAgencyInfo(rawResult);
   },
-  staleTime: 5 * 60 * 1000 // 5 minutes,
+  staleTime: 5 * 60 * 1000, // 5 minutes,
+  retry: 2
 });
 
 const dataSource = computed(() => {
-  return sourceData.value.data.data;
+  return sourceData.value?.data.data;
 });
 
 const isLoading = computed(
@@ -313,22 +345,38 @@ function getPrev() {
   return searchStore.mostRecentSearchIds[previousIdIndex.value];
 }
 
-onMounted(() => {
-  handleShowMoreButton();
-  window.addEventListener('resize', handleShowMoreButton);
-});
+const observer = ref(null);
 
-onUnmounted(() => {
-  window.removeEventListener('resize', handleShowMoreButton);
-});
+watchEffect(() => {
+  if (!descriptionRef.value) return;
 
-function handleShowMoreButton() {
-  if (descriptionRef.value?.offsetHeight < descriptionRef.value?.scrollHeight) {
-    showExpandDescriptionButton.value = true;
-  } else {
-    showExpandDescriptionButton.value = false;
+  const el = descriptionRef.value;
+
+  const checkOverflow = () => {
+    const hasOverflow = el.offsetHeight < el.scrollHeight;
+    showExpandDescriptionButton.value =
+      hasOverflow || isDescriptionExpanded.value;
+  };
+
+  observer.value = new ResizeObserver(checkOverflow);
+  observer.value.observe(el);
+
+  // Also run on initial mount
+  checkOverflow();
+});
+watch(
+  () => route.params.id,
+  () => {
+    isDescriptionExpanded.value = false;
   }
-}
+);
+onBeforeUnmount(() => {
+  if (observer.value && descriptionRef.value) {
+    observer.value.unobserve(descriptionRef.value);
+    observer.value.disconnect();
+    observer.value = null;
+  }
+});
 
 function formatResult(record, item) {
   if (record.isDate) return formatDateForSearchResults(item);
@@ -348,12 +396,12 @@ hgroup {
 }
 
 .description {
-  @apply block max-w-full leading-6 max-h-full overflow-hidden;
+  @apply block max-w-full leading-6 max-h-full overflow-hidden md:text-xl;
   transition: max-height 0.3s ease;
 }
 
 .description.truncate-2 {
-  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)] md:text-xl;
+  @apply line-clamp-2 max-h-[calc(2*1.5rem+5px)] md:max-h-[calc(2*1.25rem+5px)];
 }
 
 .pdap-button-tertiary {

@@ -2,9 +2,10 @@
 <template>
   <div
     :id="wrapperId"
-    data-test="typeahead-wrapper"
+    :data-test="TEST_IDS.typeahead_wrapper"
     class="pdap-typeahead"
-    :class="{ 'pdap-typeahead-expanded': isListOpen }">
+    :class="{ 'pdap-typeahead-expanded': isListOpen }"
+  >
     <label v-if="$slots.label" class="col-span-2" :for="id">
       <slot name="label" />
     </label>
@@ -19,7 +20,7 @@
       :id="id"
       ref="inputRef"
       v-model="input"
-      data-test="typeahead-input"
+      :data-test="TEST_IDS.search_typeahead"
       class="pdap-typeahead-input"
       type="text"
       :placeholder="placeholder"
@@ -28,22 +29,25 @@
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
-      @keydown.down.prevent="onArrowDown" />
+      @keydown.down.prevent="onArrowDown"
+    />
     <ul
       v-if="itemsToDisplay?.length && inputRef?.value"
-      data-test="typeahead-list"
-      class="pdap-typeahead-list">
+      :data-test="TEST_IDS.typeahead_list"
+      class="pdap-typeahead-list"
+    >
       <li
         v-for="(item, index) in itemsToDisplay"
         :key="index"
         class="pdap-typeahead-list-item"
-        data-test="typeahead-list-item"
+        :data-test="TEST_IDS.typeahead_list_item"
         role="button"
         tabindex="0"
         @click="selectItem(item)"
         @keydown.enter.prevent="selectItem(item)"
         @keydown.down.prevent="onArrowDown"
-        @keydown.up.prevent="onArrowUp">
+        @keydown.up.prevent="onArrowUp"
+      >
         <slot v-if="$slots.item" name="item" v-bind="item" />
         <span v-else>{{ boldMatchText(item) }}</span>
       </li>
@@ -51,12 +55,14 @@
     <ul
       v-else-if="typeof itemsToDisplay === 'undefined' && input.length > 1"
       class="pdap-typeahead-list"
-      data-test="typeahead-list-not-found">
+      :data-test="TEST_IDS.typeahead_list_not_found"
+    >
       <li class="max-w-[unset]">
         <slot
           v-if="$slots['not-found']"
           name="not-found"
-          v-bind="notFound ?? {}" />
+          v-bind="notFound ?? {}"
+        />
         <span v-else>
           <strong>No results found.</strong>
           Please check your spelling.
@@ -75,6 +81,7 @@ import {
   watch,
   onBeforeUpdate
 } from 'vue';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 /* Props and emits */
 const props = defineProps({
@@ -219,6 +226,7 @@ defineExpose({
   boldMatchText,
   clearInput,
   focusInput,
+  selectItem,
   get value() {
     return input.value;
   }

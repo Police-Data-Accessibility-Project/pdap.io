@@ -5,22 +5,26 @@
       :request-ids="searchStore.mostRecentRequestIds"
       :previous-index="previousIdIndex"
       :next-index="nextIdIndex"
-      :set-nav-is="(val) => (navIs = val)" />
+      :set-nav-is="(val) => (navIs = val)"
+    />
 
     <transition mode="out-in" :name="navIs">
       <div
         v-if="dataRequestsPending"
-        class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      >
         <Spinner
           :show="dataRequestsPending"
           :size="64"
-          text="Fetching data source results..." />
+          text="Fetching data request..."
+        />
       </div>
 
       <div
         v-else
         :key="route.params.id"
-        class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
+        class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full"
+      >
         <template v-if="!dataRequestsPending && error">
           <h1>An error occurred loading the data request</h1>
           <p>Please refresh the page and try again.</p>
@@ -28,8 +32,8 @@
 
         <!-- TODO: not found UI - do we want to send the user to search or something? -->
         <template v-else-if="!error && !dataRequest">
-          <h1>Data source not found</h1>
-          <p>We don't have a record of that source.</p>
+          <h1>Data request not found</h1>
+          <p>We don't have a record of that request.</p>
         </template>
         <!-- For each section, render details -->
         <template v-else>
@@ -41,7 +45,8 @@
                 <p
                   v-for="type of dataRequest.record_types_required"
                   :key="type.record_types_required"
-                  class="pill w-max">
+                  class="pill w-max"
+                >
                   <RecordTypeIcon :record-type="type" />
                   {{ type }}
                 </p>
@@ -71,8 +76,10 @@
             v-if="dataRequest.github_issue_url"
             :href="dataRequest.github_issue_url"
             class="pdap-button-primary mt-2 mb-4"
-            _target="blank"
-            rel="noreferrer">
+            target="_blank"
+            rel="noreferrer"
+            data-test="data-request-github-link"
+          >
             Help out with this issue on GitHub
             <FontAwesomeIcon :icon="faLink" />
           </a>
@@ -108,14 +115,14 @@ const queryKey = computed(() => [DATA_REQUEST, reactiveParams.value.id]);
 const {
   isLoading: dataRequestsPending,
   data: dataRequest,
-  error
+  error: dataSourceError
 } = useQuery({
   queryKey,
   queryFn: async () => {
     const response = await getDataRequest(route.params.id);
     return response.data.data;
   },
-  staleTime: 5 * 60 * 1000 // 5 minutes,
+  staleTime: 5 * 60 * 1000 // 5 minutes
 });
 
 const currentIdIndex = computed(() =>
@@ -135,6 +142,11 @@ const showExpandDescriptionButton = ref(false);
 const descriptionRef = ref();
 const mainRef = ref();
 const navIs = ref('');
+const error = computed(() =>
+  dataSourceError.value?.message?.includes('not found')
+    ? dataSourceError.value
+    : null
+);
 
 // Handle swipe
 const { direction } = useSwipe(mainRef, {

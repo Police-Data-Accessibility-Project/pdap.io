@@ -4,31 +4,36 @@
       <h4
         v-for="title of HEADING_TITLES"
         :key="title + 'heading'"
-        :class="getClassNameFromHeadingType(title)">
+        :class="getClassNameFromHeadingType(title)"
+      >
         {{ title }}
       </h4>
     </div>
 
-    <div ref="containerRef" class="w-full h-[50vh] relative overflow-y-scroll">
+    <div ref="containerRef" class="w-full h-[80vh] relative overflow-y-scroll">
       <Spinner
         v-if="isLoading"
         :show="isLoading"
         :size="64"
-        text="Fetching search results..." />
+        text="Fetching search results..."
+      />
       <template v-else>
         <!-- eslint-disable vue/no-v-for-template-key -->
         <template
           v-for="locale in ALL_LOCATION_TYPES"
-          :key="locale + 'results'">
+          :key="locale + 'results'"
+        >
           <template v-if="results[locale] && 'count' in results[locale]">
             <div
               :id="'scroll-to-' + locale"
               aria-hidden="true"
-              class="w-full" />
+              class="w-full"
+            />
             <!-- Header by agency -->
             <template
               v-for="agency in Object.keys(results[locale].sourcesByAgency)"
-              :key="agency + 'results'">
+              :key="agency + 'results'"
+            >
               <div class="agency-heading-row">
                 <h5 class="font-semibold">{{ agency }}</h5>
                 <span class="pill">{{ locale }}</span>
@@ -39,7 +44,9 @@
                 v-for="source in results[locale].sourcesByAgency[agency]"
                 :key="source.agency_name"
                 :to="`/data-source/${source.id}`"
-                class="agency-row group">
+                :data-test="TEST_IDS.data_source_link"
+                class="agency-row group"
+              >
                 <!-- Source name and record type -->
                 <div :class="getClassNameFromHeadingType(HEADING_TITLES[0])">
                   <h6>
@@ -48,7 +55,8 @@
                   <span class="pill flex items-center mt-1 gap-2 w-max">
                     <RecordTypeIcon
                       :record-type="source.record_type"
-                      class="text-brand-wine-500" />
+                      class="text-brand-wine-500"
+                    />
                     {{ source.record_type }}
                   </span>
                 </div>
@@ -66,7 +74,8 @@
                 <!-- Links to data source view and data source url -->
                 <div class="links text-lg">
                   <span
-                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300">
+                    class="hidden lg:inline top-1 text-brand-gold-600 group-hover:text-brand-gold-300"
+                  >
                     <FontAwesomeIcon :icon="faInfoCircle" />
                     More
                   </span>
@@ -75,7 +84,8 @@
                     target="_blank"
                     rel="noreferrer"
                     @keydown.stop.enter=""
-                    @click.stop="">
+                    @click.stop=""
+                  >
                     <FontAwesomeIcon :icon="faLink" />
                     Visit
                   </a>
@@ -94,10 +104,13 @@ import { ALL_LOCATION_TYPES } from '@/util/constants';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faInfoCircle, faLink } from '@fortawesome/free-solid-svg-icons';
 import { RecordTypeIcon, Spinner } from 'pdap-design-system';
-import { useRoute } from 'vue-router';
-import { ref, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch, nextTick } from 'vue';
+import { normalizeLocaleForHash } from '../_util';
+import { TEST_IDS } from '../../../../e2e/fixtures/test-ids';
 
 const route = useRoute();
+const router = useRouter();
 
 // constants
 const HEADING_TITLES = [
@@ -107,23 +120,48 @@ const HEADING_TITLES = [
   'actions'
 ];
 
-const { results, isLoading } = defineProps({
+const props = defineProps({
   results: Object,
   isLoading: Boolean
 });
 
+const results = computed(() => props.results);
+const isLoading = computed(() => props.isLoading);
+
 const containerRef = ref();
+
 // Handle scroll to on route hash change
 function handleScrollTo() {
-  if (route.hash) {
-    const scrollToTop = document.getElementById(
-      'scroll-to-' + route.hash.replace('#', '')
-    )?.offsetTop;
+  if (!route.hash || !results.value || isLoading.value || !containerRef.value)
+    return;
 
-    containerRef.value?.scrollTo({ top: scrollToTop, behavior: 'smooth' });
-  }
+  nextTick(() => {
+    const requestedLocale = route.hash.replace('#', '');
+    const normalizedLocale = normalizeLocaleForHash(requestedLocale, {
+      data: results.value
+    });
+
+    if (normalizedLocale && normalizedLocale !== requestedLocale) {
+      // If the requested locale has no results, redirect to the normalized one
+      router.replace({ ...route, hash: `#${normalizedLocale}` });
+      return;
+    }
+
+    const targetId = 'scroll-to-' + requestedLocale;
+    const element = document.getElementById(targetId);
+
+    if (element) {
+      const scrollToTop = element.offsetTop;
+      containerRef.value.scrollTo({ top: scrollToTop, behavior: 'smooth' });
+    }
+  });
 }
-watchEffect(handleScrollTo);
+
+watch(
+  () => [results.value, isLoading.value, route.hash, containerRef.value],
+  handleScrollTo,
+  { immediate: true }
+);
 
 // TODO: try to handle this with IntersectionObserver instead (i.e. set hash when div intersects, so hash remains up-to-date)
 defineExpose({

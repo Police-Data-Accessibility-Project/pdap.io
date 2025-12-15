@@ -16,18 +16,23 @@
 
     <FormV2
       id="new-data-source"
+      :key="formKey"
       ref="formRef"
       :error="formError"
       class="flex flex-col gap-2"
       name="new-request"
       :schema="SCHEMA"
-      @submit="submit">
+      :data-test="TEST_IDS.data_source_create_form"
+      @submit="submit"
+    >
       <InputText
         :id="'input-' + INPUT_NAMES.url"
         class="md:col-span-2"
         :name="INPUT_NAMES.url"
         placeholder="A link where these records can be found or are referenced."
-        @input="checkDuplicates">
+        :data-test="TEST_IDS.data_source_create_url_input"
+        @input="checkDuplicates"
+      >
         <template #label>
           <h4>
             Source URL
@@ -40,7 +45,8 @@
         :id="'input-' + INPUT_NAMES.readMeUrl"
         class="md:col-span-2"
         :name="INPUT_NAMES.readMeUrl"
-        placeholder="A link to any contextual info, like a data dictionary or explanation of the data.">
+        placeholder="A link to any contextual info, like a data dictionary or explanation of the data."
+      >
         <template #label>
           <h4>README URL</h4>
         </template>
@@ -61,7 +67,8 @@
               const indexToRemove = selectedAgencies.indexOf(agency);
               if (indexToRemove > -1) selectedAgencies.splice(indexToRemove, 1);
             }
-          " />
+          "
+        />
       </TransitionGroup>
 
       <Typeahead
@@ -84,7 +91,8 @@
             }
           }
         "
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
           <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
@@ -104,7 +112,8 @@
                   items = [];
                   typeaheadRef.clearInput();
                 }
-              ">
+              "
+            >
               <strong>No results found.</strong>
               Would you like to suggest
               {{ typeaheadRef.value }}
@@ -124,7 +133,8 @@
           <AgencySelected
             class="md:col-span-2"
             :content="agencyNotAvailable"
-            @click="agencyNotAvailable = ''" />
+            @click="agencyNotAvailable = ''"
+          />
         </TransitionGroup>
       </div>
 
@@ -133,7 +143,8 @@
         class="md:col-start-1 md:col-end-2"
         :name="INPUT_NAMES.name"
         placeholder="For example, “Arrest records for Portsmouth PD”"
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>
             Source name
@@ -147,7 +158,8 @@
         class="md:col-start-2 md:col-end-3"
         :name="INPUT_NAMES.description"
         placeholder="If the source is difficult to understand or categorize, please share more information about how it was processed or can be used."
-        rows="4">
+        rows="4"
+      >
         <template #label>
           <h4>
             Description
@@ -156,15 +168,36 @@
         </template>
       </InputTextArea>
 
-      <InputText
-        :id="'input-' + INPUT_NAMES.contact"
-        class="md:col-start-1 md:col-end-2"
-        :name="INPUT_NAMES.contact"
-        placeholder="Please provide an email address so we can give credit or follow up with questions.">
-        <template #label>
-          <h4>Contact info</h4>
-        </template>
-      </InputText>
+      <RadioGroup class="record-type-group" :name="INPUT_NAMES.type">
+        <h4 class="col-span-2">
+          Record type
+          <sup>*</sup>
+        </h4>
+
+        <div
+          v-for="[categoryTitle, recordTypes] of Object.entries(
+            RECORD_TYPES_BY_CATEGORY
+          )"
+          :key="categoryTitle"
+          v-bind="{
+            [RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY[categoryTitle]]: true
+          }"
+        >
+          <h5 class="text-lg col-span-2">
+            {{ categoryTitle }}
+          </h5>
+
+          <InputRadio
+            v-for="detail of recordTypes"
+            :id="detail"
+            :key="detail"
+            :name="INPUT_NAMES.type"
+            :value="detail"
+            :label="detail"
+            :data-test="`record-type-${toKebabCase(detail)}`"
+          />
+        </div>
+      </RadioGroup>
 
       <p class="mt-4">
         <sup>*</sup>
@@ -174,42 +207,9 @@
       <transition>
         <div
           v-if="advancedPropertiesExpanded"
-          class="max-h-[6000px] overflow-hidden pb-20">
+          class="max-h-[6000px] overflow-hidden pb-20"
+        >
           <div>
-            <RadioGroup class="mt-4" :name="INPUT_NAMES.detail">
-              <h4>Level of detail available at this source</h4>
-              <InputRadio
-                v-for="detail of DETAIL_LEVEL"
-                :id="detail"
-                :key="detail"
-                :name="INPUT_NAMES.detail"
-                :value="detail"
-                :label="detail" />
-            </RadioGroup>
-
-            <RadioGroup class="record-type-group" :name="INPUT_NAMES.type">
-              <h4 class="col-span-2">Record type</h4>
-
-              <div
-                v-for="[categoryTitle, recordTypes] of Object.entries(
-                  RECORD_TYPES_BY_CATEGORY
-                )"
-                :key="categoryTitle"
-                v-bind="{
-                  [RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY[categoryTitle]]: true
-                }">
-                <h5 class="text-lg col-span-2">{{ categoryTitle }}</h5>
-
-                <InputRadio
-                  v-for="detail of recordTypes"
-                  :id="detail"
-                  :key="detail"
-                  :name="INPUT_NAMES.type"
-                  :value="detail"
-                  :label="detail" />
-              </div>
-            </RadioGroup>
-
             <div class="mt-2">
               <h4>Agency supplied</h4>
               <p class="text-sm max-w-full lg:w-3/4">
@@ -224,7 +224,8 @@
                 :name="INPUT_NAMES.agencySupplied"
                 :default-checked="true"
                 label="Agency supplied data?"
-                @change="(e) => (agencySuppliedChecked = e.target.checked)" />
+                @change="(e) => (agencySuppliedChecked = e.target.checked)"
+              />
 
               <InputTextArea
                 v-show="!agencySuppliedChecked"
@@ -232,7 +233,8 @@
                 class="md:col-start-1 md:col-end-2"
                 :name="INPUT_NAMES.supplyingEntity"
                 placeholder="Who made this information available? Please provide a link to their website and contact information."
-                rows="4">
+                rows="4"
+              >
                 <template #label>
                   <h4>Supplying entity</h4>
                 </template>
@@ -253,7 +255,8 @@
                 :name="INPUT_NAMES.agencyOriginated"
                 :default-checked="true"
                 label="Agency originated data?"
-                @change="(e) => (agencyOriginatedChecked = e.target.checked)" />
+                @change="(e) => (agencyOriginatedChecked = e.target.checked)"
+              />
 
               <InputTextArea
                 v-show="!agencyOriginatedChecked"
@@ -261,7 +264,8 @@
                 class="md:col-start-1 md:col-end-2"
                 :name="INPUT_NAMES.originatingEntity"
                 placeholder="Who originally collected these records? Please provide a link to their website."
-                rows="4">
+                rows="4"
+              >
                 <template #label>
                   <h4>Originating entity</h4>
                 </template>
@@ -277,7 +281,8 @@
                 :key="accessType.name"
                 :name="accessType.name"
                 :label="accessType.label"
-                class="md:col-start-1 md:col-end-2" />
+                class="md:col-start-1 md:col-end-2"
+              />
             </div>
 
             <div class="mt-2 grid md:grid-cols-2 lg:grid-cols-3">
@@ -291,7 +296,8 @@
                 :key="format.name"
                 :name="format.name"
                 :label="format.label"
-                class="w-[max-content]" />
+                class="w-[max-content]"
+              />
             </div>
 
             <RadioGroup class="mt-4" :name="INPUT_NAMES.method">
@@ -305,14 +311,17 @@
                 :key="method"
                 :name="INPUT_NAMES.method"
                 :value="method"
-                :label="method" />
+                :label="method"
+                :data-test="`update-method-${toKebabCase(method)}`"
+              />
             </RadioGroup>
 
             <InputDatePicker
               :id="INPUT_NAMES.start_end"
               :name="INPUT_NAMES.start_end"
               position="left"
-              range>
+              range
+            >
               <template #label>
                 <h4>Coverage</h4>
                 <p class="text-sm max-w-full">
@@ -324,7 +333,8 @@
 
             <RadioGroup
               class="mt-2 grid md:grid-cols-2 lg:grid-cols-3"
-              :name="INPUT_NAMES.schedule">
+              :name="INPUT_NAMES.schedule"
+            >
               <h4 class="md:col-span-2 lg:col-span-3">Retention schedule</h4>
               <p class="text-sm max-w-full md:col-span-2 lg:col-span-3">
                 How long are records kept? There may be guidelines regarding how
@@ -337,7 +347,8 @@
                 :key="schedule"
                 :name="INPUT_NAMES.schedule"
                 :value="schedule"
-                :label="schedule" />
+                :label="schedule"
+              />
             </RadioGroup>
 
             <InputSelect
@@ -350,7 +361,8 @@
                 ({ value }) => {
                   isOtherPortalTypeSelected = value === 'Other';
                 }
-              ">
+              "
+            >
               <template #label>
                 <h4>Data portal type</h4>
                 <p class="text-sm max-w-full lg:w-3/4">
@@ -365,7 +377,8 @@
               :id="'input-' + INPUT_NAMES.portalTypeOther"
               class="md:col-start-1 md:col-end-2"
               :name="INPUT_NAMES.portalTypeOther"
-              placeholder="Provide a name for the Data Portal, since 'Other' was selected.">
+              placeholder="Provide a name for the Data Portal, since 'Other' was selected."
+            >
               <template #label>
                 <h4>Data portal type—other</h4>
               </template>
@@ -376,7 +389,9 @@
               class="md:col-start-1 md:col-end-2"
               :name="INPUT_NAMES.accessNotes"
               placeholder="Anything else we should know about how to get this data?"
-              rows="4">
+              rows="4"
+              :data-test="TEST_IDS.data_source_create_access_notes"
+            >
               <template #label>
                 <h4>Access notes</h4>
               </template>
@@ -387,7 +402,9 @@
               class="md:col-start-1 md:col-end-2"
               :name="INPUT_NAMES.notes"
               placeholder="Did you encounter an issue using this form? Were you unable to select an option you needed or give us information we did not ask for? Is there something special about this Data Source?"
-              rows="4">
+              rows="4"
+              :data-test="TEST_IDS.data_source_create_submission_notes"
+            >
               <template #label><h4>Submission notes</h4></template>
             </InputTextArea>
           </div>
@@ -395,27 +412,33 @@
       </transition>
 
       <div
-        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8">
+        class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
+      >
         <Button
           :disabled="createDataSourceMutation.isLoading"
           :is-loading="createDataSourceMutation.isLoading"
           class="min-w-52"
           intent="primary"
-          type="submit">
+          type="submit"
+          :data-test="TEST_IDS.data_source_create_submit"
+        >
           Submit data source
         </Button>
         <Button
           :disabled="createDataSourceMutation.isLoading"
           intent="secondary"
           type="button"
-          @click="clear">
+          @click="clear"
+        >
           Clear
         </Button>
         <Button
           :disabled="requestPending"
           intent="secondary"
           type="button"
-          @click="advancedPropertiesExpanded = !advancedPropertiesExpanded">
+          :data-test="TEST_IDS.data_source_create_advanced"
+          @click="advancedPropertiesExpanded = !advancedPropertiesExpanded"
+        >
           {{ advancedPropertiesExpanded ? 'Hide' : 'Show' }} advanced properties
         </Button>
       </div>
@@ -450,6 +473,14 @@ import { findDuplicateURL } from '@/api/check';
 import { getTypeaheadAgencies } from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { DATA_SOURCE, SEARCH, TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
+// Utility to create kebab-case identifiers from labels like "Arrest Records" -> "arrest-records"
+function toKebabCase(str) {
+  return String(str)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 const INPUT_NAMES = {
   // Base properties
   url: 'source_url',
@@ -457,11 +488,9 @@ const INPUT_NAMES = {
   agencies: 'agencies',
   name: 'name',
   description: 'description',
-  contact: 'submitter_contact_info',
+  type: 'record_type',
 
   // Advanced properties
-  detail: 'detail_level',
-  type: 'record_type_name',
   agencySupplied: 'agency_supplied',
   agencyOriginated: 'agency_originated',
   supplyingEntity: 'supplying_entity',
@@ -531,11 +560,6 @@ const RECORD_TYPE_GRID_POSITIONS_BY_CATEGORY = {
   'Jails & courts': 'short'
 };
 
-const DETAIL_LEVEL = [
-  'Individual record',
-  'Aggregated records',
-  'Summarized totals'
-];
 const ACCESS_TYPE = ['web-page', 'download', 'api'].map(formatAccessType);
 function formatAccessType(accessType) {
   return {
@@ -717,17 +741,18 @@ const SCHEMA = [
     }
   },
   {
-    name: INPUT_NAMES.contact,
+    name: INPUT_NAMES.type,
     validators: {
-      email: {
+      required: {
         value: true,
-        message: 'Please provide a valid email address.'
+        message: 'Please include a record type.'
       }
     }
   }
 ];
 
 const advancedPropertiesExpanded = ref(false);
+const formKey = ref(0);
 const agencySuppliedChecked = ref(true);
 const agencyOriginatedChecked = ref(true);
 const isOtherPortalTypeSelected = ref(false);
@@ -747,10 +772,11 @@ const createDataSourceMutation = useMutation({
     if (formError.value) {
       formError.value = '';
     }
+
     await createDataSource(formValues);
 
     window.scrollTo(0, 0);
-    const message = `${formValues.entry_data[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
+    const message = `${formValues[INPUT_NAMES.name]} has been submitted successfully!\nIt will be available in our data sources database after approval.`;
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
@@ -895,21 +921,26 @@ const checkDuplicates = _debounce(
 );
 
 async function clear() {
-  const newVal = Object.values(INPUT_NAMES)
-    // Exclude typeahead
-    .filter((n) => n !== INPUT_NAMES.agencies)
-    .reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur]: ''
-      }),
-      {}
-    );
+  // Force a full remount of the form to reset all inputs
+  formKey.value += 1;
 
-  formRef.value.setValues(newVal);
+  // Reset local UI flags tied to advanced/conditional inputs
+  agencySuppliedChecked.value = true;
+  agencyOriginatedChecked.value = true;
+  isOtherPortalTypeSelected.value = false;
+
+  // Clear typeahead and related state
   await nextTick();
   items.value = [];
   selectedAgencies.value = [];
+  agencyNotAvailable.value = '';
+  typeaheadRef.value?.clearInput && typeaheadRef.value.clearInput();
+
+  // Dismiss any duplicate URL toast if present
+  if (alreadyExistsToastId.value) {
+    toast.remove(alreadyExistsToastId.value);
+    alreadyExistsToastId.value = undefined;
+  }
 }
 
 async function submit(values) {
@@ -919,8 +950,8 @@ async function submit(values) {
   const agencies = _cloneDeep(selectedAgencies.value);
 
   const requestBody = {
-    entry_data: formatData(values),
-    linked_agency_ids: agencies?.map(({ id }) => id)
+    ...formatData(values),
+    agency_ids: agencies?.map(({ id }) => id)
   };
 
   formRef.value.setValues({ ...values });

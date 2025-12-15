@@ -9,7 +9,8 @@
 <template>
   <main
     class="pdap-flex-container"
-    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }"
+  >
     <h1>Change your password</h1>
 
     <!-- GH auth user - no password to change -->
@@ -28,25 +29,29 @@
       <FormV2
         id="change-password"
         class="flex flex-col gap-2"
-        data-test="change-password-form"
+        :data-test="TEST_IDS.change_password_form"
         name="change-password"
         :error="error?.message ?? passwordMatchError"
         :schema="VALIDATION_SCHEMA"
         @change="onChange"
         @submit="updatePassword"
-        @input="onInput">
+        @input="onInput"
+      >
         <InputPassword
           v-for="input of INPUTS"
           v-bind="{ ...input }"
-          :key="input.name" />
+          :key="input.name"
+        />
 
         <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
         <Button
           class="max-w-full"
+          :data-test="TEST_IDS.change_password_submit"
           :disabled="isLoading"
           :is-loading="isLoading"
-          type="submit">
+          type="submit"
+        >
           Change password
         </Button>
       </FormV2>
@@ -63,6 +68,7 @@ import { ref } from 'vue';
 import { changePassword, getUser } from '@/api/user';
 import { useRouter } from 'vue-router';
 import { PROFILE } from '@/util/queryKeys';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 const router = useRouter();
 
@@ -70,7 +76,7 @@ const router = useRouter();
 const INPUTS = [
   {
     autocomplete: 'password',
-    'data-test': 'password',
+    'data-test': TEST_IDS.current_password_input,
     id: 'current-password',
     name: 'currentPassword',
     label: 'Current password',
@@ -79,7 +85,7 @@ const INPUTS = [
   },
   {
     autocomplete: 'new-password',
-    'data-test': 'password',
+    'data-test': TEST_IDS.new_password_input,
     id: 'password',
     name: 'password',
     label: 'Password',
@@ -88,7 +94,7 @@ const INPUTS = [
   },
   {
     autocomplete: 'new-password',
-    'data-test': 'confirm-password',
+    'data-test': TEST_IDS.confirm_password_input,
     id: 'confirmPassword',
     name: 'confirmPassword',
     label: 'Confirm Password',

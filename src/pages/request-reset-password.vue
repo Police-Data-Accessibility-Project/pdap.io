@@ -1,10 +1,13 @@
 <template>
   <main
     class="pdap-flex-container"
-    :class="{ 'mx-auto max-w-2xl': !isSuccess }">
-    <h1>Request a link to reset your password</h1>
+    :class="{ 'mx-auto max-w-2xl': !isSuccess }"
+  >
+    <h1 :data-test="TEST_IDS.reset_heading">
+      Request a link to reset your password
+    </h1>
     <template v-if="isSuccess">
-      <p data-test="success-subheading">
+      <p :data-test="TEST_IDS.success_subheading">
         We sent you an email with a link to reset your password. Please follow
         the link in the email to proceed
       </p>
@@ -19,15 +22,22 @@
         name="reset-password"
         :error="error"
         :schema="VALIDATION_SCHEMA_REQUEST_PASSWORD"
-        @submit="requestReset">
+        @submit="requestReset"
+      >
         <InputText
           id="email"
           autocomplete="email"
-          data-test="email"
+          :data-test="TEST_IDS.email_input"
           name="email"
           label="Email"
-          placeholder="Your email address" />
-        <Button class="max-w-full" :is-loading="isLoading" type="submit">
+          placeholder="Your email address"
+        />
+        <Button
+          class="max-w-full"
+          :data-test="TEST_IDS.form_submit"
+          :is-loading="isLoading"
+          type="submit"
+        >
           Request password reset
         </Button>
       </FormV2>
@@ -42,6 +52,7 @@ import { ref, onMounted } from 'vue';
 import { requestPasswordReset } from '@/api/auth';
 import { useMutation } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
+import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 // Constants
 const VALIDATION_SCHEMA_REQUEST_PASSWORD = [

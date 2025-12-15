@@ -1,24 +1,26 @@
 <template>
   <AuthWrapper>
     <Header :logo-image-src="lockup" />
-    <ErrorBoundary component="main">
-      <router-view v-slot="{ Component }">
-        <transition name="route-fade" mode="out-in">
-          <div :key="routeKey" class="min-h-[calc(100vh-200px)]">
+    <router-view v-slot="{ Component }">
+      <transition name="route-fade" mode="out-in">
+        <div :key="routeKey" class="min-h-[calc(100vh-200px)]">
+          <ErrorBoundary component="main">
             <component :is="Component ?? 'main'">
               <Spinner
                 class="absolute m-auto top-0 right-0 bottom-0 left-0"
                 :show="!Component"
                 :size="64"
-                text="Loading..." />
+                text="Loading..."
+              />
             </component>
-          </div>
-        </transition>
-      </router-view>
-    </ErrorBoundary>
+          </ErrorBoundary>
+        </div>
+      </transition>
+    </router-view>
     <Footer
       :logo-image-src="acronym"
-      :fundraising-data="{ raised: 0, goal: 0 }" />
+      :fundraising-data="{ raised: 0, goal: 0 }"
+    />
   </AuthWrapper>
 </template>
 

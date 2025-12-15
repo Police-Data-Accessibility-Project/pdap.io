@@ -161,5 +161,5 @@ export function formatDateForSearchResults(date) {
 }
 
 export function formatText(item) {
-  return item.display_name;
+  return item?.display_name ?? '';
 }

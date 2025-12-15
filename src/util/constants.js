@@ -1,5 +1,5 @@
 import { FOOTER_LINK_ICONS } from 'pdap-design-system';
-
+export const COURT_WARRANT_RECORD_TYPES = ['Court Cases', 'Wanted Persons'];
 export const ALL_LOCATION_TYPES = ['locality', 'county', 'state', 'federal'];
 
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';

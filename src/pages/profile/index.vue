@@ -13,43 +13,59 @@
     <ErrorBoundary>
       <div v-if="profileError">
         <p>There was an error fetching your profile.</p>
-        <Button intent="primary" @click="refetchProfile">Try again</Button>
+        <Button
+          intent="primary"
+          :data-test="TEST_IDS.profile_error_retry"
+          @click="refetchProfile"
+        >
+          Try again
+        </Button>
       </div>
 
       <template v-else>
-        <h2>Basic information</h2>
-        <div class="flex flex-col gap-6">
-          <section>
+        <h2 :data-test="TEST_IDS.profile_basic_info_heading">
+          Basic information
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            :class="{
+              'profile-loading': !profileData && profileLoading
+            }"
+          >
             <h3 class="like-h4">Email</h3>
-            <div
-              :class="{
-                'profile-loading h-12': !profileData && profileLoading
-              }">
-              <p>
-                {{ profileData?.email }}
-              </p>
-              <Button @click="signOutWithRedirect">Sign out</Button>
-            </div>
+            <p :data-test="TEST_IDS.profile_email">
+              {{ profileData?.email }}
+            </p>
+            <Button
+              :data-test="TEST_IDS.profile_signout"
+              @click="signOutWithRedirect"
+            >
+              Sign out
+            </Button>
+          </div>
+          <div>
             <h3 class="like-h4">Password</h3>
-            <div class="h-12">
-              <router-link
-                class="pdap-button-secondary"
-                :to="'/change-password'">
-                Reset your password
-              </router-link>
-            </div>
-          </section>
+            <router-link
+              class="pdap-button-secondary"
+              :to="'/change-password'"
+              :data-test="TEST_IDS.profile_reset_password"
+            >
+              Reset your password
+            </router-link>
+          </div>
 
           <!-- GitHub info -->
           <section>
             <h3 class="like-h4">GitHub account</h3>
             <div
               :class="{
-                'profile-loading h-12': !profileData && profileLoading
-              }">
+                'profile-loading': !profileData && profileLoading
+              }"
+            >
               <template
-                v-if="didLinkGithub || profileData?.external_accounts.github">
-                <p>
+                v-if="didLinkGithub || profileData?.external_accounts.github"
+              >
+                <p :data-test="TEST_IDS.profile_github_linked">
                   <FontAwesomeIcon :icon="faGithub" />
                   Your account is linked with GitHub
                 </p>
@@ -61,7 +77,9 @@
                   :is-loading="githubAuthIsLoading"
                   :disabled="githubAuthIsLoading"
                   intent="tertiary"
-                  @click="async () => await beginOAuthLogin('/profile')">
+                  :data-test="TEST_IDS.profile_github_link"
+                  @click="async () => await beginOAuthLogin('/profile')"
+                >
                   <FontAwesomeIcon :icon="faGithub" />
                   Link account with GitHub
                 </Button>
@@ -76,27 +94,31 @@
             <div
               :class="{
                 'profile-loading h-12': !profileData && profileLoading
-              }">
+              }"
+            >
               <Button
                 :class="{ 'mb-5': apiKey }"
                 intent="secondary"
                 :is-loading="apiKeyIsLoading"
                 :disabled="apiKeyIsLoading"
                 type="button"
-                @click="recreateAPIKey">
+                :data-test="TEST_IDS.profile_api_key_regenerate"
+                @click="recreateAPIKey"
+              >
                 Regenerate API Key
               </Button>
             </div>
 
             <transition name="dropdown" appear>
-              <div v-if="apiKey">
+              <div v-if="apiKey" :data-test="TEST_IDS.profile_api_key_display">
                 <ProfileAPIKey
                   :api-key="apiKey"
                   :on-dismiss="
                     () => {
                       resetAPIKeyData();
                     }
-                  " />
+                  "
+                />
               </div>
             </transition>
           </section>
@@ -104,23 +126,126 @@
           <!-- Permissions -->
           <section v-if="profileData?.permissions.length">
             <h3 class="like-h4">Permissions</h3>
-            <ul>
+            <ul :data-test="TEST_IDS.profile_permissions">
               <li
                 v-for="permission of profileData.permissions"
-                :key="permission">
+                :key="permission"
+              >
                 {{ permission }}
               </li>
             </ul>
           </section>
         </div>
 
-        <h2>My stuff</h2>
+        <h2 :data-test="TEST_IDS.profile_my_stuff_heading">My stuff</h2>
 
+        <!-- Followed searches -->
+        <h3 class="like-h4">Followed searches</h3>
+        <div
+          v-if="!profileData && profileLoading"
+          class="profile-loading h-20"
+        />
+        <div
+          v-if="
+            profileData &&
+            (!profileData.followed_searches ||
+              profileData.followed_searches.length === 0)
+          "
+        >
+          <p class="text-lg">
+            Make a search from the homepage and click "follow" to see it here.
+          </p>
+        </div>
+        <ProfileTable
+          v-else
+          :items="followedSearches"
+          :data-test="TEST_IDS.profile_followed_searches_table"
+        >
+          <template #left="{ item }">
+            <p class="flex items-center justify-start">
+              {{ item.display_name ?? getFullLocationText(item) }}
+            </p>
+          </template>
+          <template #center><span /></template>
+          <template #right="{ item }">
+            <Button
+              class="h-full w-full max-w-full text-right"
+              intent="tertiary"
+              type="button"
+              :disabled="unFollowIsLoading"
+              :is-loading="unFollowIsLoading"
+              :data-test="TEST_IDS.profile_unfollow_button"
+              @keydown.stop.prevent.enter="() => unFollow(item)"
+              @click.stop.prevent="() => unFollow(item)"
+            >
+              <FontAwesomeIcon :icon="faCircleXmark" />
+              Unfollow
+            </Button>
+          </template>
+        </ProfileTable>
+
+        <!-- Recent searches TODO @joshuagraber -- De-dupe before render!! -->
+        <h3 class="like-h4">Recent searches</h3>
+        <div v-if="!profileData && profileLoading" class="h-20" />
+        <div
+          v-if="
+            profileData &&
+            (!profileData.recent_searches ||
+              profileData.recent_searches.length === 0)
+          "
+        >
+          <p class="text-lg">Make a search from the homepage to see it here.</p>
+        </div>
+        <ProfileTable v-else :items="recentSearches">
+          <template #left="{ item }">
+            <div v-if="item.record_categories.length" class="max-1/3">
+              <p
+                v-for="category of item.record_categories"
+                :key="category"
+                class="pill w-max text-xxs"
+              >
+                <RecordTypeIcon :record-type="category" />
+                {{ category }}
+              </p>
+            </div>
+            <div v-if="item.record_types.length" class="max-1/3">
+              <p
+                v-for="type of item.record_types"
+                :key="type"
+                class="pill w-max text-xxs"
+              >
+                <RecordTypeIcon :record-type="type" />
+                {{ type }}
+              </p>
+            </div>
+          </template>
+          <template #center="{ item }">
+            <p class="flex items-center justify-start">
+              {{ item.display_name ?? getFullLocationText(item) }}
+            </p>
+          </template>
+          <template #right>
+            <span />
+          </template>
+        </ProfileTable>
         <!-- Requests -->
         <h3 class="like-h4">My requests</h3>
         <div
           v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
+          class="profile-loading h-20"
+        />
+        <div
+          v-if="
+            profileData &&
+            (!profileData.data_requests ||
+              profileData.data_requests.length === 0)
+          "
+        >
+          <p class="text-lg">
+            To open a Data Request,
+            <RouterLink to="/data-request/create">start here.</RouterLink>
+          </p>
+        </div>
         <ProfileTable v-else :items="requests">
           <template #left="{ item }">
             <p>
@@ -130,7 +255,8 @@
           <template #center="{ item }">
             <p
               v-for="(location, i) of item.locations"
-              :key="'profile-request' + getFullLocationText(location)">
+              :key="'profile-request' + getFullLocationText(location)"
+            >
               {{
                 getFullLocationText(location) +
                 (i === item.locations.length - 1 ? '' : ', ')
@@ -144,62 +270,11 @@
               target="_blank"
               rel="noopener noreferrer"
               @keydown.stop.enter=""
-              @click.stop="">
+              @click.stop=""
+            >
               <FontAwesomeIcon :icon="faLink" />
               GitHub
             </a>
-          </template>
-        </ProfileTable>
-
-        <!-- Followed searches -->
-        <h3 class="like-h4">Followed searches</h3>
-        <div
-          v-if="!profileData && profileLoading"
-          class="profile-loading h-20" />
-        <ProfileTable v-else :items="followedSearches">
-          <template #left="{ item }">
-            <p class="flex items-center justify-start">
-              {{ getFullLocationText(item) }}
-            </p>
-          </template>
-          <template #center><span /></template>
-          <template #right="{ item }">
-            <Button
-              class="h-full w-full max-w-full text-right"
-              intent="tertiary"
-              type="button"
-              :disabled="unFollowIsLoading"
-              :is-loading="unFollowIsLoading"
-              @keydown.stop.prevent.enter="() => unFollow(item)"
-              @click.stop.prevent="() => unFollow(item)">
-              <FontAwesomeIcon :icon="faCircleXmark" />
-              Unfollow
-            </Button>
-          </template>
-        </ProfileTable>
-
-        <!-- Recent searches -->
-        <h3 class="like-h4">Recent searches</h3>
-        <div v-if="!profileData && profileLoading" class="h-20" />
-        <ProfileTable v-else :items="recentSearches">
-          <template #left="{ item }">
-            <div class="max-1/3">
-              <p
-                v-for="category of item.record_categories"
-                :key="category"
-                class="pill w-max text-xxs">
-                <RecordTypeIcon :record-type="category" />
-                {{ category }}
-              </p>
-            </div>
-          </template>
-          <template #center="{ item }">
-            <p class="flex items-center justify-start">
-              {{ getFullLocationText(item) }}
-            </p>
-          </template>
-          <template #right>
-            <span />
           </template>
         </ProfileTable>
       </template>
@@ -227,6 +302,8 @@ import { linkAccountWithGithub, signOut, beginOAuthLogin } from '@/api/auth';
 import { getUser } from '@/api/user';
 import { computed, onMounted } from 'vue';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
+import { makeRawParams, makeSearchPath } from './_util';
 
 const route = useRoute();
 const router = useRouter();
@@ -234,7 +311,6 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const queryClient = useQueryClient();
-// const queryReactive = computed(() => route.query);
 
 // Query
 const {
@@ -246,7 +322,7 @@ const {
   queryKey: [PROFILE],
   queryFn: async () => {
     const response = await getUser();
-    return response.data.data;
+    return response.data;
   },
   staleTime: 5 * 60 * 1000, // 5 minutes
   onError: (err) => {
@@ -322,40 +398,24 @@ const {
 });
 
 const requests = computed(() =>
-  profileData.value?.data_requests.data.map((req) => ({
+  profileData.value?.data_requests.map((req) => ({
     ...req,
     to: `/data-request/${req.id}`
   }))
 );
 const followedSearches = computed(() =>
-  profileData.value?.followed_searches.data.map((search) => {
-    const params = new URLSearchParams({ location_id: search.location_id });
-
+  profileData.value?.followed_searches.map((search) => {
     return {
       ...search,
-      to: `/search/results?${params.toString()}`
+      to: makeSearchPath(makeRawParams(search))
     };
   })
 );
 const recentSearches = computed(() =>
-  profileData.value?.recent_searches.data.map((search) => {
-    const allAt = search.record_categories.indexOf('All');
-    const catWithOutAll =
-      allAt === -1
-        ? search.record_categories
-        : search.record_categories.toSpliced(allAt);
-    const params = new URLSearchParams({
-      location_id: search.location_id,
-      ...(catWithOutAll.length
-        ? {
-            record_categories: [...catWithOutAll]
-          }
-        : {})
-    });
-
+  profileData.value?.recent_searches.map((search) => {
     return {
       ...search,
-      to: `/search/results?${params.toString()}`
+      to: makeSearchPath(makeRawParams(search))
     };
   })
 );

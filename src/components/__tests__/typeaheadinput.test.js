@@ -2,6 +2,7 @@ import TypeaheadInput from '@/components/TypeaheadInput.vue';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import { nextTick } from 'vue';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const MOCK_SEARCH_VALUE = 'lev';
 const MOCK_ITEMS = ['Levantine', 'Leviathan', 'Levi', 'Levant'];
@@ -49,11 +50,12 @@ const mountComponent = (props = {}) => {
 };
 
 // Function to get the input element
-const getInput = (wrapper) => wrapper.find('[data-test="typeahead-input"]');
+const getInput = (wrapper) =>
+  wrapper.find(`input[data-test="${TEST_IDS.search_typeahead}"]`);
 
 // Function to get the list items
 const getListItems = (wrapper) =>
-  wrapper.findAll('[data-test="typeahead-list-item"]');
+  wrapper.findAll(`[data-test="${TEST_IDS.typeahead_list_item}"]`);
 
 // Function to set input value and wait for update
 const setInputValue = async (input, value) => {

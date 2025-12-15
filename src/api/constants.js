@@ -41,6 +41,7 @@ export const ENDPOINTS = {
   },
   SEARCH: {
     FOLLOW: 'follow',
+    FOLLOW_NATIONAL: 'follow/national',
     RESULTS: 'search-location-and-record-type',
     FEDERAL: 'federal'
   },
@@ -51,5 +52,8 @@ export const ENDPOINTS = {
   },
   METRICS: {
     METRICS: 'metrics'
+  },
+  MAP: {
+    DATA: 'data'
   }
 };

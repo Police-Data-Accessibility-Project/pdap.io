@@ -1,12 +1,13 @@
 <template>
   <main class="pdap-flex-container mx-auto max-w-2xl">
-    <template v-if="!auth.userId && canAccessBeta">
+    <template v-if="!auth.userId">
       <h1>Sign Up</h1>
 
       <!-- TODO: when GH auth is complete, encapsulate duplicate UI from this and `/sign-up` -->
       <div
         v-if="githubAuthIsLoading"
-        class="flex items-center justify-center h-full w-full">
+        class="flex items-center justify-center h-full w-full"
+      >
         <Spinner :show="githubAuthIsLoading" text="Logging in" />
       </div>
 
@@ -29,7 +30,8 @@
             class="border-2 border-neutral-950 border-solid [&>svg]:ml-0"
             intent="tertiary"
             :disabled="githubAuthData?.userExists"
-            @click="async () => await beginOAuthLogin('/sign-up')">
+            @click="async () => await beginOAuthLogin('/sign-up')"
+          >
             <FontAwesomeIcon :icon="faGithub" />
             Sign up with GitHub
           </Button>
@@ -39,26 +41,29 @@
         <FormV2
           id="login"
           class="flex flex-col gap-2"
-          data-test="login-form"
+          :data-test="TEST_IDS.sign_up_form"
           name="login"
           :error="error"
           :schema="VALIDATION_SCHEMA"
           @change="onChange"
           @submit="completePasswordAuth"
-          @input="onInput">
+          @input="onInput"
+        >
           <InputText
             id="email"
             autocomplete="email"
-            data-test="email"
+            :data-test="TEST_IDS.email_input"
             name="email"
             label="Email"
             type="text"
-            placeholder="Your email address" />
+            placeholder="Your email address"
+          />
 
           <InputPassword
             v-for="input of PASSWORD_INPUTS"
             v-bind="{ ...input }"
-            :key="input.name" />
+            :key="input.name"
+          />
 
           <PasswordValidationChecker ref="passwordRef" class="mt-2" />
 
@@ -67,47 +72,32 @@
             :disabled="passwordAuthIsLoading"
             :is-loading="passwordAuthIsLoading"
             type="submit"
-            data-test="submit-button">
+            :data-test="TEST_IDS.sign_up_submit"
+          >
             Create Account
           </Button>
         </FormV2>
         <div
-          class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full">
+          class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full"
+        >
           <p class="w-full max-w-[unset]">Already have an account?</p>
 
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
-            data-test="toggle-button"
-            to="/sign-in">
+            :data-test="TEST_IDS.sign_in_link"
+            to="/sign-in"
+          >
             Sign in
           </RouterLink>
           <RouterLink
             class="pdap-button-secondary flex-1 max-w-full"
             data-test="reset-link"
-            to="/request-reset-password">
+            to="/request-reset-password"
+          >
             Reset Password
           </RouterLink>
         </div>
       </template>
-    </template>
-    <template v-else-if="!auth.userId && !canAccessBeta">
-      <h1>We're in a controlled beta.</h1>
-      <p>
-        ...but we'd love to have you! If you'd like to create an account, email
-        <a href="mailto:contact@pdap.io">contact@pdap.io</a>
-        .
-      </p>
-      <div
-        class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 sm:flex-wrap w-full">
-        <p class="w-full max-w-[unset]">Already have an account?</p>
-
-        <RouterLink
-          class="pdap-button-primary flex-1"
-          data-test="toggle-button"
-          to="/sign-in">
-          Sign in
-        </RouterLink>
-      </div>
     </template>
     <RouterView v-else />
   </main>
@@ -125,27 +115,21 @@ import {
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, RouterView, useRouter } from 'vue-router';
 import { useMutation } from '@tanstack/vue-query';
 import { useAuthStore } from '@/stores/auth';
 import { signInWithGithub, signUpWithEmail, beginOAuthLogin } from '@/api/auth';
+import { TEST_IDS } from '../../../e2e/fixtures/test-ids';
 
 const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 // Constants
-
-// temporary beta access url param checker
-const canAccessBeta = ref(false);
-onMounted(() => {
-  const route = useRoute();
-  canAccessBeta.value = route.query.beta === 'true';
-});
 const PASSWORD_INPUTS = [
   {
     autocomplete: 'new-password',
-    'data-test': 'password',
+    'data-test': TEST_IDS.password_input,
     id: 'password',
     name: 'password',
     label: 'Password',
@@ -153,7 +137,7 @@ const PASSWORD_INPUTS = [
   },
   {
     autocomplete: 'new-password',
-    'data-test': 'confirm-password',
+    'data-test': TEST_IDS.confirm_password_input,
     id: 'confirmPassword',
     name: 'confirmPassword',
     label: 'Confirm Password',
