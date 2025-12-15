@@ -12,8 +12,11 @@ const HEADERS_BASE = {
 };
 
 export async function getAnonymousAnnotationURL(): Promise<NextAnonymousAnnotationType> {
-  return await axios.get(`${ANNOTATE_BASE}/anonymous`)
+  console.log(`${ANNOTATE_BASE}/anonymous`)
+  const result = await axios.get(`${ANNOTATE_BASE}/anonymous`)
     .then((res) => res.data);
+  console.log(result);
+  return result
 }
 
 export async function postAnonymousAnnotation(

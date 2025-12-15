@@ -18,7 +18,7 @@
           <p>Please refresh the page and try again.</p>
         </template>
 
-        <template v-else>
+        <template v-if="localAnnotation.next_annotation">
           <hgroup>
             <h1>{{ localAnnotation.next_annotation?.url_info.url }}</h1>
           </hgroup>
@@ -101,6 +101,9 @@
               </div>
             </keep-alive>
           </div>
+        </template>
+        <template v-else>
+          <div>No annotations found.</div>
         </template>
       </div>
     </transition>
