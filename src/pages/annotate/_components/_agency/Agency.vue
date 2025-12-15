@@ -29,9 +29,9 @@ import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpe
 
 import { computed, type PropType, ref, watch } from 'vue';
 import {
-  AgencyLocationSelectionType,
-  AgencyLocationSuggestionType,
-  RadioOptionType
+  AgencyLocationSelection,
+  AgencyLocationSuggestion,
+  RadioOption
 } from '@/pages/annotate/_components/_shared/types';
 
 //====================
@@ -39,12 +39,12 @@ import {
 //====================
 const props = defineProps({
   suggestions: {
-    type: Array as PropType<AgencyLocationSuggestionType[] | null>,
+    type: Array as PropType<AgencyLocationSuggestion[] | null>,
     default: null
   }
 });
 
-const agencyModel = defineModel<AgencyLocationSelectionType | null>({ default: null });
+const agencyModel = defineModel<AgencyLocationSelection | null>({ default: null });
 const resetKey = defineModel<number>('resetKey', { default: 0 });
 
 const emit = defineEmits<{
@@ -54,15 +54,15 @@ const emit = defineEmits<{
 //====================
 //     Variables
 //====================
-const selectedRadioAgency = ref<RadioOptionType | null>(null);
+const selectedRadioAgency = ref<RadioOption | null>(null);
 
 //====================
 // Computed Variables
 //====================
-const radioOptions = computed<RadioOptionType[]>(() => {
+const radioOptions = computed<RadioOption[]>(() => {
   const raw = props.suggestions ?? [];
 
-  return raw.map((s): RadioOptionType => ({
+  return raw.map((s): RadioOption => ({
     value: s.id,
     display_name: s.display_name,
     label: s.display_name,
@@ -84,7 +84,7 @@ watch(resetKey, () => {
 //===================
 //     Handlers
 //===================
-function handleRadioFormSelect(option: RadioOptionType) {
+function handleRadioFormSelect(option: RadioOption) {
 
   agencyModel.value = {
     id: Number(option.value), // option.value is typed as String | Number
@@ -93,7 +93,7 @@ function handleRadioFormSelect(option: RadioOptionType) {
   emit('select', null);
 }
 
-function handleAgencySelect(ag: AgencyLocationSelectionType | null) {
+function handleAgencySelect(ag: AgencyLocationSelection | null) {
   if (ag == null) {
     return;
   }

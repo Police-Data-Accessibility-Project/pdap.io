@@ -49,9 +49,9 @@
  */
 import { PropType } from 'vue';
 import {
-  AgencyLocationSelectionType, AnnotationSubmissionType,
-  NameSelectionType, NextAnonymousAnnotationResponseType, NextAnonymousAnnotationType,
-  RecordType, URLTypeSelectionType,
+  AgencyLocationSelection, AnnotationSubmission,
+  NameSelection, NextAnonymousAnnotationResponse, NextAnonymousAnnotationType,
+  RecordType, URLTypeSelection,
 } from '@/pages/annotate/_components/_shared/types';
 import { postAnonymousAnnotation } from '@/api/annotate';
 import { Spinner } from 'pdap-design-system';
@@ -62,15 +62,15 @@ import { useMutation } from '@tanstack/vue-query';
 //====================
 const props = defineProps({
   urlType: {
-    type: Object as PropType<URLTypeSelectionType>,
+    type: Object as PropType<URLTypeSelection>,
     required: true
   },
   location: {
-    type: Object as PropType<AgencyLocationSelectionType>,
+    type: Object as PropType<AgencyLocationSelection>,
     default: null
   },
   agency: {
-    type: Object as PropType<AgencyLocationSelectionType>,
+    type: Object as PropType<AgencyLocationSelection>,
     default: null
   },
   recordType: {
@@ -78,12 +78,12 @@ const props = defineProps({
     default: null
   },
   name: {
-    type: Object as PropType<NameSelectionType>,
+    type: Object as PropType<NameSelection>,
     default: null
   },
 });
 
-const annotationModel = defineModel<NextAnonymousAnnotationResponseType>({})
+const annotationModel = defineModel<NextAnonymousAnnotationResponse>({})
 
 const emit = defineEmits<{
   (e: 'submit'): void;
@@ -97,7 +97,7 @@ const {
   isPending: submitPending,
   error: submitError
 } = useMutation({
-  mutationFn: async (postData: AnnotationSubmissionType) => {
+  mutationFn: async (postData: AnnotationSubmission) => {
 
     const {
       next_annotation: {
@@ -122,7 +122,7 @@ const {
 //=================
 async function handleSubmit() {
   // Compose post annotation
-  const postData: AnnotationSubmissionType = {
+  const postData: AnnotationSubmission = {
     suggested_status: props.urlType.value,
     record_type: props.recordType,
     agency_info: {

@@ -36,9 +36,9 @@
  */
 import { computed, PropType } from 'vue';
 import {
-  urlTypeType,
+  UrlType,
   urlTypes,
-  URLTypeSuggestion, URLTypeSelectionType, AnnoLabels
+  URLTypeSuggestion, URLTypeSelection, AnnoLabels
 } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
@@ -47,11 +47,11 @@ import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.
 //====================
 const props = defineProps({
   options: {
-    type: Array as PropType<urlTypeType[]>,
+    type: Array as PropType<UrlType[]>,
     required: true
   },
   modelValue: {
-    type: Object as PropType<URLTypeSelectionType>,
+    type: Object as PropType<URLTypeSelection>,
     default: null
   },
   suggestions: {
@@ -61,7 +61,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: urlTypeType): void;
+  (e: 'update:modelValue', value: UrlType): void;
   (e: 'select', value: null): void
 }>()
 
@@ -69,7 +69,7 @@ const emit = defineEmits<{
 //       Types
 //====================
 type URLTypeOption = {
-  value: urlTypeType;
+  value: UrlType;
   annoLabels?: AnnoLabels | null;
 }
 //====================
@@ -87,7 +87,7 @@ const urlTypeMapping = {
 //====================
 // Computed Variables
 //====================
-const suggestionMap = computed<Record<urlTypeType, number>>(() => {
+const suggestionMap = computed<Record<UrlType, number>>(() => {
   return Object.fromEntries(
     props.suggestions.map((s) => [s.url_type, s.endorsement_count]) // or transform however you want
   );
@@ -114,7 +114,7 @@ function handleSelectOption(option: string) {
 //====================
 //     Helpers
 //====================
-function getAnnotationSuggestionValues(ut: urlTypeType): AnnoLabels {
+function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
   const suggestionKey: string = urlTypeMapping[ut];
   if (!(suggestionKey in suggestionMap.value)) {
     return {};

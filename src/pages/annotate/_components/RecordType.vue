@@ -50,7 +50,7 @@
 import { computed, PropType, ref, watch } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { AnnoLabels, RadioOptionType, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels, RadioOption, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 
 //====================
@@ -78,7 +78,7 @@ const selectedRadioRecordType = ref(null);
 //====================
 // Computed Variables
 //====================
-const radioOptions = computed((): RadioOptionType[] => {
+const radioOptions = computed((): RadioOption[] => {
   return props.suggestions.map((s) => ({
     value: s.record_type,
     display_name: s.record_type,
@@ -103,7 +103,7 @@ function handleSelectChange(selected) {
   emit('select', null);
 }
 
-function handleRadioFormSelect(option: RadioOptionType) {
+function handleRadioFormSelect(option: RadioOption) {
   selectedRecordTypeModel.value = option.value;
   emit('select', null);
 }

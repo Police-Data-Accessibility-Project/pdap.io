@@ -138,17 +138,17 @@ import {
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
-  AgencyLocationSelectionType, NameSelectionType, NextAnonymousAnnotationResponseType,
+  AgencyLocationSelection, NameSelection, NextAnonymousAnnotationResponse,
   NextAnonymousAnnotationType, RecordType,
-  urlTypes, URLTypeSelectionType,
-  urlTypeType
+  urlTypes, URLTypeSelection,
+  UrlType
 } from '@/pages/annotate/_components/_shared/types';
 
 //====================
 //     Types
 //====================
 // URL Type
-const urlTypeOptions: Array<urlTypeType> = Object.values(urlTypes);
+const urlTypeOptions: Array<UrlType> = Object.values(urlTypes);
 
 //====================
 //     Variables
@@ -160,13 +160,13 @@ const currentPathIndex = ref<number>(0);
 const imageOk = ref<boolean>(true);
 
 // Variables tracking selections of annotation components.
-const selectedURLType = ref<URLTypeSelectionType>(null);
-const selectedLocation = ref<AgencyLocationSelectionType>(null);
-const selectedAgency = ref<AgencyLocationSelectionType>(null);
+const selectedURLType = ref<URLTypeSelection>(null);
+const selectedLocation = ref<AgencyLocationSelection>(null);
+const selectedAgency = ref<AgencyLocationSelection>(null);
 const selectedRecordType = ref<RecordType>(null);
-const selectedName = ref<NameSelectionType>(null);
+const selectedName = ref<NameSelection>(null);
 
-const localAnnotation = ref<NextAnonymousAnnotationResponseType | null>(null);
+const localAnnotation = ref<NextAnonymousAnnotationResponse | null>(null);
 
 const isThrottled = ref<boolean>(false);
 const globalResetKey = ref<number>(0);

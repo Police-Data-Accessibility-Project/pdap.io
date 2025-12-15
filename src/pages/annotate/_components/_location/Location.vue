@@ -27,11 +27,11 @@ import SearchForm from '@/pages/annotate/_components/_location/SearchLocationFor
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { computed, PropType, ref, watch } from 'vue';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
-import { LocationSuggestionType } from '@/pages/annotate/_components/_location/types';
+import { LocationSuggestion } from '@/pages/annotate/_components/_location/types';
 import {
-  AgencyLocationSelectionType,
-  AgencyLocationSuggestionType,
-  RadioOptionType
+  AgencyLocationSelection,
+  AgencyLocationSuggestion,
+  RadioOption
 } from '@/pages/annotate/_components/_shared/types';
 
 //====================
@@ -39,12 +39,12 @@ import {
 //====================
 const props = defineProps({
   suggestions: {
-    type: Array as PropType<AgencyLocationSuggestionType[] | null> ,
+    type: Array as PropType<AgencyLocationSuggestion[] | null> ,
     default: null
   }
 });
 
-const locationModel = defineModel<AgencyLocationSelectionType>({ default: null });
+const locationModel = defineModel<AgencyLocationSelection>({ default: null });
 const resetKey = defineModel<number>('resetKey');
 
 const emit = defineEmits<{
@@ -54,12 +54,12 @@ const emit = defineEmits<{
 //====================
 //     Variables
 //====================
-const selectedRadioLocation = ref<RadioOptionType | null>(null);
+const selectedRadioLocation = ref<RadioOption | null>(null);
 
 //====================
 // Computed Variables
 //====================
-const radioOptions = computed((): RadioOptionType[] => {
+const radioOptions = computed((): RadioOption[] => {
   return props.suggestions.map((s) => ({
     value: s.id,
     display_name: s.display_name,
@@ -82,7 +82,7 @@ watch(resetKey, () => {
 //===================
 //     Handlers
 //===================
-function handleRadioFormSelect(option: RadioOptionType) {
+function handleRadioFormSelect(option: RadioOption) {
   locationModel.value = {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
@@ -90,7 +90,7 @@ function handleRadioFormSelect(option: RadioOptionType) {
   emit('select', null);
 }
 
-function handleSearchLocationSelect(loc: LocationSuggestionType) {
+function handleSearchLocationSelect(loc: LocationSuggestion) {
   if (loc === undefined) {
     return;
   }

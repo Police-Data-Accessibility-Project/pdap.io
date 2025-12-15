@@ -28,28 +28,28 @@
  *  users or robo-annotations annotated them.
  */
 import { computed } from 'vue';
-import { RadioOptionType } from '@/pages/annotate/_components/_shared/types';
+import { RadioOption } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //====================
 //Props, Models, Emits
 //====================
 export type Props = {
-  options: RadioOptionType[];
+  options: RadioOption[];
   header?: string | null;
-  modelValue?: RadioOptionType | null;
+  modelValue?: RadioOption | null;
 };
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  'update:modelValue': [RadioOptionType | null];
+  'update:modelValue': [RadioOption | null];
 }>();
 
 //====================
 // Computed Variables
 //====================
-const selectedType = computed<RadioOptionType | null>({
+const selectedType = computed<RadioOption | null>({
   get: () => props.modelValue ?? null,
   set: (option) => emit('update:modelValue', option)
 });
@@ -57,14 +57,14 @@ const selectedType = computed<RadioOptionType | null>({
 //===================
 //     Handlers
 //===================
-function handleSelect(option: RadioOptionType) {
+function handleSelect(option: RadioOption) {
   emit('update:modelValue', option);
 }
 
 //====================
 //     Helpers
 //====================
-function labelClasses(option: RadioOptionType) {
+function labelClasses(option: RadioOption) {
   return {
     'bg-orange-600 text-white border-orange-700':
       selectedType.value?.value === option.value,

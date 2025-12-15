@@ -18,19 +18,19 @@
  */
 import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadioGroup.vue';
 import { computed, type PropType } from 'vue';
-import { AnnoLabels, NameSelectionType, NameSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels, NameSelection, NameSuggestion } from '@/pages/annotate/_components/_shared/types';
 //====================
 //Props, Models, Emits
 //====================
 const props = defineProps({
   suggestions: {
-    type: Array as PropType<NameSuggestionType[] | null>,
+    type: Array as PropType<NameSuggestion[] | null>,
     default: null
   }
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: NameSelectionType): void;
+  (e: 'update:modelValue', value: NameSelection): void;
   (e: 'select', value: null): void;
 }>()
 
@@ -57,14 +57,14 @@ const options = computed((): editableRadioOption[] => {
 //================
 //    Handlers
 //================
-function handleRadioGroupUpdate(rg: NameSelectionType) {
+function handleRadioGroupUpdate(rg: NameSelection) {
   emit('update:modelValue', rg);
 }
 
 //================
 //    Helpers
 //================
-function getNameEndorsementLabel(suggestion: NameSuggestionType): AnnoLabels {
+function getNameEndorsementLabel(suggestion: NameSuggestion): AnnoLabels {
   return {
     user: suggestion.user_count ? suggestion.user_count.toString(): null,
     robo: suggestion.robo_count ? suggestion.robo_count.toString(): null

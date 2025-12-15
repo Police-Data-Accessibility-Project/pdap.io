@@ -3,7 +3,7 @@ import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/c
 //======================
 // Annotation GET Types
 //======================
-export type NextAnonymousAnnotationResponseType = {
+export type NextAnonymousAnnotationResponse = {
   next_annotation: NextAnonymousAnnotationType;
   session_id: string;
 }
@@ -20,11 +20,11 @@ export type NextAnonymousAnnotationType = {
 }
 
 export type URLTypeSuggestion = {
-  url_type: urlTypeType;
+  url_type: UrlType;
   endorsement_count: number;
 }
 
-export type AgencyLocationSuggestionType = {
+export type AgencyLocationSuggestion = {
   id: number;
   display_name: string;
   user_count: number;
@@ -32,7 +32,7 @@ export type AgencyLocationSuggestionType = {
 }
 
 export type AgencyLocationSuggestionsType = {
-  suggestions: AgencyLocationSuggestionType[];
+  suggestions: AgencyLocationSuggestion[];
 }
 
 export type BatchInfoType = {
@@ -56,7 +56,7 @@ export type RecordTypeSuggestionsType = {
   suggestions: RecordTypeSuggestionType[];
 }
 
-export type NameSuggestionType = {
+export type NameSuggestion = {
   id: number;
   display_name: string;
   user_count: number;
@@ -64,14 +64,14 @@ export type NameSuggestionType = {
 }
 
 export type NameSuggestionsType = {
-  suggestions: NameSuggestionType[];
+  suggestions: NameSuggestion[];
 }
 
 //======================
 // Miscellaneous Types
 //======================
 
-export type RadioOptionType = {
+export type RadioOption = {
   value: string | number;
   label: string;
   display_name?: string | null;
@@ -85,7 +85,7 @@ export const urlTypes = {
   BROKEN: 'Broken / bad data',
   NOT_SURE: 'Not Sure'
 };
-export type urlTypeType = 'data source' | 'meta url' | 'not relevant' | 'individual record' | 'broken page'
+export type UrlType = 'data source' | 'meta url' | 'not relevant' | 'individual record' | 'broken page'
 
 // Category names (keys of the object)
 export type RecordCategory = keyof typeof RECORD_TYPES_BY_CATEGORY;
@@ -104,17 +104,17 @@ export type AnnoLabels = {
 // Variable Types
 //======================
 
-export type URLTypeSelectionType = {
-  value: urlTypeType | null;
+export type URLTypeSelection = {
+  value: UrlType | null;
   display_name: string | null;
 }
 
-export type AgencyLocationSelectionType = {
+export type AgencyLocationSelection = {
   id: number;
   display_name: string;
 }
 
-export type NameSelectionType = {
+export type NameSelection = {
   nameID: number | null;
   name: string;
   new: boolean;
@@ -139,8 +139,8 @@ export type NameInfoSubmissionType = {
   existing_name_id: number | null;
 }
 
-export type AnnotationSubmissionType = {
-  suggested_status: urlTypeType;
+export type AnnotationSubmission = {
+  suggested_status: UrlType;
   record_type: RecordType | null;
   agency_info: AgencySubmissionType;
   location_info: LocationSubmissionType;

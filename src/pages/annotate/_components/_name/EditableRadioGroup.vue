@@ -41,7 +41,7 @@
  *  (non-edited) name.
  */
 import { PropType, reactive, watch } from 'vue';
-import { AnnoLabels, NameSelectionType } from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels, NameSelection } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //======================
@@ -64,7 +64,7 @@ type nameEditState = {
 //====================
 const props = defineProps({
   modelValue: {
-    type: Object as PropType<NameSelectionType>,
+    type: Object as PropType<NameSelection>,
     default: null
   },
   options: {
@@ -74,7 +74,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: NameSelectionType): void;
+  (e: 'update:modelValue', value: NameSelection): void;
 }>()
 
 //====================
@@ -109,7 +109,7 @@ function resetOption(option: editableRadioOption) {
   setDirty(option.id, false);
 }
 
-function choose(option: NameSelectionType) {
+function choose(option: NameSelection) {
   const isNew: boolean = isDirty(option.id);
   emit('update:modelValue', {
     nameID: option.id,
