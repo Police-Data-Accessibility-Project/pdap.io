@@ -41,6 +41,8 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "topojson-client": "^3.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.49.0",
     "vue": "^3.4.19",
     "vue-router": "^4.4.3",
     "vue3-toastify": "^0.2.5"
