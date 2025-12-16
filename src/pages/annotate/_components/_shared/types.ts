@@ -68,6 +68,21 @@ export type NameSuggestions = {
   suggestions: NameSuggestion[];
 }
 
+//========================
+// Contribution GET Types
+//========================
+
+export type UserContributionGetResponse = {
+  count_validated: number;
+  agreement: UserContributionAgreement;
+}
+
+export type UserContributionAgreement = {
+  record_type: number;
+  agency: number;
+  url_type: number;
+}
+
 //======================
 // Miscellaneous Types
 //======================
