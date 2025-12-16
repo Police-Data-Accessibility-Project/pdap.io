@@ -1,5 +1,5 @@
 <template>
-  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative">
+  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
     <transition mode="out-in" :name="navIs">
       <div
         v-if="annotationPending"
