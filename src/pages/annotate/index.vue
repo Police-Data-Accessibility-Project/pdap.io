@@ -1,134 +1,134 @@
 <template>
   <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
-        <transition mode="out-in">
-        <div
-          v-if="annotationPending"
-          class="flex items-center justify-center h-[80vh] w-full flex-col relative">
-          <Spinner
-            :show="annotationPending"
-            :size="64"
-            text="Fetching annotation..." />
+    <transition mode="out-in">
+    <div
+      v-if="annotationPending"
+      class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+      <Spinner
+        :show="annotationPending"
+        :size="64"
+        text="Fetching annotation..." />
+    </div>
+
+    <div
+      v-else
+      class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full ">
+
+      <template v-if="!annotationPending && error">
+        <h1>An error occurred loading the annotation</h1>
+        <p>Please refresh the page and try again.</p>
+      </template>
+
+      <template v-if="localAnnotation?.next_annotation">
+
+
+        <Header
+          :refresh-key="globalResetKey"
+          :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+          :page-title="localAnnotation.next_annotation.html_info.title"
+        />
+        <AnonWarning />
+        <img
+          v-if="imageOk"
+          alt="Screenshot of URL Page"
+          :key="localAnnotation.next_annotation?.url_info.url_id"
+          :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
+          @error="imageOk = false" />
+        <div v-else>Image Not Found</div>
+        <div>URL:
+          <a
+            :href="localAnnotation.next_annotation?.url_info.url"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{localAnnotation.next_annotation?.url_info.url}}
+          </a>
         </div>
 
-        <div
-          v-else
-          class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full">
+        <div class="w-full mx-auto">
+          <TabControls
+            v-model="nextText"
+            :current-index="currentGlobalIndex"
+            :total="tabs.length"
+            :is-next-disabled="isNextDisabled"
+            @prev="prevTab"
+            @next="nextTab" />
 
-          <template v-if="!annotationPending && error">
-            <h1>An error occurred loading the annotation</h1>
-            <p>Please refresh the page and try again.</p>
-          </template>
+          <TabsHeader
+            :tabs="tabs"
+            :current-index="currentGlobalIndex"
+            :enabled-indices="permittedGlobalIndices"
+            :answered-indices="answeredIndices"
+            :skipped-indices="skippedIndices"
+            @select="selectTab"
+          />
 
-          <template v-if="localAnnotation?.next_annotation">
-
-
-            <Header
-              :refresh-key="globalResetKey"
-              :url-i-d="localAnnotation.next_annotation.url_info.url_id"
-              :page-title="localAnnotation.next_annotation.html_info.title"
-            />
-            <AnonWarning />
-            <img
-              v-if="imageOk"
-              alt="Screenshot of URL Page"
-              :key="localAnnotation.next_annotation?.url_info.url_id"
-              :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
-              @error="imageOk = false" />
-            <div v-else>Image Not Found</div>
-            <div>URL:
-              <a
-                :href="localAnnotation.next_annotation?.url_info.url"
-                target="_blank"
-                rel="noopener noreferrer">
-                {{localAnnotation.next_annotation?.url_info.url}}
-              </a>
-            </div>
-
-            <div class="w-full mx-auto">
-              <TabControls
-                v-model="nextText"
-                :current-index="currentGlobalIndex"
-                :total="tabs.length"
-                :is-next-disabled="isNextDisabled"
-                @prev="prevTab"
-                @next="nextTab" />
-
-              <TabsHeader
-                :tabs="tabs"
-                :current-index="currentGlobalIndex"
-                :enabled-indices="permittedGlobalIndices"
-                :answered-indices="answeredIndices"
-                :skipped-indices="skippedIndices"
-                @select="selectTab"
-              />
-
-              <!-- Tab content -->
+          <!-- Tab content -->
+          <keep-alive>
+            <div class="mt-4 relative overflow-hidden">
               <keep-alive>
-                <div class="mt-4 relative overflow-hidden">
-                  <keep-alive>
-                    <URLTypeView
-                      v-if="currentTab.id === 'url_type'"
-                      v-model="selectedURLType"
-                      :options="urlTypeOptions"
-                      :suggestions="localAnnotation.next_annotation.url_type_suggestions"
-                      @select="handleSelect"
-                    />
+                <URLTypeView
+                  v-if="currentTab.id === 'url_type'"
+                  v-model="selectedURLType"
+                  :options="urlTypeOptions"
+                  :suggestions="localAnnotation.next_annotation.url_type_suggestions"
+                  @select="handleSelect"
+                />
 
-                    <LocationView
-                      v-else-if="currentTab.id === 'location'"
-                      v-model="selectedLocation"
-                      :suggestions="
-                          localAnnotation.next_annotation.location_suggestions.suggestions
-                        "
-                      @select="handleSelect"
-                      v-model:resetKey="globalResetKey"
-                    />
-                    <AgencyView
-                      v-else-if="currentTab.id === 'agency'"
-                      v-model="selectedAgency"
-                      :suggestions="localAnnotation.next_annotation.agency_suggestions.suggestions"
-                      @select="handleSelect"
-                      v-model:resetKey="globalResetKey"
-                    />
-                    <RecordTypeView
-                      v-else-if="currentTab.id === 'record_type'"
-                      v-model="selectedRecordType"
-                      :suggestions="
-                          localAnnotation.next_annotation.record_type_suggestions.suggestions
-                        "
-                      @select="handleSelect"
-                      v-model:resetKey="globalResetKey"
-                    />
-                    <NameView
-                      v-else-if="currentTab.id === 'name'"
-                      v-model="selectedName"
-                      :suggestions="localAnnotation.next_annotation.name_suggestions.suggestions" />
-                    <ConfirmView
-                      v-else-if="currentTab.id === 'confirm'"
-                      :url-type="selectedURLType"
-                      :location="selectedLocation"
-                      :agency="selectedAgency"
-                      :record-type="selectedRecordType"
-                      :name="selectedName"
-                      v-model="localAnnotation"
-                      @submit="handleConfirmSubmit"
-                    />
-                  </keep-alive>
-                </div>
+                <LocationView
+                  v-else-if="currentTab.id === 'location'"
+                  v-model="selectedLocation"
+                  :suggestions="
+                      localAnnotation.next_annotation.location_suggestions.suggestions
+                    "
+                  @select="handleSelect"
+                  v-model:resetKey="globalResetKey"
+                />
+                <AgencyView
+                  v-else-if="currentTab.id === 'agency'"
+                  v-model="selectedAgency"
+                  :suggestions="localAnnotation.next_annotation.agency_suggestions.suggestions"
+                  @select="handleSelect"
+                  v-model:resetKey="globalResetKey"
+                />
+                <RecordTypeView
+                  v-else-if="currentTab.id === 'record_type'"
+                  v-model="selectedRecordType"
+                  :suggestions="
+                      localAnnotation.next_annotation.record_type_suggestions.suggestions
+                    "
+                  @select="handleSelect"
+                  v-model:resetKey="globalResetKey"
+                />
+                <NameView
+                  v-else-if="currentTab.id === 'name'"
+                  v-model="selectedName"
+                  :suggestions="localAnnotation.next_annotation.name_suggestions.suggestions" />
+                <ConfirmView
+                  v-else-if="currentTab.id === 'confirm'"
+                  :url-type="selectedURLType"
+                  :location="selectedLocation"
+                  :agency="selectedAgency"
+                  :record-type="selectedRecordType"
+                  :name="selectedName"
+                  v-model="localAnnotation"
+                  @submit="handleConfirmSubmit"
+                />
               </keep-alive>
             </div>
-
-
-
-          </template>
-          <template v-else>
-            <div>No annotations found.</div>
-          </template>
+          </keep-alive>
         </div>
-        </transition>
+
+
+
+      </template>
+      <template v-else>
+        <div>No annotations found.</div>
+      </template>
+    </div>
+    </transition>
 
     <div>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-4 border-2 border-solid border-goldneutral-200">
         <div class="col-span-1 text-sm">
           <h3>Hints & Notes</h3>
           <h3 class="text-med">What makes a relevant Data Source?</h3>

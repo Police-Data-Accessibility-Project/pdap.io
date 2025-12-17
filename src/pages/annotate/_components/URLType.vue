@@ -4,15 +4,13 @@
       v-for="option in formattedOptions"
       :key="option.value"
       class="p-4 cursor-pointer rounded-lg border transition"
-      :class="{
-        'bg-blue-200 border-blue-500': props.modelValue?.display_name === option.value,
-        'bg-purple-900 border-transparent': props.modelValue?.display_name !== option.value
-      }"
+      :class="handleOuterBlockClass(option.value)"
       @click="handleSelectOption(option.value)">
       <div
-        class="rounded-lg p-4 text-white"
-        :class="props.modelValue?.display_name === option.value ? 'bg-blue-700' : 'bg-black'">
-        {{ option.value }}
+        class="rounded-lg p-4 "
+        :class="handleInnerBlockClass(option.value)">
+        <p>{{ option.value }}</p>
+        <p class="text-sm">{{descriptionMapping[option.value]}}</p>
       </div>
 
       <div class="mt-2">
@@ -84,6 +82,16 @@ const urlTypeMapping = {
   [urlTypes.BROKEN]: 'broken page'
 };
 
+// Mapping to descriptions
+const descriptionMapping = {
+  [urlTypes.DATA_SOURCE]: "Public records about police systems",
+  [urlTypes.META_URL]: "An relevant agency's landing page, or info about the agency.",
+  [urlTypes.NOT_RELEVANT]: 'Not a data source or meta URL',
+  [urlTypes.INDIVIDUAL]: 'An individual record where a list of records is available.',
+  [urlTypes.BROKEN]: 'Page cannot be accessed.',
+  [urlTypes.NOT_SURE]: "I don't know what this is."
+};
+
 //====================
 // Computed Variables
 //====================
@@ -109,6 +117,20 @@ function handleSelectOption(option: string) {
     display_name: option
   });
   emit('select', null);
+}
+
+function handleInnerBlockClass(option: string): string {
+  if (props.modelValue?.display_name == option) {
+    return "bg-wineneutral-700 text-black font-bold";
+  }
+  return  'bg-black text-white';
+}
+
+function handleOuterBlockClass(option: string): string {
+  if (props.modelValue?.display_name == option) {
+    return "bg-wineneutral-300 border-wineneutral-500 hover:border-amber-800";
+  }
+  return  'bg-wineneutral-50 border-transparent hover:border-amber-800';
 }
 
 //====================

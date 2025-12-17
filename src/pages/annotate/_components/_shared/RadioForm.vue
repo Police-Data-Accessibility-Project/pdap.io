@@ -8,7 +8,7 @@
   >
 
 
-    <div class="grid gap-4 pdap-input-radio-group">
+    <div class="grid gap-4 pdap-input-radio-group ">
       <div class="pdap-input pdap-input-radio"
            v-for="option in options"
            :key="option.value">
@@ -24,8 +24,8 @@
 
 
         <label
-          :for="`option-${option.value}`"
-        ><div class="font-semibold">{{ option.label + " " }}<AnnotationSpan :labels="option.anno_labels"/></div></label>
+          :for="`option-${option.value}`" class="hover:text-amber-800"
+        ><div class="font-semibold ">{{ option.label + " " }}<AnnotationSpan :labels="option.anno_labels"/></div></label>
       </div>
     </div>
   </form>

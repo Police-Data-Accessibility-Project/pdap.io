@@ -1,11 +1,11 @@
 <template>
 <span class="annotation-group">
-  <span v-if="props?.labels?.user" class="annotation user font-semibold">
+  <span v-if="props?.labels?.user" class="annotation user font-semibold text-wineneutral-300">
     {{ props.labels.user }}
     <FontAwesomeIcon :icon="faUser" />
   </span>
 
-  <span v-if="props?.labels?.robo" class="annotation robo font-semibold">
+  <span v-if="props?.labels?.robo" class="annotation robo font-semibold text-wineneutral-300">
     {{ props.labels.robo }}
     <FontAwesomeIcon :icon="faRobot" />
   </span>
