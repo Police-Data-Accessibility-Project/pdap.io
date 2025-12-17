@@ -10,7 +10,7 @@
     "build": "cross-env NODE_ENV=production vite build --mode production",
     "build:dev": "cross-env NODE_ENV=development vite build --mode development",
     "serve": "cross-env vite preview --port 8888",
-    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint src --ext .vue .",
+    "lint": "eslint src --ext .vue .",
     "lint:fix": "npm run lint -- --fix",
     "test:unit": "vitest --dom --run",
     "test:unit:ci": "npm run test:unit -- --silent",
