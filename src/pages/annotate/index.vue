@@ -279,7 +279,6 @@ const localAnnotation = ref<NextAnnotationResponse | null>(null);
 
 const isThrottled = ref<boolean>(false);
 const globalResetKey = ref<number>(0);
-const showAnonWarning = ref(true);
 
 //====================
 //     Constants
