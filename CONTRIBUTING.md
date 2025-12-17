@@ -52,11 +52,11 @@ Currently code is organized by kind
 
 ### Routing
 
-Routing is handled by file-based routing provided by `unplugin-vue-router`. Everything in the `src/pages` directory becomes a route (i.e. `pages/data-source/create.vue` becomes `/data-source/create`, and`pages/search/results.vue` becomes `/search/results`), with the exception of a couple of special rules for files named index, dynamic route parameters, catchall routes, and such things as you can [read more about in the docs](https://uvr.esm.is/introduction).
+Routing is handled by file-based routing provided by `unplugin-vue-router`. Everything in the `src/pages` directory becomes a route (i.e. `pages/data-sources/create.vue` becomes `/data-sources/create`, and`pages/search/results.vue` becomes `/search/results`), with the exception of a couple of special rules for files named index, dynamic route parameters, catchall routes, and such things as you can [read more about in the docs](https://uvr.esm.is/introduction).
 
 There are two exceptions to the routing rules that are both defined by our configuration, rather than features of `unplugin-vue-router` itself.
 
-- if a directory or route is prefixed with an "\_", we ignore its name (and all of the names of its contents) in the route tree at build time. See `src/pages/data-source/_components` for an example.
+- if a directory or route is prefixed with an "\_", we ignore its name (and all of the names of its contents) in the route tree at build time. See `src/pages/data-sources/_components` for an example.
 - Anything in the `src/pages/test/` directory is also ignored in the route tree in production builds of the application.
 
 ### Testing

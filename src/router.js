@@ -42,7 +42,30 @@ if (import.meta.hot && !import.meta.test) {
   handleHotUpdate(router);
 }
 
+const LEGACY_DATA_SOURCE_ROUTE = /^\/data-source(\/|$)/;
+const LEGACY_DATA_REQUEST_ROUTE = /^\/data-request(\/|$)/;
+
 router.beforeEach(async (to, from, next) => {
+  if (LEGACY_DATA_SOURCE_ROUTE.test(to.path)) {
+    next({
+      path: to.path.replace(/^\/data-source/, '/data-sources'),
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    });
+    return;
+  }
+
+  if (LEGACY_DATA_REQUEST_ROUTE.test(to.path)) {
+    next({
+      path: to.path.replace(/^\/data-request/, '/data-requests'),
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    });
+    return;
+  }
+
   if (_isEqual(to, from)) {
     next();
     return;

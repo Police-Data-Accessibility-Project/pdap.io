@@ -62,7 +62,7 @@ test.describe('Data Source Create Page', () => {
   });
 
   test('should display create data source form', async ({ page }) => {
-    await page.goto('/data-source/create');
+    await page.goto('/data-sources/create');
     await page.waitForLoadState('networkidle');
 
     await expect(page.locator('h1')).toContainText('New data source');
@@ -83,7 +83,7 @@ test.describe('Data Source Create Page', () => {
   });
 
   test('should require URL field', async ({ page }) => {
-    await page.goto('/data-source/create');
+    await page.goto('/data-sources/create');
     await page.waitForLoadState('networkidle');
 
     const submitButton = page.locator(
@@ -95,7 +95,7 @@ test.describe('Data Source Create Page', () => {
   });
 
   test('should fill and submit basic form', async ({ page }) => {
-    await page.goto('/data-source/create');
+    await page.goto('/data-sources/create');
     await page.waitForLoadState('networkidle');
 
     const uniqueUrl = `https://example.com/data-${Date.now()}`;
@@ -116,7 +116,7 @@ test.describe('Data Source Create Page', () => {
   });
 
   test('should fill and submit with advanced properties', async ({ page }) => {
-    await page.goto('/data-source/create');
+    await page.goto('/data-sources/create');
     await page.waitForLoadState('networkidle');
 
     // Fill required base fields

@@ -61,7 +61,7 @@ import _debounce from 'lodash/debounce';
 import { computed, ref } from 'vue';
 import { TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { formatText } from '@/pages/data-source/_util';
+import { formatText } from '@/pages/data-sources/_util';
 import Typeahead from '@/components/TypeaheadInput.vue';
 import { Button } from 'pdap-design-system';
 import { getTypeaheadAgencies } from '@/api/typeahead';

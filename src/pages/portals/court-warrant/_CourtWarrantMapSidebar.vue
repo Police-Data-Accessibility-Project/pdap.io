@@ -47,7 +47,7 @@
               >
                 <RouterLink
                   v-if="source.id ?? source.source_id"
-                  :to="`/data-source/${source.id ?? source.source_id}`"
+                  :to="`/data-sources/${source.id ?? source.source_id}`"
                   class="text-lg font-semibold text-wineneutral-950 hover:underline"
                 >
                   {{ source.data_source_name ?? source.name ?? 'Data source' }}

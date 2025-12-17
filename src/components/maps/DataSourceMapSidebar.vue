@@ -169,7 +169,7 @@
                         v-if="
                           (source.id ?? source.source_id)?.toString().trim()
                         "
-                        :to="`/data-source/${source.id ?? source.source_id}`"
+                        :to="`/data-sources/${source.id ?? source.source_id}`"
                         class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
                         @click.stop
                       >
@@ -309,7 +309,7 @@
                 </a>
                 <router-link
                   v-if="source.source_id && source.source_id.toString().trim()"
-                  :to="`/data-source/${source.source_id}`"
+                  :to="`/data-sources/${source.source_id}`"
                   class="flex gap-2 items-center flex-initial px-1 py-0.5 rounded-sm text-goldneutral-950 bg-goldneutral-100 dark:text-wineneutral-950 dark:bg-goldneutral-100"
                   @click.stop
                 >
@@ -328,7 +328,7 @@
       class="sticky bottom-0 left-0 w-full p-2 bg-goldneutral-100 dark:bg-goldneutral-50 hidden md:flex h-auto"
     >
       <router-link
-        to="/data-request/create"
+        to="/data-requests/create"
         class="pdap-button-secondary block w-full text-center"
       >
         Request missing data

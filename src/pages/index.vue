@@ -159,7 +159,7 @@
         </p>
         <router-link
           class="pdap-button-primary mt-4"
-          :to="'/data-request/create'"
+          :to="'/data-requests/create'"
         >
           Open a Data Request
         </router-link>
@@ -210,7 +210,7 @@
         </a>
         <router-link
           class="pdap-button-secondary mt-2 ml-2"
-          :to="'/data-source/create'"
+          :to="'/data-sources/create'"
         >
           Submit a source you found
         </router-link>
@@ -399,7 +399,7 @@
       <div class="text-lg">
         <p>
           We requested data from the City of Pittsburgh and
-          <a href="https://pdap.io/data-source/198">
+          <a href="https://pdap.io/data-sources/198">
             shared it in our database.
           </a>
         </p>

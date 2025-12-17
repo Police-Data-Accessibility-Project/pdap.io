@@ -327,7 +327,7 @@ const { direction } = useSwipe(mainRef, {
       case 'left':
         navIs.value = 'increment';
         if (typeof nextIdIndex.value === 'number' && nextIdIndex.value > -1)
-          router.replace(`/data-source/${getNext()}`);
+          router.replace(`/data-sources/${getNext()}`);
         break;
       case 'right':
         navIs.value = 'decrement';
@@ -335,7 +335,7 @@ const { direction } = useSwipe(mainRef, {
           typeof previousIdIndex.value === 'number' &&
           previousIdIndex.value > -1
         )
-          router.replace(`/data-source/${getPrev()}`);
+          router.replace(`/data-sources/${getPrev()}`);
         break;
       default:
         return;

@@ -11,7 +11,7 @@ test.describe('Data Request Create Page', () => {
   });
 
   test('should display create data request form', async ({ page }) => {
-    await page.goto('/data-request/create');
+    await page.goto('/data-requests/create');
     await page.waitForLoadState('networkidle');
 
     await expect(page.locator('h1')).toContainText('New request');
@@ -29,7 +29,7 @@ test.describe('Data Request Create Page', () => {
   });
 
   test('should require all form fields', async ({ page }) => {
-    await page.goto('/data-request/create');
+    await page.goto('/data-requests/create');
     await page.waitForLoadState('networkidle');
 
     await page.click(`[data-test="${TEST_IDS.data_request_create_submit}"]`);
@@ -37,7 +37,7 @@ test.describe('Data Request Create Page', () => {
   });
 
   test('should fill and submit complete form', async ({ page }) => {
-    await page.goto('/data-request/create');
+    await page.goto('/data-requests/create');
     await page.waitForLoadState('networkidle');
 
     // Fill required fields
@@ -82,9 +82,9 @@ test.describe('Data Request Create Page', () => {
     );
   });
 
-  // TODO: add test for clearing to the /data-source/create route
+  // TODO: add test for clearing to the /data-sources/create route
   test('should clear form when clear button clicked', async ({ page }) => {
-    await page.goto('/data-request/create');
+    await page.goto('/data-requests/create');
     await page.waitForLoadState('networkidle');
 
     // Fill some fields
@@ -109,7 +109,7 @@ test.describe('Data Request Create Page', () => {
   });
 
   test('should validate location requirement', async ({ page }) => {
-    await page.goto('/data-request/create');
+    await page.goto('/data-requests/create');
     await page.waitForLoadState('networkidle');
 
     // Fill all fields except location
