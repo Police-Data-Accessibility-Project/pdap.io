@@ -51,9 +51,7 @@ export async function postAnnotation(
     }).then((res) => res.data);
 }
 
-export async function getContributions(
-
-): Promise<null | UserContributionGetResponse> {
+export async function getContributions(): Promise<null | UserContributionGetResponse> {
   const auth = useAuthStore();
   if (!auth.isAuthenticated()) {
     return null;

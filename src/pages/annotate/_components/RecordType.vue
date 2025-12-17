@@ -15,23 +15,49 @@
 
     <br />
     <!-- Select for Record Type -->
-    <select
-      v-model="selectedRecordTypeModel"
-      class="border rounded px-2 py-1 w-full text-black"
-      @change="handleSelectChange">
-      <option disabled value="">Select a record type…</option>
 
-      <!-- Loop over categories -->
-      <optgroup
-        v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
-        :key="categoryName"
-        :label="categoryName">
-        <!-- Loop over types within each category -->
-        <option v-for="type in types" :key="type" :value="type">
-          {{ type }}
-        </option>
-      </optgroup>
-    </select>
+      <form
+        id="id"
+        name="name"
+        class="pdap-form">
+
+      <div class="space-y-6 pdap-input-radio-group">
+        <fieldset
+          v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
+          :key="categoryName"
+          class="rounded border p-3"
+        >
+          <legend class="px-1 font-semibold">
+            {{ categoryName }}
+          </legend>
+
+          <div class="mt-2 grid grid-cols-3 gap-2 ">
+            <div class="pdap-input pdap-input-radio"
+                 v-for="type in types"
+                 :key="type"
+            >
+
+                <input
+                  :id="type"
+                  type="radio"
+                  name="record-type"
+                  :value="type"
+                  v-model="selectedRecordTypeModel"
+                  @change="handleSelectChange"
+                />
+
+              <label
+                :for="type"
+                class="flex items-center gap-2 rounded px-2 py-1 hover:bg-brand-wine-600 cursor-pointer"
+              >
+                <span >{{ type }}</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      </form>
+
 
     <p class="mt-2 text-sm text-gray-600">
       Selected: {{ selectedRecordTypeModel || 'none' }}
@@ -52,6 +78,7 @@ import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/c
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
 import { AnnoLabels, RadioOption, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
+import { InputRadio, RadioGroup } from 'pdap-design-system';
 
 //====================
 //Props, Models, Emits
@@ -107,6 +134,8 @@ function handleRadioFormSelect(option: RadioOption) {
   selectedRecordTypeModel.value = option.value;
   emit('select', null);
 }
+
+
 
 </script>
 

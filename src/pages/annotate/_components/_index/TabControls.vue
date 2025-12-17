@@ -2,7 +2,7 @@
 <template>
   <div class="mt-6 flex justify-between items-center">
     <button
-        class="px-4 py-2 rounded-md border text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+        class="px-4 py-2 pdap-button-secondary text-sm"
         :disabled="currentIndex === 0"
         @click="emit('prev')"
     >
@@ -14,7 +14,7 @@
     </span>
 
     <button
-        class="px-4 py-2 rounded-md border bg-blue-600 text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+        class="px-4 py-2 pdap-button-primary text-sm"
         :disabled="isNextDisabled"
         @click="emit('next')"
     >

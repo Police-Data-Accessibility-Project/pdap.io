@@ -28,7 +28,9 @@ interface Tab {
 const props = defineProps<{
   tabs: Tab[]
   currentIndex: number,
-  enabledIndices: Array<number>
+  enabledIndices: Array<number>,
+  answeredIndices: Array<number>,
+  skippedIndices: Array<number>,
 }>()
 
 const emit = defineEmits<{
@@ -39,13 +41,24 @@ const emit = defineEmits<{
 //      Helpers
 //====================
 function getClasses(index: number) {
+  // Selected/Current Tab
   if (index === props.currentIndex) {
-    return 'border-blue-600 text-blue-600 font-semibold';
+    return 'text-brand-wine-500 font-bold';
   }
+  // Completed Tab
+  if (props.answeredIndices.includes(index)) {
+    return 'text-wineneutral-500 font-bold';
+  }
+  // Skipped Tab
+  if (props.skippedIndices.includes(index)) {
+    return 'text-wineneutral-300 line-through';
+  }
+  // Enabled Tab Not Yet Accessed/Future Inactive
   if (props.enabledIndices.includes(index)) {
-    return 'border-transparent text-white-400';
+    return 'text-wineneutral-700';
   }
-  return 'border-transparent text-gray-400';
+  // Disabled Tab
+  return 'text-wineneutral-300';
 }
 
 </script>
