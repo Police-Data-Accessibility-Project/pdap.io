@@ -1,19 +1,13 @@
 import { expect } from '@playwright/test';
 import { TEST_IDS } from '../fixtures/test-ids';
-import { PASSWORD_AUTH } from '../fixtures/users';
 import { test } from '../fixtures/base';
+import { signInWithPassword } from '../helpers/auth';
 
 import '../msw-setup.js';
 
 test.describe('Profile Page', () => {
   test.beforeEach(async ({ page }) => {
-    // Sign in before each test
-    // TODO: figure out how to abstract this.
-    await page.goto('/sign-in');
-    await page.fill('[name="email"]', PASSWORD_AUTH.email);
-    await page.fill('[name="password"]', PASSWORD_AUTH.password);
-    await page.click('button[type="submit"]');
-    await page.waitForLoadState('networkidle');
+    await signInWithPassword(page);
   });
 
   test('should display user profile information', async ({ page }) => {

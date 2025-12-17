@@ -1,24 +1,13 @@
 import { expect } from '@playwright/test';
 import { TEST_IDS } from '../fixtures/test-ids';
-import { PASSWORD_AUTH } from '../fixtures/users';
 import { test } from '../fixtures/base';
+import { signInWithPassword } from '../helpers/auth';
 
 import '../msw-setup.js';
 
 test.describe('Data Request Create Page', () => {
   test.beforeEach(async ({ page }) => {
-    // Sign in before each test
-    await page.goto('/sign-in');
-    await page.fill(
-      `input[data-test="${TEST_IDS.email_input}"]`,
-      PASSWORD_AUTH.email
-    );
-    await page.fill(
-      `input[data-test="${TEST_IDS.password_input}"]`,
-      PASSWORD_AUTH.password
-    );
-    await page.click(`[data-test="${TEST_IDS.sign_in_submit}"]`);
-    await page.waitForLoadState('networkidle');
+    await signInWithPassword(page);
   });
 
   test('should display create data request form', async ({ page }) => {
