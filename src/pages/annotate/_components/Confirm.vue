@@ -35,7 +35,7 @@
         <b>Name</b>
         : {{ props.name?.name }}
       </p>
-      <button @click="handleSubmit">Submit</button>
+      <button @click="handleSubmit" class="pdap-button-primary">Submit</button>
     </div>
   </transition>
 </template>

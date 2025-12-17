@@ -11,13 +11,29 @@ export type NextAnnotationResponse = {
 
 export type NextAnnotation = {
   url_info: URLInfoType;
-  html_info: Record<string, number | string>; //Unused in logic
+  html_info: HTMLInfo; //Unused in logic
   batch_info: BatchInfoType;
   agency_suggestions: AgencyLocationSuggestions;
   location_suggestions: AgencyLocationSuggestions;
   url_type_suggestions: URLTypeSuggestion[];
   record_type_suggestions: RecordTypeSuggestions;
   name_suggestions: NameSuggestions;
+}
+
+export type HTMLInfo = {
+  index: number; //Unused in logic
+  url: string; //Unused in logic
+  url_path: string; //Unused in logic
+  title: string;
+  description: string;
+  http_response: number; //Unused in logic
+  h1: string; //Unused in logic
+  h2: string; //Unused in logic
+  h3: string; //Unused in logic
+  h4: string; //Unused in logic
+  h5: string; //Unused in logic
+  h6: string; //Unused in logic
+  div: string; //Unused in logic
 }
 
 export type URLTypeSuggestion = {
@@ -66,6 +82,21 @@ export type NameSuggestion = {
 
 export type NameSuggestions = {
   suggestions: NameSuggestion[];
+}
+
+//========================
+// Contribution GET Types
+//========================
+
+export type UserContributionGetResponse = {
+  count_validated: number;
+  agreement: UserContributionAgreement;
+}
+
+export type UserContributionAgreement = {
+  record_type: number;
+  agency: number;
+  url_type: number;
 }
 
 //======================

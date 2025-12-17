@@ -1,6 +1,6 @@
 <template>
-  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative">
-    <transition mode="out-in" :name="navIs">
+  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
+    <transition mode="out-in">
       <div
         v-if="annotationPending"
         class="flex items-center justify-center h-[80vh] w-full flex-col relative">
@@ -19,42 +19,12 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-            <div
-              v-if="!auth.isAuthenticated() && showAnonWarning"
-              class="relative rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900"
-            >
-              <!-- Close button -->
-              <button
-                @click="showAnonWarning = false"
-                class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
-                aria-label="Dismiss warning"
-              >
-                ✕
-              </button>
-
-              <p class="font-semibold">
-                You are accessing this as an anonymous user.
-              </p>
-
-              <p class="mt-1 text-sm">
-                Anonymous users can make annotations, but their annotations weigh less
-                than those made by signed-in users.
-              </p>
-
-              <p class="mt-2 text-sm">
-                Click
-                <RouterLink
-                  to="/sign-in"
-                  class="font-medium underline hover:text-amber-800"
-                >here</RouterLink>
-                to sign in or
-                <RouterLink
-                  to="/sign-up"
-                  class="font-medium underline hover:text-amber-800"
-                >here</RouterLink>
-                to sign up.
-              </p>
-            </div>
+            <Header
+            :refresh-key="globalResetKey"
+            :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+            :page-title="localAnnotation.next_annotation.html_info.title"
+            />
+          <AnonWarning />
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
@@ -84,6 +54,8 @@
               :tabs="tabs"
               :current-index="currentGlobalIndex"
               :enabled-indices="permittedGlobalIndices"
+              :answered-indices="answeredIndices"
+              :skipped-indices="skippedIndices"
               @select="selectTab"
             />
 
@@ -173,21 +145,20 @@ import AgencyView from '@/pages/annotate/_components/_agency/Agency.vue';
 import LocationView from '@/pages/annotate/_components/_location/Location.vue';
 import NameView from '@/pages/annotate/_components/_name/Name.vue';
 import ConfirmView from '@/pages/annotate/_components/Confirm.vue';
-import {
-  TabID,
-  tabIDs,
-  tabs,
-  validTabsByUrlType
-} from '@/pages/annotate/_components/_index/constants';
+import { TabID, tabIDs, tabs, validTabsByUrlType } from '@/pages/annotate/_components/_index/constants';
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
-  AgencyLocationSelection, NameSelection, NextAnnotationResponse,
-  NextAnnotation, RecordType,
-  urlTypes, URLTypeSelection,
-  UrlType
+  AgencyLocationSelection,
+  NameSelection,
+  NextAnnotationResponse,
+  RecordType,
+  UrlType,
+  urlTypes,
+  URLTypeSelection
 } from '@/pages/annotate/_components/_shared/types';
-import { useAuthStore } from '@/stores/auth';
+import Header from '@/pages/annotate/_components/_header/Header.vue';
+import AnonWarning from '@/pages/annotate/_components/_index/AnonWarning.vue';
 //====================
 //     Types
 //====================
@@ -220,8 +191,7 @@ const showAnonWarning = ref(true);
 //     Constants
 //====================
 const URL_BASE = `${import.meta.env.VITE_SM_API_URL}/url`;
-const auth = useAuthStore();
-console.log(auth.isAuthenticated());
+
 
 const tabIndexByValue: Record<TabID, number> = Object.fromEntries(
   Object.values(tabIDs).map((value, index) => [value, index])
@@ -255,6 +225,42 @@ const permittedGlobalIndices = computed<number[]>(() => {
     .map(tabId => tabIndexByValue[tabId])
     .filter((i): i is number => i !== undefined);
 });
+// Answered Indices: Non-null tabs
+const answeredIndices = computed<number[]>( () => {
+  let results: number[] = [];
+  for (const index of Object.values(tabIndexByValue)) {
+    const currentTabValue = tabValueByIndex[index];
+    const currentTabVar = tabVarMapping[currentTabValue];
+    if (currentTabVar?.value) {
+      results.push(index);
+    }
+  }
+  return results;
+})
+
+// Skipped Indices: Null tabs after the current index
+const skippedIndices = computed<number[]>( () => {
+  let results: number[] = [];
+  for (const index of Object.values(tabIndexByValue)) {
+    const currentTabValue = tabValueByIndex[index];
+    // Pass any indices not yet passed
+    if (index >= currentGlobalIndex.value) {
+      continue;
+    }
+    // Pass any indices with values
+    const currentTabVar = tabVarMapping[currentTabValue];
+    if (currentTabVar?.value) {
+      continue;
+    }
+    // Pass any indices that are not permitted
+    if (!permittedGlobalIndices.value.includes(index)) {
+      continue;
+    }
+    // Any indices remaining are skipped
+    results.push(index);
+  }
+  return results;
+})
 
 // Global index as a computed projection of the current path position.
 const currentGlobalIndex = computed<number>({
