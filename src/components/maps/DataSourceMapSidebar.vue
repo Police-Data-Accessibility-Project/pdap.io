@@ -339,7 +339,6 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
 import { Button } from 'pdap-design-system';
 import { ABBREVIATIONS_TO_STATES } from '@/util/constants';
 import pluralize from '@/util/pluralize';
@@ -359,8 +358,6 @@ import {
 import { useQuery } from '@tanstack/vue-query';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
-
-const route = useRoute();
 const auth = useAuthStore();
 const searchStore = useSearchStore();
 const props = defineProps({
@@ -397,17 +394,6 @@ const emit = defineEmits([
   'zoom-to-location',
   'on-reset-zoom'
 ]);
-
-const {
-  isLoading: isFollowedPending,
-  isFetching: isFollowedFetching,
-  data: isFollowed,
-  isError: isFollowedError
-} = useQuery({
-  queryKey: [SEARCH_FOLLOWED],
-  queryFn: async () => !!(await getFollowedSearch(route.query.location_id)),
-  staleTime: 5 * 60 * 1000 // 5 minutes
-});
 
 // Get the active location (last item in the stack)
 const activeLocation = computed(() => {
@@ -465,6 +451,34 @@ const activeLocationId = computed(() => {
   return resolvedId !== undefined && resolvedId !== null
     ? String(resolvedId)
     : null;
+});
+
+const followStatusQueryKey = computed(() => [
+  SEARCH_FOLLOWED,
+  activeLocationId.value ?? 'none'
+]);
+const followStatusQueryEnabled = computed(() =>
+  Boolean(
+    activeLocationId.value &&
+      auth.isAuthenticated() &&
+      getIsV2FeatureEnabled('ENHANCED_SEARCH')
+  )
+);
+
+const {
+  isLoading: isFollowedPending,
+  isFetching: isFollowedFetching,
+  data: isFollowed,
+  isError: isFollowedError
+} = useQuery({
+  queryKey: followStatusQueryKey,
+  queryFn: async () => {
+    if (!activeLocationId.value) return false;
+    return !!(await getFollowedSearch(activeLocationId.value));
+  },
+  enabled: followStatusQueryEnabled,
+  initialData: false,
+  staleTime: 5 * 60 * 1000 // 5 minutes
 });
 
 const shouldShowAggregatedSection = computed(() => {
