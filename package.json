@@ -57,6 +57,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.20.1",
+    "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "happy-dom": "^18.0.1",
     "jest-serializer-vue-tjw": "^3.20.0",
     "jsonwebtoken": "^9.0.2",
