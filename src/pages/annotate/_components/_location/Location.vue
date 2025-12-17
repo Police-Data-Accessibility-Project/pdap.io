@@ -8,7 +8,8 @@
           v-model="selectedRadioLocation"
           :options="radioOptions"
           header="Suggestions"
-          @update:model-value="handleRadioFormSelect" />
+          @update:model-value="handleRadioFormSelect"
+        />
       </div>
     </div>
     <SearchForm @update:model-value="handleSearchLocationSelect" />
@@ -39,7 +40,7 @@ import {
 //====================
 const props = defineProps({
   suggestions: {
-    type: Array as PropType<AgencyLocationSuggestion[] | null> ,
+    type: Array as PropType<AgencyLocationSuggestion[] | null>,
     default: null
   }
 });
@@ -48,8 +49,8 @@ const locationModel = defineModel<AgencyLocationSelection>({ default: null });
 const resetKey = defineModel<number>('resetKey');
 
 const emit = defineEmits<{
-  (e: 'select', v: null): void
-}>()
+  (e: 'select', v: null): void;
+}>();
 
 //====================
 //     Variables
@@ -77,7 +78,7 @@ const resetRadio = () => {
 
 watch(resetKey, () => {
   resetRadio();
-})
+});
 
 //===================
 //     Handlers

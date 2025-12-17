@@ -5,18 +5,15 @@
       :key="option.value"
       class="p-4 cursor-pointer rounded-lg border transition"
       :class="handleOuterBlockClass(option.value)"
-      @click="handleSelectOption(option.value)">
-      <div
-        class="rounded-lg p-4 "
-        :class="handleInnerBlockClass(option.value)">
+      @click="handleSelectOption(option.value)"
+    >
+      <div class="rounded-lg p-4" :class="handleInnerBlockClass(option.value)">
         <p>{{ option.value }}</p>
-        <p class="text-sm">{{descriptionMapping[option.value]}}</p>
+        <p class="text-sm">{{ descriptionMapping[option.value] }}</p>
       </div>
 
       <div class="mt-2">
-        <AnnotationSpan
-        :labels="option.annoLabels"
-        />
+        <AnnotationSpan :labels="option.annoLabels" />
       </div>
     </div>
   </div>
@@ -36,7 +33,9 @@ import { computed, PropType } from 'vue';
 import {
   UrlType,
   urlTypes,
-  URLTypeSuggestion, URLTypeSelection, AnnoLabels
+  URLTypeSuggestion,
+  URLTypeSelection,
+  AnnoLabels
 } from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
@@ -60,8 +59,8 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: UrlType): void;
-  (e: 'select', value: null): void
-}>()
+  (e: 'select', value: null): void;
+}>();
 
 //====================
 //       Types
@@ -69,7 +68,7 @@ const emit = defineEmits<{
 type URLTypeOption = {
   value: UrlType;
   annoLabels?: AnnoLabels | null;
-}
+};
 //====================
 // Constants
 //====================
@@ -84,10 +83,12 @@ const urlTypeMapping = {
 
 // Mapping to descriptions
 const descriptionMapping = {
-  [urlTypes.DATA_SOURCE]: "Public records about police systems",
-  [urlTypes.META_URL]: "An relevant agency's landing page, or info about the agency.",
+  [urlTypes.DATA_SOURCE]: 'Public records about police systems',
+  [urlTypes.META_URL]:
+    "An relevant agency's landing page, or info about the agency.",
   [urlTypes.NOT_RELEVANT]: 'Not a data source or meta URL',
-  [urlTypes.INDIVIDUAL]: 'An individual record where a list of records is available.',
+  [urlTypes.INDIVIDUAL]:
+    'An individual record where a list of records is available.',
   [urlTypes.BROKEN]: 'Page cannot be accessed.',
   [urlTypes.NOT_SURE]: "I don't know what this is."
 };
@@ -121,16 +122,16 @@ function handleSelectOption(option: string) {
 
 function handleInnerBlockClass(option: string): string {
   if (props.modelValue?.display_name == option) {
-    return "bg-wineneutral-700 text-black font-bold";
+    return 'bg-wineneutral-700 text-black font-bold';
   }
-  return  'bg-black text-white';
+  return 'bg-black text-white';
 }
 
 function handleOuterBlockClass(option: string): string {
   if (props.modelValue?.display_name == option) {
-    return "bg-wineneutral-300 border-wineneutral-500 hover:border-amber-800";
+    return 'bg-wineneutral-300 border-wineneutral-500 hover:border-amber-800';
   }
-  return  'bg-wineneutral-50 border-transparent hover:border-amber-800';
+  return 'bg-wineneutral-50 border-transparent hover:border-amber-800';
 }
 
 //====================
@@ -145,9 +146,6 @@ function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
   const endorsementCount: number = suggestionMap.value[suggestionKey];
   return {
     user: endorsementCount.toString()
-  }
-
+  };
 }
-
 </script>
-

@@ -1,15 +1,15 @@
-
-
 <template>
   <transition mode="out-in" :name="navIs">
     <div
       v-if="submitPending"
-      class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+      class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+    >
       <!--TODO: Spinner does not currently display on submission. Unclear why.-->
       <Spinner
         :show="annotationPending"
         :size="64"
-        text="Submitting annotation..." />
+        text="Submitting annotation..."
+      />
     </div>
     <div
       v-else
@@ -49,9 +49,12 @@
  */
 import { PropType } from 'vue';
 import {
-  AgencyLocationSelection, AnnotationSubmission,
-  NameSelection, NextAnnotationResponse,
-  RecordType, URLTypeSelection,
+  AgencyLocationSelection,
+  AnnotationSubmission,
+  NameSelection,
+  NextAnnotationResponse,
+  RecordType,
+  URLTypeSelection
 } from '@/pages/annotate/_components/_shared/types';
 import { postAnnotation } from '@/api/annotate';
 import { Spinner } from 'pdap-design-system';
@@ -80,10 +83,10 @@ const props = defineProps({
   name: {
     type: Object as PropType<NameSelection>,
     default: null
-  },
+  }
 });
 
-const annotationModel = defineModel<NextAnnotationResponse>({})
+const annotationModel = defineModel<NextAnnotationResponse>({});
 
 const emit = defineEmits<{
   (e: 'submit'): void;
@@ -98,7 +101,6 @@ const {
   error: submitError
 } = useMutation({
   mutationFn: async (postData: AnnotationSubmission) => {
-
     const {
       next_annotation: {
         url_info: { url_id }
@@ -106,11 +108,7 @@ const {
     } = annotationModel.value;
     const session_id: string | null = annotationModel.value?.session_id;
 
-    return await postAnnotation(
-      postData,
-      url_id,
-      session_id
-    );
+    return await postAnnotation(postData, url_id, session_id);
   },
   onSuccess: (data) => {
     annotationModel.value = data;
@@ -135,14 +133,13 @@ async function handleSubmit() {
     },
     name_info: {
       new_name: props.name?.new ? props.name?.name : null,
-      existing_name_id: props.name?.new ? null : props.name?.nameID,
+      existing_name_id: props.name?.new ? null : props.name?.nameID
     }
   };
 
   await submitAnnotation(postData);
   emit('submit');
 }
-
 </script>
 
 <style scoped></style>

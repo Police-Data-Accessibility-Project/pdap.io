@@ -1,7 +1,8 @@
 <template>
   <div class="px-4 mb-4 border-wineneutral-300 bg-wineneutral-50 border-2">
     <div
-      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
+      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0"
+    >
       <Typeahead
         id="agencies"
         ref="typeaheadRef"
@@ -11,7 +12,8 @@
         :items="items"
         placeholder="Enter an agency"
         @select-item="handleSelectRecord"
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Item to render passed as scoped slot -->
         <template #item="item">
           <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
@@ -31,7 +33,8 @@
                   items = [];
                   typeaheadRef.clearInput();
                 }
-              ">
+              "
+            >
               <strong>No results found.</strong>
               Would you like to suggest
               {{ typeaheadRef.value }}

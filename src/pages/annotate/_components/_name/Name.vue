@@ -4,7 +4,8 @@
     <EditableRadioGroup
       v-model="selected"
       :options="options"
-      @update:model-value="handleRadioGroupUpdate" />
+      @update:model-value="handleRadioGroupUpdate"
+    />
   </div>
 </template>
 
@@ -18,7 +19,11 @@
  */
 import EditableRadioGroup from '@/pages/annotate/_components/_name/EditableRadioGroup.vue';
 import { computed, type PropType } from 'vue';
-import { AnnoLabels, NameSelection, NameSuggestion } from '@/pages/annotate/_components/_shared/types';
+import {
+  AnnoLabels,
+  NameSelection,
+  NameSuggestion
+} from '@/pages/annotate/_components/_shared/types';
 //====================
 //Props, Models, Emits
 //====================
@@ -32,7 +37,7 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelection): void;
   (e: 'select', value: null): void;
-}>()
+}>();
 
 //====================
 // Computed Variables
@@ -66,11 +71,10 @@ function handleRadioGroupUpdate(rg: NameSelection) {
 //================
 function getNameEndorsementLabel(suggestion: NameSuggestion): AnnoLabels {
   return {
-    user: suggestion.user_count ? suggestion.user_count.toString(): null,
-    robo: suggestion.robo_count ? suggestion.robo_count.toString(): null
-  }
+    user: suggestion.user_count ? suggestion.user_count.toString() : null,
+    robo: suggestion.robo_count ? suggestion.robo_count.toString() : null
+  };
 }
-
 </script>
 
 <style scoped></style>

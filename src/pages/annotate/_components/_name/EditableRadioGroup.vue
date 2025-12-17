@@ -5,13 +5,16 @@
       :key="option.id"
       class="flex items-center gap-2 border rounded-lg p-3 cursor-pointer transition hover:bg-purple-950"
       :class="isSelected(option.id) ? 'ring-2  bg-orange-500' : ''"
-      @click="choose(option)">
+      @click="choose(option)"
+    >
       <!-- Custom radio circle -->
       <span
-        class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0">
+        class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0"
+      >
         <span
           v-if="isSelected(option.id)"
-          class="w-2 h-2 rounded-full bg-blue-500" />
+          class="w-2 h-2 rounded-full bg-blue-500"
+        />
       </span>
 
       <!-- Label OR editable input -->
@@ -20,13 +23,17 @@
           class="flex-1 text-black bg-white outline-none border-b border-dashed"
           :value="option.text"
           @click.stop
-          @input="handleInput(option, $event)" />
+          @input="handleInput(option, $event)"
+        />
         <button @click="resetOption(option)">🔁</button>
       </span>
 
       <span v-else class="flex-1">
-        <span>{{ option.text + " " }}</span>
-        <AnnotationSpan v-if="!isDirty(option.id)" :labels="option.annoLabels"/>
+        <span>{{ option.text + ' ' }}</span>
+        <AnnotationSpan
+          v-if="!isDirty(option.id)"
+          :labels="option.annoLabels"
+        />
       </span>
     </div>
   </div>
@@ -41,7 +48,10 @@
  *  (non-edited) name.
  */
 import { PropType, reactive, watch } from 'vue';
-import { AnnoLabels, NameSelection } from '@/pages/annotate/_components/_shared/types';
+import {
+  AnnoLabels,
+  NameSelection
+} from '@/pages/annotate/_components/_shared/types';
 import AnnotationSpan from '@/pages/annotate/_components/_shared/AnnotationSpan.vue';
 
 //======================
@@ -52,12 +62,12 @@ type editableRadioOption = {
   id: string;
   text: string;
   annoLabels: AnnoLabels;
-}
+};
 
 type nameEditState = {
-  text: string;  // Text of name
-  dirty: boolean;  // Whether name was modified
-}
+  text: string; // Text of name
+  dirty: boolean; // Whether name was modified
+};
 
 //====================
 //Props, Models, Emits
@@ -75,7 +85,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: NameSelection): void;
-}>()
+}>();
 
 //====================
 //     Variables
@@ -145,7 +155,6 @@ const handleInput = (option: editableRadioOption, event) => {
   // emit updated options so parent can keep it in sync
   choose(option);
 };
-
 
 //====================
 //     Helpers

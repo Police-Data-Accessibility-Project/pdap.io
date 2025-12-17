@@ -2,9 +2,9 @@
 <template>
   <div class="mt-6 flex justify-between items-center">
     <button
-        class="px-4 py-2 pdap-button-secondary text-sm"
-        :disabled="currentIndex === 0"
-        @click="emit('prev')"
+      class="px-4 py-2 pdap-button-secondary text-sm"
+      :disabled="currentIndex === 0"
+      @click="emit('prev')"
     >
       Previous
     </button>
@@ -14,9 +14,9 @@
     </span>
 
     <button
-        class="px-4 py-2 pdap-button-primary text-sm"
-        :disabled="isNextDisabled"
-        @click="emit('next')"
+      class="px-4 py-2 pdap-button-primary text-sm"
+      :disabled="isNextDisabled"
+      @click="emit('next')"
     >
       {{ nextTextModel }}
     </button>
@@ -24,23 +24,22 @@
 </template>
 
 <script setup lang="ts">
-
 //====================
 //Props, Models, Emits
 //====================
 const props = defineProps<{
-  currentIndex: number
-  total: number
-  isNextDisabled: boolean
-}>()
+  currentIndex: number;
+  total: number;
+  isNextDisabled: boolean;
+}>();
 
 const nextTextModel = defineModel({
   type: String,
   default: 'Next'
-})
+});
 
 const emit = defineEmits<{
-  (e: 'prev'): void
-  (e: 'next'): void
-}>()
+  (e: 'prev'): void;
+  (e: 'next'): void;
+}>();
 </script>

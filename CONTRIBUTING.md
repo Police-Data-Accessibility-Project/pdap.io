@@ -25,20 +25,23 @@ The client app is a Vue 3 SPA, styled with Tailwind. Caching and data fetching a
 Feel free to use either the options or composition API, but composition seems to be winning out in this codebase. It's also easier to work with many of the modern Vue libraries, which are built for the composition API first.
 
 ### State management
+
 We use a two-pronged strategy for state management.
 
 API-related state is handled using [Tanstack Vue Query](https://tanstack.com/query/latest/docs/framework/vue/overview)
+
 - Tanstack automatically caches responses based on query keys passed to `useQuery`
 - We have set up some nice invalidation logic on calls of mutation functions returned by `useMutation`
 - The net effect of this is that our async data fetching is extremely efficient.
 - If you are adding any functionality related to async data, use the tanstack hooks and ensure
 
 Any client-only state is tracked using [Pinia](https://pinia.vuejs.org/) stores.
+
 - See the [stores](./src/stores/) directory for more details and examples.
 - _Do not_ use Pinia for API-related state.
 
-
 ### Code organization
+
 Currently code is organized by kind
 
 - [async fetching logic](./src/api) in the `src/api` directory.
@@ -69,18 +72,20 @@ This project uses [Playwright](https://playwright.dev/) for end-to-end testing. 
 ### Setup
 
 1. Install Playwright browsers:
+
    ```shell
    npx playwright install
    ```
 
 2. Set up environment variables for testing:
+
 ```shell
   # Test credentials (get from PDAP staff)
   E2E_PASSWORD_AUTH_EMAIL_TEST=email@example.com
   E2E_PASSWORD_AUTH_PASSWORD_TEST=pw
   E2E_PW_RESET_EMAIL_TEST=email@example.com
   E2E_SIGNUP_EMAIL_TEST=email@example.com
-  
+
   # Mailgun for email testing
   MAILGUN_KEY=key
   MAILGUN_DOMAIN=domain
@@ -110,7 +115,8 @@ npx playwright test e2e/auth/sign-in.spec.js
 ### CI/CD
 
 E2E tests run automatically on:
-- Pull requests (against dev environment for prs to dev or feature/** branches, against prod on prs to main)
+
+- Pull requests (against dev environment for prs to dev or feature/\*\* branches, against prod on prs to main)
 - Hourly monitoring (production health checks)
 
 <!-- ### Resources
