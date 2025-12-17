@@ -43,19 +43,19 @@ const emit = defineEmits<{
 function getClasses(index: number) {
   // Selected/Current Tab
   if (index === props.currentIndex) {
-    return 'text-brand-wine-500 font-bold';
+    return 'text-brand-wine-500 font-bold hover:bg-amber-800';
   }
   // Completed Tab
   if (props.answeredIndices.includes(index)) {
-    return 'text-wineneutral-500 font-bold';
+    return 'text-wineneutral-500 font-bold hover:bg-amber-800';
   }
   // Skipped Tab
   if (props.skippedIndices.includes(index)) {
-    return 'text-wineneutral-300 line-through';
+    return 'text-wineneutral-300 line-through hover:bg-amber-800';
   }
   // Enabled Tab Not Yet Accessed/Future Inactive
   if (props.enabledIndices.includes(index)) {
-    return 'text-wineneutral-700';
+    return 'text-wineneutral-700 hover:bg-amber-800';
   }
   // Disabled Tab
   return 'text-wineneutral-300';
