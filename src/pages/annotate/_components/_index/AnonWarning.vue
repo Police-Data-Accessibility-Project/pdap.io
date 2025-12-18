@@ -12,9 +12,7 @@
       ✕
     </button>
 
-    <p class="font-semibold">
-      You are accessing this as an anonymous user.
-    </p>
+    <p class="font-semibold">You are accessing this as an anonymous user.</p>
 
     <p class="mt-1 text-sm">
       Anonymous users can make annotations, but their annotations weigh less
@@ -26,13 +24,15 @@
       <RouterLink
         to="/sign-in"
         class="font-medium underline hover:text-amber-800"
-      >here
+      >
+        here
       </RouterLink>
       to sign in or
       <RouterLink
         to="/sign-up"
         class="font-medium underline hover:text-amber-800"
-      >here
+      >
+        here
       </RouterLink>
       to sign up.
     </p>
@@ -54,11 +54,7 @@ export default {
       showAnonWarning
     };
   }
-}
-
+};
 </script>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>

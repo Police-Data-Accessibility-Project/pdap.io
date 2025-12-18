@@ -141,13 +141,18 @@ import SearchResults from '@/pages/search/_components/SearchResults.vue';
 import { getMapLocations } from '@/api/map';
 import {
   search,
+  followSearch,
   followNationalSearch,
   getFollowedNationalSearch
 } from '@/api/search';
 import { groupResultsByAgency } from '@/pages/search/_util';
 import { ALL_LOCATION_TYPES } from '@/util/constants';
 import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
-import { SEARCH_FOLLOWED_NATIONAL, PROFILE } from '@/util/queryKeys';
+import {
+  SEARCH_FOLLOWED,
+  SEARCH_FOLLOWED_NATIONAL,
+  PROFILE
+} from '@/util/queryKeys';
 import { useAuthStore } from '@/stores/auth';
 import CourtWarrantMapSidebar from './_CourtWarrantMapSidebar.vue';
 import { COURT_WARRANT_RECORD_TYPES } from '@/util/constants';
@@ -220,6 +225,27 @@ const followNationalMutation = useMutation({
   },
   onError: () => {
     toast.error('Error following this search. Please try again.');
+  }
+});
+
+const followLocationMutation = useMutation({
+  mutationFn: async (locationId) => {
+    if (!locationId) {
+      throw new Error('A location ID is required to follow.');
+    }
+    await followSearch(locationId);
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: [SEARCH_FOLLOWED]
+    });
+    queryClient.invalidateQueries({
+      queryKey: [PROFILE]
+    });
+    toast.success('Following this location. See your profile for updates.');
+  },
+  onError: () => {
+    toast.error('Error following this location. Please try again.');
   }
 });
 
@@ -755,8 +781,15 @@ watch(
   }
 );
 
-function handleFollowLocation() {
-  handleFollowNational();
+function handleFollowLocation(locationId) {
+  if (
+    !auth.isAuthenticated() ||
+    !locationId ||
+    followLocationMutation.isPending.value
+  ) {
+    return;
+  }
+  followLocationMutation.mutate(locationId);
 }
 
 function handleFollowNational() {

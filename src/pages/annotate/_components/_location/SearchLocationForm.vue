@@ -1,7 +1,8 @@
 <template>
   <div class="px-4 mb-4 border-wineneutral-300 bg-wineneutral-50 border-2">
     <div
-      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0">
+      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0"
+    >
       <Typeahead
         :id="TYPEAHEAD_ID"
         ref="typeaheadRef"
@@ -9,7 +10,8 @@
         :items="items"
         :placeholder="placeholder ?? 'Enter a place'"
         @select-item="handleSelectRecord"
-        @on-input="fetchTypeaheadResults">
+        @on-input="fetchTypeaheadResults"
+      >
         <!-- Pass label as slot to typeahead -->
         <template #label>
           <h4 class="uppercase">Search location</h4>
@@ -60,8 +62,7 @@ import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 //====================
 const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void;
-}>()
-
+}>();
 
 //====================
 //     Constants

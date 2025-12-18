@@ -71,7 +71,7 @@ export async function getRecentRequests() {
     status: item.request_status,
     locationDisplayName:
       item.locations?.[0]?.display_name || 'Unknown location',
-    route: `/data-request/${item.id}`
+    route: `/data-requests/${item.id}`
   }));
 
   return recentRequests;

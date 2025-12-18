@@ -1,18 +1,12 @@
-
 <template>
   <h2>{{ props.header }}</h2>
-  <form
-    id="id"
-    name="name"
-    class="pdap-form"
-  >
-
-
-    <div class="grid gap-4 pdap-input-radio-group ">
-      <div class="pdap-input pdap-input-radio"
-           v-for="option in options"
-           :key="option.value">
-
+  <form id="id" name="name" class="pdap-form">
+    <div class="grid gap-4 pdap-input-radio-group">
+      <div
+        class="pdap-input pdap-input-radio"
+        v-for="option in options"
+        :key="option.value"
+      >
         <input
           :id="`option-${option.value}`"
           v-model="selectedType"
@@ -20,16 +14,18 @@
           class="hidden"
           name="url-type"
           :value="option"
-          @change="handleSelect(option)" />
+          @change="handleSelect(option)"
+        />
 
-
-        <label
-          :for="`option-${option.value}`" class="hover:text-amber-800"
-        ><div class="font-semibold ">{{ option.label + " " }}<AnnotationSpan :labels="option.anno_labels"/></div></label>
+        <label :for="`option-${option.value}`" class="hover:text-amber-800">
+          <div class="font-semibold">
+            {{ option.label + ' ' }}
+            <AnnotationSpan :labels="option.anno_labels" />
+          </div>
+        </label>
       </div>
     </div>
   </form>
-
 </template>
 
 <script setup lang="ts">
@@ -72,7 +68,4 @@ const selectedType = computed<RadioOption | null>({
 function handleSelect(option: RadioOption) {
   emit('update:modelValue', option);
 }
-
-
-
 </script>

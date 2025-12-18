@@ -1,19 +1,20 @@
-
 <template>
-<div v-if="requestPending">
-  <Spinner
-    :show="requestPending"
-    :size="64"
-    text="Fetching user contributions..." />
-</div>
+  <div v-if="requestPending">
+    <Spinner
+      :show="requestPending"
+      :size="64"
+      text="Fetching user contributions..."
+    />
+  </div>
   <div class="overflow-x-auto">
-
     <span v-if="userContributions">
-      <strong>URLs Annotated: </strong> {{ userContributions.count_validated }}
+      <strong>URLs Annotated:</strong>
+      {{ userContributions.count_validated }}
     </span>
-    <strong> URL ID: </strong> {{props.urlID}}
-    <strong> Page Title: </strong> {{ props.pageTitle }}
-
+    <strong>URL ID:</strong>
+    {{ props.urlID }}
+    <strong>Page Title:</strong>
+    {{ props.pageTitle }}
   </div>
 </template>
 
@@ -28,7 +29,6 @@ import { useQuery } from '@tanstack/vue-query';
 import { getContributions } from '@/api/annotate';
 import { Spinner } from 'pdap-design-system';
 import { PropType } from 'vue';
-
 
 //====================
 //Props, Models, Emits
@@ -53,17 +53,13 @@ const refreshKey = defineModel<number>('refreshKey', { default: 0 });
 const {
   data: userContributions,
   isLoading: requestPending,
-  error,
+  error
 } = useQuery({
   queryKey: ['userContributions', refreshKey],
   queryFn: async (): Promise<UserContributionGetResponse> => {
     return await getContributions();
   }
-})
-
-
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

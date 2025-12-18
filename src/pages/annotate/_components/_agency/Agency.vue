@@ -8,7 +8,8 @@
           v-model="selectedRadioAgency"
           :options="radioOptions"
           header="Suggestions"
-          @update:model-value="handleRadioFormSelect" />
+          @update:model-value="handleRadioFormSelect"
+        />
       </div>
     </div>
     <SearchForm @update:model-value="handleAgencySelect" />
@@ -44,12 +45,14 @@ const props = defineProps({
   }
 });
 
-const agencyModel = defineModel<AgencyLocationSelection | null>({ default: null });
+const agencyModel = defineModel<AgencyLocationSelection | null>({
+  default: null
+});
 const resetKey = defineModel<number>('resetKey', { default: 0 });
 
 const emit = defineEmits<{
-  (e: 'select', v: null): void
-}>()
+  (e: 'select', v: null): void;
+}>();
 
 //====================
 //     Variables
@@ -62,12 +65,14 @@ const selectedRadioAgency = ref<RadioOption | null>(null);
 const radioOptions = computed<RadioOption[]>(() => {
   const raw = props.suggestions ?? [];
 
-  return raw.map((s): RadioOption => ({
-    value: s.id,
-    display_name: s.display_name,
-    label: s.display_name,
-    anno_labels: getEndorsementLabels(s)
-  }));
+  return raw.map(
+    (s): RadioOption => ({
+      value: s.id,
+      display_name: s.display_name,
+      label: s.display_name,
+      anno_labels: getEndorsementLabels(s)
+    })
+  );
 });
 
 //===================
@@ -79,13 +84,12 @@ const resetRadio = () => {
 
 watch(resetKey, () => {
   resetRadio();
-})
+});
 
 //===================
 //     Handlers
 //===================
 function handleRadioFormSelect(option: RadioOption) {
-
   agencyModel.value = {
     id: Number(option.value), // option.value is typed as String | Number
     display_name: option.display_name
@@ -101,7 +105,6 @@ function handleAgencySelect(ag: AgencyLocationSelection | null) {
   agencyModel.value = ag;
   emit('select', null);
 }
-
 </script>
 
 <style scoped></style>

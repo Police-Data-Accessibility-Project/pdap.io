@@ -243,7 +243,7 @@
         >
           <p class="text-lg">
             To open a Data Request,
-            <RouterLink to="/data-request/create">start here.</RouterLink>
+            <RouterLink to="/data-requests/create">start here.</RouterLink>
           </p>
         </div>
         <ProfileTable v-else :items="requests">
@@ -400,7 +400,7 @@ const {
 const requests = computed(() =>
   profileData.value?.data_requests.map((req) => ({
     ...req,
-    to: `/data-request/${req.id}`
+    to: `/data-requests/${req.id}`
   }))
 );
 const followedSearches = computed(() =>

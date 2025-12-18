@@ -1,11 +1,11 @@
 <template>
   <div class="border-b border-gray-300 flex items-center gap-2">
     <div
-        v-for="(tab, index) in tabs"
-        :key="tab.id"
-        class="py-2 px-4 -mb-px border-b-2 cursor-pointer"
-        :class="[getClasses(index), mobileVisibility(index)]"
-        @click="emit('select', index)"
+      v-for="(tab, index) in tabs"
+      :key="tab.id"
+      class="py-2 px-4 -mb-px border-b-2 cursor-pointer"
+      :class="[getClasses(index), mobileVisibility(index)]"
+      @click="emit('select', index)"
     >
       {{ tab.name }}
     </div>
@@ -13,29 +13,28 @@
 </template>
 
 <script setup lang="ts">
-
 //====================
 //       Types
 //====================
 interface Tab {
-  id: string | number
-  name: string
+  id: string | number;
+  name: string;
 }
 
 //====================
 //Props, Models, Emits
 //====================
 const props = defineProps<{
-  tabs: Tab[]
-  currentIndex: number,
-  enabledIndices: Array<number>,
-  answeredIndices: Array<number>,
-  skippedIndices: Array<number>,
-}>()
+  tabs: Tab[];
+  currentIndex: number;
+  enabledIndices: Array<number>;
+  answeredIndices: Array<number>;
+  skippedIndices: Array<number>;
+}>();
 
 const emit = defineEmits<{
-  (e: 'select', index: number): void
-}>()
+  (e: 'select', index: number): void;
+}>();
 
 //====================
 //      Helpers
@@ -67,5 +66,4 @@ function getClasses(index: number) {
   // Disabled Tab
   return 'text-wineneutral-300';
 }
-
 </script>

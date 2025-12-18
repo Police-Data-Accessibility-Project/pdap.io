@@ -3,7 +3,13 @@ import { STATES_TO_ABBREVIATIONS } from './constants';
 export function getFullLocationText(location) {
   if (!location) return '';
 
-  switch (location.type) {
+  const locationType =
+    location.type ??
+    location.location_type ??
+    location.locationType ??
+    getMostNarrowSearchLocationWithResults(location);
+
+  switch (locationType) {
     case 'locality': {
       const locality = location.locality_name || location.name || '';
       const county = location.county_name || location.name || '';
@@ -20,9 +26,9 @@ export function getFullLocationText(location) {
       return [countyLabel, state].filter(Boolean).join(', ');
     }
     case 'state':
-      return location.state_name ?? location.state_iso ?? '';
+      return location.state_name ?? location.name ?? location.state_iso ?? '';
     default:
-      return 'United States'; // Assumes federal as fallback in case no location data or display name
+      return location.display_name || location.name || 'United States'; // fallback
   }
 }
 
@@ -53,7 +59,7 @@ export function getMostNarrowSearchLocationWithResults(location) {
   if (location?.type) return location.type.toLowerCase();
   if (location?.locality_name) return 'locality';
   if (location?.county_name) return 'county';
-  if (location?.state_name) return 'state';
+  if (location?.state_name || location?.state_iso) return 'state';
   if (location?.federal) return 'federal';
   // return 'federal';
   return null;

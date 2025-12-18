@@ -9,18 +9,15 @@
           v-model="selectedRadioRecordType"
           :options="radioOptions"
           header="Suggestions"
-          @update:model-value="handleRadioFormSelect" />
+          @update:model-value="handleRadioFormSelect"
+        />
       </div>
     </div>
 
     <br />
     <!-- Select for Record Type -->
 
-      <form
-        id="id"
-        name="name"
-        class="pdap-form">
-
+    <form id="id" name="name" class="pdap-form">
       <div class="space-y-6 pdap-input-radio-group">
         <fieldset
           v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
@@ -31,33 +28,32 @@
             {{ categoryName }}
           </legend>
 
-          <div class="mt-2 grid grid-cols-3 gap-2 ">
-            <div class="pdap-input pdap-input-radio"
-                 v-for="type in types"
-                 :key="type"
+          <div class="mt-2 grid grid-cols-3 gap-2">
+            <div
+              class="pdap-input pdap-input-radio"
+              v-for="type in types"
+              :key="type"
             >
-
-                <input
-                  :id="type"
-                  type="radio"
-                  name="record-type"
-                  :value="type"
-                  v-model="selectedRecordTypeModel"
-                  @change="handleSelectChange"
-                />
+              <input
+                :id="type"
+                type="radio"
+                name="record-type"
+                :value="type"
+                v-model="selectedRecordTypeModel"
+                @change="handleSelectChange"
+              />
 
               <label
                 :for="type"
                 class="flex items-center gap-2 rounded px-2 py-1 hover:bg-brand-wine-600 cursor-pointer"
               >
-                <span >{{ type }}</span>
+                <span>{{ type }}</span>
               </label>
             </div>
           </div>
         </fieldset>
       </div>
-      </form>
-
+    </form>
 
     <p class="mt-2 text-sm text-gray-600">
       Selected: {{ selectedRecordTypeModel || 'none' }}
@@ -76,7 +72,11 @@
 import { computed, PropType, ref, watch } from 'vue';
 import { RECORD_TYPES_BY_CATEGORY } from '@/pages/annotate/_components/_shared/constants';
 import RadioForm from '@/pages/annotate/_components/_shared/RadioForm.vue';
-import { AnnoLabels, RadioOption, RecordTypeSuggestionType } from '@/pages/annotate/_components/_shared/types';
+import {
+  AnnoLabels,
+  RadioOption,
+  RecordTypeSuggestionType
+} from '@/pages/annotate/_components/_shared/types';
 import { getEndorsementLabels } from '@/pages/annotate/_components/_shared/helpers';
 import { InputRadio, RadioGroup } from 'pdap-design-system';
 
@@ -94,8 +94,8 @@ const selectedRecordTypeModel = defineModel({ type: String, default: null });
 const resetKey = defineModel<number>('resetKey', { default: 0 });
 
 const emit = defineEmits<{
-  (e: 'select', v: null): void
-}>()
+  (e: 'select', v: null): void;
+}>();
 
 //====================
 //     Variables
@@ -119,8 +119,7 @@ const radioOptions = computed((): RadioOption[] => {
 //===================
 watch(resetKey, () => {
   selectedRadioRecordType.value = null;
-})
-
+});
 
 //====================
 //      Handles
@@ -134,9 +133,6 @@ function handleRadioFormSelect(option: RadioOption) {
   selectedRecordTypeModel.value = option.value;
   emit('select', null);
 }
-
-
-
 </script>
 
 <style scoped></style>

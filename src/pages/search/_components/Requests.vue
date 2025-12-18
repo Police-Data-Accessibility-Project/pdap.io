@@ -21,7 +21,7 @@
     <RouterLink
       v-for="request in requests"
       :key="request.id"
-      :to="`/data-request/${request.id}`"
+      :to="`/data-requests/${request.id}`"
       class="col-span-3 grid grid-cols-subgrid gap-4 p-2 border-solid border-neutral-300 border-2 rounded-sm [&>*]:text-sm [&>*]:md:text-med [&>*]:lg:text-lg text-neutral-950 hover:bg-neutral-100"
     >
       <p class="text-left">
