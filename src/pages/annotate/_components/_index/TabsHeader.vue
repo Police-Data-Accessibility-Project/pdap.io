@@ -1,10 +1,10 @@
 <template>
-  <div class="border-b border-gray-300 flex space-x-4">
+  <div class="border-b border-gray-300 flex items-center gap-2">
     <div
       v-for="(tab, index) in tabs"
       :key="tab.id"
       class="py-2 px-4 -mb-px border-b-2 cursor-pointer"
-      :class="getClasses(index)"
+      :class="[getClasses(index), mobileVisibility(index)]"
       @click="emit('select', index)"
     >
       {{ tab.name }}
@@ -39,6 +39,13 @@ const emit = defineEmits<{
 //====================
 //      Helpers
 //====================
+function mobileVisibility(index: number) {
+  // Hidden on small screens unless it's the current tab; always show from md+
+  return index === props.currentIndex
+    ? 'block text-center md:text-left mx-auto md:mx-0'
+    : 'hidden md:block'
+}
+
 function getClasses(index: number) {
   // Selected/Current Tab
   if (index === props.currentIndex) {

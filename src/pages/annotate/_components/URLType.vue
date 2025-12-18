@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 grid-rows-2 gap-4">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2">
     <div
       v-for="option in formattedOptions"
       :key="option.value"

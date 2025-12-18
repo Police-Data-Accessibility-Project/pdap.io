@@ -18,7 +18,6 @@
         <template #item="item">
           <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
           <span v-html="typeaheadRef?.boldMatchText(formatText(item))" />
-          <span class="select">Select</span>
         </template>
 
         <template #not-found>

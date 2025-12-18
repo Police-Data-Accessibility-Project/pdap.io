@@ -172,7 +172,7 @@
             </a>
           </p>
 
-          <h6>Police &amp; Public Interactions</h6>
+          <h3 class="text-med">Police &amp; Public Interactions</h3>
           <ul>
             <li>
               <strong>Accident Reports</strong>
@@ -241,7 +241,7 @@
 
           <hr />
 
-          <h6>Info About Officers</h6>
+          <h3 class="text-med">Info About Officers</h3>
           <ul>
             <li>
               <strong>Complaints &amp; Misconduct</strong>
@@ -263,7 +263,7 @@
 
           <hr />
 
-          <h6>Info About Agencies</h6>
+          <h3 class="text-med">Info About Agencies</h3>
           <ul>
             <li>
               <strong>Annual &amp; Monthly Reports</strong>
@@ -289,7 +289,7 @@
 
           <hr />
 
-          <h6>Agency-Published Resources</h6>
+          <h3 class="text-med">Agency-Published Resources</h3>
           <ul>
             <li>
               <strong>Crime Maps &amp; Reports</strong>
@@ -323,7 +323,7 @@
 
           <hr />
 
-          <h6>Jails &amp; Courts Specific</h6>
+          <h3 class="text-med">Jails &amp; Courts Specific</h3>
           <ul>
             <li>
               <strong>Booking Reports</strong>
@@ -411,7 +411,6 @@ const localAnnotation = ref<NextAnnotationResponse | null>(null);
 
 const isThrottled = ref<boolean>(false);
 const globalResetKey = ref<number>(0);
-const showAnonWarning = ref(true);
 
 //====================
 //     Constants

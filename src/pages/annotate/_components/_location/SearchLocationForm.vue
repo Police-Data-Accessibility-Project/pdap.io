@@ -24,7 +24,6 @@
           <span class="locale-type">
             {{ item.type }}
           </span>
-          <span class="select">Select</span>
         </template>
         <template #not-found>
           <span>

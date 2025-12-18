@@ -9,10 +9,6 @@
       Previous
     </button>
 
-    <span class="text-sm text-gray-500">
-      Step {{ currentIndex + 1 }} of {{ total }}
-    </span>
-
     <button
       class="px-4 py-2 pdap-button-primary text-sm"
       :disabled="isNextDisabled"
