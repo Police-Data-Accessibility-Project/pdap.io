@@ -147,7 +147,7 @@
             </a>
           </p>
 
-          <h6>Police &amp; Public Interactions</h6>
+          <h3 class="text-med">Police &amp; Public Interactions</h3>
           <ul>
             <li><strong>Accident Reports</strong>: Vehicle accident records, often for people to look up their reports.</li>
             <li><strong>Arrest Records</strong>: Records of arrests within a jurisdiction.</li>
@@ -168,7 +168,7 @@
 
           <hr />
 
-          <h6>Info About Officers</h6>
+          <h3 class="text-med">Info About Officers</h3>
           <ul>
             <li><strong>Complaints &amp; Misconduct</strong>: Records/statistics on misconduct investigations.</li>
             <li><strong>Daily Activity Logs</strong>: Shift reports or timesheets created by officers.</li>
@@ -178,7 +178,7 @@
 
           <hr />
 
-          <h6>Info About Agencies</h6>
+          <h3 class="text-med">Info About Agencies</h3>
           <ul>
             <li><strong>Annual &amp; Monthly Reports</strong>: Summary documents about police activities.</li>
             <li><strong>Budgets &amp; Finances</strong>: Budgets, grants, and financial records.</li>
@@ -189,7 +189,7 @@
 
           <hr />
 
-          <h6>Agency-Published Resources</h6>
+          <h3 class="text-med">Agency-Published Resources</h3>
           <ul>
             <li><strong>Crime Maps &amp; Reports</strong>: Individual crimes shown in maps/tables.</li>
             <li><strong>Crime Statistics</strong>: Summarized crime statistics for jurisdictions.</li>
@@ -202,7 +202,7 @@
 
           <hr />
 
-          <h6>Jails &amp; Courts Specific</h6>
+          <h3 class="text-med">Jails &amp; Courts Specific</h3>
           <ul>
             <li><strong>Booking Reports</strong>: Records of booking/intake into jails.</li>
             <li><strong>Court Cases</strong>: Dockets or other case-related records.</li>
