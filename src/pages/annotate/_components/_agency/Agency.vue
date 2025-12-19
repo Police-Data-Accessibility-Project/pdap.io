@@ -107,4 +107,3 @@ function handleAgencySelect(ag: AgencyLocationSelection | null) {
 }
 </script>
 
-<style scoped></style>

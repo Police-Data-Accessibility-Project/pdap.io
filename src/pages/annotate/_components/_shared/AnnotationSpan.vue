@@ -1,5 +1,5 @@
 <template>
-  <span class="annotation-group">
+  <span class="inline-flex gap-2">
     <span
       v-if="props?.labels?.user"
       class="annotation user font-semibold text-wineneutral-300"
@@ -40,9 +40,3 @@ type Props = {
 const props = defineProps<Props>();
 </script>
 
-<style scoped>
-.annotation-group {
-  display: inline-flex;
-  gap: 0.5rem;
-}
-</style>

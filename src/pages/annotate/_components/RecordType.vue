@@ -135,4 +135,3 @@ function handleRadioFormSelect(option: RadioOption) {
 }
 </script>
 
-<style scoped></style>

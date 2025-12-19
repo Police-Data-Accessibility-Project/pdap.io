@@ -142,4 +142,3 @@ async function handleSubmit() {
 }
 </script>
 
-<style scoped></style>

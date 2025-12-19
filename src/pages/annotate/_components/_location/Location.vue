@@ -105,4 +105,3 @@ function handleSearchLocationSelect(loc: LocationSuggestion) {
 }
 </script>
 
-<style scoped></style>
