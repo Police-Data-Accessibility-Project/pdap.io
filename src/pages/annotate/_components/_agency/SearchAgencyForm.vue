@@ -132,5 +132,3 @@ function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>
-
-<style scoped></style>
