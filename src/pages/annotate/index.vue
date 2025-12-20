@@ -385,6 +385,7 @@ import {
 } from '@/pages/annotate/_components/_shared/types';
 import Header from '@/pages/annotate/_components/_header/Header.vue';
 import AnonWarning from '@/pages/annotate/_components/_index/AnonWarning.vue';
+import { setCookie, useAnonSessionStore } from '@/util/cookies';
 //====================
 //     Types
 //====================
@@ -510,7 +511,6 @@ const currentGlobalIndex = computed<number>({
 });
 
 const currentTab = computed(() => tabs[currentGlobalIndex.value]);
-// TODO: Check to see if this queryKey is appropriate
 const queryKey = computed(() => [ANNOTATE]);
 
 const isNextDisabled = computed((): boolean => {
@@ -543,7 +543,20 @@ const {
 }: UseQueryResult<NextAnnotationResponse> = useQuery({
   queryKey,
   queryFn: async (): Promise<NextAnnotationResponse> => {
-    return await getAnnotationURL();
+    // Hydrate cookie and get session ID if exists
+    const anonSession = useAnonSessionStore();
+    anonSession.hydrateSession();
+    console.log("Cookie: ", anonSession.sessionID);
+    const response = await getAnnotationURL(anonSession.sessionID);
+    //Overwrite Session ID cookie
+    console.log("Response: ", response.session_id);
+    setCookie(
+      'sessionID',
+      JSON.stringify({
+        sessionID: response.session_id
+      })
+    )
+    return response
   }
 });
 

@@ -19,7 +19,7 @@ function authHeaders(auth) {
   };
 }
 
-export async function getAnnotationURL(): Promise<NextAnnotationResponse> {
+export async function getAnnotationURL(session_id: string | null): Promise<NextAnnotationResponse> {
   const auth = useAuthStore();
 
   if (auth.isAuthenticated()) {
@@ -30,6 +30,13 @@ export async function getAnnotationURL(): Promise<NextAnnotationResponse> {
       .then((res) => res.data);
   }
   // Fall back to anonymous annotation.
+  // Use anonymous session ID if provided
+  console.log('Falling back to anonymous annotation...')
+  if (session_id !== null) {
+    console.log("Using Session ID ", session_id);
+    return await axios.get(`${ANNOTATE_BASE}/anonymous?session_id=${session_id}`).then((res) => res.data)
+  }
+  // Otherwise do not provide session id
   return await axios.get(`${ANNOTATE_BASE}/anonymous`).then((res) => res.data);
 }
 
