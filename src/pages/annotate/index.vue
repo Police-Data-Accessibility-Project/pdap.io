@@ -28,11 +28,7 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-          <Header
-            :refresh-key="globalResetKey"
-            :url-i-d="localAnnotation.next_annotation.url_info.url_id"
-            :page-title="localAnnotation.next_annotation.html_info.title"
-          />
+
           <AnonWarning />
 
           <Reminder
@@ -58,7 +54,11 @@
               {{ localAnnotation.next_annotation?.url_info.url }}
             </a>
           </div>
-
+          <Header
+            :refresh-key="globalResetKey"
+            :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+            :page-title="localAnnotation.next_annotation.html_info.title"
+          />
           <div class="w-full mx-auto">
             <TabControls
               v-model="nextText"
