@@ -5,6 +5,7 @@ import {
   NextAnnotationResponse
 } from '@/pages/annotate/_components/_shared/types';
 import { UserContributionGetResponse } from '../pages/annotate/_components/_shared/types';
+import { deleteCookie, useAnonSessionStore } from '@/util/cookies';
 
 const ANNOTATE_BASE = `${import.meta.env.VITE_SM_API_URL}/annotate`;
 const CONTRIBUTIONS_BASE = `${import.meta.env.VITE_SM_API_URL}/contributions`;
@@ -77,4 +78,40 @@ export async function getContributions(): Promise<null | UserContributionGetResp
       headers: authHeaders(auth)
     })
     .then((res) => res.data);
+}
+
+export async function migrateAnonymousSessionAnnotations(): Promise<void> {
+  // Get Auth
+  const auth = useAuthStore();
+  if (!auth.isAuthenticated()) {
+    console.log("User not authenticated. Cancelling migration.")
+    return;
+  }
+  // Get Anon Session UUID
+  const anonSession = useAnonSessionStore();
+  anonSession.hydrateSession();
+  if (!anonSession.sessionID) {
+    console.log("No session ID found. Cancelling migration.")
+    return;
+  }
+
+  try {
+    await axios.post(
+      `${ANNOTATE_BASE}/migrate?session_id=${anonSession.sessionID}`,
+      {},
+      {
+        headers: authHeaders(auth)
+      }
+    );
+  } catch (error) {
+    console.log("Error calling migration endpoint: ", error);
+    return;
+  }
+
+
+  // Remove session ID cookie
+  deleteCookie('sessionID')
+
+  // Log to console whether migration was a success or not.
+  console.log("Anonymous Session Migration success.")
 }

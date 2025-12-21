@@ -6,7 +6,7 @@
     >
       <!--TODO: Spinner does not currently display on submission. Unclear why.-->
       <Spinner
-        :show="annotationPending"
+        :show="submitPending"
         :size="64"
         text="Submitting annotation..."
       />
