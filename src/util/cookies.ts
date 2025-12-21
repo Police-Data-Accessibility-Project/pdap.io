@@ -64,6 +64,7 @@ export const useAnonSessionStore = defineStore(
         } catch {
           this.sessionID = null;
         }
+
       }
     }
   }
