@@ -546,10 +546,8 @@ const {
     // Hydrate cookie and get session ID if exists
     const anonSession = useAnonSessionStore();
     anonSession.hydrateSession();
-    console.log("Cookie: ", anonSession.sessionID);
     const response = await getAnnotationURL(anonSession.sessionID);
     //Overwrite Session ID cookie
-    console.log("Response: ", response.session_id);
     setCookie(
       'sessionID',
       JSON.stringify({
@@ -560,11 +558,13 @@ const {
   }
 });
 
-watch(annotation, (newVal) => {
-  if (newVal) {
-    localAnnotation.value = newVal;
-  }
-});
+watch(
+  annotation,
+  (newVal) => {
+    localAnnotation.value = newVal ?? null;
+  },
+  { immediate: true }
+);
 
 //====================
 // Control Logic

@@ -13,6 +13,20 @@ export function setCookie(name: string, value: string, opts: {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=${path}; SameSite=${sameSite}${secure ? '; Secure' : ''}`;
 }
 
+export function deleteCookie(
+  name: string,
+  path = '/',
+  domain?: string
+) {
+  // Delete cookie by overwriting it with an expiration date in the past
+  document.cookie = [
+    `${name}=`,
+    'expires=Thu, 01 Jan 1970 00:00:00 GMT',
+    `path=${path}`,
+    domain ? `domain=${domain}` : '',
+  ].join('; ');
+}
+
 export const useAnonSessionStore = defineStore(
   'anonSession',
   {
