@@ -5,18 +5,18 @@
     >
       <div class="col-span-1 text-sm">
         <h3>Hints & Notes</h3>
-        <h3 class="text-med">What makes a relevant Data Source?</h3>
+        <h4 class="text-med">What makes a relevant Data Source?</h4>
         <p>
           Data can be found in unexpected places. The page may not say "data"
           anywhere on it. Check the list of Record Types below to see what we
           consider relevant.
         </p>
-        <h3 class="text-med">What agencies are relevant?</h3>
+        <h4 class="text-med">What agencies are relevant?</h4>
         <p>
           We include courts and jails because they often contain information
           about police systems.
         </p>
-        <h3 class="text-med">Individual Records</h3>
+        <h4 class="text-med">Individual Records</h4>
         <p>
           An incident report is an individual record; a list of incidents is a
           data source.
@@ -32,7 +32,7 @@
           </a>
         </p>
 
-        <h3 class="text-med">Police &amp; Public Interactions</h3>
+        <h4 class="text-med">Police &amp; Public Interactions</h4>
         <ul>
           <li>
             <strong>Accident Reports</strong>
@@ -101,7 +101,7 @@
 
         <hr />
 
-        <h3 class="text-med">Info About Officers</h3>
+        <h4 class="text-med">Info About Officers</h4>
         <ul>
           <li>
             <strong>Complaints &amp; Misconduct</strong>
@@ -123,7 +123,7 @@
 
         <hr />
 
-        <h3 class="text-med">Info About Agencies</h3>
+        <h4 class="text-med">Info About Agencies</h4>
         <ul>
           <li>
             <strong>Annual &amp; Monthly Reports</strong>
@@ -149,7 +149,7 @@
 
         <hr />
 
-        <h3 class="text-med">Agency-Published Resources</h3>
+        <h4 class="text-med">Agency-Published Resources</h4>
         <ul>
           <li>
             <strong>Crime Maps &amp; Reports</strong>
@@ -183,7 +183,7 @@
 
         <hr />
 
-        <h3 class="text-med">Jails &amp; Courts Specific</h3>
+        <h4 class="text-med">Jails &amp; Courts Specific</h4>
         <ul>
           <li>
             <strong>Booking Reports</strong>
