@@ -1,11 +1,24 @@
 <template>
   <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
-    <Modal
-      :model-value="showContentWarning"
-      @close="handleCloseContentWarning"
+    <div
+      v-if="showContentWarning"
+      class="relative border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm"
     >
-      Pages provided for annotation have not been manually validated and may contain sensitive content.
-    </Modal>
+      <!-- Close button -->
+      <button
+        @click="handleCloseContentWarning"
+        class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
+        aria-label="Dismiss warning"
+      >
+        ✕
+      </button>
+      <p class="max-w-[90%] mb-0">
+        These pages are related the criminal legal system, which may include discussions of topics such as crime, 
+        legal proceedings, incarceration, and violence. Additionally, part of our work is labeling websites which 
+        may appear to be related but do not pertain to the criminal legal system, and might contain anything at all. 
+        It's ok to take a break, or do something else.
+      </p>
+    </div>
     <transition mode="out-in">
       <div
         v-if="annotationPending"

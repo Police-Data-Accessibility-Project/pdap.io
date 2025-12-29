@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!auth.isAuthenticated() && showAnonWarning"
-    class="relative rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900"
+    class="relative border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm"
   >
     <!-- Close button -->
     <button
@@ -11,30 +11,9 @@
     >
       ✕
     </button>
-
-    <p class="font-semibold">You are accessing this as an anonymous user.</p>
-
-    <p class="mt-1 text-sm">
-      Anonymous users can make annotations, but their annotations weigh less
-      than those made by signed-in users.
-    </p>
-
-    <p class="mt-2 text-sm">
-      Click
-      <RouterLink
-        to="/sign-in"
-        class="font-medium underline hover:text-amber-800"
-      >
-        here
-      </RouterLink>
-      to sign in or
-      <RouterLink
-        to="/sign-up"
-        class="font-medium underline hover:text-amber-800"
-      >
-        here
-      </RouterLink>
-      to sign up.
+    <p class="max-w-[90%] mb-0">
+      <strong>You are not signed in.</strong> You can make annotations anonymously, but your annotations weigh 
+      less than those made by signed-in users.
     </p>
   </div>
 </template>
