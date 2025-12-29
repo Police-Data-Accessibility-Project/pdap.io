@@ -86,7 +86,8 @@ export const useRemindersStore = defineStore(
        * False if not acknowledged.
        */
       cookieAgreement: false,
-      contentWarning: false,
+      // Default to showing the content warning unless the user has dismissed it.
+      contentWarning: true,
     }),
     actions: {
       /**
