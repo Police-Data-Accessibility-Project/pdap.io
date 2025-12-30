@@ -22,66 +22,60 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-
           <AnonWarning />
           <div
             v-if="showContentWarning"
-            class="relative border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm"
+            class="relative border border-goldneutral-200 bg-goldneutral-50 p-3 text-sm"
           >
             <!-- Close button -->
             <button
               @click="handleCloseContentWarning"
-              class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
+              class="absolute right-3 top-3 text-brand-gold-700 hover:text-brand-gold-900"
               aria-label="Dismiss warning"
             >
               ✕
             </button>
-            <p class="max-w-[90%] mb-0">
+            <p class="max-w-none pr-4 mb-0">
               <strong>Content warning:</strong> We're trying to find pages related the criminal legal system, 
               which may reference topics such as crime, incarceration, and violence. Additionally, part of our work 
               is labeling websites which are not relevant and might contain anything at all. It's ok to take a break, 
               or do something else.
             </p>
           </div>
-
           <Reminder
             v-if="showCookieAgreement"
           @closed="handleCloseCookieReminder">
             This page uses cookies.
           </Reminder>
+          <!-- Begin annotation view -->
+          <h1 class="mt-2">Labeling potential data sources</h1>
+          <div>
+            <div class="text-med">
+              <strong>URL:</strong>
+              <a
+                :href="localAnnotation.next_annotation?.url_info.url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ localAnnotation.next_annotation?.url_info.url }}
+              </a>
+            </div>
+            <Header
+              :refresh-key="globalResetKey"
+              :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+              :page-title="localAnnotation.next_annotation.html_info.title"
+            />
+          </div>
           <img
             v-if="imageOk"
             alt="Screenshot of URL Page"
             :key="localAnnotation.next_annotation?.url_info.url_id"
             :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
             @error="imageOk = false"
+            class="border border-wineneutral-900"
           />
           <div v-else>Image Not Found</div>
-          <div>
-            URL:
-            <a
-              :href="localAnnotation.next_annotation?.url_info.url"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {{ localAnnotation.next_annotation?.url_info.url }}
-            </a>
-          </div>
-          <Header
-            :refresh-key="globalResetKey"
-            :url-i-d="localAnnotation.next_annotation.url_info.url_id"
-            :page-title="localAnnotation.next_annotation.html_info.title"
-          />
           <div class="w-full mx-auto">
-            <TabControls
-              v-model="nextText"
-              :current-index="currentGlobalIndex"
-              :total="tabs.length"
-              :is-next-disabled="isNextDisabled"
-              @prev="prevTab"
-              @next="nextTab"
-            />
-
             <TabsHeader
               :tabs="tabs"
               :current-index="currentGlobalIndex"
@@ -156,6 +150,14 @@
                 </keep-alive>
               </div>
             </keep-alive>
+            <TabControls
+              v-model="nextText"
+              :current-index="currentGlobalIndex"
+              :total="tabs.length"
+              :is-next-disabled="isNextDisabled"
+              @prev="prevTab"
+              @next="nextTab"
+            />
           </div>
         </template>
         <template v-else>

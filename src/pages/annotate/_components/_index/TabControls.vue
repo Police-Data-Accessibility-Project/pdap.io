@@ -1,6 +1,6 @@
 <!-- src/components/StepControls.vue -->
 <template>
-  <div class="mt-6 flex justify-between items-center">
+  <div class="mt-2 flex justify-between items-center">
     <button
       class="px-4 py-2 pdap-button-secondary text-sm"
       :disabled="currentIndex === 0"

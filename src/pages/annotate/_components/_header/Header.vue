@@ -6,15 +6,17 @@
       text="Fetching user contributions..."
     />
   </div>
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto flex flex flex-wrap gap-4 text-med">
     <span v-if="userContributions">
       <strong>URLs Annotated:</strong>
       {{ userContributions.count_validated }}
     </span>
-    <strong> URL ID:</strong>
-    {{ props.urlID }}
-    <strong>Page Title:</strong>
-    {{ props.pageTitle }}
+    <span>
+      <strong> URL ID:</strong> {{ props.urlID }}
+    </span>
+    <span>
+      <strong>Page Title:</strong> {{ props.pageTitle }}
+    </span>
   </div>
 </template>
 
