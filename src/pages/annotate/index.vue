@@ -1,24 +1,5 @@
 <template>
   <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
-    <div
-      v-if="showContentWarning"
-      class="relative border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm"
-    >
-      <!-- Close button -->
-      <button
-        @click="handleCloseContentWarning"
-        class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
-        aria-label="Dismiss warning"
-      >
-        ✕
-      </button>
-      <p class="max-w-[90%] mb-0">
-        These pages are related the criminal legal system, which may include discussions of topics such as crime, 
-        legal proceedings, incarceration, and violence. Additionally, part of our work is labeling websites which 
-        may appear to be related but do not pertain to the criminal legal system, and might contain anything at all. 
-        It's ok to take a break, or do something else.
-      </p>
-    </div>
     <transition mode="out-in">
       <div
         v-if="annotationPending"
@@ -43,6 +24,25 @@
         <template v-if="localAnnotation?.next_annotation">
 
           <AnonWarning />
+          <div
+            v-if="showContentWarning"
+            class="relative border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm"
+          >
+            <!-- Close button -->
+            <button
+              @click="handleCloseContentWarning"
+              class="absolute right-3 top-3 text-amber-700 hover:text-amber-900"
+              aria-label="Dismiss warning"
+            >
+              ✕
+            </button>
+            <p class="max-w-[90%] mb-0">
+              <strong>Content warning:</strong> We're trying to find pages related the criminal legal system, 
+              which may reference topics such as crime, incarceration, and violence. Additionally, part of our work 
+              is labeling websites which are not relevant and might contain anything at all. It's ok to take a break, 
+              or do something else.
+            </p>
+          </div>
 
           <Reminder
             v-if="showCookieAgreement"
