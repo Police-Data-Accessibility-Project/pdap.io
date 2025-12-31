@@ -3,11 +3,11 @@
     <div
       v-for="option in formattedOptions"
       :key="option.value"
-      class="p-4 cursor-pointer rounded-lg border transition"
+      class="p-4 cursor-pointer border transition"
       :class="handleOuterBlockClass(option.value)"
       @click="handleSelectOption(option.value)"
     >
-      <div class="rounded-lg p-4" :class="handleInnerBlockClass(option.value)">
+      <div class="p-4" :class="handleInnerBlockClass(option.value)">
         <p>{{ option.value }}</p>
         <p class="text-sm">{{ descriptionMapping[option.value] }}</p>
       </div>

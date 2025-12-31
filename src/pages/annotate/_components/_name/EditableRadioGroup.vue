@@ -3,7 +3,7 @@
     <div
       v-for="option in options"
       :key="option.id"
-      class="flex items-center gap-2 border rounded-lg p-3 cursor-pointer transition hover:bg-purple-950"
+      class="flex items-center gap-2 border p-3 cursor-pointer transition hover:bg-purple-950"
       :class="isSelected(option.id) ? 'ring-2  bg-orange-500' : ''"
       @click="choose(option)"
     >

@@ -22,7 +22,7 @@
         <fieldset
           v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
           :key="categoryName"
-          class="rounded border p-3"
+          class="border p-3"
         >
           <legend class="px-1 font-semibold">
             {{ categoryName }}
@@ -45,7 +45,7 @@
 
               <label
                 :for="type"
-                class="flex items-center gap-2 rounded px-2 py-1 hover:bg-brand-wine-600 cursor-pointer"
+                class="flex items-center gap-2 px-2 py-1 hover:bg-brand-wine-600 cursor-pointer"
               >
                 <span>{{ type }}</span>
               </label>
