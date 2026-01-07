@@ -6,19 +6,6 @@
 
 <template>
   <main class="mb-24 grid grid-cols-3 max-w-5xl mx-auto @container w-full">
-    Revert this: just checking the transparency module dynamic:
-
-    <a
-      href="https://app.candid.org/profile/10948605/police-data-accessibility-project-inc-85-4207132/?pkId=fe61f193-99e9-45b8-b215-e059ca98c83c"
-      target="_blank"
-      rel="nofollow noreferrer"
-    >
-      <img
-        src="https://widgets.guidestar.org/prod/v1/pdp/transparency-seal/10948605/svg"
-        alt="Platinum transparency"
-      />
-    </a>
-
     <section class="col-span-full">
       <div
         class="text-med bg-wineneutral-100 p-4 mb-6 border-2 border-dotted border-wineneutral-300"
