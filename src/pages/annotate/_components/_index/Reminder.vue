@@ -1,5 +1,3 @@
-
-
 <template>
   <div
     class="relative rounded-lg border border-amber-400 bg-amber-900 p-4 text-amber-50"
@@ -11,12 +9,11 @@
     >
       ✕
     </button>
-   <slot/>
+    <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-
 //====================
 //Props, Models, Emits
 //====================
@@ -38,5 +35,4 @@ function handleClose(): void {
   emit('closed');
   showReminder.value = false;
 }
-
 </script>

@@ -20,7 +20,9 @@ function authHeaders(auth) {
   };
 }
 
-export async function getAnnotationURL(session_id: string | null): Promise<NextAnnotationResponse> {
+export async function getAnnotationURL(
+  session_id: string | null
+): Promise<NextAnnotationResponse> {
   const auth = useAuthStore();
 
   if (auth.isAuthenticated()) {
@@ -32,10 +34,12 @@ export async function getAnnotationURL(session_id: string | null): Promise<NextA
   }
   // Fall back to anonymous annotation.
   // Use anonymous session ID if provided
-  console.log('Falling back to anonymous annotation...')
+  console.log('Falling back to anonymous annotation...');
   if (session_id !== null) {
-    console.log("Using Session ID ", session_id);
-    return await axios.get(`${ANNOTATE_BASE}/anonymous?session_id=${session_id}`).then((res) => res.data)
+    console.log('Using Session ID ', session_id);
+    return await axios
+      .get(`${ANNOTATE_BASE}/anonymous?session_id=${session_id}`)
+      .then((res) => res.data);
   }
   // Otherwise do not provide session id
   return await axios.get(`${ANNOTATE_BASE}/anonymous`).then((res) => res.data);
@@ -84,14 +88,14 @@ export async function migrateAnonymousSessionAnnotations(): Promise<void> {
   // Get Auth
   const auth = useAuthStore();
   if (!auth.isAuthenticated()) {
-    console.log("User not authenticated. Cancelling migration.")
+    console.log('User not authenticated. Cancelling migration.');
     return;
   }
   // Get Anon Session UUID
   const anonSession = useAnonSessionStore();
   anonSession.hydrateSession();
   if (!anonSession.sessionID) {
-    console.log("No session ID found. Cancelling migration.")
+    console.log('No session ID found. Cancelling migration.');
     return;
   }
 
@@ -104,14 +108,13 @@ export async function migrateAnonymousSessionAnnotations(): Promise<void> {
       }
     );
   } catch (error) {
-    console.log("Error calling migration endpoint: ", error);
+    console.log('Error calling migration endpoint: ', error);
     return;
   }
 
-
   // Remove session ID cookie
-  deleteCookie('sessionID')
+  deleteCookie('sessionID');
 
   // Log to console whether migration was a success or not.
-  console.log("Anonymous Session Migration success.")
+  console.log('Anonymous Session Migration success.');
 }

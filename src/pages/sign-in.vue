@@ -233,7 +233,7 @@ async function authPassword(formValues) {
   const { email, password } = formValues;
 
   await signInWithEmail(email, password);
-  void migrateAnonymousSessionAnnotations()
+  void migrateAnonymousSessionAnnotations();
 }
 </script>
 

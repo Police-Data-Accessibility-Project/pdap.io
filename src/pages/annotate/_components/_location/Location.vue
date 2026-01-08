@@ -104,4 +104,3 @@ function handleSearchLocationSelect(loc: LocationSuggestion) {
   emit('select', null);
 }
 </script>
-

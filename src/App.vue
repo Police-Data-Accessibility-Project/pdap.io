@@ -20,6 +20,7 @@
     <Footer
       :logo-image-src="acronym"
       :fundraising-data="{ raised: 0, goal: 0 }"
+      :collapse-on-first-render="collapseFooterOnEntry"
     />
   </AuthWrapper>
 </template>
@@ -29,8 +30,8 @@ import { ErrorBoundary, Footer, Header, Spinner } from 'pdap-design-system';
 import AuthWrapper from './components/AuthWrapper.vue';
 import acronym from 'pdap-design-system/images/acronym.svg';
 import { NAV_LINKS, FOOTER_LINKS } from '@/util/constants';
-import { provide, ref } from 'vue';
-import { onBeforeRouteUpdate } from 'vue-router';
+import { provide, ref, computed } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 
 const routeKey = ref(null);
 
@@ -45,6 +46,17 @@ onBeforeRouteUpdate((to, from) => {
   } else {
     routeKey.value = to.path;
   }
+});
+const route = useRoute();
+const collapseFooterOnEntry = computed(() => {
+  for (let i = route.matched.length - 1; i >= 0; i -= 1) {
+    const record = route.matched[i];
+    console.debug({ record });
+    if (typeof record.meta?.collapseFooter === 'boolean') {
+      return record.meta.collapseFooter;
+    }
+  }
+  return true;
 });
 
 provide('navLinks', NAV_LINKS);

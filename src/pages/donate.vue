@@ -1,3 +1,11 @@
+<route>
+  {
+    meta: {
+      collapseFooter: false
+    }
+  }
+</route>
+
 <template>
   <section class="pdap-grid-container columns-2 px-4 md:px-8 mb-12">
     <div class="col-span-full">

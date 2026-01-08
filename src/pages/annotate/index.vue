@@ -1,10 +1,8 @@
 <template>
   <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
-    <Modal
-      :model-value="showContentWarning"
-      @close="handleCloseContentWarning"
-    >
-      Pages provided for annotation have not been manually validated and may contain sensitive content.
+    <Modal :model-value="showContentWarning" @close="handleCloseContentWarning">
+      Pages provided for annotation have not been manually validated and may
+      contain sensitive content.
     </Modal>
     <transition mode="out-in">
       <div
@@ -28,12 +26,12 @@
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-
           <AnonWarning />
 
           <Reminder
             v-if="showCookieAgreement"
-          @closed="handleCloseCookieReminder">
+            @closed="handleCloseCookieReminder"
+          >
             This page uses cookies.
           </Reminder>
           <img
@@ -177,7 +175,12 @@ import AgencyView from '@/pages/annotate/_components/_agency/Agency.vue';
 import LocationView from '@/pages/annotate/_components/_location/Location.vue';
 import NameView from '@/pages/annotate/_components/_name/Name.vue';
 import ConfirmView from '@/pages/annotate/_components/Confirm.vue';
-import { TabID, tabIDs, tabs, validTabsByUrlType } from '@/pages/annotate/_components/_index/constants';
+import {
+  TabID,
+  tabIDs,
+  tabs,
+  validTabsByUrlType
+} from '@/pages/annotate/_components/_index/constants';
 import TabControls from '@/pages/annotate/_components/_index/TabControls.vue';
 import TabsHeader from '@/pages/annotate/_components/_index/TabsHeader.vue';
 import {
@@ -191,7 +194,11 @@ import {
 } from '@/pages/annotate/_components/_shared/types';
 import Header from '@/pages/annotate/_components/_header/Header.vue';
 import AnonWarning from '@/pages/annotate/_components/_index/AnonWarning.vue';
-import { setCookie, useAnonSessionStore, useRemindersStore } from '@/util/cookies';
+import {
+  setCookie,
+  useAnonSessionStore,
+  useRemindersStore
+} from '@/util/cookies';
 import SupplementalInfo from '@/pages/annotate/_components/_index/SupplementalInfo.vue';
 import Reminder from '@/pages/annotate/_components/_index/Reminder.vue';
 import Modal from '@/pages/annotate/_components/_index/Modal.vue';
@@ -375,8 +382,8 @@ const {
       JSON.stringify({
         sessionID: response.session_id
       })
-    )
-    return response
+    );
+    return response;
   }
 });
 
@@ -470,8 +477,8 @@ function updateReminderCookie() {
     'reminders',
     JSON.stringify({
       cookieAgreement: showCookieAgreement.value,
-      contentWarning: showContentWarning.value,
+      contentWarning: showContentWarning.value
     })
-  )
+  );
 }
 </script>
