@@ -21,9 +21,9 @@
         <template #item="item">
           <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
           <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
-          <span class="border-2 border-neutral-700 dark:border-neutral-400
-         rounded-full text-neutral-700 dark:text-neutral-400
-         text-xs @md:text-sm px-2 py-1">
+          <span
+            class="border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md:text-sm px-2 py-1"
+          >
             {{ item.type }}
           </span>
         </template>

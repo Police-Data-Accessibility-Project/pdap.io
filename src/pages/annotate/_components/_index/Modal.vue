@@ -11,10 +11,7 @@
         @keydown.esc="emitClose"
       >
         <!-- Dimmed backdrop -->
-        <div
-          class="absolute inset-0 bg-black/100"
-          @click="emitClose"
-        />
+        <div class="absolute inset-0 bg-black/100" @click="emitClose" />
 
         <!-- Modal panel -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
@@ -90,4 +87,3 @@ function onKeydown(e: KeyboardEvent) {
 onMounted(() => window.addEventListener('keydown', onKeydown));
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 </script>
-

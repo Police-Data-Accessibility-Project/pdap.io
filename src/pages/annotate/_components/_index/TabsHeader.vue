@@ -43,7 +43,7 @@ function mobileVisibility(index: number) {
   // Hidden on small screens unless it's the current tab; always show from md+
   return index === props.currentIndex
     ? 'block text-center md:text-left mx-auto md:mx-0'
-    : 'hidden md:block'
+    : 'hidden md:block';
 }
 
 function getClasses(index: number) {

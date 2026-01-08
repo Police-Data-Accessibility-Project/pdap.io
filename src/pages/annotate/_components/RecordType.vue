@@ -134,4 +134,3 @@ function handleRadioFormSelect(option: RadioOption) {
   emit('select', null);
 }
 </script>
-

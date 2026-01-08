@@ -11,7 +11,7 @@
       <strong>URLs Annotated:</strong>
       {{ userContributions.count_validated }}
     </span>
-    <strong> URL ID:</strong>
+    <strong>URL ID:</strong>
     {{ props.urlID }}
     <strong>Page Title:</strong>
     {{ props.pageTitle }}
@@ -61,4 +61,3 @@ const {
   }
 });
 </script>
-

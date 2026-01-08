@@ -76,4 +76,3 @@ function getNameEndorsementLabel(suggestion: NameSuggestion): AnnoLabels {
   };
 }
 </script>
-

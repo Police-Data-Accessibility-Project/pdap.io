@@ -53,8 +53,8 @@
           </li>
           <li>
             <strong>Citations</strong>
-            : Low-level criminal offenses where citations were issued instead
-            of arrests.
+            : Low-level criminal offenses where citations were issued instead of
+            arrests.
           </li>
           <li>
             <strong>Dispatch Logs</strong>
