@@ -1,6 +1,9 @@
 <route>
 	{
 		alias: ['/search', '/data'],
+    meta: {
+      collapseFooter: false
+    }
 	}
 </route>
 
