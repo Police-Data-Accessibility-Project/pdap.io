@@ -6,7 +6,7 @@ import '../msw-setup.js';
 
 test.describe('Data Source Page', () => {
   test('should display data source details', async ({ page }) => {
-    await page.goto('/data-source/4');
+    await page.goto('/data-sources/4');
     await page.waitForLoadState('networkidle');
 
     // Should show data source title or not found message
@@ -22,7 +22,7 @@ test.describe('Data Source Page', () => {
   });
 
   test('should show record type and jurisdiction pills', async ({ page }) => {
-    await page.goto('/data-source/4');
+    await page.goto('/data-sources/4');
 
     // Wait for page to load
     await page.waitForLoadState('networkidle');
@@ -38,7 +38,7 @@ test.describe('Data Source Page', () => {
   test('should display description with expand/collapse functionality', async ({
     page
   }) => {
-    await page.goto('/data-source/198');
+    await page.goto('/data-sources/198');
 
     // Wait for description section
     const descriptionSection = page.locator('h4:has-text("Description")');
@@ -59,7 +59,7 @@ test.describe('Data Source Page', () => {
   });
 
   test('should handle multiple agencies correctly', async ({ page }) => {
-    await page.goto('/data-source/4');
+    await page.goto('/data-sources/4');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
@@ -99,7 +99,7 @@ test.describe('Data Source Page', () => {
     await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
     // Should be on data source page
-    await expect(page).toHaveURL(/\/data-source\/\d+/);
+    await expect(page).toHaveURL(/\/data-sources\/\d+/);
 
     // Should show navigation if there are multiple results
     const prevButton = page.locator('button:has-text("Previous")');
@@ -114,7 +114,7 @@ test.describe('Data Source Page', () => {
 
         // Should navigate to different data source
         await expect(page).not.toHaveURL(currentUrl);
-        await expect(page).toHaveURL(/\/data-source\/\d+/);
+        await expect(page).toHaveURL(/\/data-sources\/\d+/);
       }
     }
   });
@@ -135,7 +135,7 @@ test.describe('Data Source Page', () => {
 
     await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
-    await expect(page).toHaveURL(/\/data-source\/\d+/);
+    await expect(page).toHaveURL(/\/data-sources\/\d+/);
 
     // Test swipe gestures (simulated with mouse drag)
     const main = page.locator('main');
@@ -152,7 +152,7 @@ test.describe('Data Source Page', () => {
   });
 
   test('should display data source sections correctly', async ({ page }) => {
-    await page.goto('/data-source/4');
+    await page.goto('/data-sources/4');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
@@ -168,7 +168,7 @@ test.describe('Data Source Page', () => {
   test('should handle loading and error states', async ({ page }) => {
     // Test loading state
     const responsePromise = page.waitForResponse(/\/data-sources\/\d+/);
-    await page.goto('/data-source/4');
+    await page.goto('/data-sources/4');
 
     // Should show loading spinner initially
     const spinner = page.locator('[data-testid="spinner"]');
@@ -185,7 +185,7 @@ test.describe('Data Source Page', () => {
   });
 
   test('should handle non-existent data source', async ({ page }) => {
-    await page.goto('/data-source/99999');
+    await page.goto('/data-sources/99999');
     await page.waitForLoadState('networkidle');
 
     // Should show not found message

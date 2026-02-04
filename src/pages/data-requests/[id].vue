@@ -156,7 +156,7 @@ const { direction } = useSwipe(mainRef, {
         navIs.value = 'increment';
         if (typeof nextIdIndex.value === 'number' && nextIdIndex.value > -1)
           router.replace(
-            `/data-request/${searchStore.mostRecentRequestIds[nextIdIndex.value]}`
+            `/data-requests/${searchStore.mostRecentRequestIds[nextIdIndex.value]}`
           );
         break;
       case 'right':
@@ -166,7 +166,7 @@ const { direction } = useSwipe(mainRef, {
           previousIdIndex.value > -1
         )
           router.replace(
-            `/data-request/${searchStore.mostRecentRequestIds[previousIdIndex.value]}`
+            `/data-requests/${searchStore.mostRecentRequestIds[previousIdIndex.value]}`
           );
         break;
       default:

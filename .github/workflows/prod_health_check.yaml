@@ -1,7 +1,7 @@
 name: E2E Production Monitoring
 on:
   schedule:
-    - cron: '0 * * * *'  # Every hour
+    - cron: '0 * * * *' # Every hour
   workflow_dispatch:
 
 jobs:
@@ -13,13 +13,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.19.0
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      
+
       - name: Run E2E tests against production
         env:
           VITE_API_URL: https://data-sources.pdap.io/api
@@ -33,7 +33,7 @@ jobs:
           MAILGUN_KEY: ${{ secrets.MAILGUN_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
         run: npx playwright test
-      
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -26,7 +26,7 @@
         :key="route.params.id"
         class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-stretch sm:justify-between gap-4 h-full w-full relative"
       >
-        <template v-if="(!error && !dataSource) || error?.status === 404">
+        <template v-if="(!error && !dataSource) || errorStatus === 404">
           <h1>Data source not found</h1>
           <p class="w-full max-w-full">
             We don't have a record of that source.
@@ -286,6 +286,10 @@ const dataSource = computed(() => {
   return sourceData.value?.data.data;
 });
 
+const errorStatus = computed(
+  () => error.value?.response?.status ?? error.value?.status ?? null
+);
+
 const isLoading = computed(
   () => dataSourcePending.value || dataSourceFetching.value
 );
@@ -323,7 +327,7 @@ const { direction } = useSwipe(mainRef, {
       case 'left':
         navIs.value = 'increment';
         if (typeof nextIdIndex.value === 'number' && nextIdIndex.value > -1)
-          router.replace(`/data-source/${getNext()}`);
+          router.replace(`/data-sources/${getNext()}`);
         break;
       case 'right':
         navIs.value = 'decrement';
@@ -331,7 +335,7 @@ const { direction } = useSwipe(mainRef, {
           typeof previousIdIndex.value === 'number' &&
           previousIdIndex.value > -1
         )
-          router.replace(`/data-source/${getPrev()}`);
+          router.replace(`/data-sources/${getPrev()}`);
         break;
       default:
         return;

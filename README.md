@@ -26,15 +26,17 @@ npm i && npm run dev:dev
 | `dev:prod`          | Runs the dev server using `.env.production` (via `--mode production`)                    |
 | `build`             | Builds the application using `.env.production` or shell env values                       |
 | `build:dev`         | Builds the application using `.env.development` (helpful for local dev-targeted bundles) |
-| `serve`             | Serves the built assets.  Requires `build` first                                         |
-| `lint`              | Lints the codebase with `eslint` and `prettier`                                          |
-| `lint:fix`          | Lints the codebase with `eslint` and `prettier` and fixes all auto-fixable issues        |
+| `serve`             | Serves the built assets. Requires `build` first                                          |
+| `lint`              | Runs ESLint across JS/TS/Vue files                                                       |
+| `lint:fix`          | Runs ESLint with `--fix` to apply auto-fixes                                             |
+| `format`            | Runs Prettier in write mode                                                              |
+| `format:check`      | Runs Prettier in `--check` mode (fails on unformatted files)                             |
 | `test:unit`         | Runs unit tests with debug output                                                        |
 | `test:unit:ci`      | Runs unit tests quietly                                                                  |
 | `test:unit:changed` | Runs unit tests on changed files only                                                    |
 | `test:e2e`          | Runs end-to-end tests with Playwright                                                    |
 | `test:e2e:ui`       | Runs end-to-end tests with Playwright UI mode                                            |
 
-
 ### Contributing
+
 Interested in contributing code to pdap.io? Check out our guidelines [here](./CONTRIBUTING.md).

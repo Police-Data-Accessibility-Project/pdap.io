@@ -126,6 +126,7 @@ import { useAuthStore } from '@/stores/auth';
 import { beginOAuthLogin, signInWithGithub } from '@/api/auth';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 import { SEARCH_FOLLOWED_NATIONAL } from '@/util/queryKeys';
+import { migrateAnonymousSessionAnnotations } from '@/api/annotate';
 
 const auth = useAuthStore();
 const route = useRoute();
@@ -232,6 +233,7 @@ async function authPassword(formValues) {
   const { email, password } = formValues;
 
   await signInWithEmail(email, password);
+  void migrateAnonymousSessionAnnotations();
 }
 </script>
 

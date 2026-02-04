@@ -42,7 +42,30 @@ if (import.meta.hot && !import.meta.test) {
   handleHotUpdate(router);
 }
 
+const LEGACY_DATA_SOURCE_ROUTE = /^\/data-source(\/|$)/;
+const LEGACY_DATA_REQUEST_ROUTE = /^\/data-request(\/|$)/;
+
 router.beforeEach(async (to, from, next) => {
+  if (LEGACY_DATA_SOURCE_ROUTE.test(to.path)) {
+    next({
+      path: to.path.replace(/^\/data-source/, '/data-sources'),
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    });
+    return;
+  }
+
+  if (LEGACY_DATA_REQUEST_ROUTE.test(to.path)) {
+    next({
+      path: to.path.replace(/^\/data-request/, '/data-requests'),
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    });
+    return;
+  }
+
   if (_isEqual(to, from)) {
     next();
     return;
@@ -53,10 +76,16 @@ router.beforeEach(async (to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const auth = useAuthStore();
 
-  if (to.meta.auth || NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS.has(to.path))
-    auth.$patch({ redirectTo: to });
+  const isAuthed = auth.isAuthenticated();
+  const shouldStoreRedirect =
+    (to.meta.auth || NON_AUTH_ROUTES_WITH_AUTH_COMPONENTS.has(to.path)) &&
+    !isAuthed;
 
-  if (to.meta?.auth && !auth.isAuthenticated()) {
+  if (shouldStoreRedirect) {
+    auth.$patch({ redirectTo: to });
+  }
+
+  if (to.meta?.auth && !isAuthed) {
     next({ path: '/sign-in' });
   } else {
     next();
