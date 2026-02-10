@@ -5,10 +5,10 @@ export const ALL_LOCATION_TYPES = ['locality', 'county', 'state', 'federal'];
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 export const NAV_LINKS = [
-  // {
-  //   path: 'annotate',
-  //   text: 'Annotate'
-  // },
+  {
+    path: 'annotate',
+    text: 'Annotate'
+  },
   {
     path: '/',
     text: 'Data'
