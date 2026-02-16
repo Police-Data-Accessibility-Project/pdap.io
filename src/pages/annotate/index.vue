@@ -41,33 +41,88 @@
             <!-- Left: URL Preview -->
             <aside class="annotate-preview">
               <div class="annotate-preview-card">
-                <div class="annotate-screenshot">
-                  <ZoomableImage
-                    v-if="imageOk"
-                    :key="localAnnotation.next_annotation?.url_info.url_id"
-                    :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
-                    alt="Screenshot of URL Page"
-                    @error="imageOk = false"
-                  />
-                  <div v-else class="annotate-screenshot-fallback">
+                <!-- Mobile toggle bar (always visible on mobile) -->
+                <button
+                  class="preview-toggle"
+                  @click="previewExpanded = !previewExpanded"
+                >
+                  <div class="preview-toggle-left">
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-8 h-8"
+                      class="w-4 h-4 shrink-0 text-wineneutral-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      stroke-width="1.5"
                     >
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        stroke-width="1.5"
                         d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
                       />
                     </svg>
-                    <span>Image Not Found</span>
+                    <span class="preview-toggle-text">
+                      {{ previewExpanded ? 'Hide preview' : 'Show preview' }}
+                    </span>
+                  </div>
+                  <svg
+                    class="preview-toggle-chevron"
+                    :class="{ 'preview-toggle-chevron--open': previewExpanded }"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Expandable content (always visible on lg, toggle on mobile) -->
+                <div class="preview-body" :class="{ 'preview-body--collapsed': !previewExpanded }">
+                  <div class="preview-body-inner">
+                    <div class="annotate-screenshot">
+                      <ZoomableImage
+                        v-if="imageOk"
+                        :key="localAnnotation.next_annotation?.url_info.url_id"
+                        :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
+                        alt="Screenshot of URL Page"
+                        @error="imageOk = false"
+                      />
+                      <div v-else class="annotate-screenshot-fallback">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="w-8 h-8"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+                          />
+                        </svg>
+                        <span>Image Not Found</span>
+                      </div>
+                    </div>
+
+                    <div class="annotate-meta">
+                      <Header
+                        :refresh-key="globalResetKey"
+                        :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+                        :page-title="
+                          localAnnotation.next_annotation.html_info.title
+                        "
+                      />
+                    </div>
                   </div>
                 </div>
 
+                <!-- URL always visible (outside collapsible body) -->
                 <div class="annotate-url-info">
                   <a
                     :href="localAnnotation.next_annotation?.url_info.url"
@@ -77,16 +132,6 @@
                   >
                     {{ localAnnotation.next_annotation?.url_info.url }}
                   </a>
-                </div>
-
-                <div class="annotate-meta">
-                  <Header
-                    :refresh-key="globalResetKey"
-                    :url-i-d="localAnnotation.next_annotation.url_info.url_id"
-                    :page-title="
-                      localAnnotation.next_annotation.html_info.title
-                    "
-                  />
                 </div>
               </div>
             </aside>
@@ -257,6 +302,9 @@ const currentPathIndex = ref<number>(0);
 
 // Whether the image successfully loaded.
 const imageOk = ref<boolean>(true);
+
+// Whether the mobile preview card is expanded
+const previewExpanded = ref<boolean>(true);
 
 // Variables tracking selections of annotation components.
 const selectedURLType = ref<URLTypeSelection>(null);
@@ -553,10 +601,52 @@ function updateReminderCookie() {
   @apply rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden;
 }
 
+/* Mobile preview toggle */
+.preview-toggle {
+  @apply flex lg:hidden items-center justify-between w-full px-4 py-3 bg-transparent border-none text-left cursor-pointer;
+}
+
+.preview-toggle-left {
+  @apply flex items-center gap-2;
+}
+
+.preview-toggle-text {
+  @apply text-xs font-semibold text-wineneutral-400 uppercase tracking-wider;
+}
+
+.preview-toggle-chevron {
+  @apply w-4 h-4 text-wineneutral-400 transition-transform duration-200;
+}
+
+.preview-toggle-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* Collapsible preview body */
+.preview-body {
+  @apply grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+.preview-body--collapsed {
+  grid-template-rows: 0fr;
+}
+
+@media (min-width: 1024px) {
+  .preview-body--collapsed {
+    grid-template-rows: 1fr;
+  }
+}
+
+.preview-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
 .annotate-screenshot {
   @apply bg-wineneutral-100 flex items-center justify-center overflow-hidden;
-  /* Mobile: fixed aspect ratio. Desktop: expand to fill, capped at a sane max */
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
 }
 
 @media (min-width: 1024px) {
@@ -587,7 +677,7 @@ function updateReminderCookie() {
 }
 
 .annotate-content {
-  @apply mt-4 rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 p-5 sm:p-6 min-h-[320px];
+  @apply mt-4 rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px];
 }
 
 .annotate-empty {

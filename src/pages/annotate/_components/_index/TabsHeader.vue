@@ -211,7 +211,7 @@ function getDotClasses(index: number): string {
 
 .stepper-step--clickable:hover .stepper-circle--enabled,
 .stepper-step--clickable:hover .stepper-circle--completed {
-  @apply ring-2 ring-brand-wine-200 ring-offset-1;
+  @apply ring-2 ring-amber-400/30 ring-offset-1;
 }
 
 /* Circles */
@@ -220,9 +220,9 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-circle--active {
-  @apply bg-brand-wine-600 text-white;
+  @apply bg-amber-600 text-white;
   box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--color-brand-wine-600) 20%, transparent),
+    0 0 0 3px rgba(245, 158, 11, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -248,19 +248,19 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-label--active {
-  @apply text-brand-wine-700 font-bold;
+  @apply text-amber-400 font-bold;
 }
 
 .stepper-label--completed {
-  @apply text-brand-gold-700;
+  @apply text-brand-gold-500;
 }
 
 .stepper-label--skipped {
-  @apply text-wineneutral-400 line-through;
+  @apply text-wineneutral-500 line-through;
 }
 
 .stepper-label--enabled {
-  @apply text-wineneutral-600;
+  @apply text-wineneutral-300;
 }
 
 .stepper-label--disabled {
@@ -294,11 +294,11 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-mobile-label {
-  @apply text-lg font-bold text-brand-wine-700;
+  @apply text-lg font-bold text-amber-400;
 }
 
 .stepper-mobile-count {
-  @apply text-sm text-wineneutral-500;
+  @apply text-sm text-wineneutral-300;
 }
 
 .stepper-dots {
@@ -310,7 +310,7 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-dot--active {
-  @apply bg-brand-wine-600 scale-125;
+  @apply bg-amber-500 scale-125;
 }
 
 .stepper-dot--completed {

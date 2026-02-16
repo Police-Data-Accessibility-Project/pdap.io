@@ -150,7 +150,7 @@ function handleRadioFormSelect(option: RadioOption) {
 }
 
 .rt-options {
-  @apply mt-2 grid grid-cols-2 sm:grid-cols-3 gap-1.5;
+  @apply mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5;
 }
 
 .rt-option {
