@@ -42,12 +42,11 @@
             <aside class="annotate-preview">
               <div class="annotate-preview-card">
                 <div class="annotate-screenshot">
-                  <img
+                  <ZoomableImage
                     v-if="imageOk"
-                    alt="Screenshot of URL Page"
                     :key="localAnnotation.next_annotation?.url_info.url_id"
                     :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
-                    class="w-full h-full object-cover object-top"
+                    alt="Screenshot of URL Page"
                     @error="imageOk = false"
                   />
                   <div v-else class="annotate-screenshot-fallback">
@@ -243,6 +242,7 @@ import {
 import SupplementalInfo from '@/pages/annotate/_components/_index/SupplementalInfo.vue';
 import Reminder from '@/pages/annotate/_components/_index/Reminder.vue';
 import Modal from '@/pages/annotate/_components/_index/Modal.vue';
+import ZoomableImage from '@/pages/annotate/_components/_index/ZoomableImage.vue';
 //====================
 //     Types
 //====================
@@ -554,7 +554,16 @@ function updateReminderCookie() {
 }
 
 .annotate-screenshot {
-  @apply aspect-video bg-wineneutral-100 flex items-center justify-center overflow-hidden;
+  @apply bg-wineneutral-100 flex items-center justify-center overflow-hidden;
+  /* Mobile: fixed aspect ratio. Desktop: expand to fill, capped at a sane max */
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-width: 1024px) {
+  .annotate-screenshot {
+    aspect-ratio: unset;
+    max-height: 520px;
+  }
 }
 
 .annotate-screenshot-fallback {
