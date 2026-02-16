@@ -23,13 +23,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.19.0
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      
+
       - name: Set API URL and Test Credentials
         env:
           E2E_API_KEY_PROD: ${{ secrets.E2E_API_KEY_PROD }}
@@ -39,7 +39,7 @@ jobs:
           API_URL: ${{ github.event.inputs.api_url }}
 
         run: bash .github/scripts/set-e2e-env.sh
-      
+
       - name: Run Playwright tests
         env:
           E2E_PASSWORD_AUTH_EMAIL_PROD: ${{ secrets.E2E_PASSWORD_AUTH_EMAIL_PROD }}
@@ -49,13 +49,12 @@ jobs:
           E2E_PW_RESET_EMAIL_PROD: ${{ secrets.E2E_PW_RESET_EMAIL_PROD }}
           E2E_PW_RESET_EMAIL_TEST: ${{ secrets.E2E_PW_RESET_EMAIL_TEST }}
           E2E_SIGNUP_EMAIL_PROD: ${{ secrets.E2E_SIGNUP_EMAIL_PROD }}
-          E2E_SIGNUP_EMAIL_TEST: ${{ secrets.E2E_SIGNUP_EMAIL_TEST }} 
+          E2E_SIGNUP_EMAIL_TEST: ${{ secrets.E2E_SIGNUP_EMAIL_TEST }}
           MAILGUN_KEY: ${{ secrets.MAILGUN_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
 
-
         run: npx playwright test
-      
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:

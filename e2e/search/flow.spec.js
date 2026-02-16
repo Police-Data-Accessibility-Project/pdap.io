@@ -39,7 +39,7 @@ test.describe('Search Flow', () => {
     await page.click(`[data-test="${TEST_IDS.data_source_link}"]`);
 
     // Should be on data source page
-    await expect(page).toHaveURL(/\/data-source\/\d+/);
+    await expect(page).toHaveURL(/\/data-sources\/\d+/);
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
     await expect(page.locator('h1')).toBeVisible();

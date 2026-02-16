@@ -43,7 +43,7 @@
               <RouterLink
                 v-for="source in results[locale].sourcesByAgency[agency]"
                 :key="source.agency_name"
-                :to="`/data-source/${source.id}`"
+                :to="`/data-sources/${source.id}`"
                 :data-test="TEST_IDS.data_source_link"
                 class="agency-row group"
               >

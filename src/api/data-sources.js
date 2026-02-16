@@ -45,7 +45,7 @@ export async function getRecentSources() {
     name: item.name,
     createdAt: item.created_at,
     sourceUrl: item.source_url,
-    route: `/data-source/${item.id}`
+    route: `/data-sources/${item.id}`
   }));
 
   return recentSources;

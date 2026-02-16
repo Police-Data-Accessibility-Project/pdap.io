@@ -1,3 +1,11 @@
+<route>
+  {
+    meta: {
+      collapseFooter: false
+    }
+  }
+</route>
+
 <template>
   <main class="pdap-grid-container mb-24">
     <section class="col-span-full pdap-flex-container">

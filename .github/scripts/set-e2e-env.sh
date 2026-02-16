@@ -35,3 +35,8 @@ else
     echo "VITE_API_KEY=$E2E_API_KEY_DEV" >> $GITHUB_ENV
   fi
 fi
+
+# Ensure v2 feature flags are enabled for E2E runs unless explicitly overridden
+for flag in ENHANCED_SEARCH AUTHENTICATE CREATE_RECORDS SHOW_REQUESTS SIGNUP; do
+  echo "VITE_V2_FEATURE_${flag}=enabled" >> $GITHUB_ENV
+done

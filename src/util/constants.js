@@ -6,6 +6,10 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 export const NAV_LINKS = [
   {
+    path: 'annotate',
+    text: 'Annotate'
+  },
+  {
     path: '/',
     text: 'Data'
   },

@@ -6,7 +6,7 @@ import '../msw-setup.js';
 
 test.describe('Data Request Page', () => {
   test('should display data request details', async ({ page }) => {
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
     await page.waitForLoadState('networkidle');
 
     // Should show data request title or not found message
@@ -24,7 +24,7 @@ test.describe('Data Request Page', () => {
   });
 
   test('should show record type pills', async ({ page }) => {
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
 
     // Wait for page to load
     await page.waitForLoadState('networkidle');
@@ -38,7 +38,7 @@ test.describe('Data Request Page', () => {
   });
 
   test('should display all data request sections', async ({ page }) => {
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
@@ -78,7 +78,7 @@ test.describe('Data Request Page', () => {
     await page.click(`[data-test="${TEST_IDS.data_request_link}"]`);
 
     // Should be on data request page
-    await expect(page).toHaveURL(/\/data-request\/\d+/);
+    await expect(page).toHaveURL(/\/data-requests\/\d+/);
 
     // Should show navigation if there are multiple results
     const prevButton = page.locator('a:has-text("PREV")');
@@ -96,7 +96,7 @@ test.describe('Data Request Page', () => {
 
         // Should navigate to different data request
         await expect(page).not.toHaveURL(currentUrl);
-        await expect(page).toHaveURL(/\/data-request\/\d+/);
+        await expect(page).toHaveURL(/\/data-requests\/\d+/);
       }
     }
   });
@@ -117,7 +117,7 @@ test.describe('Data Request Page', () => {
 
     await page.click(`[data-test="${TEST_IDS.data_request_link}"]`);
 
-    await expect(page).toHaveURL(/\/data-request\/\d+/);
+    await expect(page).toHaveURL(/\/data-requests\/\d+/);
 
     // Test swipe gestures (simulated with mouse drag)
     const main = page.locator('main');
@@ -136,7 +136,7 @@ test.describe('Data Request Page', () => {
   test('should handle loading and error states', async ({ page }) => {
     // Test loading state
     const responsePromise = page.waitForResponse(/\/data-requests\/\d+/);
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
 
     // Should show loading spinner initially
     const spinner = page.locator('.pdap-spinner'); // TODO - why data-test not forwarded to spinner?
@@ -153,7 +153,7 @@ test.describe('Data Request Page', () => {
   });
 
   test('should handle non-existent data request', async ({ page }) => {
-    await page.goto('/data-request/99999');
+    await page.goto('/data-requests/99999');
     await page.waitForLoadState('networkidle');
 
     // Should show not found message
@@ -169,7 +169,7 @@ test.describe('Data Request Page', () => {
   });
 
   test('should display location information correctly', async ({ page }) => {
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });
@@ -192,7 +192,7 @@ test.describe('Data Request Page', () => {
   });
 
   test('should display urgency and coverage information', async ({ page }) => {
-    await page.goto('/data-request/1');
+    await page.goto('/data-requests/1');
 
     await page.waitForLoadState('networkidle');
     await page.locator('h1').waitFor({ state: 'visible' });

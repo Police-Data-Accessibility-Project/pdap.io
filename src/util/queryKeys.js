@@ -10,6 +10,7 @@ export const TYPEAHEAD_LOCATIONS = 'typeahead_locations';
 export const TYPEAHEAD_AGENCIES = 'typeahead_agencies';
 export const LOCATION = 'location';
 
+export const ANNOTATE = 'annotate';
 /**
  * Creates a predicate function to check if a query key includes a partial string.
  * Matches both array and string syntax
