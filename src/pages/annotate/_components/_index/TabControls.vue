@@ -79,18 +79,18 @@ const emit = defineEmits<{
 }
 
 .tab-controls-btn--secondary {
-  @apply bg-wineneutral-100 text-wineneutral-700 border border-wineneutral-300;
+  @apply bg-wineneutral-800 text-wineneutral-100 border border-wineneutral-600;
 }
 
 .tab-controls-btn--secondary:not(:disabled):hover {
-  @apply bg-wineneutral-200 border-wineneutral-400;
+  @apply bg-wineneutral-700 border-wineneutral-500;
 }
 
 .tab-controls-btn--primary {
-  @apply bg-brand-wine-600 text-white border border-brand-wine-700;
+  @apply bg-amber-600 text-white border border-amber-700;
 }
 
 .tab-controls-btn--primary:not(:disabled):hover {
-  @apply bg-brand-wine-700;
+  @apply bg-amber-500;
 }
 </style>

@@ -566,7 +566,7 @@ function updateReminderCookie() {
 }
 
 .annotate-url-link {
-  @apply text-sm text-brand-wine-600 hover:text-brand-wine-800 underline underline-offset-2 break-all leading-relaxed transition-colors;
+  @apply text-sm text-amber-500 hover:text-amber-400 underline underline-offset-2 break-all leading-relaxed transition-colors;
 }
 
 .annotate-meta {
@@ -578,7 +578,7 @@ function updateReminderCookie() {
 }
 
 .annotate-content {
-  @apply mt-4 rounded-xl border-2 border-wineneutral-200 bg-white p-5 sm:p-6 min-h-[320px];
+  @apply mt-4 rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 p-5 sm:p-6 min-h-[320px];
 }
 
 .annotate-empty {
