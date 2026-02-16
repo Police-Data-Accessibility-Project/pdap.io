@@ -162,11 +162,11 @@ function handleRadioFormSelect(option: RadioOption) {
 }
 
 .rt-option--selected {
-  @apply bg-brand-wine-600 text-white border-brand-wine-600 font-semibold;
+  @apply bg-amber-600 text-white border-amber-600 font-semibold;
 }
 
 .rt-option--selected:hover {
-  @apply bg-brand-wine-700 border-brand-wine-700;
+  @apply bg-amber-700 border-amber-700;
 }
 
 .rt-option-text {

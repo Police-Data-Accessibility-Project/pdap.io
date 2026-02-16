@@ -90,7 +90,7 @@ function handleSelect(option: RadioOption) {
 }
 
 .rf-option--selected {
-  @apply bg-brand-wine-50 border-brand-wine-300;
+  @apply bg-amber-900/30 border-amber-500 text-amber-100;
 }
 
 .rf-option-content {

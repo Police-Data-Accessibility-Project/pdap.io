@@ -290,7 +290,7 @@
 }
 
 .suppl-link {
-  @apply text-brand-wine-600 underline underline-offset-2 hover:text-brand-wine-800 transition-colors;
+  @apply text-amber-500 underline underline-offset-2 hover:text-amber-400 transition-colors;
 }
 
 .suppl-list {
