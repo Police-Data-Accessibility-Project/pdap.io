@@ -1,20 +1,32 @@
 <template>
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2">
-    <div
-      v-for="option in formattedOptions"
-      :key="option.value"
-      class="p-4 cursor-pointer rounded-lg border transition"
-      :class="handleOuterBlockClass(option.value)"
-      @click="handleSelectOption(option.value)"
-    >
-      <div class="rounded-lg p-4" :class="handleInnerBlockClass(option.value)">
-        <p>{{ option.value }}</p>
-        <p class="text-sm">{{ descriptionMapping[option.value] }}</p>
-      </div>
+  <div>
+    <h3 class="urltype-heading">What type of page is this?</h3>
+    <div class="urltype-grid">
+      <button
+        v-for="option in formattedOptions"
+        :key="option.value"
+        type="button"
+        class="urltype-card"
+        :class="
+          props.modelValue?.display_name === option.value
+            ? 'urltype-card--selected'
+            : 'urltype-card--default'
+        "
+        @click="handleSelectOption(option.value)"
+      >
+        <div class="urltype-card-body">
+          <span class="urltype-card-title">{{ option.value }}</span>
+          <span class="urltype-card-desc">
+            {{ descriptionMapping[option.value] }}
+          </span>
+        </div>
 
-      <div class="mt-2">
-        <AnnotationSpan :labels="option.annoLabels" />
-      </div>
+        <AnnotationSpan
+          v-if="option.annoLabels?.user || option.annoLabels?.robo"
+          :labels="option.annoLabels"
+          class="mt-2"
+        />
+      </button>
     </div>
   </div>
 </template>
@@ -85,7 +97,7 @@ const urlTypeMapping = {
 const descriptionMapping = {
   [urlTypes.DATA_SOURCE]: 'Public records about police systems',
   [urlTypes.META_URL]:
-    "An relevant agency's landing page, or info about the agency.",
+    "A relevant agency's landing page, or info about the agency.",
   [urlTypes.NOT_RELEVANT]: 'Not a data source or meta URL',
   [urlTypes.INDIVIDUAL]:
     'An individual record where a list of records is available.',
@@ -98,7 +110,7 @@ const descriptionMapping = {
 //====================
 const suggestionMap = computed<Record<UrlType, number>>(() => {
   return Object.fromEntries(
-    props.suggestions.map((s) => [s.url_type, s.endorsement_count]) // or transform however you want
+    props.suggestions.map((s) => [s.url_type, s.endorsement_count])
   );
 });
 
@@ -120,20 +132,6 @@ function handleSelectOption(option: string) {
   emit('select', null);
 }
 
-function handleInnerBlockClass(option: string): string {
-  if (props.modelValue?.display_name == option) {
-    return 'bg-wineneutral-700 text-black font-bold';
-  }
-  return 'bg-black text-white';
-}
-
-function handleOuterBlockClass(option: string): string {
-  if (props.modelValue?.display_name == option) {
-    return 'bg-wineneutral-300 border-wineneutral-500 hover:border-amber-800';
-  }
-  return 'bg-wineneutral-50 border-transparent hover:border-amber-800';
-}
-
 //====================
 //     Helpers
 //====================
@@ -149,3 +147,46 @@ function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
   };
 }
 </script>
+
+<style scoped>
+.urltype-heading {
+  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
+}
+
+.urltype-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+.urltype-card {
+  @apply text-left rounded-lg border-2 p-4 transition-all duration-150 cursor-pointer w-full;
+}
+
+.urltype-card--default {
+  @apply border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100;
+}
+
+.urltype-card--selected {
+  @apply border-brand-wine-500 bg-brand-wine-600 text-white;
+  box-shadow: 0 0 0 1px var(--color-brand-wine-500);
+}
+
+.urltype-card-body {
+  @apply flex flex-col gap-1;
+}
+
+.urltype-card-title {
+  @apply font-bold text-sm;
+}
+
+.urltype-card-desc {
+  @apply text-xs leading-relaxed;
+}
+
+.urltype-card--default .urltype-card-desc {
+  @apply text-wineneutral-500;
+}
+
+.urltype-card--selected .urltype-card-desc {
+  @apply text-white/80;
+}
+</style>

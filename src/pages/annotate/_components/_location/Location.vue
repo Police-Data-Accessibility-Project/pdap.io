@@ -1,18 +1,25 @@
 <template>
   <div>
-    <p>Location: {{ locationModel?.display_name }}</p>
-    <p>Location ID: {{ locationModel?.id }}</p>
-    <div class="grid grid-cols-1 gap-4">
-      <div class="col-auto">
-        <RadioForm
-          v-model="selectedRadioLocation"
-          :options="radioOptions"
-          header="Suggestions"
-          @update:model-value="handleRadioFormSelect"
-        />
-      </div>
+    <h3 class="view-heading">Select a location</h3>
+
+    <div v-if="locationModel" class="view-current">
+      <span class="view-current-label">Selected:</span>
+      <strong>{{ locationModel.display_name }}</strong>
     </div>
-    <SearchForm @update:model-value="handleSearchLocationSelect" />
+
+    <div v-if="radioOptions.length" class="view-suggestions">
+      <RadioForm
+        v-model="selectedRadioLocation"
+        :options="radioOptions"
+        header="Suggestions"
+        @update:model-value="handleRadioFormSelect"
+      />
+    </div>
+
+    <div class="view-search">
+      <h4 class="view-search-label">Or search for a location</h4>
+      <SearchForm @update:model-value="handleSearchLocationSelect" />
+    </div>
   </div>
 </template>
 
@@ -85,7 +92,7 @@ watch(resetKey, () => {
 //===================
 function handleRadioFormSelect(option: RadioOption) {
   locationModel.value = {
-    id: Number(option.value), // option.value is typed as String | Number
+    id: Number(option.value),
     display_name: option.display_name
   };
   emit('select', null);
@@ -104,3 +111,29 @@ function handleSearchLocationSelect(loc: LocationSuggestion) {
   emit('select', null);
 }
 </script>
+
+<style scoped>
+.view-heading {
+  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
+}
+
+.view-current {
+  @apply mb-4 text-sm bg-brand-wine-50 border border-brand-wine-200 rounded-lg px-3 py-2;
+}
+
+.view-current-label {
+  @apply text-wineneutral-500 mr-1;
+}
+
+.view-suggestions {
+  @apply mb-5 pb-5 border-b border-wineneutral-200;
+}
+
+.view-search {
+  @apply mt-2;
+}
+
+.view-search-label {
+  @apply text-xs font-bold text-wineneutral-500 uppercase tracking-wider mb-2;
+}
+</style>

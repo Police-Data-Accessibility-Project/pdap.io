@@ -1,20 +1,22 @@
 <template>
-  <div v-if="requestPending">
-    <Spinner
-      :show="requestPending"
-      :size="64"
-      text="Fetching user contributions..."
-    />
-  </div>
-  <div class="overflow-x-auto">
-    <span v-if="userContributions">
-      <strong>URLs Annotated:</strong>
-      {{ userContributions.count_validated }}
-    </span>
-    <strong>URL ID:</strong>
-    {{ props.urlID }}
-    <strong>Page Title:</strong>
-    {{ props.pageTitle }}
+  <div class="header-info">
+    <div v-if="requestPending" class="header-loading">
+      <Spinner :show="requestPending" :size="20" text="" />
+      <span class="text-xs text-wineneutral-400">Loading stats...</span>
+    </div>
+    <template v-else>
+      <div v-if="userContributions" class="header-stat">
+        <span class="header-stat-label">Annotated</span>
+        <span class="header-stat-value">{{
+          userContributions.count_validated
+        }}</span>
+      </div>
+    </template>
+
+    <div v-if="props.pageTitle" class="header-title">
+      <span class="header-stat-label">Page</span>
+      <span class="header-title-text">{{ props.pageTitle }}</span>
+    </div>
   </div>
 </template>
 
@@ -61,3 +63,33 @@ const {
   }
 });
 </script>
+
+<style scoped>
+.header-info {
+  @apply flex flex-col gap-2 text-sm;
+}
+
+.header-loading {
+  @apply flex items-center gap-2;
+}
+
+.header-stat {
+  @apply flex items-center gap-2;
+}
+
+.header-stat-label {
+  @apply text-xs font-semibold text-wineneutral-400 uppercase tracking-wider;
+}
+
+.header-stat-value {
+  @apply font-bold text-brand-wine-600;
+}
+
+.header-title {
+  @apply flex flex-col gap-0.5;
+}
+
+.header-title-text {
+  @apply text-sm text-wineneutral-700 leading-snug line-clamp-2;
+}
+</style>

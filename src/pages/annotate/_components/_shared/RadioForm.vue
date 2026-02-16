@@ -1,31 +1,33 @@
 <template>
-  <h2>{{ props.header }}</h2>
-  <form id="id" name="name" class="pdap-form">
-    <div class="grid gap-4 pdap-input-radio-group">
-      <div
-        class="pdap-input pdap-input-radio"
+  <div>
+    <h4 v-if="props.header" class="rf-header">{{ props.header }}</h4>
+    <div class="rf-options">
+      <label
         v-for="option in options"
         :key="option.value"
+        :for="`option-${option.value}`"
+        class="rf-option"
+        :class="{ 'rf-option--selected': selectedType?.value === option.value }"
       >
         <input
           :id="`option-${option.value}`"
           v-model="selectedType"
           type="radio"
-          class="hidden"
+          class="sr-only"
           name="url-type"
           :value="option"
           @change="handleSelect(option)"
         />
-
-        <label :for="`option-${option.value}`" class="hover:text-amber-800">
-          <div class="font-semibold">
-            {{ option.label + ' ' }}
-            <AnnotationSpan :labels="option.anno_labels" />
-          </div>
-        </label>
-      </div>
+        <span class="rf-option-content">
+          <span class="rf-option-label">{{ option.label }}</span>
+          <AnnotationSpan
+            v-if="option.anno_labels?.user || option.anno_labels?.robo"
+            :labels="option.anno_labels"
+          />
+        </span>
+      </label>
     </div>
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -69,3 +71,33 @@ function handleSelect(option: RadioOption) {
   emit('update:modelValue', option);
 }
 </script>
+
+<style scoped>
+.rf-header {
+  @apply text-xs font-bold text-wineneutral-500 uppercase tracking-wider mb-2;
+}
+
+.rf-options {
+  @apply space-y-1.5;
+}
+
+.rf-option {
+  @apply flex items-center rounded-lg px-3 py-2.5 cursor-pointer transition-all duration-150 border border-transparent;
+}
+
+.rf-option:hover {
+  @apply bg-wineneutral-100 border-wineneutral-200;
+}
+
+.rf-option--selected {
+  @apply bg-brand-wine-50 border-brand-wine-300;
+}
+
+.rf-option-content {
+  @apply flex items-center gap-2;
+}
+
+.rf-option-label {
+  @apply text-sm font-semibold;
+}
+</style>
