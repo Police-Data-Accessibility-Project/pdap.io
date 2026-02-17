@@ -2,9 +2,10 @@
   <div
     ref="containerRef"
     class="zoom-container"
-    @mouseenter="hovering = true"
+    :class="{ 'zoom-container--pointer': hasPointer }"
+    @mouseenter="hasPointer && (hovering = true)"
     @mouseleave="hovering = false"
-    @mousemove="onMouseMove"
+    @mousemove="hasPointer && onMouseMove($event)"
     @click="openFullSize"
   >
     <img
@@ -14,15 +15,15 @@
       @error="$emit('error')"
     />
 
-    <!-- Magnifier lens -->
+    <!-- Magnifier lens (pointer devices only) -->
     <div
-      v-if="hovering && loaded"
+      v-if="hasPointer && hovering && loaded"
       class="zoom-lens"
       :style="lensStyle"
     />
 
-    <!-- Hint overlay -->
-    <div v-if="!hovering" class="zoom-hint">
+    <!-- Hint overlay (pointer devices only) -->
+    <div v-if="hasPointer && !hovering" class="zoom-hint">
       <svg
         class="w-5 h-5"
         fill="none"
@@ -55,6 +56,12 @@ defineEmits<{
 
 const ZOOM = props.zoomScale ?? 2.5;
 const LENS_SIZE = 160;
+
+// Detect fine pointer (mouse) vs coarse (touch)
+const hasPointer = ref(
+  typeof window !== 'undefined' &&
+    window.matchMedia('(pointer: fine)').matches
+);
 
 const containerRef = ref<HTMLElement | null>(null);
 const hovering = ref(false);
@@ -118,7 +125,11 @@ const lensStyle = computed(() => {
 
 <style scoped>
 .zoom-container {
-  @apply relative overflow-hidden cursor-zoom-in select-none;
+  @apply relative overflow-hidden select-none;
+}
+
+.zoom-container--pointer {
+  @apply cursor-zoom-in;
 }
 
 .zoom-image {
