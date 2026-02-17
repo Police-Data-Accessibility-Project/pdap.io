@@ -154,11 +154,11 @@ function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
 }
 
 .urltype-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3;
 }
 
 .urltype-card {
-  @apply text-left rounded-lg border-2 p-4 transition-all duration-150 cursor-pointer w-full;
+  @apply text-left rounded-lg border-2 p-3 sm:p-4 transition-all duration-150 cursor-pointer w-full;
 }
 
 .urltype-card--default {
