@@ -1,52 +1,44 @@
 <template>
-  <div class="px-4 mb-4 border-wineneutral-300 bg-wineneutral-50 border-2">
-    <div
-      class="col-span-1 flex flex-col mt-4 gap-4 @md:col-span-2 @lg:col-span-3 @md:flex-row @md:gap-0"
+  <div class="search-form">
+    <Typeahead
+      :id="TYPEAHEAD_ID"
+      ref="typeaheadRef"
+      :format-item-for-display="(item) => item.display_name"
+      :items="items"
+      :placeholder="placeholder ?? 'Enter a place'"
+      @select-item="handleSelectRecord"
+      @on-input="fetchTypeaheadResults"
     >
-      <Typeahead
-        :id="TYPEAHEAD_ID"
-        ref="typeaheadRef"
-        :format-item-for-display="(item) => item.display_name"
-        :items="items"
-        :placeholder="placeholder ?? 'Enter a place'"
-        @select-item="handleSelectRecord"
-        @on-input="fetchTypeaheadResults"
-      >
-        <!-- Pass label as slot to typeahead -->
-        <template #label>
-          <h4 class="uppercase">Search location</h4>
-        </template>
+      <!-- Pass label as slot to typeahead -->
+      <template #label>
+        <h4
+          class="text-xs font-bold text-wineneutral-500 uppercase tracking-wider"
+        >
+          Search location
+        </h4>
+      </template>
 
-        <!-- Item to render passed as scoped slot -->
-        <template #item="item">
-          <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
-          <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
-          <span
-            class="border-2 border-neutral-700 dark:border-neutral-400 rounded-full text-neutral-700 dark:text-neutral-400 text-xs @md:text-sm px-2 py-1"
-          >
-            {{ item.type }}
-          </span>
-        </template>
-        <template #not-found>
-          <span>
-            We don't have agencies in the place you're looking for. Is it
-            spelled correctly? If our database is missing something, please
-            reach us at
-            <a href="mailto:contact@pdap.io">contact@pdap.io</a>
-          </span>
-        </template>
-      </Typeahead>
-      <!--TODO: This is a hacky fix to account for the fact that, without these, the suggestions disappear from the div-->
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </div>
+      <!-- Item to render passed as scoped slot -->
+      <template #item="item">
+        <!-- eslint-disable-next-line vue/no-v-html This data is coming from our API, so we can trust it-->
+        <span v-html="typeaheadRef?.boldMatchText(item.display_name)" />
+        <span
+          class="border border-wineneutral-300 rounded-full text-wineneutral-600 text-xs px-2 py-0.5 ml-2"
+        >
+          {{ item.type }}
+        </span>
+      </template>
+
+      <template #not-found>
+        <span class="text-sm text-wineneutral-600">
+          We don't have agencies in the place you're looking for. Is it spelled
+          correctly? If our database is missing something, please reach us at
+          <a href="mailto:contact@pdap.io" class="font-semibold underline">
+            contact@pdap.io
+          </a>
+        </span>
+      </template>
+    </Typeahead>
   </div>
 </template>
 
@@ -105,7 +97,6 @@ const typeaheadMutation = useMutation({
   onSuccess: (data) => {
     items.value = data;
     // Update the query cache with the new data
-    // TODO: Would this interfere with the homepage typeahead?
     queryClient.setQueryData(queryKey, data, {
       staleTime: 5 * 60 * 1000
     });
@@ -147,3 +138,9 @@ function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>
+
+<style scoped>
+.search-form {
+  @apply rounded-lg border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px];
+}
+</style>

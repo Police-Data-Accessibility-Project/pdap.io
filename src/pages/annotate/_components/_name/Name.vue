@@ -1,6 +1,12 @@
 <template>
   <div>
-    <p>{{ selected?.name }}</p>
+    <h3 class="view-heading">Name this data source</h3>
+
+    <div v-if="selected?.name" class="view-current">
+      <span class="view-current-label">Selected:</span>
+      <strong>{{ selected.name }}</strong>
+    </div>
+
     <EditableRadioGroup
       v-model="selected"
       :options="options"
@@ -76,3 +82,17 @@ function getNameEndorsementLabel(suggestion: NameSuggestion): AnnoLabels {
   };
 }
 </script>
+
+<style scoped>
+.view-heading {
+  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
+}
+
+.view-current {
+  @apply mb-4 text-sm bg-goldneutral-900/20 border border-goldneutral-600 rounded-lg px-3 py-2 text-goldneutral-100;
+}
+
+.view-current-label {
+  @apply text-wineneutral-500 mr-1;
+}
+</style>

@@ -1,41 +1,54 @@
 <template>
-  <transition mode="out-in" :name="navIs">
+  <transition mode="out-in">
     <div
       v-if="submitPending"
-      class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      class="flex items-center justify-center min-h-[300px] w-full flex-col relative"
     >
-      <!--TODO: Spinner does not currently display on submission. Unclear why.-->
       <Spinner
         :show="submitPending"
         :size="64"
         text="Submitting annotation..."
       />
     </div>
-    <div
-      v-else
-      class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full"
-    >
-      <p>
-        <b>URL Type</b>
-        : {{ props.urlType?.display_name }}
-      </p>
-      <p>
-        <b>Location</b>
-        : {{ props.location?.display_name }}
-      </p>
-      <p>
-        <b>Agency</b>
-        : {{ props.agency?.display_name }}
-      </p>
-      <p>
-        <b>RecordType</b>
-        : {{ props.recordType }}
-      </p>
-      <p>
-        <b>Name</b>
-        : {{ props.name?.name }}
-      </p>
-      <button @click="handleSubmit" class="pdap-button-primary">Submit</button>
+    <div v-else>
+      <h3 class="confirm-heading">Review your annotation</h3>
+
+      <div class="confirm-summary">
+        <div class="confirm-row">
+          <span class="confirm-label">URL Type</span>
+          <span class="confirm-value">
+            {{ props.urlType?.display_name || '—' }}
+          </span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">Location</span>
+          <span class="confirm-value">
+            {{ props.location?.display_name || '—' }}
+          </span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">Agency</span>
+          <span class="confirm-value">
+            {{ props.agency?.display_name || '—' }}
+          </span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">Record Type</span>
+          <span class="confirm-value">
+            {{ props.recordType || '—' }}
+          </span>
+        </div>
+        <div class="confirm-row confirm-row--last">
+          <span class="confirm-label">Name</span>
+          <span class="confirm-value">
+            {{ props.name?.name || '—' }}
+          </span>
+        </div>
+      </div>
+
+      <button @click="handleSubmit" class="confirm-submit">
+        Submit Annotation
+      </button>
     </div>
   </transition>
 </template>
@@ -141,3 +154,34 @@ async function handleSubmit() {
   emit('submit');
 }
 </script>
+
+<style scoped>
+.confirm-heading {
+  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
+}
+
+.confirm-summary {
+  @apply rounded-lg border border-wineneutral-200 overflow-hidden;
+}
+
+.confirm-row {
+  @apply flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100;
+}
+
+.confirm-row--last {
+  @apply border-b-0;
+}
+
+.confirm-label {
+  @apply text-sm font-semibold text-wineneutral-600 shrink-0;
+}
+
+.confirm-value {
+  @apply text-sm text-wineneutral-900 text-right;
+}
+
+.confirm-submit {
+  @apply mt-6 w-full py-3 rounded-lg bg-brand-gold-500 text-white font-bold text-sm
+    transition-colors hover:bg-brand-gold-600 active:bg-brand-gold-700;
+}
+</style>
