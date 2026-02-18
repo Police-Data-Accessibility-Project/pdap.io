@@ -120,7 +120,7 @@ function handleAgencySelect(ag: AgencyLocationSelection | null) {
 }
 
 .view-current {
-  @apply mb-4 text-sm bg-amber-900/20 border border-amber-600 rounded-lg px-3 py-2 text-amber-100;
+  @apply mb-4 text-sm bg-goldneutral-900/20 border border-goldneutral-600 rounded-lg px-3 py-2 text-goldneutral-100;
 }
 
 .view-current-label {

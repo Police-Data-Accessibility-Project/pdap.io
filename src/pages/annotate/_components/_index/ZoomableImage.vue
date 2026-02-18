@@ -137,7 +137,7 @@ const lensStyle = computed(() => {
 }
 
 .zoom-lens {
-  @apply absolute rounded-full pointer-events-none border-2 border-amber-400/70;
+  @apply absolute rounded-full pointer-events-none border-2 border-goldneutral-400/70;
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.3),
     0 4px 12px rgba(0, 0, 0, 0.4);

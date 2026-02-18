@@ -87,10 +87,10 @@ const emit = defineEmits<{
 }
 
 .tab-controls-btn--primary {
-  @apply bg-amber-600 text-white border border-amber-700;
+  @apply bg-brand-gold-600 text-white border border-brand-gold-700;
 }
 
 .tab-controls-btn--primary:not(:disabled):hover {
-  @apply bg-amber-500;
+  @apply bg-brand-gold-500;
 }
 </style>
