@@ -665,7 +665,7 @@ function updateReminderCookie() {
 }
 
 .annotate-url-link {
-  @apply text-sm text-brand-gold-500 hover:text-brand-gold-400 underline underline-offset-2 break-all leading-relaxed transition-colors;
+  @apply text-sm text-goldneutral-700 hover:text-goldneutral-800 underline underline-offset-2 break-all leading-relaxed transition-colors;
 }
 
 .annotate-meta {

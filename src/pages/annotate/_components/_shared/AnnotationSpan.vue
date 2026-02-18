@@ -48,6 +48,6 @@ const props = defineProps<Props>();
 }
 
 .anno-badge--robo {
-  @apply bg-brand-gold-100 text-brand-gold-700;
+  @apply bg-goldneutral-100 text-goldneutral-700;
 }
 </style>

@@ -90,7 +90,7 @@ function handleSelect(option: RadioOption) {
 }
 
 .rf-option--selected {
-  @apply bg-brand-gold-900/30 border-brand-gold-500 text-brand-gold-100;
+  @apply bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100;
 }
 
 .rf-option-content {

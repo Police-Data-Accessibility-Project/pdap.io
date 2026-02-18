@@ -211,7 +211,7 @@ function getDotClasses(index: number): string {
 
 .stepper-step--clickable:hover .stepper-circle--enabled,
 .stepper-step--clickable:hover .stepper-circle--completed {
-  @apply ring-2 ring-brand-gold-400/30 ring-offset-1;
+  @apply ring-2 ring-wineneutral-400/30 ring-offset-1;
 }
 
 /* Circles */
@@ -220,14 +220,14 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-circle--active {
-  @apply bg-brand-gold-600 text-white;
+  @apply bg-brand-wine-500 text-white;
   box-shadow:
-    0 0 0 3px rgba(213, 162, 60, 0.2),
+    0 0 0 3px rgba(81, 42, 79, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .stepper-circle--completed {
-  @apply bg-brand-gold-500 text-white;
+  @apply bg-wineneutral-500 text-white;
 }
 
 .stepper-circle--skipped {
@@ -248,11 +248,11 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-label--active {
-  @apply text-brand-gold-400 font-bold;
+  @apply text-wineneutral-200 font-bold;
 }
 
 .stepper-label--completed {
-  @apply text-brand-gold-500;
+  @apply text-wineneutral-400;
 }
 
 .stepper-label--skipped {
@@ -273,7 +273,7 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-line--completed {
-  @apply bg-brand-gold-400;
+  @apply bg-wineneutral-400;
 }
 
 .stepper-line--enabled {
@@ -294,7 +294,7 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-mobile-label {
-  @apply text-lg font-bold text-brand-gold-400;
+  @apply text-lg font-bold text-wineneutral-200;
 }
 
 .stepper-mobile-count {
@@ -310,11 +310,11 @@ function getDotClasses(index: number): string {
 }
 
 .stepper-dot--active {
-  @apply bg-brand-gold-500 scale-125;
+  @apply bg-brand-wine-400 scale-125;
 }
 
 .stepper-dot--completed {
-  @apply bg-brand-gold-500 cursor-pointer;
+  @apply bg-wineneutral-400 cursor-pointer;
 }
 
 .stepper-dot--skipped {

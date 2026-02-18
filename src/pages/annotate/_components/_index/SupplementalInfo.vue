@@ -290,7 +290,7 @@
 }
 
 .suppl-link {
-  @apply text-brand-gold-500 underline underline-offset-2 hover:text-brand-gold-400 transition-colors;
+  @apply text-goldneutral-700 underline underline-offset-2 hover:text-goldneutral-800 transition-colors;
 }
 
 .suppl-list {

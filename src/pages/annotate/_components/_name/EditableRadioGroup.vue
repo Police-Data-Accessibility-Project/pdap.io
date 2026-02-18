@@ -186,7 +186,7 @@ const isDirty = (id): boolean => nameMapping[id].dirty;
 }
 
 .erg-item--selected {
-  @apply border-brand-gold-500 bg-brand-gold-900/20;
+  @apply border-brand-wine-400 bg-brand-wine-900/20;
 }
 
 .erg-radio {
@@ -194,11 +194,11 @@ const isDirty = (id): boolean => nameMapping[id].dirty;
 }
 
 .erg-item--selected .erg-radio {
-  @apply border-brand-gold-500;
+  @apply border-brand-wine-400;
 }
 
 .erg-radio-dot {
-  @apply w-2.5 h-2.5 rounded-full bg-brand-gold-500;
+  @apply w-2.5 h-2.5 rounded-full bg-brand-wine-400;
 }
 
 .erg-editable {
@@ -206,11 +206,11 @@ const isDirty = (id): boolean => nameMapping[id].dirty;
 }
 
 .erg-input {
-  @apply flex-1 text-sm bg-wineneutral-900 text-wineneutral-100 border border-brand-gold-600 rounded-md px-3 py-1.5 outline-none focus:border-brand-gold-400 focus:ring-1 focus:ring-brand-gold-500/30;
+  @apply flex-1 text-sm bg-wineneutral-900 text-wineneutral-100 border border-wineneutral-600 rounded-md px-3 py-1.5 outline-none focus:border-brand-wine-400 focus:ring-1 focus:ring-brand-wine-400/30;
 }
 
 .erg-reset {
-  @apply text-brand-gold-400 hover:text-brand-gold-300 transition-colors p-1;
+  @apply text-wineneutral-400 hover:text-wineneutral-200 transition-colors p-1;
 }
 
 .erg-label {

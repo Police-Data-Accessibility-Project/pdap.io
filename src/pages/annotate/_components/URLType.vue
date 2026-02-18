@@ -166,8 +166,8 @@ function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
 }
 
 .urltype-card--selected {
-  @apply border-brand-gold-500 bg-brand-gold-600 text-white;
-  box-shadow: 0 0 0 1px rgb(213 162 60);
+  @apply border-brand-wine-500 bg-brand-wine-600 text-white;
+  box-shadow: 0 0 0 1px rgb(81 42 79);
 }
 
 .urltype-card-body {
