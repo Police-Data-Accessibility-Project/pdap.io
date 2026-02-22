@@ -1,5 +1,9 @@
 <template>
-  <main ref="mainRef" data-test="annotate-page" class="min-h-[75%] relative text-med w-full max-w-7xl mx-auto px-4 sm:px-6 py-6">
+  <main
+    ref="mainRef"
+    data-test="annotate-page"
+    class="min-h-[75%] relative text-med w-full max-w-7xl mx-auto px-4 sm:px-6 py-6"
+  >
     <Modal :model-value="showContentWarning" @close="handleCloseContentWarning">
       Pages provided for labeling have not been manually validated and may
       contain sensitive content.
@@ -7,7 +11,10 @@
 
     <transition mode="out-in">
       <!-- Loading state -->
-      <div v-if="annotationPending" class="flex items-center justify-center h-[80vh] w-full flex-col relative">
+      <div
+        v-if="annotationPending"
+        class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      >
         <Spinner
           :show="annotationPending"
           :size="64"
@@ -33,7 +40,8 @@
               class="lg:hidden"
               @closed="showSmallScreenNotice = false"
             >
-              The labeling experience works best on larger screens. Consider using a desktop or tablet for the best experience.
+              The labeling experience works best on larger screens. Consider
+              using a desktop or tablet for the best experience.
             </Reminder>
 
             <AnonWarning />
@@ -49,7 +57,9 @@
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <!-- Left: URL Preview -->
             <aside class="lg:col-span-5 lg:sticky lg:top-4">
-              <div class="border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden">
+              <div
+                class="border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden"
+              >
                 <!-- Mobile toggle bar (always visible on mobile) -->
                 <button
                   data-test="annotate-preview-toggle"
@@ -57,8 +67,13 @@
                   @click="previewExpanded = !previewExpanded"
                 >
                   <div class="flex items-center gap-2">
-                    <FontAwesomeIcon :icon="faImage" class="w-4 h-4 shrink-0 text-wineneutral-400" />
-                    <span class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider">
+                    <FontAwesomeIcon
+                      :icon="faImage"
+                      class="w-4 h-4 shrink-0 text-wineneutral-400"
+                    />
+                    <span
+                      class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider"
+                    >
                       {{ previewExpanded ? 'Hide preview' : 'Show preview' }}
                     </span>
                   </div>
@@ -72,10 +87,15 @@
                 <!-- Expandable content (always visible on lg, toggle on mobile) -->
                 <div
                   class="grid transition-[grid-template-rows] duration-300 ease-in-out"
-                  :style="{ gridTemplateRows: previewExpanded || isLgScreen ? '1fr' : '0fr' }"
+                  :style="{
+                    gridTemplateRows:
+                      previewExpanded || isLgScreen ? '1fr' : '0fr'
+                  }"
                 >
                   <div class="overflow-hidden min-h-0">
-                    <div class="bg-wineneutral-100 flex items-center justify-center overflow-hidden aspect-[4/3] lg:aspect-auto lg:max-h-[520px]">
+                    <div
+                      class="bg-wineneutral-100 flex items-center justify-center overflow-hidden aspect-[4/3] lg:aspect-auto lg:max-h-[520px]"
+                    >
                       <ZoomableImage
                         v-if="imageOk"
                         :key="localAnnotation.next_annotation?.url_info.url_id"
@@ -83,7 +103,10 @@
                         alt="Screenshot of URL Page"
                         @error="imageOk = false"
                       />
-                      <div v-else class="flex flex-col items-center gap-2 text-wineneutral-400 text-sm">
+                      <div
+                        v-else
+                        class="flex flex-col items-center gap-2 text-wineneutral-400 text-sm"
+                      >
                         <FontAwesomeIcon :icon="faImage" class="w-8 h-8" />
                         <span>Image Not Found</span>
                       </div>
@@ -92,7 +115,9 @@
                     <div class="px-4 pb-4 border-t border-wineneutral-200 pt-3">
                       <Header
                         :refresh-key="globalResetKey"
-                        :url-i-d="localAnnotation.next_annotation.url_info.url_id"
+                        :url-i-d="
+                          localAnnotation.next_annotation.url_info.url_id
+                        "
                         :page-title="
                           localAnnotation.next_annotation.html_info.title
                         "
@@ -126,7 +151,9 @@
                 @select="selectTab"
               />
 
-              <div class="mt-4 border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px]">
+              <div
+                class="mt-4 border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px]"
+              >
                 <keep-alive>
                   <div class="relative">
                     <keep-alive>
@@ -208,7 +235,9 @@
         </template>
 
         <template v-else>
-          <div class="flex items-center justify-center h-[50vh] text-wineneutral-400 text-lg">
+          <div
+            class="flex items-center justify-center h-[50vh] text-wineneutral-400 text-lg"
+          >
             <p>No labels found.</p>
           </div>
         </template>
@@ -348,7 +377,9 @@ function handleLgChange(e: MediaQueryListEvent | MediaQueryList) {
 }
 handleLgChange(lgMediaQuery);
 onMounted(() => lgMediaQuery.addEventListener('change', handleLgChange));
-onBeforeUnmount(() => lgMediaQuery.removeEventListener('change', handleLgChange));
+onBeforeUnmount(() =>
+  lgMediaQuery.removeEventListener('change', handleLgChange)
+);
 
 //====================
 // Computed Variables

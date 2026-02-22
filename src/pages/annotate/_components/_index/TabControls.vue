@@ -1,5 +1,8 @@
 <template>
-  <div data-test="annotate-tab-controls" class="mt-4 flex justify-between items-center gap-3">
+  <div
+    data-test="annotate-tab-controls"
+    class="mt-4 flex justify-between items-center gap-3"
+  >
     <button
       data-test="annotate-prev-button"
       class="pdap-button-secondary inline-flex items-center gap-2"
@@ -24,7 +27,10 @@
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronLeft,
+  faChevronRight
+} from '@fortawesome/free-solid-svg-icons';
 
 //====================
 //Props, Models, Emits

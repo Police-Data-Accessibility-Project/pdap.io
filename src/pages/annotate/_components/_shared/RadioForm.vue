@@ -1,15 +1,22 @@
 <template>
   <div>
-    <h4 v-if="props.header" class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2">{{ props.header }}</h4>
+    <h4
+      v-if="props.header"
+      class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2"
+    >
+      {{ props.header }}
+    </h4>
     <div class="space-y-1.5">
       <label
         v-for="option in options"
         :key="option.value"
         :for="`option-${option.value}`"
         class="flex items-center px-3 py-2.5 cursor-pointer transition-all duration-150 border border-transparent"
-        :class="selectedType?.value === option.value
-          ? 'bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100'
-          : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'"
+        :class="
+          selectedType?.value === option.value
+            ? 'bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100'
+            : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'
+        "
       >
         <input
           :id="`option-${option.value}`"

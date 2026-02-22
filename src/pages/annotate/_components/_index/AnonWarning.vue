@@ -16,14 +16,24 @@
     <p class="font-semibold">You are accessing this as an anonymous user.</p>
 
     <p class="mt-1 text-brand-wine-700">
-      Anonymous users can make labels, but their labels weigh less
-      than those made by signed-in users.
+      Anonymous users can make labels, but their labels weigh less than those
+      made by signed-in users.
     </p>
 
     <p class="mt-1 text-brand-wine-700">
-      <RouterLink to="/sign-in" class="font-semibold underline underline-offset-2 hover:text-brand-wine-900 transition-colors">Sign in</RouterLink>
+      <RouterLink
+        to="/sign-in"
+        class="font-semibold underline underline-offset-2 hover:text-brand-wine-900 transition-colors"
+      >
+        Sign in
+      </RouterLink>
       or
-      <RouterLink to="/sign-up" class="font-semibold underline underline-offset-2 hover:text-brand-wine-900 transition-colors">sign up</RouterLink>
+      <RouterLink
+        to="/sign-up"
+        class="font-semibold underline underline-offset-2 hover:text-brand-wine-900 transition-colors"
+      >
+        sign up
+      </RouterLink>
       for your labels to carry more weight.
     </p>
   </div>

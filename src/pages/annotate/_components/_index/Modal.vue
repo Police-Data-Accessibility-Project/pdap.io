@@ -11,14 +11,28 @@
         @keydown.esc="emitClose"
       >
         <!-- Dimmed backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="emitClose" />
+        <div
+          class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+          @click="emitClose"
+        />
 
         <!-- Modal panel -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
-          <div class="w-full max-w-lg bg-wineneutral-950 shadow-2xl border border-wineneutral-800 overflow-hidden" @click.stop>
-            <header class="flex items-center justify-between px-6 py-4 border-b border-wineneutral-800">
-              <h2 class="text-lg font-bold text-wineneutral-100">{{ title }}</h2>
-              <button type="button" class="text-wineneutral-500 hover:text-wineneutral-200 transition-colors p-1 hover:bg-wineneutral-800" @click="emitClose">
+          <div
+            class="w-full max-w-lg bg-wineneutral-950 shadow-2xl border border-wineneutral-800 overflow-hidden"
+            @click.stop
+          >
+            <header
+              class="flex items-center justify-between px-6 py-4 border-b border-wineneutral-800"
+            >
+              <h2 class="text-lg font-bold text-wineneutral-100">
+                {{ title }}
+              </h2>
+              <button
+                type="button"
+                class="text-wineneutral-500 hover:text-wineneutral-200 transition-colors p-1 hover:bg-wineneutral-800"
+                @click="emitClose"
+              >
                 <FontAwesomeIcon :icon="faXmark" class="w-5 h-5" />
               </button>
             </header>
@@ -27,7 +41,9 @@
               <slot />
             </div>
 
-            <footer class="flex justify-end px-6 py-4 border-t border-wineneutral-800">
+            <footer
+              class="flex justify-end px-6 py-4 border-t border-wineneutral-800"
+            >
               <slot name="footer">
                 <button class="pdap-button-primary" @click="emitClose">
                   I understand

@@ -1,9 +1,16 @@
 <template>
   <div data-test="annotate-record-type">
-    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Select a record type</h3>
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      Select a record type
+    </h3>
 
     <!-- Suggestions -->
-    <div v-if="radioOptions.length" class="mb-5 pb-5 border-b border-wineneutral-200">
+    <div
+      v-if="radioOptions.length"
+      class="mb-5 pb-5 border-b border-wineneutral-200"
+    >
       <RadioForm
         v-model="selectedRadioRecordType"
         :options="radioOptions"
@@ -23,7 +30,9 @@
           {{ categoryName }}
         </legend>
 
-        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
+        <div
+          class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
+        >
           <label
             v-for="type in types"
             :key="type"
@@ -50,8 +59,13 @@
       </fieldset>
     </div>
 
-    <p v-if="selectedRecordTypeModel" data-test="annotate-record-type-selected" class="mt-4 text-sm text-wineneutral-600 bg-wineneutral-50 px-3 py-2 border border-wineneutral-200">
-      Selected: <strong>{{ selectedRecordTypeModel }}</strong>
+    <p
+      v-if="selectedRecordTypeModel"
+      data-test="annotate-record-type-selected"
+      class="mt-4 text-sm text-wineneutral-600 bg-wineneutral-50 px-3 py-2 border border-wineneutral-200"
+    >
+      Selected:
+      <strong>{{ selectedRecordTypeModel }}</strong>
     </p>
   </div>
 </template>

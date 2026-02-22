@@ -1,8 +1,15 @@
 <template>
   <div data-test="annotate-name">
-    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Name this data source</h3>
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      Name this data source
+    </h3>
 
-    <div v-if="selected?.name" class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900">
+    <div
+      v-if="selected?.name"
+      class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900"
+    >
       <span class="text-wineneutral-700 mr-1">Selected:</span>
       <strong>{{ selected.name }}</strong>
     </div>

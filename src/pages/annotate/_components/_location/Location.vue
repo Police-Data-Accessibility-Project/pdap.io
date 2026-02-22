@@ -1,13 +1,23 @@
 <template>
   <div data-test="annotate-location">
-    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Select a location</h3>
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      Select a location
+    </h3>
 
-    <div v-if="locationModel" class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900">
+    <div
+      v-if="locationModel"
+      class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900"
+    >
       <span class="text-wineneutral-700 mr-1">Selected:</span>
       <strong>{{ locationModel.display_name }}</strong>
     </div>
 
-    <div v-if="radioOptions.length" class="mb-5 pb-5 border-b border-wineneutral-200">
+    <div
+      v-if="radioOptions.length"
+      class="mb-5 pb-5 border-b border-wineneutral-200"
+    >
       <RadioForm
         v-model="selectedRadioLocation"
         :options="radioOptions"
@@ -17,7 +27,11 @@
     </div>
 
     <div class="mt-2">
-      <h4 class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2">Or search for a location</h4>
+      <h4
+        class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2"
+      >
+        Or search for a location
+      </h4>
       <SearchForm @update:model-value="handleSearchLocationSelect" />
     </div>
   </div>

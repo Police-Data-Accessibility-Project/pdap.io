@@ -4,17 +4,26 @@
       v-for="option in options"
       :key="option.id"
       class="flex items-center gap-3 border-2 p-3 cursor-pointer transition-all duration-150"
-      :class="isSelected(option.id)
-        ? 'border-brand-wine-400 bg-brand-wine-900/20'
-        : 'border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100'"
+      :class="
+        isSelected(option.id)
+          ? 'border-brand-wine-400 bg-brand-wine-900/20'
+          : 'border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100'
+      "
       @click="choose(option)"
     >
       <!-- Radio circle -->
       <span
         class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-        :class="isSelected(option.id) ? 'border-brand-wine-400' : 'border-wineneutral-400'"
+        :class="
+          isSelected(option.id)
+            ? 'border-brand-wine-400'
+            : 'border-wineneutral-400'
+        "
       >
-        <span v-if="isSelected(option.id)" class="w-2.5 h-2.5 rounded-full bg-brand-wine-400" />
+        <span
+          v-if="isSelected(option.id)"
+          class="w-2.5 h-2.5 rounded-full bg-brand-wine-400"
+        />
       </span>
 
       <!-- Label OR editable input -->
@@ -26,7 +35,11 @@
           @click.stop
           @input="handleInput(option, $event)"
         />
-        <button aria-label="Reset name to original" class="text-wineneutral-400 hover:text-wineneutral-200 transition-colors p-1" @click.stop="resetOption(option)">
+        <button
+          aria-label="Reset name to original"
+          class="text-wineneutral-400 hover:text-wineneutral-200 transition-colors p-1"
+          @click.stop="resetOption(option)"
+        >
           <svg
             class="w-4 h-4"
             fill="none"

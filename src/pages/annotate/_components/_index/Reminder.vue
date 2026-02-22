@@ -1,5 +1,8 @@
 <template>
-  <div v-if="showReminder" class="relative border p-4 pr-10 border-wineneutral-200 bg-wineneutral-50 text-wineneutral-700">
+  <div
+    v-if="showReminder"
+    class="relative border p-4 pr-10 border-wineneutral-200 bg-wineneutral-50 text-wineneutral-700"
+  >
     <button
       @click="handleClose"
       class="absolute right-3 top-3 text-wineneutral-400 hover:text-wineneutral-700 transition-colors"

@@ -1,5 +1,8 @@
 <template>
-  <div data-test="annotate-agency-search" class="border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px]">
+  <div
+    data-test="annotate-agency-search"
+    class="border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px]"
+  >
     <Typeahead
       id="agencies"
       ref="typeaheadRef"

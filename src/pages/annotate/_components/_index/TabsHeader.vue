@@ -1,6 +1,10 @@
 <template>
   <!-- Desktop stepper -->
-  <nav data-test="annotate-stepper-desktop" class="hidden md:flex items-center" aria-label="Labeling steps">
+  <nav
+    data-test="annotate-stepper-desktop"
+    class="hidden md:flex items-center"
+    aria-label="Labeling steps"
+  >
     <template v-for="(tab, index) in tabs" :key="tab.id">
       <button
         :data-test="`annotate-step-${tab.id}`"
@@ -49,9 +53,15 @@
   </nav>
 
   <!-- Mobile stepper -->
-  <nav data-test="annotate-stepper-mobile" class="flex md:hidden flex-col gap-3 px-1" aria-label="Labeling steps">
+  <nav
+    data-test="annotate-stepper-mobile"
+    class="flex md:hidden flex-col gap-3 px-1"
+    aria-label="Labeling steps"
+  >
     <div class="flex items-center justify-between">
-      <span class="text-lg font-bold text-wineneutral-800">{{ tabs[currentIndex]?.name }}</span>
+      <span class="text-lg font-bold text-wineneutral-800">
+        {{ tabs[currentIndex]?.name }}
+      </span>
       <span class="text-sm text-wineneutral-700">
         Step {{ currentStepNumber }} of {{ totalSteps }}
       </span>

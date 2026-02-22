@@ -20,11 +20,20 @@
     <div
       v-if="hasPointer && hovering && loaded"
       class="absolute rounded-full pointer-events-none border-2 border-goldneutral-400/70 z-10"
-      :style="[lensStyle, { boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4)' }]"
+      :style="[
+        lensStyle,
+        {
+          boxShadow:
+            '0 0 0 1px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4)'
+        }
+      ]"
     />
 
     <!-- Hint overlay (pointer devices only) -->
-    <div v-if="hasPointer && !hovering" class="absolute bottom-2 right-2 bg-black/50 text-white/80 px-2 py-1.5 flex items-center gap-1.5 text-xs pointer-events-none backdrop-blur-sm">
+    <div
+      v-if="hasPointer && !hovering"
+      class="absolute bottom-2 right-2 bg-black/50 text-white/80 px-2 py-1.5 flex items-center gap-1.5 text-xs pointer-events-none backdrop-blur-sm"
+    >
       <svg
         class="w-5 h-5"
         fill="none"
@@ -60,8 +69,7 @@ const LENS_SIZE = 160;
 
 // Detect fine pointer (mouse) vs coarse (touch)
 const hasPointer = ref(
-  typeof window !== 'undefined' &&
-    window.matchMedia('(pointer: fine)').matches
+  typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
 );
 
 const containerRef = ref<HTMLElement | null>(null);
@@ -105,8 +113,14 @@ const lensStyle = computed(() => {
   const containerH = el.offsetHeight;
 
   // Clamp lens position so it doesn't go outside the image
-  const lensX = Math.max(0, Math.min(mouseX.value - LENS_SIZE / 2, containerW - LENS_SIZE));
-  const lensY = Math.max(0, Math.min(mouseY.value - LENS_SIZE / 2, containerH - LENS_SIZE));
+  const lensX = Math.max(
+    0,
+    Math.min(mouseX.value - LENS_SIZE / 2, containerW - LENS_SIZE)
+  );
+  const lensY = Math.max(
+    0,
+    Math.min(mouseY.value - LENS_SIZE / 2, containerH - LENS_SIZE)
+  );
 
   // Background position: where in the zoomed image to show
   const bgX = (mouseX.value / containerW) * 100;
@@ -119,7 +133,7 @@ const lensStyle = computed(() => {
     top: `${lensY}px`,
     backgroundImage: `url(${props.src})`,
     backgroundSize: `${containerW * ZOOM}px ${containerH * ZOOM}px`,
-    backgroundPosition: `${bgX}% ${bgY}%`,
+    backgroundPosition: `${bgX}% ${bgY}%`
   };
 });
 </script>

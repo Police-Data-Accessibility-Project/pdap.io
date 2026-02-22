@@ -1,7 +1,14 @@
 <template>
   <div>
-    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">What type of page is this?</h3>
-    <div data-test="annotate-url-type" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      What type of page is this?
+    </h3>
+    <div
+      data-test="annotate-url-type"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3"
+    >
       <button
         v-for="option in formattedOptions"
         :key="option.value"
@@ -18,11 +25,21 @@
         <div class="flex flex-col gap-1">
           <span
             class="font-bold text-sm"
-            :class="props.modelValue?.display_name === option.value ? 'text-white' : 'text-wineneutral-900'"
-          >{{ option.value }}</span>
+            :class="
+              props.modelValue?.display_name === option.value
+                ? 'text-white'
+                : 'text-wineneutral-900'
+            "
+          >
+            {{ option.value }}
+          </span>
           <span
             class="text-xs leading-relaxed"
-            :class="props.modelValue?.display_name === option.value ? 'text-white/90' : 'text-wineneutral-700'"
+            :class="
+              props.modelValue?.display_name === option.value
+                ? 'text-white/90'
+                : 'text-wineneutral-700'
+            "
           >
             {{ descriptionMapping[option.value] }}
           </span>

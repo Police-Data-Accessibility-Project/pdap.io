@@ -4,49 +4,74 @@
       v-if="submitPending"
       class="flex items-center justify-center min-h-[300px] w-full flex-col relative"
     >
-      <Spinner
-        :show="submitPending"
-        :size="64"
-        text="Submitting label..."
-      />
+      <Spinner :show="submitPending" :size="64" text="Submitting label..." />
     </div>
     <div v-else data-test="annotate-confirm">
-      <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Review your label</h3>
+      <h3
+        class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+      >
+        Review your label
+      </h3>
 
-      <div data-test="annotate-confirm-summary" class="border border-wineneutral-200 overflow-hidden">
-        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
-          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">URL Type</span>
+      <div
+        data-test="annotate-confirm-summary"
+        class="border border-wineneutral-200 overflow-hidden"
+      >
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            URL Type
+          </span>
           <span class="text-sm text-wineneutral-900 text-right">
             {{ props.urlType?.display_name || '—' }}
           </span>
         </div>
-        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
-          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Location</span>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Location
+          </span>
           <span class="text-sm text-wineneutral-900 text-right">
             {{ props.location?.display_name || '—' }}
           </span>
         </div>
-        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
-          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Agency</span>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Agency
+          </span>
           <span class="text-sm text-wineneutral-900 text-right">
             {{ props.agency?.display_name || '—' }}
           </span>
         </div>
-        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
-          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Record Type</span>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Record Type
+          </span>
           <span class="text-sm text-wineneutral-900 text-right">
             {{ props.recordType || '—' }}
           </span>
         </div>
         <div class="flex items-baseline justify-between px-4 py-3">
-          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Name</span>
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Name
+          </span>
           <span class="text-sm text-wineneutral-900 text-right">
             {{ props.name?.name || '—' }}
           </span>
         </div>
       </div>
 
-      <button data-test="annotate-submit" @click="handleSubmit" class="pdap-button-primary mt-6 w-full">
+      <button
+        data-test="annotate-submit"
+        @click="handleSubmit"
+        class="pdap-button-primary mt-6 w-full"
+      >
         Submit Label
       </button>
     </div>
@@ -145,8 +170,14 @@ async function handleSubmit() {
       not_found: false // TODO: Allow for declaring not found.
     },
     name_info: {
-      new_name: (props.name?.new || props.name?.nameID === 'new') ? props.name?.name : null,
-      existing_name_id: (props.name?.new || props.name?.nameID === 'new') ? null : props.name?.nameID
+      new_name:
+        props.name?.new || props.name?.nameID === 'new'
+          ? props.name?.name
+          : null,
+      existing_name_id:
+        props.name?.new || props.name?.nameID === 'new'
+          ? null
+          : props.name?.nameID
     }
   };
 
