@@ -8,9 +8,7 @@ test.describe('Annotation responsive layout', () => {
   test.describe('Desktop (1280px)', () => {
     test.use({ viewport: { width: 1280, height: 800 } });
 
-    test('shows two-panel layout with preview and wizard', async ({
-      page
-    }) => {
+    test('shows two-panel layout with preview and wizard', async ({ page }) => {
       await page.goto('/annotate');
       await page.waitForLoadState('networkidle');
 
@@ -40,9 +38,7 @@ test.describe('Annotation responsive layout', () => {
       ).toBeHidden();
     });
 
-    test('zoomable image container is present on desktop', async ({
-      page
-    }) => {
+    test('zoomable image container is present on desktop', async ({ page }) => {
       await page.goto('/annotate');
       await page.waitForLoadState('networkidle');
 
@@ -132,9 +128,7 @@ test.describe('Annotation responsive layout', () => {
       await expect(mobileStepper).toContainText('URL Type');
 
       // Select URL type to advance
-      await page.click(
-        '[data-test="annotate-url-type-relevant-data-source"]'
-      );
+      await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
       // Mobile stepper should now show "Location"
       await expect(mobileStepper).toContainText('Location', { timeout: 5000 });

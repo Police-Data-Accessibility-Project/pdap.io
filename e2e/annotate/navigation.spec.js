@@ -26,9 +26,7 @@ test.describe('Annotation stepper navigation', () => {
     page
   }) => {
     // Select a URL type to mark it as answered
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Wait for navigation to next step
     await expect(
@@ -50,9 +48,7 @@ test.describe('Annotation stepper navigation', () => {
     page
   }) => {
     // Select URL type to enable further steps
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Wait for Location step to appear
     await expect(
@@ -74,9 +70,7 @@ test.describe('Annotation stepper navigation', () => {
 
   test('skipped steps show skipped styling', async ({ page }) => {
     // Select URL type
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Wait for Location step
     await expect(

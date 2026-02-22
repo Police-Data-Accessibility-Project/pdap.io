@@ -25,9 +25,7 @@ async function advanceToStep(page, targetTestId) {
  * Suggestions may not exist for URLs with no prior annotations.
  */
 async function selectFirstSuggestionOrSkip(page, containerTestId) {
-  const label = page
-    .locator(`[data-test="${containerTestId}"] label`)
-    .first();
+  const label = page.locator(`[data-test="${containerTestId}"] label`).first();
   const count = await label.count();
   if (count > 0 && (await label.isVisible().catch(() => false))) {
     await label.click();
@@ -65,9 +63,7 @@ test.describe('Annotation wizard flow', () => {
     await expect(
       page.locator(`[data-test="${TEST_IDS.annotate_url_type}"]`)
     ).toBeVisible();
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Step 2: Location — select suggestion or skip
     await advanceToStep(page, TEST_IDS.annotate_location);
@@ -136,9 +132,7 @@ test.describe('Annotation wizard flow', () => {
     await expect(nextButton).toBeDisabled();
 
     // Select URL type
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Now on Location step — prev should be enabled
     await advanceToStep(page, TEST_IDS.annotate_location);
@@ -156,9 +150,7 @@ test.describe('Annotation wizard flow', () => {
     page
   }) => {
     // Select "Not Relevant Or Useful"
-    await page.click(
-      '[data-test="annotate-url-type-not-relevant-or-useful"]'
-    );
+    await page.click('[data-test="annotate-url-type-not-relevant-or-useful"]');
 
     // The path for "Not Relevant" is: URL Type → Confirm
     await expect(
@@ -166,13 +158,9 @@ test.describe('Annotation wizard flow', () => {
     ).toBeVisible({ timeout: 5000 });
   });
 
-  test('skip path: selecting "Broken" skips to Confirm', async ({
-    page
-  }) => {
+  test('skip path: selecting "Broken" skips to Confirm', async ({ page }) => {
     // Select "Broken / bad data"
-    await page.click(
-      '[data-test="annotate-url-type-broken-bad-data"]'
-    );
+    await page.click('[data-test="annotate-url-type-broken-bad-data"]');
 
     // Should auto-advance directly to Confirm
     await expect(

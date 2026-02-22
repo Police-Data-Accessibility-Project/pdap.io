@@ -23,9 +23,7 @@ async function advanceToStep(page, targetTestId) {
 }
 
 async function selectFirstSuggestionOrSkip(page, containerTestId) {
-  const label = page
-    .locator(`[data-test="${containerTestId}"] label`)
-    .first();
+  const label = page.locator(`[data-test="${containerTestId}"] label`).first();
   const count = await label.count();
   if (count > 0 && (await label.isVisible().catch(() => false))) {
     await label.click();
@@ -91,9 +89,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
 
   test('URL Type selected state passes WCAG 2 AA', async ({ page }) => {
     // Select a URL type to trigger the selected state
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
 
     // Go back to URL Type to see the selected state
     await page.click(`[data-test="${TEST_IDS.annotate_prev_button}"]`);
@@ -110,9 +106,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
   });
 
   test('Location step passes WCAG 2 AA', async ({ page }) => {
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
     await advanceToStep(page, TEST_IDS.annotate_location);
 
     const results = await wizardAxeBuilder(page).analyze();
@@ -124,9 +118,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
   });
 
   test('Agency step passes WCAG 2 AA', async ({ page }) => {
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
     await advanceToStep(page, TEST_IDS.annotate_location);
     await selectFirstSuggestionOrSkip(page, TEST_IDS.annotate_location);
     await advanceToStep(page, TEST_IDS.annotate_agency);
@@ -140,9 +132,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
   });
 
   test('Record Type step passes WCAG 2 AA', async ({ page }) => {
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
     await advanceToStep(page, TEST_IDS.annotate_location);
     await selectFirstSuggestionOrSkip(page, TEST_IDS.annotate_location);
     await advanceToStep(page, TEST_IDS.annotate_agency);
@@ -158,9 +148,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
   });
 
   test('Name step passes WCAG 2 AA', async ({ page }) => {
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
     await advanceToStep(page, TEST_IDS.annotate_location);
     await selectFirstSuggestionOrSkip(page, TEST_IDS.annotate_location);
     await advanceToStep(page, TEST_IDS.annotate_agency);
@@ -201,9 +189,7 @@ test.describe('Annotation accessibility (axe-core)', () => {
   });
 
   test('Confirm step passes WCAG 2 AA', async ({ page }) => {
-    await page.click(
-      '[data-test="annotate-url-type-relevant-data-source"]'
-    );
+    await page.click('[data-test="annotate-url-type-relevant-data-source"]');
     await advanceToStep(page, TEST_IDS.annotate_location);
     await selectFirstSuggestionOrSkip(page, TEST_IDS.annotate_location);
     await advanceToStep(page, TEST_IDS.annotate_agency);
