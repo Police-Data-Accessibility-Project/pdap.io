@@ -50,6 +50,7 @@
     "vue3-toastify": "^0.2.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@pdap-design-system/eslint-config": "^1.0.1",
     "@pinia/testing": "^0.1.3",
     "@playwright/test": "^1.51.1",

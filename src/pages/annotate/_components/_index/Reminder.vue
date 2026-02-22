@@ -1,23 +1,11 @@
 <template>
-  <div v-if="showReminder" class="notice notice--muted">
+  <div v-if="showReminder" class="relative border p-4 pr-10 border-wineneutral-200 bg-wineneutral-50 text-wineneutral-700">
     <button
       @click="handleClose"
-      class="notice-close"
+      class="absolute right-3 top-3 text-wineneutral-400 hover:text-wineneutral-700 transition-colors"
       aria-label="Dismiss reminder"
     >
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
+      <FontAwesomeIcon :icon="faXmark" class="w-4 h-4" />
     </button>
     <p class="text-sm">
       <slot />
@@ -30,6 +18,8 @@
 //Props, Models, Emits
 //====================
 import { ref } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const emit = defineEmits<{
   (e: 'closed'): boolean;
@@ -48,17 +38,3 @@ function handleClose(): void {
   showReminder.value = false;
 }
 </script>
-
-<style scoped>
-.notice {
-  @apply relative rounded-lg border p-4 pr-10;
-}
-
-.notice--muted {
-  @apply border-wineneutral-200 bg-wineneutral-50 text-wineneutral-700;
-}
-
-.notice-close {
-  @apply absolute right-3 top-3 text-wineneutral-400 hover:text-wineneutral-700 transition-colors;
-}
-</style>

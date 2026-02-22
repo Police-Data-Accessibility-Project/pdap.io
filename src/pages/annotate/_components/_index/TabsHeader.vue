@@ -1,51 +1,40 @@
 <template>
   <!-- Desktop stepper -->
-  <nav class="stepper-desktop" aria-label="Annotation steps">
+  <nav data-test="annotate-stepper-desktop" class="hidden md:flex items-center" aria-label="Labeling steps">
     <template v-for="(tab, index) in tabs" :key="tab.id">
       <button
-        class="stepper-step"
-        :class="{ 'stepper-step--clickable': isClickable(index) }"
+        :data-test="`annotate-step-${tab.id}`"
+        class="flex flex-col items-center gap-1.5 bg-transparent border-none p-0 min-w-0"
+        :class="{ 'cursor-pointer': isClickable(index) }"
         :disabled="!isClickable(index)"
         @click="isClickable(index) && emit('select', index)"
       >
         <!-- Circle -->
-        <div class="stepper-circle" :class="getCircleClasses(index)">
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shrink-0"
+          :class="getCircleClasses(index)"
+        >
           <!-- Checkmark for answered -->
-          <svg
+          <FontAwesomeIcon
             v-if="answeredIndices.includes(index) && index !== currentIndex"
+            :icon="faCheck"
             class="w-3.5 h-3.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="3"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
+          />
           <!-- Dash for skipped -->
-          <svg
+          <FontAwesomeIcon
             v-else-if="skippedIndices.includes(index)"
+            :icon="faMinus"
             class="w-3 h-3"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="3"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 12h14"
-            />
-          </svg>
+          />
           <!-- Number otherwise -->
           <span v-else class="text-xs font-bold">{{ index + 1 }}</span>
         </div>
 
         <!-- Label -->
-        <span class="stepper-label" :class="getLabelClasses(index)">
+        <span
+          class="text-xs font-medium whitespace-nowrap transition-colors hidden lg:block"
+          :class="getLabelClasses(index)"
+        >
           {{ tab.name }}
         </span>
       </button>
@@ -53,25 +42,25 @@
       <!-- Connecting line -->
       <div
         v-if="index < tabs.length - 1"
-        class="stepper-line"
+        class="flex-1 h-0.5 mx-1.5 rounded-full transition-colors duration-200 self-start mt-4"
         :class="getLineClasses(index)"
       />
     </template>
   </nav>
 
   <!-- Mobile stepper -->
-  <nav class="stepper-mobile" aria-label="Annotation steps">
-    <div class="stepper-mobile-info">
-      <span class="stepper-mobile-label">{{ tabs[currentIndex]?.name }}</span>
-      <span class="stepper-mobile-count">
+  <nav data-test="annotate-stepper-mobile" class="flex md:hidden flex-col gap-3 px-1" aria-label="Labeling steps">
+    <div class="flex items-center justify-between">
+      <span class="text-lg font-bold text-wineneutral-800">{{ tabs[currentIndex]?.name }}</span>
+      <span class="text-sm text-wineneutral-700">
         Step {{ currentStepNumber }} of {{ totalSteps }}
       </span>
     </div>
-    <div class="stepper-dots">
+    <div class="flex items-center gap-2 justify-center">
       <button
         v-for="(tab, i) in tabs"
         :key="i"
-        class="stepper-dot"
+        class="w-2.5 h-2.5 rounded-full transition-all duration-200 p-0 border-none"
         :class="getDotClasses(i)"
         :disabled="!isClickable(i)"
         :aria-label="`Step ${i + 1}: ${tab.name}`"
@@ -83,6 +72,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 //====================
 //       Types
@@ -130,34 +121,34 @@ function isClickable(index: number): boolean {
 
 function getCircleClasses(index: number): string {
   if (index === props.currentIndex) {
-    return 'stepper-circle--active';
+    return 'bg-brand-wine-500 text-white shadow-sm';
   }
   if (props.answeredIndices.includes(index)) {
-    return 'stepper-circle--completed';
+    return 'bg-wineneutral-500 text-white';
   }
   if (props.skippedIndices.includes(index)) {
-    return 'stepper-circle--skipped';
+    return 'bg-wineneutral-100 text-wineneutral-400 border-2 border-dashed border-wineneutral-300';
   }
   if (props.enabledIndices.includes(index)) {
-    return 'stepper-circle--enabled';
+    return 'bg-wineneutral-100 text-wineneutral-600 border-2 border-wineneutral-300';
   }
-  return 'stepper-circle--disabled';
+  return 'bg-wineneutral-50 text-wineneutral-300 border border-wineneutral-200';
 }
 
 function getLabelClasses(index: number): string {
   if (index === props.currentIndex) {
-    return 'stepper-label--active';
+    return 'text-wineneutral-800 font-bold';
   }
   if (props.answeredIndices.includes(index)) {
-    return 'stepper-label--completed';
+    return 'text-wineneutral-700';
   }
   if (props.skippedIndices.includes(index)) {
-    return 'stepper-label--skipped';
+    return 'text-wineneutral-700';
   }
   if (props.enabledIndices.includes(index)) {
-    return 'stepper-label--enabled';
+    return 'text-wineneutral-700';
   }
-  return 'stepper-label--disabled';
+  return 'text-wineneutral-700';
 }
 
 function getLineClasses(index: number): string {
@@ -167,165 +158,30 @@ function getLineClasses(index: number): string {
     (props.answeredIndices.includes(nextIndex) ||
       nextIndex === props.currentIndex)
   ) {
-    return 'stepper-line--completed';
+    return 'bg-wineneutral-400';
   }
   if (
     props.enabledIndices.includes(index) &&
     props.enabledIndices.includes(nextIndex)
   ) {
-    return 'stepper-line--enabled';
+    return 'bg-wineneutral-200';
   }
-  return 'stepper-line--disabled';
+  return 'bg-wineneutral-100';
 }
 
 function getDotClasses(index: number): string {
   if (index === props.currentIndex) {
-    return 'stepper-dot--active';
+    return 'bg-brand-wine-400 scale-125';
   }
   if (props.answeredIndices.includes(index)) {
-    return 'stepper-dot--completed';
+    return 'bg-wineneutral-400 cursor-pointer';
   }
   if (props.skippedIndices.includes(index)) {
-    return 'stepper-dot--skipped';
+    return 'bg-wineneutral-300';
   }
   if (props.enabledIndices.includes(index)) {
-    return 'stepper-dot--enabled';
+    return 'bg-wineneutral-200 cursor-pointer';
   }
-  return 'stepper-dot--disabled';
+  return 'bg-wineneutral-100';
 }
 </script>
-
-<style scoped>
-/* Desktop stepper */
-.stepper-desktop {
-  @apply hidden md:flex items-center;
-}
-
-.stepper-step {
-  @apply flex flex-col items-center gap-1.5 bg-transparent border-none p-0 min-w-0;
-}
-
-.stepper-step--clickable {
-  @apply cursor-pointer;
-}
-
-.stepper-step--clickable:hover .stepper-circle--enabled,
-.stepper-step--clickable:hover .stepper-circle--completed {
-  @apply ring-2 ring-wineneutral-400/30 ring-offset-1;
-}
-
-/* Circles */
-.stepper-circle {
-  @apply w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shrink-0;
-}
-
-.stepper-circle--active {
-  @apply bg-brand-wine-500 text-white;
-  box-shadow:
-    0 0 0 3px rgba(81, 42, 79, 0.2),
-    0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.stepper-circle--completed {
-  @apply bg-wineneutral-500 text-white;
-}
-
-.stepper-circle--skipped {
-  @apply bg-wineneutral-200 text-wineneutral-500;
-}
-
-.stepper-circle--enabled {
-  @apply bg-wineneutral-100 text-wineneutral-600 border-2 border-wineneutral-300;
-}
-
-.stepper-circle--disabled {
-  @apply bg-wineneutral-50 text-wineneutral-300 border border-wineneutral-200;
-}
-
-/* Labels */
-.stepper-label {
-  @apply text-xs font-medium whitespace-nowrap transition-colors hidden lg:block;
-}
-
-.stepper-label--active {
-  @apply text-wineneutral-200 font-bold;
-}
-
-.stepper-label--completed {
-  @apply text-wineneutral-400;
-}
-
-.stepper-label--skipped {
-  @apply text-wineneutral-500 line-through;
-}
-
-.stepper-label--enabled {
-  @apply text-wineneutral-300;
-}
-
-.stepper-label--disabled {
-  @apply text-wineneutral-300;
-}
-
-/* Connecting lines */
-.stepper-line {
-  @apply flex-1 h-0.5 mx-1.5 rounded-full transition-colors duration-200 self-start mt-4;
-}
-
-.stepper-line--completed {
-  @apply bg-wineneutral-400;
-}
-
-.stepper-line--enabled {
-  @apply bg-wineneutral-200;
-}
-
-.stepper-line--disabled {
-  @apply bg-wineneutral-100;
-}
-
-/* Mobile stepper */
-.stepper-mobile {
-  @apply flex md:hidden flex-col gap-3 px-1;
-}
-
-.stepper-mobile-info {
-  @apply flex items-center justify-between;
-}
-
-.stepper-mobile-label {
-  @apply text-lg font-bold text-wineneutral-200;
-}
-
-.stepper-mobile-count {
-  @apply text-sm text-wineneutral-300;
-}
-
-.stepper-dots {
-  @apply flex items-center gap-2 justify-center;
-}
-
-.stepper-dot {
-  @apply w-2.5 h-2.5 rounded-full transition-all duration-200 p-0 border-none;
-}
-
-.stepper-dot--active {
-  @apply bg-brand-wine-400 scale-125;
-}
-
-.stepper-dot--completed {
-  @apply bg-wineneutral-400 cursor-pointer;
-}
-
-.stepper-dot--skipped {
-  @apply bg-wineneutral-300;
-}
-
-.stepper-dot--enabled {
-  @apply bg-wineneutral-200 cursor-pointer;
-}
-
-.stepper-dot--disabled {
-  @apply bg-wineneutral-100;
-}
-</style>

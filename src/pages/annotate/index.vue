@@ -1,32 +1,41 @@
 <template>
-  <main ref="mainRef" class="annotate-page">
+  <main ref="mainRef" data-test="annotate-page" class="min-h-[75%] relative text-med w-full max-w-7xl mx-auto px-4 sm:px-6 py-6">
     <Modal :model-value="showContentWarning" @close="handleCloseContentWarning">
-      Pages provided for annotation have not been manually validated and may
+      Pages provided for labeling have not been manually validated and may
       contain sensitive content.
     </Modal>
 
     <transition mode="out-in">
       <!-- Loading state -->
-      <div v-if="annotationPending" class="annotate-loading">
+      <div v-if="annotationPending" class="flex items-center justify-center h-[80vh] w-full flex-col relative">
         <Spinner
           :show="annotationPending"
           :size="64"
-          text="Fetching annotation..."
+          text="Fetching label..."
         />
       </div>
 
       <div v-else class="w-full">
         <!-- Error state -->
         <template v-if="!annotationPending && error">
-          <div class="annotate-error">
-            <h1>An error occurred loading the annotation</h1>
+          <div class="border-2 border-red-200 bg-red-50 p-6 text-center">
+            <h1>An error occurred loading the label</h1>
             <p>Please refresh the page and try again.</p>
           </div>
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
           <!-- Notices -->
-          <div class="annotate-notices">
+          <div class="space-y-3 mb-6">
+            <!-- Small-viewport message -->
+            <Reminder
+              v-if="showSmallScreenNotice"
+              class="lg:hidden"
+              @closed="showSmallScreenNotice = false"
+            >
+              The labeling experience works best on larger screens. Consider using a desktop or tablet for the best experience.
+            </Reminder>
+
             <AnonWarning />
             <Reminder
               v-if="showCookieAgreement"
@@ -37,53 +46,36 @@
           </div>
 
           <!-- Two-panel layout -->
-          <div class="annotate-panels">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <!-- Left: URL Preview -->
-            <aside class="annotate-preview">
-              <div class="annotate-preview-card">
+            <aside class="lg:col-span-5 lg:sticky lg:top-4">
+              <div class="border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden">
                 <!-- Mobile toggle bar (always visible on mobile) -->
                 <button
-                  class="preview-toggle"
+                  data-test="annotate-preview-toggle"
+                  class="flex lg:hidden items-center justify-between w-full px-4 py-3 bg-transparent border-none text-left cursor-pointer"
                   @click="previewExpanded = !previewExpanded"
                 >
-                  <div class="preview-toggle-left">
-                    <svg
-                      class="w-4 h-4 shrink-0 text-wineneutral-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
-                      />
-                    </svg>
-                    <span class="preview-toggle-text">
+                  <div class="flex items-center gap-2">
+                    <FontAwesomeIcon :icon="faImage" class="w-4 h-4 shrink-0 text-wineneutral-400" />
+                    <span class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider">
                       {{ previewExpanded ? 'Hide preview' : 'Show preview' }}
                     </span>
                   </div>
-                  <svg
-                    class="preview-toggle-chevron"
-                    :class="{ 'preview-toggle-chevron--open': previewExpanded }"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
+                  <FontAwesomeIcon
+                    :icon="faChevronDown"
+                    class="w-4 h-4 text-wineneutral-400 transition-transform duration-200"
+                    :class="{ 'rotate-180': previewExpanded }"
+                  />
                 </button>
 
                 <!-- Expandable content (always visible on lg, toggle on mobile) -->
-                <div class="preview-body" :class="{ 'preview-body--collapsed': !previewExpanded }">
-                  <div class="preview-body-inner">
-                    <div class="annotate-screenshot">
+                <div
+                  class="grid transition-[grid-template-rows] duration-300 ease-in-out"
+                  :style="{ gridTemplateRows: previewExpanded || isLgScreen ? '1fr' : '0fr' }"
+                >
+                  <div class="overflow-hidden min-h-0">
+                    <div class="bg-wineneutral-100 flex items-center justify-center overflow-hidden aspect-[4/3] lg:aspect-auto lg:max-h-[520px]">
                       <ZoomableImage
                         v-if="imageOk"
                         :key="localAnnotation.next_annotation?.url_info.url_id"
@@ -91,26 +83,13 @@
                         alt="Screenshot of URL Page"
                         @error="imageOk = false"
                       />
-                      <div v-else class="annotate-screenshot-fallback">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="w-8 h-8"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
-                          />
-                        </svg>
+                      <div v-else class="flex flex-col items-center gap-2 text-wineneutral-400 text-sm">
+                        <FontAwesomeIcon :icon="faImage" class="w-8 h-8" />
                         <span>Image Not Found</span>
                       </div>
                     </div>
 
-                    <div class="annotate-meta">
+                    <div class="px-4 pb-4 border-t border-wineneutral-200 pt-3">
                       <Header
                         :refresh-key="globalResetKey"
                         :url-i-d="localAnnotation.next_annotation.url_info.url_id"
@@ -123,12 +102,12 @@
                 </div>
 
                 <!-- URL always visible (outside collapsible body) -->
-                <div class="annotate-url-info">
+                <div class="p-4 border-t border-wineneutral-200">
                   <a
                     :href="localAnnotation.next_annotation?.url_info.url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="annotate-url-link"
+                    class="text-sm text-goldneutral-700 hover:text-goldneutral-800 underline underline-offset-2 break-all leading-relaxed transition-colors"
                   >
                     {{ localAnnotation.next_annotation?.url_info.url }}
                   </a>
@@ -136,8 +115,8 @@
               </div>
             </aside>
 
-            <!-- Right: Annotation Wizard -->
-            <section class="annotate-wizard">
+            <!-- Right: Labeling Wizard -->
+            <section data-test="annotate-wizard" class="lg:col-span-7">
               <TabsHeader
                 :tabs="tabs"
                 :current-index="currentGlobalIndex"
@@ -147,7 +126,7 @@
                 @select="selectTab"
               />
 
-              <div class="annotate-content">
+              <div class="mt-4 border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px]">
                 <keep-alive>
                   <div class="relative">
                     <keep-alive>
@@ -229,8 +208,8 @@
         </template>
 
         <template v-else>
-          <div class="annotate-empty">
-            <p>No annotations found.</p>
+          <div class="flex items-center justify-center h-[50vh] text-wineneutral-400 text-lg">
+            <p>No labels found.</p>
           </div>
         </template>
       </div>
@@ -252,8 +231,10 @@
 import { getAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { Spinner } from 'pdap-design-system';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faImage, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import URLTypeView from '@/pages/annotate/_components/URLType.vue';
 import RecordTypeView from '@/pages/annotate/_components/RecordType.vue';
 import AgencyView from '@/pages/annotate/_components/_agency/Agency.vue';
@@ -306,6 +287,12 @@ const imageOk = ref<boolean>(true);
 // Whether the mobile preview card is expanded
 const previewExpanded = ref<boolean>(true);
 
+// Whether the small-screen notice is shown
+const showSmallScreenNotice = ref<boolean>(true);
+
+// Track if we're on a large screen for collapsible preview
+const isLgScreen = ref<boolean>(false);
+
 // Variables tracking selections of annotation components.
 const selectedURLType = ref<URLTypeSelection>(null);
 const selectedLocation = ref<AgencyLocationSelection>(null);
@@ -353,6 +340,15 @@ const rem = useRemindersStore();
 rem.hydrateSession();
 showContentWarning.value = rem.contentWarning;
 showCookieAgreement.value = rem.cookieAgreement;
+
+// Media query for lg breakpoint
+const lgMediaQuery = window.matchMedia('(min-width: 1024px)');
+function handleLgChange(e: MediaQueryListEvent | MediaQueryList) {
+  isLgScreen.value = e.matches;
+}
+handleLgChange(lgMediaQuery);
+onMounted(() => lgMediaQuery.addEventListener('change', handleLgChange));
+onBeforeUnmount(() => lgMediaQuery.removeEventListener('change', handleLgChange));
 
 //====================
 // Computed Variables
@@ -571,116 +567,3 @@ function updateReminderCookie() {
   );
 }
 </script>
-
-<style scoped>
-.annotate-page {
-  @apply min-h-[75%] relative text-med w-full max-w-7xl mx-auto px-4 sm:px-6 py-6;
-}
-
-.annotate-loading {
-  @apply flex items-center justify-center h-[80vh] w-full flex-col relative;
-}
-
-.annotate-error {
-  @apply rounded-xl border-2 border-red-200 bg-red-50 p-6 text-center;
-}
-
-.annotate-notices {
-  @apply space-y-3 mb-6;
-}
-
-.annotate-panels {
-  @apply grid grid-cols-1 lg:grid-cols-12 gap-6 items-start;
-}
-
-.annotate-preview {
-  @apply lg:col-span-5 lg:sticky lg:top-4;
-}
-
-.annotate-preview-card {
-  @apply rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden;
-}
-
-/* Mobile preview toggle */
-.preview-toggle {
-  @apply flex lg:hidden items-center justify-between w-full px-4 py-3 bg-transparent border-none text-left cursor-pointer;
-}
-
-.preview-toggle-left {
-  @apply flex items-center gap-2;
-}
-
-.preview-toggle-text {
-  @apply text-xs font-semibold text-wineneutral-400 uppercase tracking-wider;
-}
-
-.preview-toggle-chevron {
-  @apply w-4 h-4 text-wineneutral-400 transition-transform duration-200;
-}
-
-.preview-toggle-chevron--open {
-  transform: rotate(180deg);
-}
-
-/* Collapsible preview body */
-.preview-body {
-  @apply grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.3s ease-in-out;
-}
-
-.preview-body--collapsed {
-  grid-template-rows: 0fr;
-}
-
-@media (min-width: 1024px) {
-  .preview-body--collapsed {
-    grid-template-rows: 1fr;
-  }
-}
-
-.preview-body-inner {
-  overflow: hidden;
-  min-height: 0;
-}
-
-.annotate-screenshot {
-  @apply bg-wineneutral-100 flex items-center justify-center overflow-hidden;
-  aspect-ratio: 4 / 3;
-}
-
-@media (min-width: 1024px) {
-  .annotate-screenshot {
-    aspect-ratio: unset;
-    max-height: 520px;
-  }
-}
-
-.annotate-screenshot-fallback {
-  @apply flex flex-col items-center gap-2 text-wineneutral-400 text-sm;
-}
-
-.annotate-url-info {
-  @apply p-4 border-t border-wineneutral-200;
-}
-
-.annotate-url-link {
-  @apply text-sm text-goldneutral-700 hover:text-goldneutral-800 underline underline-offset-2 break-all leading-relaxed transition-colors;
-}
-
-.annotate-meta {
-  @apply px-4 pb-4 border-t border-wineneutral-200 pt-3;
-}
-
-.annotate-wizard {
-  @apply lg:col-span-7;
-}
-
-.annotate-content {
-  @apply mt-4 rounded-xl border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px];
-}
-
-.annotate-empty {
-  @apply flex items-center justify-center h-[50vh] text-wineneutral-400 text-lg;
-}
-</style>

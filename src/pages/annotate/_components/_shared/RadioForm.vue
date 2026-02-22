@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h4 v-if="props.header" class="rf-header">{{ props.header }}</h4>
-    <div class="rf-options">
+    <h4 v-if="props.header" class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2">{{ props.header }}</h4>
+    <div class="space-y-1.5">
       <label
         v-for="option in options"
         :key="option.value"
         :for="`option-${option.value}`"
-        class="rf-option"
-        :class="{ 'rf-option--selected': selectedType?.value === option.value }"
+        class="flex items-center px-3 py-2.5 cursor-pointer transition-all duration-150 border border-transparent"
+        :class="selectedType?.value === option.value
+          ? 'bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100'
+          : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'"
       >
         <input
           :id="`option-${option.value}`"
@@ -18,8 +20,8 @@
           :value="option"
           @change="handleSelect(option)"
         />
-        <span class="rf-option-content">
-          <span class="rf-option-label">{{ option.label }}</span>
+        <span class="flex items-center gap-2">
+          <span class="text-sm font-semibold">{{ option.label }}</span>
           <AnnotationSpan
             v-if="option.anno_labels?.user || option.anno_labels?.robo"
             :labels="option.anno_labels"
@@ -71,33 +73,3 @@ function handleSelect(option: RadioOption) {
   emit('update:modelValue', option);
 }
 </script>
-
-<style scoped>
-.rf-header {
-  @apply text-xs font-bold text-wineneutral-500 uppercase tracking-wider mb-2;
-}
-
-.rf-options {
-  @apply space-y-1.5;
-}
-
-.rf-option {
-  @apply flex items-center rounded-lg px-3 py-2.5 cursor-pointer transition-all duration-150 border border-transparent;
-}
-
-.rf-option:hover {
-  @apply bg-wineneutral-100 border-wineneutral-200;
-}
-
-.rf-option--selected {
-  @apply bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100;
-}
-
-.rf-option-content {
-  @apply flex items-center gap-2;
-}
-
-.rf-option-label {
-  @apply text-sm font-semibold;
-}
-</style>

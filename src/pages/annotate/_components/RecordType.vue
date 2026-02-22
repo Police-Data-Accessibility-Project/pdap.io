@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h3 class="rt-heading">Select a record type</h3>
+  <div data-test="annotate-record-type">
+    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Select a record type</h3>
 
     <!-- Suggestions -->
-    <div v-if="radioOptions.length" class="rt-suggestions">
+    <div v-if="radioOptions.length" class="mb-5 pb-5 border-b border-wineneutral-200">
       <RadioForm
         v-model="selectedRadioRecordType"
         :options="radioOptions"
@@ -13,25 +13,27 @@
     </div>
 
     <!-- All record types by category -->
-    <div class="rt-categories">
+    <div class="space-y-4">
       <fieldset
         v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
         :key="categoryName"
-        class="rt-category"
+        class="border border-wineneutral-200 p-3"
       >
-        <legend class="rt-category-legend">
+        <legend class="px-2 text-sm font-bold text-wineneutral-700">
           {{ categoryName }}
         </legend>
 
-        <div class="rt-options">
+        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
           <label
             v-for="type in types"
             :key="type"
             :for="type"
-            class="rt-option"
-            :class="{
-              'rt-option--selected': selectedRecordTypeModel === type
-            }"
+            class="flex items-center gap-2 px-2.5 py-1.5 text-sm cursor-pointer transition-colors border border-transparent"
+            :class="
+              selectedRecordTypeModel === type
+                ? 'bg-brand-wine-600 text-white border-brand-wine-600 font-semibold hover:bg-brand-wine-700 hover:border-brand-wine-700'
+                : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'
+            "
           >
             <input
               :id="type"
@@ -42,13 +44,13 @@
               class="sr-only"
               @change="handleSelectChange"
             />
-            <span class="rt-option-text">{{ type }}</span>
+            <span class="leading-tight">{{ type }}</span>
           </label>
         </div>
       </fieldset>
     </div>
 
-    <p v-if="selectedRecordTypeModel" class="rt-selected">
+    <p v-if="selectedRecordTypeModel" data-test="annotate-record-type-selected" class="mt-4 text-sm text-wineneutral-600 bg-wineneutral-50 px-3 py-2 border border-wineneutral-200">
       Selected: <strong>{{ selectedRecordTypeModel }}</strong>
     </p>
   </div>
@@ -127,53 +129,3 @@ function handleRadioFormSelect(option: RadioOption) {
   emit('select', null);
 }
 </script>
-
-<style scoped>
-.rt-heading {
-  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
-}
-
-.rt-suggestions {
-  @apply mb-5 pb-5 border-b border-wineneutral-200;
-}
-
-.rt-categories {
-  @apply space-y-4;
-}
-
-.rt-category {
-  @apply rounded-lg border border-wineneutral-200 p-3;
-}
-
-.rt-category-legend {
-  @apply px-2 text-sm font-bold text-wineneutral-700;
-}
-
-.rt-options {
-  @apply mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5;
-}
-
-.rt-option {
-  @apply flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm cursor-pointer transition-colors border border-transparent;
-}
-
-.rt-option:hover {
-  @apply bg-wineneutral-100 border-wineneutral-200;
-}
-
-.rt-option--selected {
-  @apply bg-brand-wine-600 text-white border-brand-wine-600 font-semibold;
-}
-
-.rt-option--selected:hover {
-  @apply bg-brand-wine-700 border-brand-wine-700;
-}
-
-.rt-option-text {
-  @apply leading-tight;
-}
-
-.rt-selected {
-  @apply mt-4 text-sm text-wineneutral-600 bg-wineneutral-50 rounded-lg px-3 py-2 border border-wineneutral-200;
-}
-</style>

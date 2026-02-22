@@ -1,26 +1,32 @@
 <template>
-  <div class="erg-list">
+  <div class="space-y-2">
     <div
       v-for="option in options"
       :key="option.id"
-      class="erg-item"
-      :class="isSelected(option.id) ? 'erg-item--selected' : 'erg-item--default'"
+      class="flex items-center gap-3 border-2 p-3 cursor-pointer transition-all duration-150"
+      :class="isSelected(option.id)
+        ? 'border-brand-wine-400 bg-brand-wine-900/20'
+        : 'border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100'"
       @click="choose(option)"
     >
       <!-- Radio circle -->
-      <span class="erg-radio">
-        <span v-if="isSelected(option.id)" class="erg-radio-dot" />
+      <span
+        class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+        :class="isSelected(option.id) ? 'border-brand-wine-400' : 'border-wineneutral-400'"
+      >
+        <span v-if="isSelected(option.id)" class="w-2.5 h-2.5 rounded-full bg-brand-wine-400" />
       </span>
 
       <!-- Label OR editable input -->
-      <span v-if="isSelected(option.id)" class="erg-editable">
+      <span v-if="isSelected(option.id)" class="flex-1 flex items-center gap-2">
         <input
-          class="erg-input"
+          :aria-label="`Edit name: ${option.text}`"
+          class="flex-1 text-sm bg-wineneutral-900 text-wineneutral-100 border border-wineneutral-600 px-3 py-1.5 outline-none focus:border-brand-wine-400"
           :value="option.text"
           @click.stop
           @input="handleInput(option, $event)"
         />
-        <button class="erg-reset" @click.stop="resetOption(option)">
+        <button aria-label="Reset name to original" class="text-wineneutral-400 hover:text-wineneutral-200 transition-colors p-1" @click.stop="resetOption(option)">
           <svg
             class="w-4 h-4"
             fill="none"
@@ -37,7 +43,7 @@
         </button>
       </span>
 
-      <span v-else class="erg-label">
+      <span v-else class="flex-1 flex items-center gap-2 text-sm">
         <span>{{ option.text }}</span>
         <AnnotationSpan
           v-if="!isDirty(option.id)"
@@ -171,49 +177,3 @@ const handleInput = (option: editableRadioOption, event) => {
 const isSelected = (id): boolean => props.modelValue?.nameID === id;
 const isDirty = (id): boolean => nameMapping[id].dirty;
 </script>
-
-<style scoped>
-.erg-list {
-  @apply space-y-2;
-}
-
-.erg-item {
-  @apply flex items-center gap-3 border-2 rounded-lg p-3 cursor-pointer transition-all duration-150;
-}
-
-.erg-item--default {
-  @apply border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100;
-}
-
-.erg-item--selected {
-  @apply border-brand-wine-400 bg-brand-wine-900/20;
-}
-
-.erg-radio {
-  @apply w-5 h-5 rounded-full border-2 border-wineneutral-400 flex items-center justify-center shrink-0;
-}
-
-.erg-item--selected .erg-radio {
-  @apply border-brand-wine-400;
-}
-
-.erg-radio-dot {
-  @apply w-2.5 h-2.5 rounded-full bg-brand-wine-400;
-}
-
-.erg-editable {
-  @apply flex-1 flex items-center gap-2;
-}
-
-.erg-input {
-  @apply flex-1 text-sm bg-wineneutral-900 text-wineneutral-100 border border-wineneutral-600 rounded-md px-3 py-1.5 outline-none focus:border-brand-wine-400 focus:ring-1 focus:ring-brand-wine-400/30;
-}
-
-.erg-reset {
-  @apply text-wineneutral-400 hover:text-wineneutral-200 transition-colors p-1;
-}
-
-.erg-label {
-  @apply flex-1 flex items-center gap-2 text-sm;
-}
-</style>

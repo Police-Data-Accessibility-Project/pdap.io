@@ -1,5 +1,5 @@
 <template>
-  <div class="search-form">
+  <div data-test="annotate-agency-search" class="border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px]">
     <Typeahead
       id="agencies"
       ref="typeaheadRef"
@@ -118,9 +118,3 @@ function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>
-
-<style scoped>
-.search-form {
-  @apply rounded-lg border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px];
-}
-</style>

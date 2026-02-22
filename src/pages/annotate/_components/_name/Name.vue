@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h3 class="view-heading">Name this data source</h3>
+  <div data-test="annotate-name">
+    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Name this data source</h3>
 
-    <div v-if="selected?.name" class="view-current">
-      <span class="view-current-label">Selected:</span>
+    <div v-if="selected?.name" class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900">
+      <span class="text-wineneutral-700 mr-1">Selected:</span>
       <strong>{{ selected.name }}</strong>
     </div>
 
@@ -82,17 +82,3 @@ function getNameEndorsementLabel(suggestion: NameSuggestion): AnnoLabels {
   };
 }
 </script>
-
-<style scoped>
-.view-heading {
-  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
-}
-
-.view-current {
-  @apply mb-4 text-sm bg-goldneutral-900/20 border border-goldneutral-600 rounded-lg px-3 py-2 text-goldneutral-100;
-}
-
-.view-current-label {
-  @apply text-wineneutral-500 mr-1;
-}
-</style>

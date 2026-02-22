@@ -1,5 +1,5 @@
 <template>
-  <div class="search-form">
+  <div data-test="annotate-location-search" class="border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px]">
     <Typeahead
       :id="TYPEAHEAD_ID"
       ref="typeaheadRef"
@@ -12,7 +12,7 @@
       <!-- Pass label as slot to typeahead -->
       <template #label>
         <h4
-          class="text-xs font-bold text-wineneutral-500 uppercase tracking-wider"
+          class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider"
         >
           Search location
         </h4>
@@ -138,9 +138,3 @@ function handleSelectRecord(item) {
   emit('update:modelValue', item);
 }
 </script>
-
-<style scoped>
-.search-form {
-  @apply rounded-lg border border-wineneutral-200 bg-wineneutral-50 p-4 min-h-[200px];
-}
-</style>

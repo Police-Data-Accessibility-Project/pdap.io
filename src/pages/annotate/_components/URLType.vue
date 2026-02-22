@@ -1,22 +1,29 @@
 <template>
   <div>
-    <h3 class="urltype-heading">What type of page is this?</h3>
-    <div class="urltype-grid">
+    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">What type of page is this?</h3>
+    <div data-test="annotate-url-type" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
       <button
         v-for="option in formattedOptions"
         :key="option.value"
         type="button"
-        class="urltype-card"
+        :data-test="`annotate-url-type-${option.value.toLowerCase().replace(/[\s\/]+/g, '-')}`"
+        class="text-left border-2 p-3 sm:p-4 transition-all duration-150 cursor-pointer w-full"
         :class="
           props.modelValue?.display_name === option.value
-            ? 'urltype-card--selected'
-            : 'urltype-card--default'
+            ? 'border-brand-wine-500 bg-brand-wine text-white outline outline-1 outline-brand-wine-500'
+            : 'border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100'
         "
         @click="handleSelectOption(option.value)"
       >
-        <div class="urltype-card-body">
-          <span class="urltype-card-title">{{ option.value }}</span>
-          <span class="urltype-card-desc">
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-bold text-sm"
+            :class="props.modelValue?.display_name === option.value ? 'text-white' : 'text-wineneutral-900'"
+          >{{ option.value }}</span>
+          <span
+            class="text-xs leading-relaxed"
+            :class="props.modelValue?.display_name === option.value ? 'text-white/90' : 'text-wineneutral-700'"
+          >
             {{ descriptionMapping[option.value] }}
           </span>
         </div>
@@ -147,46 +154,3 @@ function getAnnotationSuggestionValues(ut: UrlType): AnnoLabels {
   };
 }
 </script>
-
-<style scoped>
-.urltype-heading {
-  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
-}
-
-.urltype-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3;
-}
-
-.urltype-card {
-  @apply text-left rounded-lg border-2 p-3 sm:p-4 transition-all duration-150 cursor-pointer w-full;
-}
-
-.urltype-card--default {
-  @apply border-wineneutral-200 bg-wineneutral-50 hover:border-brand-wine-300 hover:bg-wineneutral-100;
-}
-
-.urltype-card--selected {
-  @apply border-brand-wine-500 bg-brand-wine-600 text-white;
-  box-shadow: 0 0 0 1px rgb(81 42 79);
-}
-
-.urltype-card-body {
-  @apply flex flex-col gap-1;
-}
-
-.urltype-card-title {
-  @apply font-bold text-sm;
-}
-
-.urltype-card-desc {
-  @apply text-xs leading-relaxed;
-}
-
-.urltype-card--default .urltype-card-desc {
-  @apply text-wineneutral-500;
-}
-
-.urltype-card--selected .urltype-card-desc {
-  @apply text-white/80;
-}
-</style>

@@ -1,11 +1,11 @@
 <template>
-  <span class="anno-badges">
-    <span v-if="props?.labels?.user" class="anno-badge anno-badge--user">
+  <span class="inline-flex gap-1.5">
+    <span v-if="props?.labels?.user" class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-wineneutral-100 text-wineneutral-600">
       {{ props.labels.user }}
       <FontAwesomeIcon :icon="faUser" class="w-3 h-3" />
     </span>
 
-    <span v-if="props?.labels?.robo" class="anno-badge anno-badge--robo">
+    <span v-if="props?.labels?.robo" class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-goldneutral-100 text-goldneutral-700">
       {{ props.labels.robo }}
       <FontAwesomeIcon :icon="faRobot" class="w-3 h-3" />
     </span>
@@ -33,21 +33,3 @@ type Props = {
 
 const props = defineProps<Props>();
 </script>
-
-<style scoped>
-.anno-badges {
-  @apply inline-flex gap-1.5;
-}
-
-.anno-badge {
-  @apply inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full;
-}
-
-.anno-badge--user {
-  @apply bg-wineneutral-100 text-wineneutral-600;
-}
-
-.anno-badge--robo {
-  @apply bg-goldneutral-100 text-goldneutral-700;
-}
-</style>

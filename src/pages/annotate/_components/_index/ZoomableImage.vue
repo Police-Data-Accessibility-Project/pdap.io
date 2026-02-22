@@ -1,8 +1,9 @@
 <template>
   <div
     ref="containerRef"
-    class="zoom-container"
-    :class="{ 'zoom-container--pointer': hasPointer }"
+    data-test="annotate-zoomable-image"
+    class="relative overflow-hidden select-none"
+    :class="{ 'cursor-zoom-in': hasPointer }"
     @mouseenter="hasPointer && (hovering = true)"
     @mouseleave="hovering = false"
     @mousemove="hasPointer && onMouseMove($event)"
@@ -11,19 +12,19 @@
     <img
       :src="src"
       :alt="alt"
-      class="zoom-image"
+      class="w-full h-full object-cover object-top"
       @error="$emit('error')"
     />
 
     <!-- Magnifier lens (pointer devices only) -->
     <div
       v-if="hasPointer && hovering && loaded"
-      class="zoom-lens"
-      :style="lensStyle"
+      class="absolute rounded-full pointer-events-none border-2 border-goldneutral-400/70 z-10"
+      :style="[lensStyle, { boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4)' }]"
     />
 
     <!-- Hint overlay (pointer devices only) -->
-    <div v-if="hasPointer && !hovering" class="zoom-hint">
+    <div v-if="hasPointer && !hovering" class="absolute bottom-2 right-2 bg-black/50 text-white/80 px-2 py-1.5 flex items-center gap-1.5 text-xs pointer-events-none backdrop-blur-sm">
       <svg
         class="w-5 h-5"
         fill="none"
@@ -122,29 +123,3 @@ const lensStyle = computed(() => {
   };
 });
 </script>
-
-<style scoped>
-.zoom-container {
-  @apply relative overflow-hidden select-none;
-}
-
-.zoom-container--pointer {
-  @apply cursor-zoom-in;
-}
-
-.zoom-image {
-  @apply w-full h-full object-cover object-top;
-}
-
-.zoom-lens {
-  @apply absolute rounded-full pointer-events-none border-2 border-goldneutral-400/70;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.3),
-    0 4px 12px rgba(0, 0, 0, 0.4);
-  z-index: 10;
-}
-
-.zoom-hint {
-  @apply absolute bottom-2 right-2 bg-black/50 text-white/80 rounded-lg px-2 py-1.5 flex items-center gap-1.5 text-xs pointer-events-none backdrop-blur-sm;
-}
-</style>

@@ -7,47 +7,47 @@
       <Spinner
         :show="submitPending"
         :size="64"
-        text="Submitting annotation..."
+        text="Submitting label..."
       />
     </div>
-    <div v-else>
-      <h3 class="confirm-heading">Review your annotation</h3>
+    <div v-else data-test="annotate-confirm">
+      <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Review your label</h3>
 
-      <div class="confirm-summary">
-        <div class="confirm-row">
-          <span class="confirm-label">URL Type</span>
-          <span class="confirm-value">
+      <div data-test="annotate-confirm-summary" class="border border-wineneutral-200 overflow-hidden">
+        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">URL Type</span>
+          <span class="text-sm text-wineneutral-900 text-right">
             {{ props.urlType?.display_name || '—' }}
           </span>
         </div>
-        <div class="confirm-row">
-          <span class="confirm-label">Location</span>
-          <span class="confirm-value">
+        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Location</span>
+          <span class="text-sm text-wineneutral-900 text-right">
             {{ props.location?.display_name || '—' }}
           </span>
         </div>
-        <div class="confirm-row">
-          <span class="confirm-label">Agency</span>
-          <span class="confirm-value">
+        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Agency</span>
+          <span class="text-sm text-wineneutral-900 text-right">
             {{ props.agency?.display_name || '—' }}
           </span>
         </div>
-        <div class="confirm-row">
-          <span class="confirm-label">Record Type</span>
-          <span class="confirm-value">
+        <div class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Record Type</span>
+          <span class="text-sm text-wineneutral-900 text-right">
             {{ props.recordType || '—' }}
           </span>
         </div>
-        <div class="confirm-row confirm-row--last">
-          <span class="confirm-label">Name</span>
-          <span class="confirm-value">
+        <div class="flex items-baseline justify-between px-4 py-3">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">Name</span>
+          <span class="text-sm text-wineneutral-900 text-right">
             {{ props.name?.name || '—' }}
           </span>
         </div>
       </div>
 
-      <button @click="handleSubmit" class="confirm-submit">
-        Submit Annotation
+      <button data-test="annotate-submit" @click="handleSubmit" class="pdap-button-primary mt-6 w-full">
+        Submit Label
       </button>
     </div>
   </transition>
@@ -145,8 +145,8 @@ async function handleSubmit() {
       not_found: false // TODO: Allow for declaring not found.
     },
     name_info: {
-      new_name: props.name?.new ? props.name?.name : null,
-      existing_name_id: props.name?.new ? null : props.name?.nameID
+      new_name: (props.name?.new || props.name?.nameID === 'new') ? props.name?.name : null,
+      existing_name_id: (props.name?.new || props.name?.nameID === 'new') ? null : props.name?.nameID
     }
   };
 
@@ -154,34 +154,3 @@ async function handleSubmit() {
   emit('submit');
 }
 </script>
-
-<style scoped>
-.confirm-heading {
-  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
-}
-
-.confirm-summary {
-  @apply rounded-lg border border-wineneutral-200 overflow-hidden;
-}
-
-.confirm-row {
-  @apply flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100;
-}
-
-.confirm-row--last {
-  @apply border-b-0;
-}
-
-.confirm-label {
-  @apply text-sm font-semibold text-wineneutral-600 shrink-0;
-}
-
-.confirm-value {
-  @apply text-sm text-wineneutral-900 text-right;
-}
-
-.confirm-submit {
-  @apply mt-6 w-full py-3 rounded-lg bg-brand-gold-500 text-white font-bold text-sm
-    transition-colors hover:bg-brand-gold-600 active:bg-brand-gold-700;
-}
-</style>

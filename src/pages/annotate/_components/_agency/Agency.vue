@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h3 class="view-heading">Select an agency</h3>
+  <div data-test="annotate-agency">
+    <h3 class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4">Select an agency</h3>
 
-    <div v-if="agencyModel" class="view-current">
-      <span class="view-current-label">Selected:</span>
+    <div v-if="agencyModel" class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900">
+      <span class="text-wineneutral-700 mr-1">Selected:</span>
       <strong>{{ agencyModel.display_name }}</strong>
     </div>
 
-    <div v-if="radioOptions.length" class="view-suggestions">
+    <div v-if="radioOptions.length" class="mb-5 pb-5 border-b border-wineneutral-200">
       <RadioForm
         v-model="selectedRadioAgency"
         :options="radioOptions"
@@ -16,8 +16,8 @@
       />
     </div>
 
-    <div class="view-search">
-      <h4 class="view-search-label">Or search for an agency</h4>
+    <div class="mt-2">
+      <h4 class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2">Or search for an agency</h4>
       <SearchForm @update:model-value="handleAgencySelect" />
     </div>
   </div>
@@ -113,29 +113,3 @@ function handleAgencySelect(ag: AgencyLocationSelection | null) {
   emit('select', null);
 }
 </script>
-
-<style scoped>
-.view-heading {
-  @apply text-sm font-semibold text-wineneutral-600 uppercase tracking-wider mb-4;
-}
-
-.view-current {
-  @apply mb-4 text-sm bg-goldneutral-900/20 border border-goldneutral-600 rounded-lg px-3 py-2 text-goldneutral-100;
-}
-
-.view-current-label {
-  @apply text-wineneutral-500 mr-1;
-}
-
-.view-suggestions {
-  @apply mb-5 pb-5 border-b border-wineneutral-200;
-}
-
-.view-search {
-  @apply mt-2;
-}
-
-.view-search-label {
-  @apply text-xs font-bold text-wineneutral-500 uppercase tracking-wider mb-2;
-}
-</style>

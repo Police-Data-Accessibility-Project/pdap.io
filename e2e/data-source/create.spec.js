@@ -5,7 +5,7 @@ import { signInWithPassword } from '../helpers/auth';
 
 import '../msw-setup.js';
 
-const SOURCE_COLLECTOR_SUBMIT = `${process.env.VITE_SOURCE_COLLECTOR_API_URL}/submit/data-source`;
+const SOURCE_COLLECTOR_SUBMIT = `${process.env.VITE_SM_API_URL}/api/submit/data-source`;
 const REQUIRED_ERROR_SELECTOR = '.pdap-form-error-message';
 
 function matchesSubmitEndpoint(url) {
