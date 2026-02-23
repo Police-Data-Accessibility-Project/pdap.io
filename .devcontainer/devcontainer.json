@@ -1,0 +1,42 @@
+{
+  "name": "pdap.io",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24.13.1"
+    }
+  },
+
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,readonly",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/node/.claude,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude.json,target=/home/node/.claude.json,type=bind,consistency=cached"
+  ],
+
+  "postCreateCommand": "npm install && npm install -g @anthropic-ai/claude-code",
+
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "Vite Dev Server",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}
