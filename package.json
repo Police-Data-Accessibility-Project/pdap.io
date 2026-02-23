@@ -61,6 +61,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.20.1",
+    "eslint-plugin-vuejs-accessibility": "^2.5.0",
     "happy-dom": "^18.0.1",
     "jest-serializer-vue-tjw": "^3.20.0",
     "jsonwebtoken": "^9.0.2",
@@ -82,7 +83,7 @@
     "vue-eslint-parser": "^9.0.0"
   },
   "engines": {
-    "node": "20.19.0"
+    "node": "24.13.1"
   },
   "browserslist": [
     "> 1%",
