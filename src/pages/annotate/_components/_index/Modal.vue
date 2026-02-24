@@ -11,36 +11,42 @@
         @keydown.esc="emitClose"
       >
         <!-- Dimmed backdrop -->
-        <div class="absolute inset-0 bg-black/100" @click="emitClose" />
+        <div
+          class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+          @click="emitClose"
+        />
 
         <!-- Modal panel -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
           <div
-            class="w-full max-w-lg rounded-xl bg-brand-wine-900 shadow-xl"
+            class="w-full max-w-lg bg-wineneutral-950 shadow-2xl border border-wineneutral-800 overflow-hidden"
             @click.stop
           >
-            <header class="flex items-center justify-between border-b p-4">
-              <h2 class="text-lg font-semibold">{{ title }}</h2>
+            <header
+              class="flex items-center justify-between px-6 py-4 border-b border-wineneutral-800"
+            >
+              <h2 class="text-lg font-bold text-wineneutral-100">
+                {{ title }}
+              </h2>
               <button
                 type="button"
-                class="rounded px-2 py-1 hover:bg-gray-100"
+                class="text-wineneutral-500 hover:text-wineneutral-200 transition-colors p-1 hover:bg-wineneutral-800"
                 @click="emitClose"
               >
-                ✕
+                <FontAwesomeIcon :icon="faXmark" class="w-5 h-5" />
               </button>
             </header>
 
-            <div class="p-4">
+            <div class="px-6 py-5 text-sm text-wineneutral-300 leading-relaxed">
               <slot />
             </div>
 
-            <footer class="flex justify-end gap-2 border-t p-4">
+            <footer
+              class="flex justify-end px-6 py-4 border-t border-wineneutral-800"
+            >
               <slot name="footer">
-                <button
-                  class="rounded border px-3 py-2 hover:bg-gray-50"
-                  @click="emitClose"
-                >
-                  Close
+                <button class="pdap-button-primary" @click="emitClose">
+                  I understand
                 </button>
               </slot>
             </footer>
@@ -53,11 +59,13 @@
 
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, watch } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const props = defineProps<{
   modelValue: boolean;
   title?: string;
-  closeOnBackdrop?: boolean; // optional if you want to disable backdrop click
+  closeOnBackdrop?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -70,7 +78,7 @@ function emitClose() {
   emit('close');
 }
 
-// Optional: prevent background scroll when modal is open
+// Prevent background scroll when modal is open
 watch(
   () => props.modelValue,
   (open) => {
@@ -79,7 +87,7 @@ watch(
   { immediate: true }
 );
 
-// Optional: ensure ESC works even if focus isn't inside
+// ESC key support
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape' && props.modelValue) emitClose();
 }
@@ -87,3 +95,16 @@ function onKeydown(e: KeyboardEvent) {
 onMounted(() => window.addEventListener('keydown', onKeydown));
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 </script>
+
+<style scoped>
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

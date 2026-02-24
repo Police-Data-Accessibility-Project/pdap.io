@@ -1,25 +1,37 @@
-<!-- src/components/StepControls.vue -->
 <template>
-  <div class="mt-6 flex justify-between items-center">
+  <div
+    data-test="annotate-tab-controls"
+    class="mt-4 flex justify-between items-center gap-3"
+  >
     <button
-      class="px-4 py-2 pdap-button-secondary text-sm"
+      data-test="annotate-prev-button"
+      class="pdap-button-secondary inline-flex items-center gap-2"
       :disabled="currentIndex === 0"
       @click="emit('prev')"
     >
+      <FontAwesomeIcon :icon="faChevronLeft" class="w-4 h-4" />
       Previous
     </button>
 
     <button
-      class="px-4 py-2 pdap-button-primary text-sm"
+      data-test="annotate-next-button"
+      class="pdap-button-primary inline-flex items-center gap-2"
       :disabled="isNextDisabled"
       @click="emit('next')"
     >
       {{ nextTextModel }}
+      <FontAwesomeIcon :icon="faChevronRight" class="w-4 h-4" />
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  faChevronLeft,
+  faChevronRight
+} from '@fortawesome/free-solid-svg-icons';
+
 //====================
 //Props, Models, Emits
 //====================

@@ -1,10 +1,16 @@
 <template>
-  <main ref="mainRef" class="min-h-[75%] pdap-flex-container relative text-lg">
+  <main
+    ref="mainRef"
+    data-test="annotate-page"
+    class="min-h-[75%] relative text-med w-full max-w-7xl mx-auto px-4 sm:px-6 py-6"
+  >
     <Modal :model-value="showContentWarning" @close="handleCloseContentWarning">
-      Pages provided for annotation have not been manually validated and may
+      Pages provided for labeling have not been manually validated and may
       contain sensitive content.
     </Modal>
+
     <transition mode="out-in">
+      <!-- Loading state -->
       <div
         v-if="annotationPending"
         class="flex items-center justify-center h-[80vh] w-full flex-col relative"
@@ -12,144 +18,231 @@
         <Spinner
           :show="annotationPending"
           :size="64"
-          text="Fetching annotation..."
+          text="Fetching label..."
         />
       </div>
 
-      <div
-        v-else
-        class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full"
-      >
+      <div v-else class="w-full">
+        <!-- Error state -->
         <template v-if="!annotationPending && error">
-          <h1>An error occurred loading the annotation</h1>
-          <p>Please refresh the page and try again.</p>
+          <div class="border-2 border-red-200 bg-red-50 p-6 text-center">
+            <h1>An error occurred loading the label</h1>
+            <p>Please refresh the page and try again.</p>
+          </div>
         </template>
 
         <template v-if="localAnnotation?.next_annotation">
-          <AnonWarning />
-
-          <Reminder
-            v-if="showCookieAgreement"
-            @closed="handleCloseCookieReminder"
-          >
-            This page uses cookies.
-          </Reminder>
-          <img
-            v-if="imageOk"
-            alt="Screenshot of URL Page"
-            :key="localAnnotation.next_annotation?.url_info.url_id"
-            :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
-            @error="imageOk = false"
-          />
-          <div v-else>Image Not Found</div>
-          <div>
-            URL:
-            <a
-              :href="localAnnotation.next_annotation?.url_info.url"
-              target="_blank"
-              rel="noopener noreferrer"
+          <!-- Notices -->
+          <div class="space-y-3 mb-6">
+            <!-- Small-viewport message -->
+            <Reminder
+              v-if="showSmallScreenNotice"
+              class="lg:hidden"
+              @closed="showSmallScreenNotice = false"
             >
-              {{ localAnnotation.next_annotation?.url_info.url }}
-            </a>
+              The labeling experience works best on larger screens. Consider
+              using a desktop or tablet for the best experience.
+            </Reminder>
+
+            <AnonWarning />
+            <Reminder
+              v-if="showCookieAgreement"
+              @closed="handleCloseCookieReminder"
+            >
+              This page uses cookies.
+            </Reminder>
           </div>
-          <Header
-            :refresh-key="globalResetKey"
-            :url-i-d="localAnnotation.next_annotation.url_info.url_id"
-            :page-title="localAnnotation.next_annotation.html_info.title"
-          />
-          <div class="w-full mx-auto">
-            <TabControls
-              v-model="nextText"
-              :current-index="currentGlobalIndex"
-              :total="tabs.length"
-              :is-next-disabled="isNextDisabled"
-              @prev="prevTab"
-              @next="nextTab"
-            />
 
-            <TabsHeader
-              :tabs="tabs"
-              :current-index="currentGlobalIndex"
-              :enabled-indices="permittedGlobalIndices"
-              :answered-indices="answeredIndices"
-              :skipped-indices="skippedIndices"
-              @select="selectTab"
-            />
+          <!-- Two-panel layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Left: URL Preview -->
+            <aside class="lg:col-span-5 lg:sticky lg:top-4">
+              <div
+                class="border-2 border-wineneutral-200 bg-wineneutral-50 overflow-hidden"
+              >
+                <!-- Mobile toggle bar (always visible on mobile) -->
+                <button
+                  data-test="annotate-preview-toggle"
+                  class="flex lg:hidden items-center justify-between w-full px-4 py-3 bg-transparent border-none text-left cursor-pointer"
+                  @click="previewExpanded = !previewExpanded"
+                >
+                  <div class="flex items-center gap-2">
+                    <FontAwesomeIcon
+                      :icon="faImage"
+                      class="w-4 h-4 shrink-0 text-wineneutral-400"
+                    />
+                    <span
+                      class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider"
+                    >
+                      {{ previewExpanded ? 'Hide preview' : 'Show preview' }}
+                    </span>
+                  </div>
+                  <FontAwesomeIcon
+                    :icon="faChevronDown"
+                    class="w-4 h-4 text-wineneutral-400 transition-transform duration-200"
+                    :class="{ 'rotate-180': previewExpanded }"
+                  />
+                </button>
 
-            <!-- Tab content -->
-            <keep-alive>
-              <div class="mt-4 relative overflow-hidden">
+                <!-- Expandable content (always visible on lg, toggle on mobile) -->
+                <div
+                  class="grid transition-[grid-template-rows] duration-300 ease-in-out"
+                  :style="{
+                    gridTemplateRows:
+                      previewExpanded || isLgScreen ? '1fr' : '0fr'
+                  }"
+                >
+                  <div class="overflow-hidden min-h-0">
+                    <div
+                      class="bg-wineneutral-100 flex items-center justify-center overflow-hidden aspect-[4/3] lg:aspect-auto lg:max-h-[520px]"
+                    >
+                      <ZoomableImage
+                        v-if="imageOk"
+                        :key="localAnnotation.next_annotation?.url_info.url_id"
+                        :src="`${URL_BASE}/${localAnnotation.next_annotation?.url_info.url_id}/screenshot`"
+                        alt="Screenshot of URL Page"
+                        @error="imageOk = false"
+                      />
+                      <div
+                        v-else
+                        class="flex flex-col items-center gap-2 text-wineneutral-400 text-sm"
+                      >
+                        <FontAwesomeIcon :icon="faImage" class="w-8 h-8" />
+                        <span>Image Not Found</span>
+                      </div>
+                    </div>
+
+                    <div class="px-4 pb-4 border-t border-wineneutral-200 pt-3">
+                      <Header
+                        :refresh-key="globalResetKey"
+                        :url-i-d="
+                          localAnnotation.next_annotation.url_info.url_id
+                        "
+                        :page-title="
+                          localAnnotation.next_annotation.html_info.title
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- URL always visible (outside collapsible body) -->
+                <div class="p-4 border-t border-wineneutral-200">
+                  <a
+                    :href="localAnnotation.next_annotation?.url_info.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-goldneutral-700 hover:text-goldneutral-800 underline underline-offset-2 break-all leading-relaxed transition-colors"
+                  >
+                    {{ localAnnotation.next_annotation?.url_info.url }}
+                  </a>
+                </div>
+              </div>
+            </aside>
+
+            <!-- Right: Labeling Wizard -->
+            <section data-test="annotate-wizard" class="lg:col-span-7">
+              <TabsHeader
+                :tabs="tabs"
+                :current-index="currentGlobalIndex"
+                :enabled-indices="permittedGlobalIndices"
+                :answered-indices="answeredIndices"
+                :skipped-indices="skippedIndices"
+                @select="selectTab"
+              />
+
+              <div
+                class="mt-4 border-2 border-wineneutral-200 bg-wineneutral-50 p-4 sm:p-6 min-h-[200px] lg:min-h-[320px]"
+              >
                 <keep-alive>
-                  <URLTypeView
-                    v-if="currentTab.id === 'url_type'"
-                    v-model="selectedURLType"
-                    :options="urlTypeOptions"
-                    :suggestions="
-                      localAnnotation.next_annotation.url_type_suggestions
-                    "
-                    @select="handleSelect"
-                  />
+                  <div class="relative">
+                    <keep-alive>
+                      <URLTypeView
+                        v-if="currentTab.id === 'url_type'"
+                        v-model="selectedURLType"
+                        :options="urlTypeOptions"
+                        :suggestions="
+                          localAnnotation.next_annotation.url_type_suggestions
+                        "
+                        @select="handleSelect"
+                      />
 
-                  <LocationView
-                    v-else-if="currentTab.id === 'location'"
-                    v-model="selectedLocation"
-                    :suggestions="
-                      localAnnotation.next_annotation.location_suggestions
-                        .suggestions
-                    "
-                    @select="handleSelect"
-                    v-model:resetKey="globalResetKey"
-                  />
-                  <AgencyView
-                    v-else-if="currentTab.id === 'agency'"
-                    v-model="selectedAgency"
-                    :suggestions="
-                      localAnnotation.next_annotation.agency_suggestions
-                        .suggestions
-                    "
-                    @select="handleSelect"
-                    v-model:resetKey="globalResetKey"
-                  />
-                  <RecordTypeView
-                    v-else-if="currentTab.id === 'record_type'"
-                    v-model="selectedRecordType"
-                    :suggestions="
-                      localAnnotation.next_annotation.record_type_suggestions
-                        .suggestions
-                    "
-                    @select="handleSelect"
-                    v-model:resetKey="globalResetKey"
-                  />
-                  <NameView
-                    v-else-if="currentTab.id === 'name'"
-                    v-model="selectedName"
-                    :suggestions="
-                      localAnnotation.next_annotation.name_suggestions
-                        .suggestions
-                    "
-                  />
-                  <ConfirmView
-                    v-else-if="currentTab.id === 'confirm'"
-                    :url-type="selectedURLType"
-                    :location="selectedLocation"
-                    :agency="selectedAgency"
-                    :record-type="selectedRecordType"
-                    :name="selectedName"
-                    v-model="localAnnotation"
-                    @submit="handleConfirmSubmit"
-                  />
+                      <LocationView
+                        v-else-if="currentTab.id === 'location'"
+                        v-model="selectedLocation"
+                        :suggestions="
+                          localAnnotation.next_annotation.location_suggestions
+                            .suggestions
+                        "
+                        @select="handleSelect"
+                        v-model:resetKey="globalResetKey"
+                      />
+                      <AgencyView
+                        v-else-if="currentTab.id === 'agency'"
+                        v-model="selectedAgency"
+                        :suggestions="
+                          localAnnotation.next_annotation.agency_suggestions
+                            .suggestions
+                        "
+                        @select="handleSelect"
+                        v-model:resetKey="globalResetKey"
+                      />
+                      <RecordTypeView
+                        v-else-if="currentTab.id === 'record_type'"
+                        v-model="selectedRecordType"
+                        :suggestions="
+                          localAnnotation.next_annotation
+                            .record_type_suggestions.suggestions
+                        "
+                        @select="handleSelect"
+                        v-model:resetKey="globalResetKey"
+                      />
+                      <NameView
+                        v-else-if="currentTab.id === 'name'"
+                        v-model="selectedName"
+                        :suggestions="
+                          localAnnotation.next_annotation.name_suggestions
+                            .suggestions
+                        "
+                      />
+                      <ConfirmView
+                        v-else-if="currentTab.id === 'confirm'"
+                        :url-type="selectedURLType"
+                        :location="selectedLocation"
+                        :agency="selectedAgency"
+                        :record-type="selectedRecordType"
+                        :name="selectedName"
+                        v-model="localAnnotation"
+                        @submit="handleConfirmSubmit"
+                      />
+                    </keep-alive>
+                  </div>
                 </keep-alive>
               </div>
-            </keep-alive>
+
+              <TabControls
+                v-model="nextText"
+                :current-index="currentGlobalIndex"
+                :total="tabs.length"
+                :is-next-disabled="isNextDisabled"
+                @prev="prevTab"
+                @next="nextTab"
+              />
+            </section>
           </div>
+
+          <SupplementalInfo />
         </template>
+
         <template v-else>
-          <div>No annotations found.</div>
+          <div
+            class="flex items-center justify-center h-[50vh] text-wineneutral-400 text-lg"
+          >
+            <p>No labels found.</p>
+          </div>
         </template>
       </div>
     </transition>
-
-    <SupplementalInfo />
   </main>
 </template>
 
@@ -167,8 +260,10 @@
 import { getAnnotationURL } from '@/api/annotate';
 import { useQuery } from '@tanstack/vue-query';
 import { ANNOTATE } from '@/util/queryKeys';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { Spinner } from 'pdap-design-system';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faImage, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import URLTypeView from '@/pages/annotate/_components/URLType.vue';
 import RecordTypeView from '@/pages/annotate/_components/RecordType.vue';
 import AgencyView from '@/pages/annotate/_components/_agency/Agency.vue';
@@ -202,6 +297,7 @@ import {
 import SupplementalInfo from '@/pages/annotate/_components/_index/SupplementalInfo.vue';
 import Reminder from '@/pages/annotate/_components/_index/Reminder.vue';
 import Modal from '@/pages/annotate/_components/_index/Modal.vue';
+import ZoomableImage from '@/pages/annotate/_components/_index/ZoomableImage.vue';
 //====================
 //     Types
 //====================
@@ -216,6 +312,15 @@ const currentPathIndex = ref<number>(0);
 
 // Whether the image successfully loaded.
 const imageOk = ref<boolean>(true);
+
+// Whether the mobile preview card is expanded
+const previewExpanded = ref<boolean>(true);
+
+// Whether the small-screen notice is shown
+const showSmallScreenNotice = ref<boolean>(true);
+
+// Track if we're on a large screen for collapsible preview
+const isLgScreen = ref<boolean>(false);
 
 // Variables tracking selections of annotation components.
 const selectedURLType = ref<URLTypeSelection>(null);
@@ -264,6 +369,17 @@ const rem = useRemindersStore();
 rem.hydrateSession();
 showContentWarning.value = rem.contentWarning;
 showCookieAgreement.value = rem.cookieAgreement;
+
+// Media query for lg breakpoint
+const lgMediaQuery = window.matchMedia('(min-width: 1024px)');
+function handleLgChange(e: MediaQueryListEvent | MediaQueryList) {
+  isLgScreen.value = e.matches;
+}
+handleLgChange(lgMediaQuery);
+onMounted(() => lgMediaQuery.addEventListener('change', handleLgChange));
+onBeforeUnmount(() =>
+  lgMediaQuery.removeEventListener('change', handleLgChange)
+);
 
 //====================
 // Computed Variables

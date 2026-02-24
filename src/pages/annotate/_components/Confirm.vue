@@ -1,41 +1,79 @@
 <template>
-  <transition mode="out-in" :name="navIs">
+  <transition mode="out-in">
     <div
       v-if="submitPending"
-      class="flex items-center justify-center h-[80vh] w-full flex-col relative"
+      class="flex items-center justify-center min-h-[300px] w-full flex-col relative"
     >
-      <!--TODO: Spinner does not currently display on submission. Unclear why.-->
-      <Spinner
-        :show="submitPending"
-        :size="64"
-        text="Submitting annotation..."
-      />
+      <Spinner :show="submitPending" :size="64" text="Submitting label..." />
     </div>
-    <div
-      v-else
-      class="flex flex-col sm:flex-row sm:flex-wrap mt-6 sm:items-stretch sm:justify-between gap-4 h-full w-full relative [&>*]:w-full"
-    >
-      <p>
-        <b>URL Type</b>
-        : {{ props.urlType?.display_name }}
-      </p>
-      <p>
-        <b>Location</b>
-        : {{ props.location?.display_name }}
-      </p>
-      <p>
-        <b>Agency</b>
-        : {{ props.agency?.display_name }}
-      </p>
-      <p>
-        <b>RecordType</b>
-        : {{ props.recordType }}
-      </p>
-      <p>
-        <b>Name</b>
-        : {{ props.name?.name }}
-      </p>
-      <button @click="handleSubmit" class="pdap-button-primary">Submit</button>
+    <div v-else data-test="annotate-confirm">
+      <h3
+        class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+      >
+        Review your label
+      </h3>
+
+      <div
+        data-test="annotate-confirm-summary"
+        class="border border-wineneutral-200 overflow-hidden"
+      >
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            URL Type
+          </span>
+          <span class="text-sm text-wineneutral-900 text-right">
+            {{ props.urlType?.display_name || '—' }}
+          </span>
+        </div>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Location
+          </span>
+          <span class="text-sm text-wineneutral-900 text-right">
+            {{ props.location?.display_name || '—' }}
+          </span>
+        </div>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Agency
+          </span>
+          <span class="text-sm text-wineneutral-900 text-right">
+            {{ props.agency?.display_name || '—' }}
+          </span>
+        </div>
+        <div
+          class="flex items-baseline justify-between px-4 py-3 border-b border-wineneutral-100"
+        >
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Record Type
+          </span>
+          <span class="text-sm text-wineneutral-900 text-right">
+            {{ props.recordType || '—' }}
+          </span>
+        </div>
+        <div class="flex items-baseline justify-between px-4 py-3">
+          <span class="text-sm font-semibold text-wineneutral-800 shrink-0">
+            Name
+          </span>
+          <span class="text-sm text-wineneutral-900 text-right">
+            {{ props.name?.name || '—' }}
+          </span>
+        </div>
+      </div>
+
+      <button
+        data-test="annotate-submit"
+        @click="handleSubmit"
+        class="pdap-button-primary mt-6 w-full"
+      >
+        Submit Label
+      </button>
     </div>
   </transition>
 </template>
@@ -132,8 +170,14 @@ async function handleSubmit() {
       not_found: false // TODO: Allow for declaring not found.
     },
     name_info: {
-      new_name: props.name?.new ? props.name?.name : null,
-      existing_name_id: props.name?.new ? null : props.name?.nameID
+      new_name:
+        props.name?.new || props.name?.nameID === 'new'
+          ? props.name?.name
+          : null,
+      existing_name_id:
+        props.name?.new || props.name?.nameID === 'new'
+          ? null
+          : props.name?.nameID
     }
   };
 

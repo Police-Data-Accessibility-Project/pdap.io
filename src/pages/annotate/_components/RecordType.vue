@@ -1,62 +1,71 @@
 <template>
-  <div>
-    <label class="block text-sm font-medium mb-1">Record type</label>
+  <div data-test="annotate-record-type">
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      Select a record type
+    </h3>
 
-    <div class="grid grid-cols-1 gap-4">
-      <p>Record Type: {{ selectedRecordTypeModel }}</p>
-      <div class="col-auto">
-        <RadioForm
-          v-model="selectedRadioRecordType"
-          :options="radioOptions"
-          header="Suggestions"
-          @update:model-value="handleRadioFormSelect"
-        />
-      </div>
+    <!-- Suggestions -->
+    <div
+      v-if="radioOptions.length"
+      class="mb-5 pb-5 border-b border-wineneutral-200"
+    >
+      <RadioForm
+        v-model="selectedRadioRecordType"
+        :options="radioOptions"
+        header="Suggestions"
+        @update:model-value="handleRadioFormSelect"
+      />
     </div>
 
-    <br />
-    <!-- Select for Record Type -->
+    <!-- All record types by category -->
+    <div class="space-y-4">
+      <fieldset
+        v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
+        :key="categoryName"
+        class="border border-wineneutral-200 p-3"
+      >
+        <legend class="px-2 text-sm font-bold text-wineneutral-700">
+          {{ categoryName }}
+        </legend>
 
-    <form id="id" name="name" class="pdap-form">
-      <div class="space-y-6 pdap-input-radio-group">
-        <fieldset
-          v-for="(types, categoryName) in RECORD_TYPES_BY_CATEGORY"
-          :key="categoryName"
-          class="rounded border p-3"
+        <div
+          class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
         >
-          <legend class="px-1 font-semibold">
-            {{ categoryName }}
-          </legend>
+          <label
+            v-for="type in types"
+            :key="type"
+            :for="type"
+            class="flex items-center gap-2 px-2.5 py-1.5 text-sm cursor-pointer transition-colors border border-transparent"
+            :class="
+              selectedRecordTypeModel === type
+                ? 'bg-brand-wine-600 text-white border-brand-wine-600 font-semibold hover:bg-brand-wine-700 hover:border-brand-wine-700'
+                : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'
+            "
+          >
+            <input
+              :id="type"
+              type="radio"
+              name="record-type"
+              :value="type"
+              v-model="selectedRecordTypeModel"
+              class="sr-only"
+              @change="handleSelectChange"
+            />
+            <span class="leading-tight">{{ type }}</span>
+          </label>
+        </div>
+      </fieldset>
+    </div>
 
-          <div class="mt-2 grid grid-cols-3 gap-2">
-            <div
-              class="pdap-input pdap-input-radio"
-              v-for="type in types"
-              :key="type"
-            >
-              <input
-                :id="type"
-                type="radio"
-                name="record-type"
-                :value="type"
-                v-model="selectedRecordTypeModel"
-                @change="handleSelectChange"
-              />
-
-              <label
-                :for="type"
-                class="flex items-center gap-2 rounded px-2 py-1 hover:bg-brand-wine-600 cursor-pointer"
-              >
-                <span>{{ type }}</span>
-              </label>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </form>
-
-    <p class="mt-2 text-sm text-gray-600">
-      Selected: {{ selectedRecordTypeModel || 'none' }}
+    <p
+      v-if="selectedRecordTypeModel"
+      data-test="annotate-record-type-selected"
+      class="mt-4 text-sm text-wineneutral-600 bg-wineneutral-50 px-3 py-2 border border-wineneutral-200"
+    >
+      Selected:
+      <strong>{{ selectedRecordTypeModel }}</strong>
     </p>
   </div>
 </template>

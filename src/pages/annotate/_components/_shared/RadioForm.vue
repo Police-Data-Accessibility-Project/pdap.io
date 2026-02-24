@@ -1,31 +1,42 @@
 <template>
-  <h2>{{ props.header }}</h2>
-  <form id="id" name="name" class="pdap-form">
-    <div class="grid gap-4 pdap-input-radio-group">
-      <div
-        class="pdap-input pdap-input-radio"
+  <div>
+    <h4
+      v-if="props.header"
+      class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2"
+    >
+      {{ props.header }}
+    </h4>
+    <div class="space-y-1.5">
+      <label
         v-for="option in options"
         :key="option.value"
+        :for="`option-${option.value}`"
+        class="flex items-center px-3 py-2.5 cursor-pointer transition-all duration-150 border border-transparent"
+        :class="
+          selectedType?.value === option.value
+            ? 'bg-brand-wine-900/30 border-brand-wine-400 text-wineneutral-100'
+            : 'hover:bg-wineneutral-100 hover:border-wineneutral-200'
+        "
       >
         <input
           :id="`option-${option.value}`"
           v-model="selectedType"
           type="radio"
-          class="hidden"
+          class="sr-only"
           name="url-type"
           :value="option"
           @change="handleSelect(option)"
         />
-
-        <label :for="`option-${option.value}`" class="hover:text-amber-800">
-          <div class="font-semibold">
-            {{ option.label + ' ' }}
-            <AnnotationSpan :labels="option.anno_labels" />
-          </div>
-        </label>
-      </div>
+        <span class="flex items-center gap-2">
+          <span class="text-sm font-semibold">{{ option.label }}</span>
+          <AnnotationSpan
+            v-if="option.anno_labels?.user || option.anno_labels?.robo"
+            :labels="option.anno_labels"
+          />
+        </span>
+      </label>
     </div>
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
