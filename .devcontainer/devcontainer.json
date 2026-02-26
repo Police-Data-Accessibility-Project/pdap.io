@@ -1,0 +1,48 @@
+{
+  "name": "pdap.io",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [5173, 8888],
+  "postCreateCommand": "npm install && npm install -g @anthropic-ai/claude-code",
+  "containerEnv": {
+    "VITE_API_URL": "https://data-sources.pdap.dev/api/v2",
+    "VITE_API_URL_V3": "https://data-sources.pdap.dev/api/v3",
+    "VITE_SM_API_URL": "https://source-collector-app-stage-eqjje.ondigitalocean.app",
+    "PDAP_DEBUG": "false",
+    "E2E_TESTING_URL": "http://localhost:8888",
+    "E2E_TESTING_ENV": "development",
+    "E2E_PW_RESET_EMAIL_TEST": "e2e_reset_pw_dev@example.com",
+    "E2E_SIGNUP_EMAIL_TEST": "e2e_signup_dev@example.com",
+    "E2E_PW_RESET_EMAIL_PROD": "e2e_reset_pw_prod@example.com",
+    "MAILGUN_DOMAIN": "mail.example.com",
+    "VITE_V2_FEATURE_ENHANCED_SEARCH": "enabled",
+    "VITE_V2_FEATURE_AUTHENTICATE": "enabled",
+    "VITE_V2_FEATURE_CREATE_RECORDS": "enabled",
+    "VITE_V2_FEATURE_SHOW_REQUESTS": "enabled",
+    "VITE_V2_FEATURE_SIGNUP": "enabled"
+  },
+  // TODO: supply via .env file or secrets manager: VITE_API_KEY, E2E_PASSWORD_AUTH_EMAIL_PROD, E2E_PASSWORD_AUTH_PASSWORD_PROD, E2E_PASSWORD_AUTH_EMAIL_TEST, E2E_PASSWORD_AUTH_PASSWORD_TEST, MAILGUN_KEY
+  "runArgs": ["--env-file", ".devcontainer/.env"],
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude/,target=/home/node/.claude/,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude.json,target=/home/node/.claude.json,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/node/.ssh/,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}
