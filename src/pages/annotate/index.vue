@@ -485,7 +485,7 @@ const {
   isLoading: annotationPending,
   data: annotation,
   error
-}: UseQueryResult<NextAnnotationResponse> = useQuery({
+} = useQuery({
   queryKey,
   queryFn: async (): Promise<NextAnnotationResponse> => {
     // Hydrate cookie and get session ID if exists

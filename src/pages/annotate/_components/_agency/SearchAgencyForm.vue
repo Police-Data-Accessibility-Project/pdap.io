@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import _debounce from 'lodash/debounce';
 import { computed, ref } from 'vue';
 import { TYPEAHEAD_AGENCIES } from '@/util/queryKeys';
@@ -52,12 +52,18 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { formatText } from '@/pages/data-sources/_util';
 import Typeahead from '@/components/TypeaheadInput.vue';
 import { Button } from 'pdap-design-system';
-import { getTypeaheadAgencies } from '@/api/typeahead';
+import {
+  getTypeaheadAgencies,
+  type TypeaheadAgencySuggestion
+} from '@/api/typeahead';
 
 //====================
 //Props, Models, Emits
 //====================
-const emit = defineEmits(['selected', 'update:modelValue']);
+const emit = defineEmits<{
+  (e: 'selected', value: TypeaheadAgencySuggestion): void;
+  (e: 'update:modelValue', value: TypeaheadAgencySuggestion): void;
+}>();
 
 //====================
 //     Variables
@@ -65,7 +71,7 @@ const emit = defineEmits(['selected', 'update:modelValue']);
 const agencyNotAvailable = ref('');
 const typeaheadRef = ref();
 const typeaheadError = ref();
-const items = ref([]);
+const items = ref<TypeaheadAgencySuggestion[]>([]);
 
 //====================
 // Computed Variables
@@ -80,8 +86,12 @@ const queryKey = computed(() => [
 //====================
 const queryClient = useQueryClient();
 
-const typeaheadMutation = useMutation({
-  mutationFn: async (searchValue) => {
+const typeaheadMutation = useMutation<
+  TypeaheadAgencySuggestion[] | undefined,
+  Error,
+  string
+>({
+  mutationFn: async (searchValue: string) => {
     if (!searchValue || searchValue.length <= 1) {
       return queryClient.getQueryData(queryKey.value) || [];
     }
@@ -117,7 +127,7 @@ const fetchTypeaheadResults = _debounce(
 //===================
 //     Handlers
 //===================
-function handleSelectRecord(item) {
+function handleSelectRecord(item: TypeaheadAgencySuggestion) {
   emit('update:modelValue', item);
 }
 </script>

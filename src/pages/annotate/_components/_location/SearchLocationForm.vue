@@ -50,7 +50,10 @@ import Typeahead from '@/components/TypeaheadInput.vue';
 import { computed, onMounted, ref } from 'vue';
 import _debounce from 'lodash/debounce';
 import { useRoute } from 'vue-router';
-import { getTypeaheadLocations } from '@/api/typeahead';
+import {
+  getTypeaheadLocations,
+  type TypeaheadLocationSuggestion
+} from '@/api/typeahead';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 
@@ -58,7 +61,7 @@ import { TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
 //Props, Models, Emits
 //====================
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: any): void;
+  (e: 'update:modelValue', value: TypeaheadLocationSuggestion): void;
 }>();
 
 //====================
@@ -69,7 +72,7 @@ const TYPEAHEAD_ID = 'pdap-search-typeahead';
 //====================
 //     Variables
 //====================
-const items = ref<Array>([]);
+const items = ref<TypeaheadLocationSuggestion[]>([]);
 const selectedRecord = ref();
 const typeaheadRef = ref();
 const initiallySearchedRecord = ref();
@@ -77,7 +80,7 @@ const initiallySearchedRecord = ref();
 //====================
 // Computed Variables
 //====================
-const queryKey = computed<string>(() => [
+const queryKey = computed(() => [
   TYPEAHEAD_LOCATIONS,
   typeaheadRef.value?.value.toLowerCase()
 ]);
@@ -89,8 +92,12 @@ const { query: params } = useRoute();
 
 const queryClient = useQueryClient();
 
-const typeaheadMutation = useMutation({
-  mutationFn: async (searchValue) => {
+const typeaheadMutation = useMutation<
+  TypeaheadLocationSuggestion[] | undefined,
+  Error,
+  string
+>({
+  mutationFn: async (searchValue: string) => {
     if (!searchValue || searchValue.length <= 1) {
       return queryClient.getQueryData(queryKey.value) || [];
     }
@@ -137,7 +144,7 @@ onMounted(() => {
 //===================
 //     Handlers
 //===================
-function handleSelectRecord(item) {
+function handleSelectRecord(item: TypeaheadLocationSuggestion) {
   emit('update:modelValue', item);
 }
 </script>
