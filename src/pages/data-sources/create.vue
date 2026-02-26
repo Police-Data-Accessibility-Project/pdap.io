@@ -161,10 +161,7 @@
         rows="4"
       >
         <template #label>
-          <h4>
-            Description
-            <sup>*</sup>
-          </h4>
+          <h4>Description</h4>
         </template>
       </InputTextArea>
 
@@ -733,12 +730,7 @@ const SCHEMA = [
   },
   {
     name: INPUT_NAMES.description,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please describe this request.'
-      }
-    }
+    validators: {}
   },
   {
     name: INPUT_NAMES.type,
