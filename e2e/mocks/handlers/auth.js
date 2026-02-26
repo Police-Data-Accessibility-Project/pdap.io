@@ -1,7 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import jwt from 'jsonwebtoken';
 import { ENDPOINTS } from '../../../src/api/constants';
-import { AUTH_BASE_URL as AUTH_BASE, OAUTH_BASE_URL as OAUTH_BASE } from '../../fixtures/constants';
+import {
+  AUTH_BASE_URL as AUTH_BASE,
+  OAUTH_BASE_URL as OAUTH_BASE
+} from '../../fixtures/constants';
 import { PASSWORD_AUTH } from '../../fixtures/users';
 
 const createTestTokens = () => {
@@ -35,7 +38,10 @@ export const authHandlers = [
   http.post(`${AUTH_BASE}/${ENDPOINTS.AUTH.LOGIN}`, async ({ request }) => {
     const body = await request.json();
 
-    if (body.email === PASSWORD_AUTH.email && body.password === PASSWORD_AUTH.password) {
+    if (
+      body.email === PASSWORD_AUTH.email &&
+      body.password === PASSWORD_AUTH.password
+    ) {
       const { accessToken, refreshToken } = createTestTokens();
       return HttpResponse.json(
         { access_token: accessToken, refresh_token: refreshToken },
