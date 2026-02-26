@@ -1,4 +1,1 @@
-export type LocationSuggestion = {
-  location_id: number;
-  display_name: string;
-};
+export type { TypeaheadLocationSuggestion as LocationSuggestion } from '@/api/typeahead';
