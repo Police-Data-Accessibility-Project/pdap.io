@@ -204,15 +204,14 @@
         Adding them to our database makes them more accessible to everyone.
       </p>
       <div class="flex-row">
-        <a
+        <router-link
           class="mt-2 pdap-button-primary"
-          href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
-          target="blank"
+          :to="'/annotate'"
         >
           Help add Data Sources to our database
-        </a>
+        </router-link>
         <router-link
-          class="pdap-button-secondary mt-2 ml-2"
+          class="pdap-button-secondary mt-2 md:ml-2"
           :to="'/data-sources/create'"
         >
           Submit a source you found
@@ -245,13 +244,20 @@
           </li>
         </ul>
       </div>
-      <a
-        class="pdap-button-primary mt-2"
-        href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ"
-        target="blank"
-      >
-        Volunteer for data requests
-      </a>
+      <div class="flex-row">
+        <a
+          class="pdap-button-primary mt-2"
+          href="https://github.com/orgs/Police-Data-Accessibility-Project/projects/26"
+        >
+          See open Data Requests
+        </a>
+        <router-link
+          class="pdap-button-secondary mt-2 md:ml-2"
+          :to="'/data-requests/create'"
+        >
+          Open a Data Request
+        </router-link>
+      </div>
       <h2 class="pt-4 col-span-full">
         <FontAwesomeIcon
           :icon="faCodePullRequest"
@@ -528,9 +534,9 @@
           <span>
             Grow our database, prioritizing locations followed by our users. To
             participate,
-            <a href="https://airtable.com/appcYa6x4nS7W8IR3/shrk9c5sBsBr3cdJJ">
+            <router-link :to="'/annotate'">
               sign up for data labeling here!
-            </a>
+            </router-link>
           </span>
         </li>
       </ul>
