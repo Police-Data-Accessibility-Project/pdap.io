@@ -772,6 +772,7 @@ const createDataSourceMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
+    formError.value = '';
     queryClient.invalidateQueries({
       queryKey: [DATA_SOURCE]
     });
