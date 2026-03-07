@@ -29,12 +29,18 @@
         data-test="data-request-create-title-input"
       >
         <template #label>
-          <h4>Request title</h4>
+          <h4>
+            Request title
+            <sup>*</sup>
+          </h4>
         </template>
       </InputText>
 
       <label :for="INPUT_NAMES.area" class="py-1 md:col-span-2">
-        <h4>What area is covered by your request?</h4>
+        <h4>
+          What area is covered by your request?
+          <sup>*</sup>
+        </h4>
       </label>
 
       <TransitionGroup v-if="selectedLocations" name="list">
@@ -131,7 +137,10 @@
         rows="4"
       >
         <template #label>
-          <h4>Request notes</h4>
+          <h4>
+            Request notes
+            <sup>*</sup>
+          </h4>
         </template>
       </InputTextArea>
 
@@ -143,9 +152,17 @@
         rows="4"
       >
         <template #label>
-          <h4>Data requirements</h4>
+          <h4>
+            Data requirements
+            <sup>*</sup>
+          </h4>
         </template>
       </InputTextArea>
+
+      <p class="md:col-span-2 mt-4">
+        <sup>*</sup>
+        These fields are required
+      </p>
 
       <div
         class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
@@ -243,21 +260,11 @@ const SCHEMA = [
   },
   {
     name: INPUT_NAMES.range,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please let us know a range of years to look for this data.'
-      }
-    }
+    validators: {}
   },
   {
     name: INPUT_NAMES.target,
-    validators: {
-      required: {
-        value: true,
-        message: "Please let us know when you'd like this request to be filled."
-      }
-    }
+    validators: {}
   },
   {
     name: INPUT_NAMES.notes,
@@ -423,6 +430,7 @@ const createRequestMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
+    formError.value = '';
     queryClient.invalidateQueries({
       queryKey: [DATA_REQUEST]
     });
