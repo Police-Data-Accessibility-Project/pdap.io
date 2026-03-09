@@ -52,7 +52,7 @@ describe('getFullLocationText', () => {
     );
   });
 
-  it('returns empty string when no location data is provided', () => {
-    expect(getFullLocationText({})).toBe('');
+  it('falls back to United States when no location data is provided', () => {
+    expect(getFullLocationText({})).toBe('United States');
   });
 });
