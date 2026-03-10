@@ -460,8 +460,8 @@ const followStatusQueryKey = computed(() => [
 const followStatusQueryEnabled = computed(() =>
   Boolean(
     activeLocationId.value &&
-    auth.isAuthenticated() &&
-    getIsV2FeatureEnabled('ENHANCED_SEARCH')
+      auth.isAuthenticated() &&
+      getIsV2FeatureEnabled('ENHANCED_SEARCH')
   )
 );
 
