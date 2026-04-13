@@ -3,7 +3,13 @@
     <p class="text">
       {{ content }}
     </p>
-    <Button class="button" intent="tertiary" type="button" @click="click">
+    <Button
+      class="button"
+      intent="tertiary"
+      type="button"
+      aria-label="Remove"
+      @click="click"
+    >
       <FontAwesomeIcon :icon="faMinus" />
     </Button>
   </div>

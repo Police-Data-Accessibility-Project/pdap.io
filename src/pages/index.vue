@@ -442,6 +442,7 @@
           <a
             href="https://docs.pdap.io/activities/terms-and-definitions/terminology"
             target="blank"
+            aria-label="Terminology definition"
           >
             <i class="fa fa-question-circle" />
           </a>
