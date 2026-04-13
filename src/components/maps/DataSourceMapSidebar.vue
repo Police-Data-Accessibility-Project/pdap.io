@@ -45,12 +45,7 @@
       </router-link>
       <!-- Follow -->
       <div
-        v-if="
-          !isFollowedPending &&
-          !isFollowedError &&
-          activeLocation &&
-          getIsV2FeatureEnabled('ENHANCED_SEARCH')
-        "
+        v-if="!isFollowedPending && !isFollowedError && activeLocation"
         :class="{
           'loading-shimmer': isFollowedFetching
         }"
@@ -358,7 +353,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/vue-query';
 import { SEARCH_FOLLOWED } from '@/util/queryKeys';
-import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 const auth = useAuthStore();
 const searchStore = useSearchStore();
 const props = defineProps({
@@ -459,11 +453,7 @@ const followStatusQueryKey = computed(() => [
   activeLocationId.value ?? 'none'
 ]);
 const followStatusQueryEnabled = computed(() =>
-  Boolean(
-    activeLocationId.value &&
-      auth.isAuthenticated() &&
-      getIsV2FeatureEnabled('ENHANCED_SEARCH')
-  )
+  Boolean(activeLocationId.value && auth.isAuthenticated())
 );
 
 const {
