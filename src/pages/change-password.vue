@@ -13,61 +13,46 @@
   >
     <h1>Change your password</h1>
 
-    <!-- GH auth user - no password to change -->
-    <template v-if="profileData?.external_accounts.github">
-      <p>
-        You signed up with a GitHub account linked to the email address you
-        provided. No password is necessary to access your account.
-      </p>
-      <p>
-        {{ error?.message ?? passwordMatchError }}
-      </p>
-    </template>
+    <FormV2
+      id="change-password"
+      class="flex flex-col gap-2"
+      :data-test="TEST_IDS.change_password_form"
+      name="change-password"
+      :error="error?.message ?? passwordMatchError"
+      :schema="VALIDATION_SCHEMA"
+      @change="onChange"
+      @submit="updatePassword"
+      @input="onInput"
+    >
+      <InputPassword
+        v-for="input of INPUTS"
+        v-bind="{ ...input }"
+        :key="input.name"
+      />
 
-    <!-- Otherwise, allow change PW -->
-    <template v-else>
-      <FormV2
-        id="change-password"
-        class="flex flex-col gap-2"
-        :data-test="TEST_IDS.change_password_form"
-        name="change-password"
-        :error="error?.message ?? passwordMatchError"
-        :schema="VALIDATION_SCHEMA"
-        @change="onChange"
-        @submit="updatePassword"
-        @input="onInput"
+      <PasswordValidationChecker ref="passwordRef" class="mt-2" />
+
+      <Button
+        class="max-w-full"
+        :data-test="TEST_IDS.change_password_submit"
+        :disabled="isLoading"
+        :is-loading="isLoading"
+        type="submit"
       >
-        <InputPassword
-          v-for="input of INPUTS"
-          v-bind="{ ...input }"
-          :key="input.name"
-        />
-
-        <PasswordValidationChecker ref="passwordRef" class="mt-2" />
-
-        <Button
-          class="max-w-full"
-          :data-test="TEST_IDS.change_password_submit"
-          :disabled="isLoading"
-          :is-loading="isLoading"
-          type="submit"
-        >
-          Change password
-        </Button>
-      </FormV2>
-    </template>
+        Change password
+      </Button>
+    </FormV2>
   </main>
 </template>
 
 <script setup>
 import { Button, FormV2, InputPassword } from 'pdap-design-system';
-import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useMutation } from '@tanstack/vue-query';
 import { toast } from 'vue3-toastify';
 import PasswordValidationChecker from '@/components/PasswordValidationChecker.vue';
 import { ref } from 'vue';
-import { changePassword, getUser } from '@/api/user';
+import { changePassword } from '@/api/user';
 import { useRouter } from 'vue-router';
-import { PROFILE } from '@/util/queryKeys';
 import { TEST_IDS } from '../../e2e/fixtures/test-ids';
 
 const router = useRouter();
@@ -136,22 +121,6 @@ const VALIDATION_SCHEMA = [
     }
   }
 ];
-const {
-  data: profileData
-  // error: profileError,
-  // isLoading: profileLoading,
-  // refetch: refetchProfile
-} = useQuery({
-  queryKey: [PROFILE],
-  queryFn: async () => {
-    const response = await getUser();
-    return response.data.data;
-  },
-  staleTime: 5 * 60 * 1000, // 5 minutes
-  onError: (err) => {
-    console.error(err);
-  }
-});
 
 const {
   error,
