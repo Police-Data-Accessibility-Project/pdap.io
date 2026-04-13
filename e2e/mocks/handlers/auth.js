@@ -56,6 +56,11 @@ export const authHandlers = [
     );
   }),
 
+  // Handler for API key generation
+  http.post(`${AUTH_BASE}/${ENDPOINTS.AUTH.API_KEY}`, () =>
+    HttpResponse.json({ api_key: 'test-api-key-abc123' }, { status: 200 })
+  ),
+
   // Handler for GitHub OAuth redirect
   http.get(`${OAUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}`, ({ request }) => {
     const url = new URL(request.url);
