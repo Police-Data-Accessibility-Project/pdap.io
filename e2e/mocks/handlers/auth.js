@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import { ENDPOINTS } from '../../../src/api/constants';
 import {
   AUTH_BASE_URL as AUTH_BASE,
-  OAUTH_BASE_URL as OAUTH_BASE
+  OAUTH_BASE_URL as OAUTH_BASE,
+  TEST_USER
 } from '../../fixtures/constants';
 import { PASSWORD_AUTH } from '../../fixtures/users';
 
@@ -12,9 +13,9 @@ const createTestTokens = () => {
 
   const accessToken = jwt.sign(
     {
-      sub: 'test-user-id',
-      email: 'test@example.com',
-      name: 'Test User',
+      sub: TEST_USER.id,
+      // auth store reads `user_email` (not `email`) — see src/stores/auth.js
+      user_email: TEST_USER.email,
       exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour from now
       iat: Math.floor(Date.now() / 1000)
     },
@@ -23,7 +24,7 @@ const createTestTokens = () => {
 
   const refreshToken = jwt.sign(
     {
-      sub: 'test-user-id',
+      sub: TEST_USER.id,
       exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days from now
       iat: Math.floor(Date.now() / 1000)
     },
