@@ -46,6 +46,8 @@ export const TEST_IDS = {
   data_source_title: 'data-source-title',
   data_source_description: 'data-source-description',
   data_source_url: 'data-source-url',
+  data_source_url_health: 'data-source-url-health',
+  data_source_url_archive: 'data-source-url-archive',
   prev_next_nav: 'prev-next-nav',
   prev_button: 'prev-button',
   next_button: 'next-button',

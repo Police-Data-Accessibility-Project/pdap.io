@@ -173,16 +173,22 @@
                 </div>
               </template>
             </div>
-            <a
-              :href="dataSource.source_url"
-              :data-test="TEST_IDS.data_source_url"
-              class="pdap-button-primary py-3 px-4 h-max mr-4"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Visit Data Source
-              <FontAwesomeIcon :icon="faLink" />
-            </a>
+            <div class="flex flex-wrap gap-3 items-center">
+              <a
+                :href="dataSource.source_url"
+                :data-test="TEST_IDS.data_source_url"
+                class="pdap-button-primary py-3 px-4 h-max mr-4"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Visit Data Source
+                <FontAwesomeIcon :icon="faLink" />
+              </a>
+              <UrlHealthPill
+                :url-status="dataSource.url_status"
+                :archive-url="dataSource.internet_archive_url"
+              />
+            </div>
           </div>
 
           <!-- Sections -->
@@ -243,6 +249,7 @@
 <script setup>
 import { Button, RecordTypeIcon, Spinner } from 'pdap-design-system';
 import PrevNextNav from './_components/Nav.vue';
+import UrlHealthPill from './_components/UrlHealthPill.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { useSearchStore } from '@/stores/search';
