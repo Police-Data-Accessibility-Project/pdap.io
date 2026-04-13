@@ -19,21 +19,6 @@ export default defineConfig(({ mode }) => {
             route.meta = { ...route.meta, ...ROUTES_TO_META.get(route.name) };
           }
 
-          // Hide authentication routes if flag set to disabled
-          if (
-            env.VITE_V2_FEATURE_AUTHENTICATE === "disabled" &&
-            [
-              "change-password",
-              "reset-password",
-              "sign-in",
-              "sign-out",
-              "sign-up",
-              "profile",
-            ].some((pathFrag) => route.fullPath.includes(pathFrag))
-          ) {
-            route.delete();
-          }
-
           if (route.fullPath.startsWith("/test/") && mode === "production") {
             route.delete();
           }

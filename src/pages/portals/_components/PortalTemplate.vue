@@ -9,7 +9,6 @@
       </div>
 
       <div
-        v-if="showFollowControls"
         :class="{
           'loading-shimmer': isFollowedNationalFetching
         }"
@@ -147,7 +146,6 @@ import {
 } from '@/api/search';
 import { groupResultsByAgency } from '@/pages/search/_util';
 import { ALL_LOCATION_TYPES } from '@/util/constants';
-import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 import {
   SEARCH_FOLLOWED,
   SEARCH_FOLLOWED_NATIONAL,
@@ -215,10 +213,6 @@ const showSidebar = ref(false);
 const route = useRoute();
 const router = useRouter();
 
-const followFeatureEnabled = computed(() =>
-  getIsV2FeatureEnabled('ENHANCED_SEARCH')
-);
-
 const mapOptions = computed(() => ({
   showLocalityMarkers: true,
   useDynamicBreakpoints: false,
@@ -283,8 +277,7 @@ const nationalFollowQuery = useQuery({
     { record_types: normalizedRecordTypes, portalId: props.portalId }
   ],
   queryFn: () => getFollowedNationalSearch(baseParams.value),
-  staleTime: 5 * 60 * 1000,
-  enabled: followFeatureEnabled
+  staleTime: 5 * 60 * 1000
 });
 
 const followNationalMutation = useMutation({
@@ -336,7 +329,6 @@ const isFollowedNationalFetching = computed(
 const followNationalPending = computed(
   () => followNationalMutation.isPending.value
 );
-const showFollowControls = computed(() => followFeatureEnabled.value);
 
 const isMapLoading = computed(() => mapQuery.isLoading.value);
 const isResultsLoading = computed(() => resultsQuery.isLoading.value);
