@@ -204,10 +204,7 @@
         Adding them to our database makes them more accessible to everyone.
       </p>
       <div class="flex-row">
-        <router-link
-          class="mt-2 pdap-button-primary"
-          :to="'/annotate'"
-        >
+        <router-link class="mt-2 pdap-button-primary" :to="'/annotate'">
           Help add Data Sources to our database
         </router-link>
         <router-link
