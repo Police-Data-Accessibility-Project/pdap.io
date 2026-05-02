@@ -31,6 +31,7 @@
               <button
                 type="button"
                 class="text-wineneutral-500 hover:text-wineneutral-200 transition-colors p-1 hover:bg-wineneutral-800"
+                aria-label="Close"
                 @click="emitClose"
               >
                 <FontAwesomeIcon :icon="faXmark" class="w-5 h-5" />

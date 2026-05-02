@@ -106,11 +106,11 @@ const ROUTES_TO_META = new Map([
   [
     "/",
     {
-      title: "Police Data Access Point - Search",
+      title: "Police Data Accessibility Project - Search",
       metaTags: [
         {
           property: "og:title",
-          title: "Police Data Access Point - Search",
+          title: "Police Data Accessibility Project - Search",
         },
       ],
     },

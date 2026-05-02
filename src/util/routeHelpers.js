@@ -6,12 +6,12 @@ const DEFAULT_META_TAGS = new Map([
     'description',
     'Data and tools for answering questions about any police system in the United States'
   ],
-  ['title', 'Police Data Access Point'],
+  ['title', 'Police Data Accessibility Project'],
   [
     'og:description',
     'Data and tools for answering questions about any police system in the United States'
   ],
-  ['og:title', 'Police Data Access Point'],
+  ['og:title', 'Police Data Accessibility Project'],
   ['og:type', 'website'],
   ['og:site_name', 'PDAP'],
   ['og:image', acronym]
@@ -52,10 +52,15 @@ function getNearestRouteByMetaProperty(to, property) {
  * @param {RouteLocationNormalized} nearestRouteWithMeta nearest route to `to` that has a meta tag defined
  */
 function refreshMetaTags(to, nearestRouteWithMeta) {
-  // Remove current tags
+  // Remove JS-managed tags from previous route
   Array.from(document.querySelectorAll('[data-controlled-meta]')).forEach(
     (el) => el.parentNode.removeChild(el)
   );
+
+  // Remove static OG tags from index.html so JS-managed tags replace them
+  Array.from(document.querySelectorAll('meta[property^="og:"]'))
+    .filter((el) => !el.hasAttribute('data-controlled-meta'))
+    .forEach((el) => el.parentNode.removeChild(el));
 
   META_PROPERTIES.filter((prop) => prop !== 'title')
     .map((prop) => {

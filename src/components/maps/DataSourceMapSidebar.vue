@@ -9,6 +9,7 @@
         v-if="activeLocation"
         class="p-2 mr-3 flex items-center justify-center text-wineneutral-950 bg-wineneutral-300 hover:bg-wineneutral-300/90 focus:bg-wineneutral-300/90 dark:bg-goldneutral-400 dark:hover:bg-goldneutral-400/90 dark:focus:bg-goldneutral-400/90"
         intent="tertiary"
+        aria-label="Go back"
         @click="handleBackClick"
       >
         <FontAwesomeIcon :icon="faChevronLeft" />
@@ -460,8 +461,8 @@ const followStatusQueryKey = computed(() => [
 const followStatusQueryEnabled = computed(() =>
   Boolean(
     activeLocationId.value &&
-    auth.isAuthenticated() &&
-    getIsV2FeatureEnabled('ENHANCED_SEARCH')
+      auth.isAuthenticated() &&
+      getIsV2FeatureEnabled('ENHANCED_SEARCH')
   )
 );
 
