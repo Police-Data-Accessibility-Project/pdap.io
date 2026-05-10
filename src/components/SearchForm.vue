@@ -166,9 +166,9 @@ const hasUpdatedCategories = ref(false);
 const hasLocation = computed(() =>
   Boolean(
     selectedRecord.value ||
-      initiallySearchedRecord.value ||
-      searchStore.activeLocation?.location_id ||
-      route.query.location_id
+    initiallySearchedRecord.value ||
+    searchStore.activeLocation?.location_id ||
+    route.query.location_id
   )
 );
 
