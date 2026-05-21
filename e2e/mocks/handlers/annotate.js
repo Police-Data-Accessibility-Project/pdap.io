@@ -85,14 +85,14 @@ export const annotateHandlers = [
     return HttpResponse.json(buildNextAnnotation(), { status: 200 });
   }),
 
-  // Anonymous POST submission
+  // Anonymous POST submission — returns the next annotation to label
   http.post('*/annotate/anonymous/:url_id', () => {
-    return HttpResponse.json({ session_id: TEST_SESSION_ID }, { status: 200 });
+    return HttpResponse.json(buildNextAnnotation(), { status: 200 });
   }),
 
-  // Authenticated POST submission
+  // Authenticated POST submission — returns the next annotation to label
   http.post('*/annotate/all/:url_id', () => {
-    return HttpResponse.json({}, { status: 200 });
+    return HttpResponse.json(buildNextAnnotation(), { status: 200 });
   }),
 
   // Anonymous-to-authenticated migration
