@@ -46,6 +46,8 @@ export const TEST_IDS = {
   data_source_title: 'data-source-title',
   data_source_description: 'data-source-description',
   data_source_url: 'data-source-url',
+  data_source_url_health: 'data-source-url-health',
+  data_source_url_archive: 'data-source-url-archive',
   prev_next_nav: 'prev-next-nav',
   prev_button: 'prev-button',
   next_button: 'next-button',
@@ -133,5 +135,29 @@ export const TEST_IDS = {
   // Additional form inputs
   coverage_range_input: 'coverage-range-input',
   submission_notes_input: 'submission-notes-input',
-  data_requirements_input: 'data-requirements-input'
+  data_requirements_input: 'data-requirements-input',
+
+  // Annotation
+  annotate_page: 'annotate-page',
+  annotate_preview_toggle: 'annotate-preview-toggle',
+  annotate_wizard: 'annotate-wizard',
+  annotate_url_type: 'annotate-url-type',
+  annotate_record_type: 'annotate-record-type',
+  annotate_record_type_selected: 'annotate-record-type-selected',
+  annotate_location: 'annotate-location',
+  annotate_location_search: 'annotate-location-search',
+  annotate_agency: 'annotate-agency',
+  annotate_agency_search: 'annotate-agency-search',
+  annotate_name: 'annotate-name',
+  annotate_confirm: 'annotate-confirm',
+  annotate_confirm_summary: 'annotate-confirm-summary',
+  annotate_submit: 'annotate-submit',
+  annotate_tab_controls: 'annotate-tab-controls',
+  annotate_prev_button: 'annotate-prev-button',
+  annotate_next_button: 'annotate-next-button',
+  annotate_stepper_desktop: 'annotate-stepper-desktop',
+  annotate_stepper_mobile: 'annotate-stepper-mobile',
+  annotate_anon_warning: 'annotate-anon-warning',
+  annotate_anon_warning_dismiss: 'annotate-anon-warning-dismiss',
+  annotate_zoomable_image: 'annotate-zoomable-image'
 };

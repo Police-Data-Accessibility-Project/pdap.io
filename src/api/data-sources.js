@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const DATA_SOURCES_BASE = `${import.meta.env.VITE_API_URL}/data-sources`;
-const SOURCE_COLLECTOR_BASE = `${import.meta.env.VITE_SOURCE_COLLECTOR_API_URL}`;
+const SOURCE_COLLECTOR_BASE = `${import.meta.env.VITE_SM_API_URL}/api`;
 const HEADERS_BASE = {
   'Content-Type': 'application/json'
 };
