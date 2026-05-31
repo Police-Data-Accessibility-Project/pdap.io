@@ -12,6 +12,7 @@
           v-if="onDismiss"
           class="h-max p-0 hover:brightness-95 max-w-max py-1 px-2"
           intent="tertiary"
+          aria-label="Dismiss"
           :data-test="TEST_IDS.profile_api_key_dismiss"
           @click="onDismiss"
         >
@@ -22,6 +23,7 @@
         <Button
           class="h-max p-0 hover:brightness-95 text-left max-w-full rounded"
           intent="tertiary"
+          :aria-label="copied ? 'Copied' : 'Copy API key'"
           :data-test="TEST_IDS.profile_api_key_copy"
           @click="copyToClipboard"
         >

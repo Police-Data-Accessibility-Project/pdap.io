@@ -1,7 +1,4 @@
-import {
-  AgencyLocationSuggestionType,
-  AnnoLabels
-} from '@/pages/annotate/_components/_shared/types';
+import { AnnoLabels } from '@/pages/annotate/_components/_shared/types';
 
 interface EndorsementSource {
   user_count?: number | null;

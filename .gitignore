@@ -19,3 +19,6 @@ typed-router.d.ts
 # Playwright
 test-results
 playwright-report
+
+# Dev container
+.devcontainer

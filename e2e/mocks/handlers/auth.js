@@ -1,16 +1,21 @@
 import { http, HttpResponse } from 'msw';
 import jwt from 'jsonwebtoken';
 import { ENDPOINTS } from '../../../src/api/constants';
-import { OAUTH_BASE_URL as OAUTH_BASE } from '../../fixtures/constants';
+import {
+  AUTH_BASE_URL as AUTH_BASE,
+  OAUTH_BASE_URL as OAUTH_BASE,
+  TEST_USER
+} from '../../fixtures/constants';
+import { PASSWORD_AUTH } from '../../fixtures/users';
 
 const createTestTokens = () => {
   const secret = 'test-secret';
 
   const accessToken = jwt.sign(
     {
-      sub: 'test-user-id',
-      email: 'test@example.com',
-      name: 'Test User',
+      sub: TEST_USER.id,
+      // auth store reads `user_email` (not `email`) — see src/stores/auth.js
+      user_email: TEST_USER.email,
       exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour from now
       iat: Math.floor(Date.now() / 1000)
     },
@@ -19,7 +24,7 @@ const createTestTokens = () => {
 
   const refreshToken = jwt.sign(
     {
-      sub: 'test-user-id',
+      sub: TEST_USER.id,
       exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days from now
       iat: Math.floor(Date.now() / 1000)
     },
@@ -30,6 +35,32 @@ const createTestTokens = () => {
 };
 
 export const authHandlers = [
+  // Handler for email/password login
+  http.post(`${AUTH_BASE}/${ENDPOINTS.AUTH.LOGIN}`, async ({ request }) => {
+    const body = await request.json();
+
+    if (
+      body.email === PASSWORD_AUTH.email &&
+      body.password === PASSWORD_AUTH.password
+    ) {
+      const { accessToken, refreshToken } = createTestTokens();
+      return HttpResponse.json(
+        { access_token: accessToken, refresh_token: refreshToken },
+        { status: 200 }
+      );
+    }
+
+    return HttpResponse.json(
+      { message: 'Invalid credentials' },
+      { status: 401 }
+    );
+  }),
+
+  // Handler for API key generation
+  http.post(`${AUTH_BASE}/${ENDPOINTS.AUTH.API_KEY}`, () =>
+    HttpResponse.json({ api_key: 'test-api-key-abc123' }, { status: 200 })
+  ),
+
   // Handler for GitHub OAuth redirect
   http.get(`${OAUTH_BASE}/${ENDPOINTS.OAUTH.GITHUB}`, ({ request }) => {
     const url = new URL(request.url);

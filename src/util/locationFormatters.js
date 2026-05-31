@@ -3,6 +3,10 @@ import { STATES_TO_ABBREVIATIONS } from './constants';
 export function getFullLocationText(location) {
   if (!location) return '';
 
+  if (location.display_name) {
+    return location.display_name;
+  }
+
   const locationType =
     location.type ??
     location.location_type ??
@@ -28,7 +32,7 @@ export function getFullLocationText(location) {
     case 'state':
       return location.state_name ?? location.name ?? location.state_iso ?? '';
     default:
-      return location.display_name || location.name || 'United States'; // fallback
+      return location.name || '';
   }
 }
 

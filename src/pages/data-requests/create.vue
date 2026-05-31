@@ -29,12 +29,18 @@
         data-test="data-request-create-title-input"
       >
         <template #label>
-          <h4>Request title</h4>
+          <h4>
+            Request title
+            <sup>*</sup>
+          </h4>
         </template>
       </InputText>
 
       <label :for="INPUT_NAMES.area" class="py-1 md:col-span-2">
-        <h4>What area is covered by your request?</h4>
+        <h4>
+          What area is covered by your request?
+          <sup>*</sup>
+        </h4>
       </label>
 
       <TransitionGroup v-if="selectedLocations" name="list">
@@ -131,7 +137,10 @@
         rows="4"
       >
         <template #label>
-          <h4>Request notes</h4>
+          <h4>
+            Request notes
+            <sup>*</sup>
+          </h4>
         </template>
       </InputTextArea>
 
@@ -143,9 +152,17 @@
         rows="4"
       >
         <template #label>
-          <h4>Data requirements</h4>
+          <h4>
+            Data requirements
+            <sup>*</sup>
+          </h4>
         </template>
       </InputTextArea>
+
+      <p class="md:col-span-2 mt-4">
+        <sup>*</sup>
+        These fields are required
+      </p>
 
       <div
         class="flex gap-2 flex-col max-w-full md:flex-row md:col-start-1 md:col-end-2 mt-8"
@@ -196,88 +213,7 @@ import { useRoute } from 'vue-router';
 import { useSearchStore } from '@/stores/search';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { DATA_REQUEST, LOCATION, TYPEAHEAD_LOCATIONS } from '@/util/queryKeys';
-
-const INPUT_NAMES = {
-  // contact: 'contact',
-  title: 'title',
-  area: 'area',
-  range: 'coverage_range',
-  target: 'request_urgency',
-  notes: 'submission_notes',
-  requirements: 'data_requirements'
-};
-const SELECT_OPTS = [
-  { value: 'urgent', label: 'Urgent (Less than a week)' },
-  {
-    value: 'somewhat_urgent',
-    label: 'Somewhat urgent (Less than a month)'
-  },
-  {
-    value: 'not_urgent',
-    label: 'Not urgent (A few months)'
-  },
-  {
-    value: 'long_term',
-    label: 'Long term (6 months or more)'
-  },
-  { value: 'indefinite_unknown', label: 'Indefinite/Unknown' }
-];
-const SCHEMA = [
-  // {
-  // 	name: INPUT_NAMES.contact,
-  // 	validators: {
-  // 		required: {
-  // 			value: true,
-  // 			message: 'Please let us know how to get in touch about this request.',
-  // 		},
-  // 	},
-  // },
-  {
-    name: INPUT_NAMES.title,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please let us know what to call this request.'
-      }
-    }
-  },
-  {
-    name: INPUT_NAMES.range,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please let us know a range of years to look for this data.'
-      }
-    }
-  },
-  {
-    name: INPUT_NAMES.target,
-    validators: {
-      required: {
-        value: true,
-        message: "Please let us know when you'd like this request to be filled."
-      }
-    }
-  },
-  {
-    name: INPUT_NAMES.notes,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please let us know a little more about your request.'
-      }
-    }
-  },
-  {
-    name: INPUT_NAMES.requirements,
-    validators: {
-      required: {
-        value: true,
-        message: 'Please let us know the requirements for this request.'
-      }
-    }
-  }
-];
+import { INPUT_NAMES, SELECT_OPTS, SCHEMA } from './_constants';
 
 const selectedLocations = ref([]);
 const items = ref([]);
@@ -423,6 +359,7 @@ const createRequestMutation = useMutation({
     toast.success(message, { autoClose: false });
   },
   onSuccess: () => {
+    formError.value = '';
     queryClient.invalidateQueries({
       queryKey: [DATA_REQUEST]
     });

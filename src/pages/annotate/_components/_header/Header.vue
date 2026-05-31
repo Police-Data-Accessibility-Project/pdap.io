@@ -1,20 +1,32 @@
 <template>
-  <div v-if="requestPending">
-    <Spinner
-      :show="requestPending"
-      :size="64"
-      text="Fetching user contributions..."
-    />
-  </div>
-  <div class="overflow-x-auto">
-    <span v-if="userContributions">
-      <strong>URLs Annotated:</strong>
-      {{ userContributions.count_validated }}
-    </span>
-    <strong>URL ID:</strong>
-    {{ props.urlID }}
-    <strong>Page Title:</strong>
-    {{ props.pageTitle }}
+  <div class="flex flex-col gap-2 text-sm">
+    <div v-if="requestPending" class="flex items-center gap-2">
+      <Spinner :show="requestPending" :size="20" text="" />
+      <span class="text-xs text-wineneutral-400">Loading stats...</span>
+    </div>
+    <template v-else>
+      <div v-if="userContributions" class="flex items-center gap-2">
+        <span
+          class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider"
+        >
+          Labeled
+        </span>
+        <span class="font-bold text-brand-wine-600">
+          {{ userContributions.count_validated }}
+        </span>
+      </div>
+    </template>
+
+    <div v-if="props.pageTitle" class="flex flex-col gap-0.5">
+      <span
+        class="text-xs font-semibold text-wineneutral-400 uppercase tracking-wider"
+      >
+        Page
+      </span>
+      <span class="text-sm text-wineneutral-700 leading-snug line-clamp-2">
+        {{ props.pageTitle }}
+      </span>
+    </div>
   </div>
 </template>
 

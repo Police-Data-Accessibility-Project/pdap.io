@@ -1,18 +1,39 @@
 <template>
-  <div>
-    <p>Agency: {{ agencyModel?.display_name }}</p>
-    <p>Agency ID: {{ agencyModel?.id }}</p>
-    <div class="grid grid-cols-1 gap-4">
-      <div class="col-auto">
-        <RadioForm
-          v-model="selectedRadioAgency"
-          :options="radioOptions"
-          header="Suggestions"
-          @update:model-value="handleRadioFormSelect"
-        />
-      </div>
+  <div data-test="annotate-agency">
+    <h3
+      class="text-sm font-semibold text-wineneutral-800 uppercase tracking-wider mb-4"
+    >
+      Select an agency
+    </h3>
+
+    <div
+      v-if="agencyModel"
+      class="mb-4 text-sm bg-wineneutral-100 border border-wineneutral-300 px-3 py-2 text-wineneutral-900"
+    >
+      <span class="text-wineneutral-700 mr-1">Selected:</span>
+      <strong>{{ agencyModel.display_name }}</strong>
     </div>
-    <SearchForm @update:model-value="handleAgencySelect" />
+
+    <div
+      v-if="radioOptions.length"
+      class="mb-5 pb-5 border-b border-wineneutral-200"
+    >
+      <RadioForm
+        v-model="selectedRadioAgency"
+        :options="radioOptions"
+        header="Suggestions"
+        @update:model-value="handleRadioFormSelect"
+      />
+    </div>
+
+    <div class="mt-2">
+      <h4
+        class="text-xs font-bold text-wineneutral-700 uppercase tracking-wider mb-2"
+      >
+        Or search for an agency
+      </h4>
+      <SearchForm @update:model-value="handleAgencySelect" />
+    </div>
   </div>
 </template>
 
@@ -91,7 +112,7 @@ watch(resetKey, () => {
 //===================
 function handleRadioFormSelect(option: RadioOption) {
   agencyModel.value = {
-    id: Number(option.value), // option.value is typed as String | Number
+    id: Number(option.value),
     display_name: option.display_name
   };
   emit('select', null);

@@ -48,11 +48,7 @@
 
         <!-- Follow -->
         <div
-          v-if="
-            !isFollowedPending &&
-            !isFollowedError &&
-            getIsV2FeatureEnabled('ENHANCED_SEARCH')
-          "
+          v-if="!isFollowedPending && !isFollowedError"
           :class="{
             'loading-shimmer': isFollowedFetching
           }"
@@ -140,9 +136,7 @@
           <LoadingSpinner />
         </template>
       </Suspense>
-      <div
-        v-if="getIsV2FeatureEnabled('SHOW_REQUESTS') && searchData?.location"
-      >
+      <div v-if="searchData?.location">
         <h2 v-if="searchData" class="like-h4">
           Data requested about {{ getFullLocationText(searchData.location) }}
         </h2>
@@ -168,7 +162,6 @@ import { faUserPlus, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute, useRouter } from 'vue-router';
-import { getIsV2FeatureEnabled } from '@/util/featureFlagV2';
 // import _isUndefined from 'lodash/isUndefined';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 import {

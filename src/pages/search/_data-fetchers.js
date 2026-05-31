@@ -7,7 +7,7 @@ export async function getSearchResults(route) {
   const searchLocation = route.query.location_id
     ? await getLocation(route.query.location_id)
     : undefined;
-  const resolvedLocation = searchLocation?.data?.data ?? null;
+  const resolvedLocation = searchLocation?.data ?? null;
   const searched = getMostNarrowSearchLocationWithResults(resolvedLocation);
   const response = await search(route.query);
 
